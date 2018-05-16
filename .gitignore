@@ -19,6 +19,7 @@
 # firebase
 /src/credentials.js
 /functions/service-account.json
+firebase-debug.log
 
 # functions
 /functions/node_modules
