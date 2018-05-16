@@ -556,12 +556,6 @@ const mapStateToProps = state => ({
   user: state.login.user,
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      submitInfo,
-    },
-    dispatch
-  );
+const mapDispatchToProps = dispatch => bindActionCreators({ submitInfo }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);

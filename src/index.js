@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { injectGlobal, ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import { ConnectedRouter } from 'react-router-redux';
 import './css/index.css';
 
