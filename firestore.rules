@@ -1,0 +1,22 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, update, write: if request.auth.uid == userId;
+    }
+    match /status/{userId} {
+      allow read: if request.auth.uid == userId;
+    }
+    match /comply/{userId} {
+      allow delete: if request.auth.uid == userId;
+    }
+    match /jumio/{userId} {
+      allow delete: if request.auth.uid == userId;
+    }
+    match /status/{userId} {
+      allow delete: if request.auth.uid == userId;
+    }
+    match /sale/{id} {
+      allow read: if true;
+    }
+  }
+}

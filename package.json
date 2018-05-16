@@ -1,0 +1,47 @@
+{
+  "name": "thor-tokensale",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.17.1",
+    "base-64": "^0.1.0",
+    "firebase": "^4.9.0",
+    "history": "^4.7.2",
+    "ls": "^0.2.1",
+    "password-validator": "^4.0.0",
+    "prettier-eslint": "^8.8.1",
+    "react": "^16.2.0",
+    "react-bootstrap": "^0.32.0",
+    "react-countdown-now": "^1.3.0",
+    "react-dom": "^16.2.0",
+    "react-ga": "^2.4.1",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "react-router-redux": "next",
+    "react-scripts": "1.1.0",
+    "redux": "^3.7.2",
+    "redux-devtools-extension": "^2.13.2",
+    "redux-saga": "^0.16.0",
+    "redux-saga-firebase": "^0.9.0",
+    "styled-components": "^2.4.0",
+    "underscore": "^1.8.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "universe/web"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.1",
+    "eslint": "^4.16.0",
+    "eslint-config-exponent": "^5.1.3",
+    "eslint-config-universe": "^1.0.6",
+    "eslint-plugin-babel": "^4.1.2",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-react": "^7.5.1"
+  }
+}

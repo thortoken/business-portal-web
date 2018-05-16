@@ -1,0 +1,62 @@
+[debug] [2018-04-17T15:57:11.818Z] ----------------------------------------------------------------------
+[debug] [2018-04-17T15:57:11.821Z] Command:       /usr/local/Cellar/node/7.10.0/bin/node /usr/local/bin/firebase deploy
+[debug] [2018-04-17T15:57:11.821Z] CLI Version:   3.17.7
+[debug] [2018-04-17T15:57:11.821Z] Platform:      darwin
+[debug] [2018-04-17T15:57:11.821Z] Node Version:  v7.10.0
+[debug] [2018-04-17T15:57:11.822Z] Time:          Tue Apr 17 2018 08:57:11 GMT-0700 (PDT)
+[debug] [2018-04-17T15:57:11.822Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-04-17T15:57:11.834Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-04-17T15:57:11.834Z] > authorizing via signed-in user
+[debug] [2018-04-17T15:57:11.836Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/thor-whitelist  
+  
+ Tue Apr 17 2018 08:57:11 GMT-0700 (PDT)
+[debug] [2018-04-17T15:57:12.237Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-17T15:57:12.238Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/thor-whitelist/tokens  
+  
+ Tue Apr 17 2018 08:57:12 GMT-0700 (PDT)
+[debug] [2018-04-17T15:57:12.560Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'thor-whitelist'...
+[info] 
+[info] i  deploying storage, firestore, functions
+[info] Running command: npm --prefix functions test
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
+[info] Running command: npm --prefix "$RESOURCE_DIR" run build
+[info] ✔  functions: Finished running predeploy script.
+[debug] [2018-04-17T15:57:23.846Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/thor-whitelist  
+  
+ Tue Apr 17 2018 08:57:23 GMT-0700 (PDT)
+[debug] [2018-04-17T16:49:59.887Z] ----------------------------------------------------------------------
+[debug] [2018-04-17T16:49:59.889Z] Command:       /usr/local/Cellar/node/7.10.0/bin/node /usr/local/bin/firebase deploy
+[debug] [2018-04-17T16:49:59.890Z] CLI Version:   3.17.7
+[debug] [2018-04-17T16:49:59.890Z] Platform:      darwin
+[debug] [2018-04-17T16:49:59.890Z] Node Version:  v7.10.0
+[debug] [2018-04-17T16:49:59.890Z] Time:          Tue Apr 17 2018 09:49:59 GMT-0700 (PDT)
+[debug] [2018-04-17T16:49:59.890Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-04-17T16:49:59.904Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-04-17T16:49:59.904Z] > authorizing via signed-in user
+[debug] [2018-04-17T16:49:59.906Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-04-17T16:49:59.906Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ { refresh_token: '1/X_98dhaWiff-d74-wOR7yFlAC0ruxFLDLeYNNhiFhvw',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Tue Apr 17 2018 09:49:59 GMT-0700 (PDT)
+[debug] [2018-04-17T16:50:00.285Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-17T16:50:00.301Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/thor-whitelist  
+  
+ Tue Apr 17 2018 09:50:00 GMT-0700 (PDT)
+[debug] [2018-04-17T16:50:00.784Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-17T16:50:00.785Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/thor-whitelist/tokens  
+  
+ Tue Apr 17 2018 09:50:00 GMT-0700 (PDT)
+[debug] [2018-04-17T16:50:01.280Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'thor-whitelist'...
+[info] 
+[info] i  deploying storage, firestore, functions
+[info] Running command: npm --prefix functions test
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
