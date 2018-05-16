@@ -1,3 +1,6 @@
 {
-  "extends": ["universe/web"]
+  "extends": ["universe/web"],
+  "rules": {
+    "import/newline-after-import": ["error", { "count": 1 }]
+  }
 }

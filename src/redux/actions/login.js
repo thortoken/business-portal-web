@@ -1,113 +1,113 @@
 export const types = {
   LOGIN: {
-    REQUEST: "LOGIN.REQUEST",
-    SUCCESS: "LOGIN.SUCCESS",
-    FAILURE: "LOGIN.FAILURE",
-    TWITTER: "LOGIN.TWITTER",
-    GOOGLE: "LOGIN.GOOGLE",
-    RESET: "LOGIN.RESET"
+    REQUEST: 'LOGIN.REQUEST',
+    SUCCESS: 'LOGIN.SUCCESS',
+    FAILURE: 'LOGIN.FAILURE',
+    TWITTER: 'LOGIN.TWITTER',
+    GOOGLE: 'LOGIN.GOOGLE',
+    RESET: 'LOGIN.RESET',
   },
   REGISTER: {
-    REQUEST: "REGISTER.REQUEST",
-    SUCCESS: "REGISTER.SUCCESS",
-    FAILURE: "REGISTER.FAILURE",
-    RESET: "REGISTER.RESET"
+    REQUEST: 'REGISTER.REQUEST',
+    SUCCESS: 'REGISTER.SUCCESS',
+    FAILURE: 'REGISTER.FAILURE',
+    RESET: 'REGISTER.RESET',
   },
   LOGOUT: {
-    REQUEST: "LOGOUT.REQUEST",
-    SUCCESS: "LOGOUT.SUCCESS",
-    FAILURE: "LOGOUT.FAILURE"
+    REQUEST: 'LOGOUT.REQUEST',
+    SUCCESS: 'LOGOUT.SUCCESS',
+    FAILURE: 'LOGOUT.FAILURE',
   },
-  SYNC_USER: "SYNC_USER",
-  TEST: "TEST",
-  RESET_PASSWORD: "RESET_PASSWORD",
-  SET_SALE: "SET_SALE",
-  GET_SALE: "GET_SALE"
+  SYNC_USER: 'SYNC_USER',
+  TEST: 'TEST',
+  RESET_PASSWORD: 'RESET_PASSWORD',
+  SET_SALE: 'SET_SALE',
+  GET_SALE: 'GET_SALE',
 };
 
 export const loginEmlPwd = (email, password, route) => ({
   type: types.LOGIN.REQUEST,
   email,
-  password
+  password,
 });
 
 export const loginGoogle = route => ({
   type: types.LOGIN.GOOGLE,
-  route
+  route,
 });
 
 export const loginTwitter = route => ({
   type: types.LOGIN.TWITTER,
-  route
+  route,
 });
 
 export const loginSuccess = user => ({
   type: types.LOGIN.SUCCESS,
-  user
+  user,
 });
 
 export const testDB = () => ({
-  type: types.TEST
+  type: types.TEST,
 });
 
 export const loginFailure = error => ({
   type: types.LOGIN.FAILURE,
-  error
+  error,
 });
 
 export const resetLoginFailure = () => ({
-  type: types.LOGIN.RESET
+  type: types.LOGIN.RESET,
 });
 
 export const logout = () => ({
-  type: types.LOGOUT.REQUEST
+  type: types.LOGOUT.REQUEST,
 });
 
 export const logoutSuccess = () => ({
-  type: types.LOGOUT.SUCCESS
+  type: types.LOGOUT.SUCCESS,
 });
 
 export const logoutFailure = error => ({
   type: types.LOGOUT.FAILURE,
-  error
+  error,
 });
 
 export const syncUser = user => ({
   type: types.SYNC_USER,
-  user
+  user,
 });
 
 export const register = (email, password) => ({
   type: types.REGISTER.REQUEST,
   email,
-  password
+  password,
 });
 
 export const registerSuccess = user => ({
   type: types.REGISTER.SUCCESS,
-  user
+  user,
 });
 
 export const registerFailure = error => ({
   type: types.REGISTER.FAILURE,
-  error
+  error,
 });
 
 export const setSale = sale => ({
   type: types.SET_SALE,
-  sale
+  sale,
 });
 
 export const getSale = sale => ({
   type: types.GET_SALE,
-  sale
+  sale,
 });
 
 export const resetRegisterFailure = () => ({
-  type: types.REGISTER.RESET
+  type: types.REGISTER.RESET,
 });
 
 export const resetPassword = email => ({
   type: types.RESET_PASSWORD,
-  email
+  email,
 });

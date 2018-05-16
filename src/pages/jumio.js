@@ -2,6 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { getToken } from '../redux/actions/jumio';
+
 const JumioClient = window.JumioClient;
 
 class Jumio extends React.Component {

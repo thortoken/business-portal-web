@@ -11,7 +11,7 @@ class JumioSuccess extends React.Component {
     return (
       <div data-w-id="fd910b6f-3c58-69d2-e4e0-fff6f11f0166" className="whitelist-reg non-fixed">
         <img
-        	alt=""
+          alt=""
           src="images/Thor_pureBlue_shadow2x.png"
           width="67"
           srcSet="images/Thor_pureBlue_shadow2x-p-500.png 500w, images/Thor_pureBlue_shadow2x-p-800.png 800w, images/Thor_pureBlue_shadow2x-p-1080.png 1080w, images/Thor_pureBlue_shadow2x.png 1320w"
@@ -21,7 +21,7 @@ class JumioSuccess extends React.Component {
         <div className="part-2">
           <div className="wlp-image-div">
             <img
-            	alt=""
+              alt=""
               src="images/Success.png"
               width="400"
               srcSet="images/Success-p-500.png 500w, images/Success.png 800w"
@@ -33,15 +33,18 @@ class JumioSuccess extends React.Component {
           <div className="sm-text">
             Thank you for being here, and participating in the Thor Token Whitelist and Token sale!
           </div>
-          <a href={twitterMsgLink} target="_blank" className="button sign-up-btn w-button twitter-share-button">
+          <a
+            href={twitterMsgLink}
+            target="_blank"
+            className="button sign-up-btn w-button twitter-share-button">
             Tweet this!
           </a>
-					<a href={"/status"} className="button sign-up-btn w-button">
+          <a href={'/status'} className="button sign-up-btn w-button">
             Go to my Status Page
           </a>
           <div className="jumio-embed">
             <img
-            	alt=""
+              alt=""
               src="images/Whitelist_Share_blue.png"
               width="805"
               srcSet="images/Whitelist_Share_blue-p-500.png 500w, images/Whitelist_Share_blue-p-800.png 800w, images/Whitelist_Share_blue-p-1080.png 1080w, images/Whitelist_Share_blue.png 1920w"

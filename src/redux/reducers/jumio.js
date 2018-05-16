@@ -1,7 +1,7 @@
-import { types } from "../actions/jumio";
+import { types } from '../actions/jumio';
 
 const initialState = {
-  authToken: null
+  authToken: null,
 };
 
 export default function jumioReducer(state = initialState, action = {}) {
@@ -9,7 +9,7 @@ export default function jumioReducer(state = initialState, action = {}) {
     case types.JUMIO.SUCCESS:
       return {
         ...state,
-        authToken: action.token.data.authorizationToken
+        authToken: action.token.data.authorizationToken,
       };
     default:
       return state;

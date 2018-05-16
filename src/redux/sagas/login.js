@@ -1,7 +1,7 @@
-import firebase from "firebase";
-import { delay } from "redux-saga";
-import { push } from "react-router-redux";
-import { call, fork, put, take, takeEvery, all, select } from "redux-saga/effects";
+import firebase from 'firebase';
+import { delay } from 'redux-saga';
+import { push } from 'react-router-redux';
+import { call, fork, put, take, takeEvery, all, select } from 'redux-saga/effects';
 
 import {
   types,
@@ -13,13 +13,12 @@ import {
   resetLoginFailure,
   registerFailure,
   resetRegisterFailure,
-  register,
   syncUser,
-  setSale
-} from "../actions/login";
+  setSale,
+} from '../actions/login';
 
-import { saveStatus } from "../actions/status";
-import rsf from "../rsf";
+import { saveStatus } from '../actions/status';
+import rsf from '../rsf';
 
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 const twitterAuthProvider = new firebase.auth.TwitterAuthProvider();
@@ -27,11 +26,7 @@ const twitterAuthProvider = new firebase.auth.TwitterAuthProvider();
 function* loginEmlPwdSaga(action) {
   try {
     //const data = yield call(rsf.auth.signInWithEmailAndPassword, action.email, action.password);
-    const data = yield call(
-      rsf.auth.signInWithEmailAndPassword,
-      action.email,
-      action.password
-    );
+    const data = yield call(rsf.auth.signInWithEmailAndPassword, action.email, action.password);
     yield put(loginSuccess(data));
   } catch (error) {
     yield put(loginFailure(error));
@@ -42,7 +37,7 @@ function* loginResetSaga(action) {
   try {
     const data = yield call(rsf.auth.sendPasswordResetEmail, action.email);
     let msg = {
-      message: "Your password has been reset. Please check your email."
+      message: 'Your password has been reset. Please check your email.',
     };
     yield put(loginFailure(msg));
   } catch (error) {
@@ -70,10 +65,7 @@ function* loginGoogleSaga(action) {
 
 function* getSaleStatusSaga(action) {
   try {
-    const snapshot = yield call(
-      rsf.firestore.getDocument,
-      `sale/42sZ4kBLofZckKixeDs3`
-    );
+    const snapshot = yield call(rsf.firestore.getDocument, `sale/42sZ4kBLofZckKixeDs3`);
     if (snapshot.exists) {
       yield put(setSale(snapshot.data()));
     }
@@ -105,26 +97,20 @@ function* syncUserSaga() {
       yield put(syncUser(user));
       const router = yield select(state => state.router);
       if (
-        router.location.pathname === "/sign-in" ||
-        router.location.pathname === "/register" ||
-        router.location.pathname === "/userinfo"
+        router.location.pathname === '/sign-in' ||
+        router.location.pathname === '/register' ||
+        router.location.pathname === '/userinfo'
       ) {
         try {
-          const snapshot = yield call(
-            rsf.firestore.getDocument,
-            `status/${user.uid}`
-          );
-          const userInfo = yield call(
-            rsf.firestore.getDocument,
-            `users/${user.uid}`
-          );
+          const snapshot = yield call(rsf.firestore.getDocument, `status/${user.uid}`);
+          const userInfo = yield call(rsf.firestore.getDocument, `users/${user.uid}`);
           if (snapshot.exists) {
             yield call(saveStatus, snapshot.data());
-            yield put(push("/status"));
+            yield put(push('/status'));
           } else if (userInfo.exists) {
-            yield put(push("/jumio"));
+            yield put(push('/jumio'));
           } else {
-            yield put(push("/userinfo"));
+            yield put(push('/userinfo'));
           }
         } catch (error) {
           yield put(logoutFailure(error));
@@ -136,16 +122,12 @@ function* syncUserSaga() {
 
 function* logoutSuccessSaga(action) {
   yield call(delay, 1000);
-  yield put(push("/sign-in"));
+  yield put(push('/sign-in'));
 }
 
 function* registerEmlPwdSaga(action) {
   try {
-    const data = yield call(
-      rsf.auth.createUserWithEmailAndPassword,
-      action.email,
-      action.password
-    );
+    const data = yield call(rsf.auth.createUserWithEmailAndPassword, action.email, action.password);
     yield put(registerSuccess(data));
   } catch (error) {
     yield put(registerFailure(error));
@@ -159,7 +141,7 @@ function* registerFailureSaga(action) {
 
 function* testDB() {
   try {
-    const snapshot = yield call(rsf.firestore.getCollection, "users");
+    const snapshot = yield call(rsf.firestore.getCollection, 'users');
   } catch (error) {
     yield put(logoutFailure(error));
   }
@@ -178,6 +160,6 @@ export default function* loginRootSaga() {
     takeEvery(types.GET_SALE, getSaleStatusSaga),
     takeEvery(types.REGISTER.REQUEST, registerEmlPwdSaga),
     takeEvery(types.REGISTER.FAILURE, registerFailureSaga),
-    takeEvery(types.RESET_PASSWORD, loginResetSaga)
+    takeEvery(types.RESET_PASSWORD, loginResetSaga),
   ]);
 }

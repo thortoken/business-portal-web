@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { call, fork, put, take, takeEvery, all, select } from 'redux-saga/effects';
+import { call, put, take, takeEvery, all, select } from 'redux-saga/effects';
 import { types, getTokenSuccess, getTokenFailure } from '../actions/jumio';
 import { types as loginTypes } from '../actions/login';
 // import { credentials } from '../../credentials';

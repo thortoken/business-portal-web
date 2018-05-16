@@ -1,17 +1,17 @@
-import { types } from "../actions/login";
+import { types } from '../actions/login';
 
 const initialState = {
   loading: false,
   loggedIn: false,
   user: null,
   loginError: false,
-  loginErrorMsg: "",
+  loginErrorMsg: '',
   registerError: false,
-  registerErrorMsg: "",
+  registerErrorMsg: '',
   gas: 0,
   neo: 0,
   percent: 0,
-  dollars: 0
+  dollars: 0,
 };
 
 export default function loginReducer(state = initialState, action = {}) {
@@ -20,13 +20,13 @@ export default function loginReducer(state = initialState, action = {}) {
     case types.LOGOUT.REQUEST:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     case types.LOGIN.SUCCESS:
       return {
         ...state,
         loading: false,
-        loggedIn: true
+        loggedIn: true,
       };
     case types.SET_SALE:
       return {
@@ -34,61 +34,61 @@ export default function loginReducer(state = initialState, action = {}) {
         gas: action.sale.gas,
         neo: action.sale.neo,
         percent: action.sale.percent,
-        dollars: action.sale.dollars
+        dollars: action.sale.dollars,
       };
     case types.LOGIN.RESET:
       return {
         ...state,
         loginError: false,
-        loginErrorMsg: ""
+        loginErrorMsg: '',
       };
     case types.LOGIN.FAILURE:
       return {
         ...state,
         loading: false,
         loginError: true,
-        loginErrorMsg: action.error.message
+        loginErrorMsg: action.error.message,
       };
     case types.LOGOUT.SUCCESS:
       return {
         ...state,
         loading: false,
         loggedIn: false,
-        user: null
+        user: null,
       };
     case types.LOGOUT.FAILURE:
       return {
         ...state,
-        loading: false
+        loading: false,
       };
     case types.SYNC_USER:
       return {
         ...state,
         loggedIn: action.user != null,
-        user: action.user
+        user: action.user,
       };
     case types.REGISTER.SUCCESS:
       return {
         ...state,
-        loading: false
+        loading: false,
       };
     case types.REGISTER.FAILURE:
       return {
         ...state,
         loading: false,
         registerError: true,
-        registerErrorMsg: action.error.message
+        registerErrorMsg: action.error.message,
       };
     case types.REGISTER.RESET:
       return {
         ...state,
         registerError: false,
-        registerErrorMsg: ""
+        registerErrorMsg: '',
       };
     case types.REGISTER.REQUEST:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     default:
       return state;

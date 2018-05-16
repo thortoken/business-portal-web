@@ -89,7 +89,10 @@ class Status extends React.Component {
       return (
         <div className="kyc">
           <h4 className="status-heading">
-            <b>You've been whitelisted! Note that adding your address to the smart contract can take at most 24 hours.</b>
+            <b>
+              You've been whitelisted! Note that adding your address to the smart contract can take
+              at most 24 hours.
+            </b>
             <br />
             <br />
             <span>

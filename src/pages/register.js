@@ -21,7 +21,7 @@ class Register extends React.Component {
       nextProps.login.registerError === true &&
       nextProps.login.registerError !== this.props.login.registerError
     ) {
-      this.setState({ 
+      this.setState({
         displayError: 'block',
         errorMsg: nextProps.login.registerErrorMsg,
       });
@@ -100,7 +100,7 @@ class Register extends React.Component {
                 required=""
               />
               <div className="w-form-fail" style={{ display: this.state.displayError }}>
-                <div>{ this.state.errorMsg }</div>
+                <div>{this.state.errorMsg}</div>
               </div>
               <input
                 type="submit"
@@ -123,10 +123,10 @@ class Register extends React.Component {
               </a>
               <a onClick={this.handleTwitterSignIn} className="sign-up-btn google w-inline-block">
                 <img
-                  alt="" 
-                  src="images/twitter-tinywhitebird.png" 
-                  width="40" 
-                  className="button-icon" 
+                  alt=""
+                  src="images/twitter-tinywhitebird.png"
+                  width="40"
+                  className="button-icon"
                 />
                 <div className="sign-in-with-g">Sign up with Twitter</div>
               </a>
@@ -136,12 +136,7 @@ class Register extends React.Component {
                   top: this.state.tooltipTopCSS,
                   display: this.state.toolTipDisplay,
                 }}>
-                <img
-                  alt="" 
-                  src="images/please_fill_in.png" 
-                  width="50" 
-                  className="warning-icon" 
-                />
+                <img alt="" src="images/please_fill_in.png" width="50" className="warning-icon" />
                 <div className="warning-text">{this.state.tooltipMsg}</div>
                 <div className="tooltip-arrow" />
               </div>
