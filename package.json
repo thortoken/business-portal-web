@@ -32,9 +32,6 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": "universe/web"
-  },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
     "eslint": "^4.16.0",
