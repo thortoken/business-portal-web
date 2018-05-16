@@ -2,20 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
-import { ConnectedRouter } from 'react-router-redux';
+import { BrowserRouter } from 'react-router-dom';
 import './css/index.css';
 
 import App from './App';
-import store, { history } from './redux/store';
+import store from './redux/store';
 import theme from './theme';
 import { unregister } from './registerServiceWorker';
 
 ReactDOM.render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>
-      <ConnectedRouter history={history}>
+      <BrowserRouter>
         <App />
-      </ConnectedRouter>
+      </BrowserRouter>
     </ThemeProvider>
   </Provider>,
   document.getElementById('root')
