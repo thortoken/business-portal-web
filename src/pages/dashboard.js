@@ -11,6 +11,7 @@ class Dashboard extends React.Component {
   };
 
   componentDidMount() {
+    console.log('Dashboard mounted')
     // this.props.fetchPayments();
   }
 
