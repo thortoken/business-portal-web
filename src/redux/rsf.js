@@ -7,6 +7,11 @@ const firebaseApp = firebase.initializeApp({
   ...credentials.firebase,
 });
 
-const rsf = new ReduxSagaFirebase(firebaseApp, firebase.firestore());
+const firestore = firebase.firestore();
+firestore.settings({
+  timestampsInSnapshots: true,
+});
+
+const rsf = new ReduxSagaFirebase(firebaseApp, firestore);
 
 export default rsf;
