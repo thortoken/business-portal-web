@@ -25,7 +25,6 @@ const twitterAuthProvider = new firebase.auth.TwitterAuthProvider();
 
 function* loginEmlPwdSaga(action) {
   try {
-    //const data = yield call(rsf.auth.signInWithEmailAndPassword, action.email, action.password);
     const data = yield call(rsf.auth.signInWithEmailAndPassword, action.email, action.password);
     yield put(loginSuccess(data));
   } catch (error) {
@@ -95,15 +94,16 @@ function* syncUserSaga() {
     const { user } = yield take(channel);
     if (user) {
       yield put(syncUser(user));
-      const router = yield select(state => state.router);
-      if (
-        router.location.pathname === '/sign-in' ||
-        router.location.pathname === '/register' ||
-        router.location.pathname === '/userinfo'
-      ) {
+      // const router = yield select(state => state.router);
+      // if (
+      //   router.location.pathname === '/sign-in' ||
+      //   router.location.pathname === '/register' ||
+      //   router.location.pathname === '/userinfo'
+      // ) {
         try {
           const snapshot = yield call(rsf.firestore.getDocument, `status/${user.uid}`);
           const userInfo = yield call(rsf.firestore.getDocument, `users/${user.uid}`);
+          debugger;
           if (snapshot.exists) {
             yield call(saveStatus, snapshot.data());
             yield put(push('/status'));
@@ -115,7 +115,7 @@ function* syncUserSaga() {
         } catch (error) {
           yield put(logoutFailure(error));
         }
-      }
+      // }
     } else yield put(syncUser(null));
   }
 }

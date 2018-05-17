@@ -33,12 +33,10 @@ export const loginEmlPwd = (email, password, route) => ({
 
 export const loginGoogle = route => ({
   type: types.LOGIN.GOOGLE,
-  route,
 });
 
 export const loginTwitter = route => ({
   type: types.LOGIN.TWITTER,
-  route,
 });
 
 export const loginSuccess = user => ({

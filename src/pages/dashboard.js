@@ -11,31 +11,29 @@ class Dashboard extends React.Component {
   };
 
   componentDidMount() {
-    this.props.fetchPayments();
+    // this.props.fetchPayments();
   }
 
   render() {
     return (
       <div className="dashboard">
         <div className="header">Dashboard</div>
-
-        {/* <p>Payments: {JSON.stringify(this.props.payments)}</p> */}
-        <ul>{this.props.payments.map(p => <li key={p.id}>{p.amount}</li>)}</ul>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  payments: state.dashboard.payments,
-});
+// const mapStateToProps = state => ({
+//   payments: state.dashboard.payments,
+// });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      fetchPayments,
-    },
-    dispatch
-  );
+// const mapDispatchToProps = dispatch =>
+//   bindActionCreators(
+//     {
+//       fetchPayments,
+//     },
+//     dispatch
+//   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+// export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default Dashboard;

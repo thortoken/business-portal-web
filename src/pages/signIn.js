@@ -148,13 +148,13 @@ class Login extends React.Component {
   handleGoogleLogin = event => {
     event.preventDefault();
     if (this.state.captchaVerfied) {
-      this.props.loginGoogle(this.props.history);
+      this.props.loginGoogle();
     }
   };
   handleTwitterLogin = event => {
     event.preventDefault();
     if (this.state.captchaVerfied) {
-      this.props.loginTwitter(this.props.history);
+      this.props.loginTwitter();
     }
   };
   resetPassword = event => {
