@@ -1,4 +1,5 @@
 {
     "eslint.enable": true,
     "prettier.eslintIntegration": true,
+    "jest.pathToJest": "yarn test --",
 }
