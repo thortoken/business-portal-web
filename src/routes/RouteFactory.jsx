@@ -18,17 +18,17 @@ export class RouteFactory extends Component {
         {() =>
           isLoggedIn ? (
             <Switch>
+              <Route exact path="/dashboard" component={Dashboard} />
+              <Redirect from="*" to="/dashboard" />
+            </Switch>
+          ) : (
+            <Switch>
               <Route exact path="/landing" component={LandingPage} />
               <Route exact path="/sign-in" component={SignIn} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/userinfo" component={UserInfo} />
               <Route exact path="/status" component={Status} />
               <Redirect from="*" to="/sign-in" />
-            </Switch>
-          ) : (
-            <Switch>
-              <Route exact path="/dashboard" isLoggedIn={isLoggedIn} component={Dashboard} />
-              <Redirect from="*" to="/dashboard" />
             </Switch>
           )
         }
