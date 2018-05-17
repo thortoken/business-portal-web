@@ -19,7 +19,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <Route exact path="/" component={SignIn} />
+        <Route exact path="/" component={Dashboard} />
       </div>
     );
   }
