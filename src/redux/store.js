@@ -8,7 +8,7 @@ import loginReducer from './reducers/login';
 import jumioReducer from './reducers/jumio';
 import sagas from './sagas';
 import statusReducer from './reducers/status';
-// import dashboardReducer from './reducers/dashboard';
+import dashboardReducer from './reducers/dashboard';
 
 export const history = createHistory();
 
@@ -19,7 +19,7 @@ const allReducers = combineReducers({
   jumio: jumioReducer,
   status: statusReducer,
   router: routerReducer,
-  // dashboard: dashboardReducer,
+  dashboard: dashboardReducer,
 });
 
 const store = createStore(

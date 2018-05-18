@@ -1,7 +1,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { fetchPayments } from '../redux/actions/dashboard';
+import { syncPayments } from '../redux/actions/dashboard';
 
 import '../css/dashboard.css';
 
@@ -11,30 +11,30 @@ class Dashboard extends React.Component {
   };
 
   componentDidMount() {
-    console.log('Dashboard mounted')
-    // this.props.fetchPayments();
+    console.log('Dashboard mounted');
+    this.props.syncPayments();
   }
 
   render() {
     return (
       <div className="dashboard">
         <div className="header">Dashboard</div>
+        <ul>{this.props.payments.map(payment => <li key={payment.id}>{payment.amount}</li>)}</ul>
       </div>
     );
   }
 }
 
-// const mapStateToProps = state => ({
-//   payments: state.dashboard.payments,
-// });
+const mapStateToProps = state => ({
+  payments: state.dashboard.payments,
+});
 
-// const mapDispatchToProps = dispatch =>
-//   bindActionCreators(
-//     {
-//       fetchPayments,
-//     },
-//     dispatch
-//   );
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      syncPayments,
+    },
+    dispatch
+  );
 
-// export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
-export default Dashboard;
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
