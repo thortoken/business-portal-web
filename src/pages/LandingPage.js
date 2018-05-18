@@ -12,11 +12,8 @@ class LandingPage extends React.Component {
     showDetails: false,
   };
 
-  componentWillMount() {
-    this.props.getSale();
-  }
-
   componentDidMount() {
+    this.props.getSale();
     document.body.classList.toggle('body', true);
   }
 

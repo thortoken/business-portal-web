@@ -16,16 +16,18 @@ class Register extends React.Component {
     displayError: 'none',
     errorMsg: '',
   };
-  componentWillReceiveProps(nextProps) {
+
+  static getDerivedStateFromProps(nextProps) {
     if (
       nextProps.login.registerError === true &&
       nextProps.login.registerError !== this.props.login.registerError
     ) {
-      this.setState({
+      return {
         displayError: 'block',
         errorMsg: nextProps.login.registerErrorMsg,
-      });
+      };
     }
+    return null;
   }
   render() {
     return (

@@ -29,7 +29,10 @@ class UserInfo extends React.Component {
       <div className="us-accredited-div">
         <label htmlFor="dollar_contribution">
           Are you an&nbsp;
-          <a href="https://www.sec.gov/files/ib_accreditedinvestors.pdf" target="_blank">
+          <a
+            href="https://www.sec.gov/files/ib_accreditedinvestors.pdf"
+            target="_blank"
+            rel="noopener noreferrer">
             Accredited Investor
           </a>
           &nbsp;in United States?
@@ -51,6 +54,7 @@ class UserInfo extends React.Component {
           <div className="part-2">
             <div className="wlp-image-div">
               <img
+                alt="Contribution Info"
                 src="images/TokenSale_ContributionInfo.png"
                 width="400"
                 srcSet="images/TokenSale_ContributionInfo-p-500.png 500w, images/TokenSale_ContributionInfo.png 800w"
@@ -229,7 +233,12 @@ class UserInfo extends React.Component {
                     top: this.state.tooltipTopCSS,
                     display: this.state.toolTipDisplay,
                   }}>
-                  <img src="images/please_fill_in.png" width="50" className="warning-icon" />
+                  <img
+                    alt="Please fill in"
+                    src="images/please_fill_in.png"
+                    width="50"
+                    className="warning-icon"
+                  />
                   <div className="warning-text">{this.state.tooltipMsg}</div>
                   <div className="tooltip-arrow" />
                 </div>

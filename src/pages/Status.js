@@ -15,13 +15,14 @@ class Status extends React.Component {
       this.props.getStatus();
     }
   }
-  componentWillReceiveProps(nextProps) {
+  shouldComponentUpdate(nextProps) {
     if (
       !this.isNullOrUndefined(nextProps.status.info) &&
       nextProps.status.info !== this.props.status.info
     ) {
-      this.render();
+      return true;
     }
+    return false;
   }
   render() {
     // let meow = this.props.status;
@@ -52,7 +53,10 @@ class Status extends React.Component {
         <div className="kyc support">
           <div className="support-text">
             If you need help, please{' '}
-            <a href="https://thortoken.zendesk.com/hc/en-us/requests/new" target="_blank">
+            <a
+              href="https://thortoken.zendesk.com/hc/en-us/requests/new"
+              target="_blank"
+              rel="noopener noreferrer">
               contact support
             </a>
           </div>

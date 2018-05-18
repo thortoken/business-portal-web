@@ -18,16 +18,17 @@ class Login extends React.Component {
     displayError: 'none',
     errorMsg: '',
   };
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps) {
     if (
       nextProps.login.loginError === true &&
       nextProps.login.loginError !== this.props.login.loginError
     ) {
-      this.setState({
+      return {
         displayError: 'block',
         errorMsg: nextProps.login.loginErrorMsg,
-      });
+      };
     }
+    return null;
   }
   render() {
     return (
@@ -99,6 +100,7 @@ class Login extends React.Component {
                 onClick={this.handleGoogleLogin}
                 className="sign-up-btn google w-inline-block">
                 <img
+                  alt="Google"
                   src="images/WhiteG.png"
                   width="30"
                   srcSet="images/WhiteG-p-500.png 500w, images/WhiteG.png 654w"
@@ -111,7 +113,12 @@ class Login extends React.Component {
                 href="#"
                 onClick={this.handleTwitterLogin}
                 className="sign-up-btn google w-inline-block">
-                <img src="images/twitter-tinywhitebird.png" width="40" className="button-icon" />
+                <img
+                  alt="Twitter"
+                  src="images/twitter-tinywhitebird.png"
+                  width="40"
+                  className="button-icon"
+                />
                 <div className="sign-in-with-g">Sign in with Twitter</div>
               </a>
             </form>
