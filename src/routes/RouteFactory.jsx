@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Redirect, Route, withRouter } from 'react-router-dom';
 
-import LandingPage from '../pages/landingPage';
-import Register from '../pages/register';
-import SignIn from '../pages/signIn';
-import Status from '../pages/status';
-import UserInfo from '../pages/userInfo';
-import Dashboard from '../pages/dashboard';
+import LandingPage from '../pages/LandingPage';
+import Register from '../pages/Register';
+import SignIn from '../pages/SignIn';
+import Status from '../pages/Status';
+import UserInfo from '../pages/UserInfo';
+import Dashboard from '../pages/Dashboard';
 
 export class RouteFactory extends Component {
   render() {
