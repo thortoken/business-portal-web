@@ -1,0 +1,59 @@
+.Sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  background-color: #2a292a;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: 0.3s ease-out width;
+}
+
+.Sidebar-header {
+  margin-bottom: 20px;
+  color: lightcoral;
+  font-size: 120%;
+}
+
+.Sidebar-nav {
+  flex-grow: 1;
+}
+
+.Sidebar-nav-logout {
+  margin-top: 30px;
+}
+
+.Sidebar-footer {
+  padding: 10px 15px;
+}
+
+.Sidebar .LinkWithIcon {
+  overflow: hidden;
+}
+.Sidebar-nav .LinkWithIcon:hover,
+.Sidebar-nav .LinkWithIcon--is-active {
+  background-color: lightskyblue;
+}
+.Sidebar .LinkWithIcon img {
+  width: 20px;
+}
+
+.Sidebar-footer,
+.Sidebar .LinkWithIcon-label {
+  opacity: 0;
+  transition: 0.3s ease-out opacity;
+}
+
+.Sidebar:hover {
+  width: 200px;
+}
+.Sidebar:hover .Sidebar-footer {
+  opacity: 0.7;
+}
+
+.Sidebar:hover .LinkWithIcon-label {
+  opacity: 1;
+}
