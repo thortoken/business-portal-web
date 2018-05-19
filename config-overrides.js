@@ -3,6 +3,11 @@ const { injectBabelPlugin } = require('react-app-rewired');
 
 module.exports = {
   webpack(config, env) {
+    /**
+     * Inject babel plugin for CSS imports.
+     * This way we don't need to include the whole CSS from antd package
+     * in the bundle - just files imported by used components.
+     */
     config = injectBabelPlugin(
       [
         'import',
@@ -15,6 +20,10 @@ module.exports = {
       config
     );
 
+    /**
+     * Aliases for imports to prevent ../../ hell.
+     * Also, makes moving things around effortless.
+     */
     const rootDir = path.dirname('');
     config.resolve = {
       ...config.resolve,
@@ -28,6 +37,10 @@ module.exports = {
     return config;
   },
   jest(config) {
+    /**
+     * Jest doesn't know about webpack config above,
+     * so we need to tell him how to map custom import paths.
+     */
     config.moduleNameMapper = {
       ...config.moduleNameMapper,
       '^~components/(.+)': '<rootDir>/src/components/$1',
