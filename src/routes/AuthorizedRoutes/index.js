@@ -20,7 +20,7 @@ export default class AuthorizedRoutes extends React.Component {
             <Route exact path="/landing" component={LandingPage} />
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/payments" component={Payments} />
-            <Redirect from="*" to="/dashboard" />
+            <Redirect from="*" to="/payments" />
           </Switch>
         </Layout.Content>
       </Layout>
