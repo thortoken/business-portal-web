@@ -32,6 +32,7 @@ module.exports = {
         '~components': path.resolve(rootDir, 'src/components'),
         '~pages': path.resolve(rootDir, 'src/pages'),
         '~redux': path.resolve(rootDir, 'src/redux/'),
+        '~utils': path.resolve(rootDir, 'src/utils/'),
       },
     };
     return config;
@@ -46,6 +47,7 @@ module.exports = {
       '^~components/(.+)': '<rootDir>/src/components/$1',
       '^~pages/(.+)': '<rootDir>/src/pages/$1',
       '^~redux/(.+)': '<rootDir>/src/redux/$1',
+      '^~utils/(.+)': '<rootDir>/src/utils/$1',
     };
     return config;
   },
