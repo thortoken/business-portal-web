@@ -4,8 +4,9 @@ import { Layout } from 'antd';
 
 import LandingPage from '~pages/LandingPage';
 import Dashboard from '~pages/Dashboard';
+import Payments from '~pages/Payments';
 
-import Sidebar from '~components/Sidebar/index';
+import Sidebar from './components/Sidebar';
 
 import './AuthorizedRoutes.css';
 
@@ -18,6 +19,7 @@ export default class AuthorizedRoutes extends React.Component {
           <Switch>
             <Route exact path="/landing" component={LandingPage} />
             <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/payments" component={Payments} />
             <Redirect from="*" to="/dashboard" />
           </Switch>
         </Layout.Content>

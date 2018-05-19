@@ -39,6 +39,12 @@ export class Sidebar extends React.Component {
                 <span>Dashboard</span>
               </Link>
             </Menu.Item>
+            <Menu.Item>
+              <Link to="/payments">
+                <Icon type="table" />
+                <span>Payments</span>
+              </Link>
+            </Menu.Item>
             <Menu.Item className="Sidebar-item-logout">
               <a href="#" onClick={this.handleLogout}>
                 <Icon type="logout" />
