@@ -1,59 +1,27 @@
 .Sidebar {
-  position: fixed;
-  top: 0;
+  height: 100vh;
+}
+
+.Sidebar img.anticon {
+  width: 10px;
+}
+
+.Sidebar .Sidebar-header {
+  color: pink;
+}
+
+.Sidebar .Sidebar-footer {
+  position: absolute;
   bottom: 0;
   left: 0;
-  width: 50px;
-  background-color: #2a292a;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: 0.3s ease-out width;
-}
-
-.Sidebar-header {
-  margin-bottom: 20px;
-  color: lightcoral;
-  font-size: 120%;
-}
-
-.Sidebar-nav {
-  flex-grow: 1;
-}
-
-.Sidebar-nav-logout {
-  margin-top: 30px;
-}
-
-.Sidebar-footer {
-  padding: 10px 15px;
-}
-
-.Sidebar .LinkWithIcon {
-  overflow: hidden;
-}
-.Sidebar-nav .LinkWithIcon:hover,
-.Sidebar-nav .LinkWithIcon--is-active {
-  background-color: lightskyblue;
-}
-.Sidebar .LinkWithIcon img {
-  width: 20px;
-}
-
-.Sidebar-footer,
-.Sidebar .LinkWithIcon-label {
-  opacity: 0;
-  transition: 0.3s ease-out opacity;
-}
-
-.Sidebar:hover {
-  width: 200px;
-}
-.Sidebar:hover .Sidebar-footer {
   opacity: 0.7;
+  transition: 0.3s ease-out opacity;
+  padding: 16px 24px;
 }
-
-.Sidebar:hover .LinkWithIcon-label {
-  opacity: 1;
+.Sidebar.ant-layout-sider-collapsed .Sidebar-footer {
+  opacity: 0;
+}
+.Sidebar-footer img {
+  width: 100px;
+  max-width: 100px;
 }

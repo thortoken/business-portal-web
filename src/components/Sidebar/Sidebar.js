@@ -1,46 +1,67 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import { Layout, Menu, Icon } from 'antd';
 
 import { logout } from '~redux/actions/login';
-
-import Link from '../LinkWithIcon';
 
 import './Sidebar.css';
 
 export class Sidebar extends React.Component {
+  state = {
+    collapsed: true,
+  };
+
   render() {
     return (
-      <div className="Sidebar">
-        <div className="Sidebar-header">
-          <Link linkTo="/">
-            <Link.Icon src="images/THOR-icon.png" />
-            <Link.Label>Luber</Link.Label>
-          </Link>
-        </div>
-        <div className="Sidebar-nav">
-          <Link linkTo="/landing">
-            <Link.Icon src="images/FB_footericon.png" />
-            <Link.Label>Landing Page</Link.Label>
-          </Link>
-          <Link linkTo="/dashboard">
-            <Link.Icon src="images/FB_footericon.png" />
-            <Link.Label>Dashboard</Link.Label>
-          </Link>
-          <Link onClick={this.handleLogout} className="Sidebar-nav-logout">
-            <Link.Icon src="images/GitHub_socialicon.png" />
-            <Link.Label>Logout</Link.Label>
-          </Link>
-        </div>
-        <div className="Sidebar-footer">
-          <img src="images/Logo-white2x-p-500.png" width="100" />
-        </div>
+      <div>
+        <Layout.Sider
+          className="Sidebar"
+          onMouseOver={this.handleMouseOver}
+          onMouseOut={this.handleMouseOut}
+          collapsed={this.state.collapsed}>
+          <Menu theme="dark" mode="inline">
+            <Menu.Item className="Sidebar-header">
+              <img className="anticon" src="images/THOR-icon.png" />
+              <span>Luber</span>
+            </Menu.Item>
+            <Menu.Item>
+              <Link to="/landing">
+                <img className="anticon" src="images/WhiteG.png" />
+                <span>Landing Page</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item>
+              <Link to="/dashboard">
+                <Icon type="pie-chart" />
+                <span>Dashboard</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item className="Sidebar-item-logout">
+              <a href="#" onClick={this.handleLogout}>
+                <Icon type="logout" />
+                <span>Logout</span>
+              </a>
+            </Menu.Item>
+          </Menu>
+          <div className="Sidebar-footer">
+            <img src="images/Logo-white2x-p-500.png" />
+          </div>
+        </Layout.Sider>
       </div>
     );
   }
 
   handleLogout = () => {
     this.props.logout();
+  };
+  handleMouseOver = () => {
+    this.setState({ collapsed: false });
+  };
+  handleMouseOut = () => {
+    this.setState({ collapsed: true });
   };
 }
 
