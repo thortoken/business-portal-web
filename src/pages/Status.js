@@ -1,8 +1,9 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { getStatus, resetKYC, updateNEOAddress } from '../redux/actions/status';
-import { logout } from '../redux/actions/login';
+
+import { getStatus, resetKYC, updateNEOAddress } from '~redux/actions/status';
+import { logout } from '~redux/actions/login';
 
 class Status extends React.Component {
   state = {

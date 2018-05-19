@@ -2,9 +2,10 @@ import React from 'react';
 import _ from 'underscore';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+
+import { submitInfo } from '~redux/actions/status';
 import { formFieldConstants } from './form/formFields';
 import { fieldIsValid } from './form/utilityFunctions.js';
-import { submitInfo } from '../redux/actions/status';
 
 class UserInfo extends React.Component {
   state = {

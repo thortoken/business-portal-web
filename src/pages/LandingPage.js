@@ -2,7 +2,8 @@ import React from 'react';
 import Countdown from 'react-countdown-now';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { getSale } from '../redux/actions/login';
+
+import { getSale } from '~redux/actions/login';
 
 class LandingPage extends React.Component {
   state = {

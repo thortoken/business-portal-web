@@ -2,7 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { logout } from '../../redux/actions/login';
+import { logout } from '~redux/actions/login';
 
 import Link from '../LinkWithIcon';
 

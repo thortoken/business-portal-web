@@ -8,7 +8,7 @@ import {
   resetPassword,
   testDB,
   logout,
-} from '../redux/actions/login';
+} from '~redux/actions/login';
 
 class Login extends React.Component {
   state = {

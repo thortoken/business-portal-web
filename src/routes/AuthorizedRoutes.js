@@ -1,8 +1,10 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import LandingPage from '../pages/LandingPage';
-import Dashboard from '../pages/Dashboard';
-import Sidebar from '../components/Sidebar/index';
+
+import LandingPage from '~pages/LandingPage';
+import Dashboard from '~pages/Dashboard';
+
+import Sidebar from '~components/Sidebar/index';
 
 import './AuthorizedRoutes.css';
 

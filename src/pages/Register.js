@@ -2,7 +2,8 @@ import React from 'react';
 import passwordValidator from 'password-validator';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loginTwitter, loginGoogle, register } from '../redux/actions/login';
+
+import { loginTwitter, loginGoogle, register } from '~redux/actions/login';
 
 class Register extends React.Component {
   state = {
