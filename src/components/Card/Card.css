@@ -1,0 +1,61 @@
+.Card {
+  background-color: red;
+  padding: 0.8rem 1.3rem;
+}
+
+.Card-content {
+  display: flex;
+  justify-content: space-between;
+  margin: 1.2rem 0 1rem;
+}
+
+.Card-text {
+  text-align: right;
+}
+
+.Card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0 0 0.6rem;
+}
+.Card-icon {
+  font-size: 2.5rem;
+}
+.Card-description {
+}
+.Card-actions {
+  text-align: right;
+  height: 2rem;
+}
+
+.Card--white {
+  background-color: white;
+  color: #80d134;
+}
+.Card--white .Card-description {
+  color: black;
+}
+
+.Card--black {
+  background-color: black;
+  color: #80d134;
+}
+.Card--black .Card-description {
+  color: white;
+}
+
+.Card--blue {
+  background-color: #4c92e0;
+  color: white;
+}
+.Card--blue .Card-description {
+  color: white;
+}
+
+.Card--green {
+  background-color: #aadc74;
+  color: white;
+}
+.Card--green .Card-description {
+  color: black;
+}
