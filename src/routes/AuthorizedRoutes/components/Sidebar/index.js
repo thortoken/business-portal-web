@@ -22,24 +22,24 @@ export class Sidebar extends React.Component {
           onMouseOver={this.handleMouseOver}
           onMouseOut={this.handleMouseOut}
           collapsed={this.state.collapsed}>
-          <Menu theme="dark" mode="inline">
+          <Menu theme="dark" mode="inline" selectedKeys={[this.props.pathname]}>
             <Menu.Item className="Sidebar-header">
               <img className="anticon" src="images/THOR-icon.png" />
               <span>Luber</span>
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item key="/landing">
               <Link to="/landing">
                 <img className="anticon" src="images/WhiteG.png" />
                 <span>Landing Page</span>
               </Link>
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item key="/dashboard">
               <Link to="/dashboard">
                 <Icon type="pie-chart" />
                 <span>Dashboard</span>
               </Link>
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item key="/payments">
               <Link to="/payments">
                 <Icon type="table" />
                 <span>Payments</span>
@@ -71,5 +71,6 @@ export class Sidebar extends React.Component {
   };
 }
 
+const mapState = ({ router }) => ({ pathname: router.location.pathname });
 const mapDispatch = dispatch => bindActionCreators({ logout }, dispatch);
-export default connect(null, mapDispatch)(Sidebar);
+export default connect(mapState, mapDispatch)(Sidebar);
