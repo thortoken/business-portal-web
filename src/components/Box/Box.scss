@@ -4,21 +4,21 @@
   background-color: #fff;
   border-radius: $border-radius;
   box-shadow: $box-shadow;
-}
 
-/* antd <Table /> */
-.Box .ant-table-thead > tr:first-child > th:first-child {
-  border-top-left-radius: $border-radius;
-}
-.Box .ant-table-thead > tr:first-child > th:last-child {
-  border-top-right-radius: $border-radius;
-}
-.Box .ant-table-body > tr:last-child > th:first-child {
-  border-bottom-left-radius: $border-radius;
-}
-.Box .ant-table-body > tr:last-child > th:last-child {
-  border-bottom-right-radius: $border-radius;
-}
-.Box .ant-pagination {
-  margin-right: 1rem;
+  /* antd <Table /> */
+  .ant-table-thead > tr:first-child > th:first-child {
+    border-top-left-radius: $border-radius;
+  }
+  .ant-table-thead > tr:first-child > th:last-child {
+    border-top-right-radius: $border-radius;
+  }
+  .ant-table-body > tr:last-child > th:first-child {
+    border-bottom-left-radius: $border-radius;
+  }
+  .ant-table-body > tr:last-child > th:last-child {
+    border-bottom-right-radius: $border-radius;
+  }
+  .ant-table-pagination.ant-pagination {
+    margin-right: 1rem;
+  }
 }
