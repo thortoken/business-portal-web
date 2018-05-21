@@ -2,6 +2,7 @@
   background-color: #2a292a;
   height: 100vh; }
   .Sidebar .Sidebar-header {
+    content: #e56fb3;
     font-size: 1rem; }
   .Sidebar .Sidebar-footer {
     position: absolute;
