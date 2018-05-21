@@ -6,6 +6,7 @@ import { Row, Col, Icon, Button } from 'antd';
 import { syncPayments } from '~redux/actions/dashboard';
 
 import Card from '~components/Card';
+import Header from '~components/Header';
 
 class Dashboard extends React.Component {
   componentDidMount() {
@@ -15,7 +16,13 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div className="dashboard">
-        <div className="header">Dashboard</div>
+        <Header title="Account Summary">
+          <Header.Right>
+            <Button type="primary" ghost>
+              Manage Accounts
+            </Button>
+          </Header.Right>
+        </Header>
         <Row gutter={32}>
           <Col span={8}>
             <Card
