@@ -4,6 +4,8 @@ import './Box.css';
 
 export default class Box extends React.Component {
   render() {
-    return <div className="Box">{this.props.children}</div>;
+    const { className } = this.props;
+
+    return <div className={`Box ${className}`}>{this.props.children}</div>;
   }
 }
