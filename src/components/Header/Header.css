@@ -1,0 +1,21 @@
+.Header {
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  margin: 1rem 0;
+}
+
+.Header-title {
+  flex-grow: 0;
+  font-weight: bold;
+  margin: 0 2rem 0 0;
+}
+
+.Header-left {
+  flex-grow: 1;
+  text-align: left;
+}
+.Header-right {
+  flex-grow: 1;
+  text-align: right;
+}

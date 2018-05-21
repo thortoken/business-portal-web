@@ -15,22 +15,17 @@ class Login extends React.Component {
     email: '',
     password: '',
     captchaVerfied: true,
-    displayError: 'none',
     errorMsg: '',
   };
-  static getDerivedStateFromProps(nextProps) {
-    if (
-      nextProps.login.loginError === true &&
-      nextProps.login.loginError !== this.props.login.loginError
-    ) {
-      return {
-        displayError: 'block',
-        errorMsg: nextProps.login.loginErrorMsg,
-      };
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.login.loginErrorMsg !== prevState.errorMsg) {
+      return { errorMsg: nextProps.login.loginErrorMsg };
     }
     return null;
   }
   render() {
+    const { errorMsg } = this.state;
+
     return (
       <div data-w-id="fd910b6f-3c58-69d2-e4e0-fff6f11f0166" className="whitelist-reg non-fixed">
         <div className="part-2">
@@ -75,11 +70,13 @@ class Login extends React.Component {
                 id="password"
                 required=""
               />
-              <div className="w-form-fail" style={{ display: this.state.displayError }}>
-                <div>{this.state.errorMsg}</div>
-              </div>
-              {this.state.displayError !== 'none' &&
-                this.state.errorMsg.indexOf('invalid') > -1 && (
+              {errorMsg && (
+                <div className="w-form-fail">
+                  <div>{errorMsg}</div>
+                </div>
+              )}
+              {errorMsg &&
+                errorMsg.indexOf('invalid') > -1 && (
                   <div className="sm-text" style={{ marginTop: 20 }}>
                     Need to reset your password?{' '}
                     <a href="#" className="link" onClick={this.resetPassword}>
