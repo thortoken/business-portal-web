@@ -1,20 +1,24 @@
+@import "styles/variables";
+
 .Box {
   background-color: #fff;
-  border-radius: 0.9rem;
-  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.08); }
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+}
 
 /* antd <Table /> */
 .Box .ant-table-thead > tr:first-child > th:first-child {
-  border-top-left-radius: 0.9rem; }
-
+  border-top-left-radius: $border-radius;
+}
 .Box .ant-table-thead > tr:first-child > th:last-child {
-  border-top-right-radius: 0.9rem; }
-
+  border-top-right-radius: $border-radius;
+}
 .Box .ant-table-body > tr:last-child > th:first-child {
-  border-bottom-left-radius: 0.9rem; }
-
+  border-bottom-left-radius: $border-radius;
+}
 .Box .ant-table-body > tr:last-child > th:last-child {
-  border-bottom-right-radius: 0.9rem; }
-
+  border-bottom-right-radius: $border-radius;
+}
 .Box .ant-pagination {
-  margin-right: 1rem; }
+  margin-right: 1rem;
+}

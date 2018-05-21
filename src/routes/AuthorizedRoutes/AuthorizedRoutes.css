@@ -1,7 +1,6 @@
 .AuthorizedRoutes {
   height: 100vh;
-}
+  background-color: #f4f4f4; }
 
 .AuthorizedRoutes-content {
-  padding: 2rem 3rem;
-}
+  padding: 2rem 3rem; }

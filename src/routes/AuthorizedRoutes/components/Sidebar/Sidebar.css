@@ -1,27 +1,22 @@
 .Sidebar {
-  height: 100vh;
-}
-
-.Sidebar img.anticon {
-  width: 10px;
-}
-
-.Sidebar .Sidebar-header {
-  color: pink;
-}
-
-.Sidebar .Sidebar-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  opacity: 0.7;
-  transition: 0.3s ease-out opacity;
-  padding: 16px 24px;
-}
-.Sidebar.ant-layout-sider-collapsed .Sidebar-footer {
-  opacity: 0;
-}
-.Sidebar-footer img {
-  width: 100px;
-  max-width: 100px;
-}
+  background-color: #2a292a;
+  height: 100vh; }
+  .Sidebar .Sidebar-header {
+    font-size: 1rem; }
+  .Sidebar .Sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    opacity: 0.7;
+    transition: 0.3s ease-out opacity;
+    padding: 16px 24px; }
+    .Sidebar .Sidebar-footer img {
+      width: 100px;
+      max-width: 100px; }
+  .Sidebar img.anticon {
+    width: 10px; }
+  .Sidebar.ant-layout-sider-collapsed .Sidebar-footer {
+    opacity: 0; }
+  .Sidebar .ant-menu-dark,
+  .Sidebar .ant-menu-dark .ant-menu-sub {
+    background-color: #2a292a; }

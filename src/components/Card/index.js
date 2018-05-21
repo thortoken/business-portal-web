@@ -10,7 +10,7 @@ export default class Card extends React.Component {
   };
 
   render() {
-    const { icon, title, description, actions, rounded, color } = this.props;
+    const { children, icon, title, description, rounded, color } = this.props;
 
     const Container = rounded ? Box : 'div';
     return (
@@ -22,7 +22,7 @@ export default class Card extends React.Component {
             <div className="Card-description">{description}</div>
           </div>
         </div>
-        <div className="Card-actions">{actions}</div>
+        <div className="Card-actions">{children}</div>
       </Container>
     );
   }
