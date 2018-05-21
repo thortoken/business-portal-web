@@ -24,6 +24,10 @@ firebase-debug.log
 # functions
 /functions/node_modules
 
+# styles
+/src/**/*.css
+!/src/css/*.css
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

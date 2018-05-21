@@ -1,4 +1,4 @@
-## Installation
+# Firebase integration
 Make sure to include a credentials file at the root level /src folder. File should looks as follows:
 
 ```javascript
@@ -19,3 +19,15 @@ export const credentials = {
 ```
 
 Be sure to install node modules in functions folder before trying to use. You will also need to install firebase cli tools.
+
+
+# CSS compilation
+In order to generate CSS files based on SCSS files included in the project, run the following script:
+```
+npm run watch-css
+```
+or
+```
+yarn watch-css
+```
+This will create CSS files right next to the source SCSS files.
