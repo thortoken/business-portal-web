@@ -27,22 +27,28 @@ export class Sidebar extends React.Component {
               <img className="anticon" src="images/THOR-icon.png" />
               <span>Luber</span>
             </Menu.Item>
-            <Menu.Item key="/landing">
-              <Link to="/landing">
-                <img className="anticon" src="images/WhiteG.png" />
-                <span>Landing Page</span>
-              </Link>
-            </Menu.Item>
             <Menu.Item key="/dashboard">
               <Link to="/dashboard">
-                <Icon type="pie-chart" />
-                <span>Dashboard</span>
+                <Icon type="home" />
+                <span>Account Summary</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/contractors">
+              <Link to="#">
+                <Icon type="solution" />
+                <span>Contractors</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="/payments">
               <Link to="/payments">
                 <Icon type="table" />
                 <span>Payments</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/accounts">
+              <Link to="#">
+                <Icon type="setting" />
+                <span>Connected Accounts</span>
               </Link>
             </Menu.Item>
             <Menu.Item className="Sidebar-item-logout">
