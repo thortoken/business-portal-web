@@ -1,0 +1,47 @@
+@import "styles/variables";
+@import "styles/gradients";
+
+.SurveySlider {
+  padding: 1rem 2rem;
+
+  .SurveySlider-description {
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+    font-weight: bold;
+    margin: 0.5rem 0 1rem;
+  }
+
+  .SurveySlider-slider {
+    margin: 2rem 0 1rem;
+  }
+
+  .SurveySlider-results {
+    text-align: center;
+    font-size: 1rem;
+    color: map-get($namedColors, "grey");
+  }
+
+  .ant-slider-rail {
+    @include x-multiple-colored-gradient(
+      "left",
+      #ea5a2e 0%,
+      #ade534 50%,
+      #48c955 100%
+    );
+  }
+  .ant-slider-track {
+    background-color: transparent !important;
+  }
+  .ant-slider-track,
+  .ant-slider-rail {
+    height: 0.4rem;
+    border-radius: 0.4rem;
+  }
+  .ant-slider-handle {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: -0.75rem;
+    margin-top: -0.55rem;
+    border-color: map-get($namedColors, "blue");
+  }
+}
