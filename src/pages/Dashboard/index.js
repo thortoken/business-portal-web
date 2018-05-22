@@ -6,9 +6,11 @@ import { Row, Col, Icon, Button, Divider } from 'antd';
 
 import { syncPayments } from '~redux/actions/dashboard';
 
+import Box from '~components/Box';
 import Card from '~components/Card';
 import Header from '~components/Header';
 import Dropdown from '~components/Dropdown';
+import SurveySlider from '~components/SurveySlider';
 
 class Dashboard extends React.Component {
   componentDidMount() {
@@ -20,9 +22,7 @@ class Dashboard extends React.Component {
       <div className="dashboard">
         <Header title="Account Summary">
           <Header.Right>
-            <Button type="primary" ghost>
-              Manage Accounts
-            </Button>
+            <Button ghost>Manage Accounts</Button>
           </Header.Right>
         </Header>
         <Row gutter={32}>
@@ -77,7 +77,47 @@ class Dashboard extends React.Component {
           </Header.Right>
         </Header>
         <div>
-          <img src="/images/thor_satisfaction_rates.png" width="100%" />
+          <Row gutter={64}>
+            <Col span={8}>
+              <Box>
+                <SurveySlider
+                  description="How satisfied are you with our new product?"
+                  max={100}
+                  min={0}
+                  onAfterChange={value => {
+                    console.log('Slider after change', value);
+                  }}
+                  votesCount={25}
+                />
+              </Box>
+            </Col>
+            <Col span={8}>
+              <Box>
+                <SurveySlider
+                  description="How satisfied are you with your workload?"
+                  max={100}
+                  min={0}
+                  onAfterChange={value => {
+                    console.log('Slider after change', value);
+                  }}
+                  votesCount={31}
+                />
+              </Box>
+            </Col>
+            <Col span={8}>
+              <Box>
+                <SurveySlider
+                  description="Would you recommend working for Luber to a friend?"
+                  max={100}
+                  min={0}
+                  onAfterChange={value => {
+                    console.log('Slider after change', value);
+                  }}
+                  votesCount={46}
+                />
+              </Box>
+            </Col>
+          </Row>
         </div>
         <ul>{this.props.payments.map(payment => <li key={payment.id}>{payment.amount}</li>)}</ul>
       </div>
