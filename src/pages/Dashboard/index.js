@@ -22,7 +22,9 @@ class Dashboard extends React.Component {
       <div className="dashboard">
         <Header title="Account Summary">
           <Header.Right>
-            <Button ghost>Manage Accounts</Button>
+            <Button size="large" ghost>
+              Manage Accounts
+            </Button>
           </Header.Right>
         </Header>
         <Row gutter={32}>
@@ -33,7 +35,9 @@ class Dashboard extends React.Component {
               title="$5,000.25"
               color="black"
               rounded>
-              <Button ghost>Transfer to Bank</Button>
+              <Button size="large" ghost>
+                Transfer to Bank
+              </Button>
             </Card>
           </Col>
           <Col span={8}>
@@ -43,7 +47,9 @@ class Dashboard extends React.Component {
               title="$15,013.6"
               color="blue"
               rounded>
-              <Button ghost>BUY / SELL</Button>
+              <Button size="large" ghost>
+                BUY / SELL
+              </Button>
             </Card>
           </Col>
           <Col span={8}>
@@ -54,11 +60,13 @@ class Dashboard extends React.Component {
         <Header title="Recent Payments" size="small">
           <Header.Left>
             <Dropdown options={['DAY', 'MONTH', 'YEAR']} onClick={this.handlePaymentsPeriodChange}>
-              <Button type="primary" ghost>
+              <Button size="large" type="primary" ghost>
                 MONTH <Icon type="down" />
               </Button>
             </Dropdown>{' '}
-            <Button type="primary">Create Report</Button>
+            <Button size="large" type="primary">
+              Create Report
+            </Button>
           </Header.Left>
           <Header.Right>
             <Link to="#">View All Payments &rarr;</Link>
@@ -70,7 +78,9 @@ class Dashboard extends React.Component {
         <Divider />
         <Header title="Satisfaction Rates" size="small">
           <Header.Left>
-            <Button type="primary">Conduct Survey</Button>
+            <Button size="large" type="primary">
+              Conduct Survey
+            </Button>
           </Header.Left>
           <Header.Right>
             <Link to="#">View All Surveys &rarr;</Link>

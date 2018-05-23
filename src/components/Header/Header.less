@@ -14,8 +14,16 @@
 .Header-left {
   flex-grow: 1;
   text-align: left;
+
+  > * + * {
+    margin-left: 1rem;
+  }
 }
 .Header-right {
   flex-grow: 1;
   text-align: right;
+
+  > * + * {
+    margin-right: 1rem;
+  }
 }
