@@ -1,5 +1,4 @@
-@import "styles/variables";
-@import "styles/gradients";
+@import "../../styles/variables.less";
 
 .SurveySlider {
   padding: 1rem 2rem;
@@ -18,12 +17,12 @@
   .SurveySlider-results {
     text-align: center;
     font-size: 1rem;
-    color: map-get($namedColors, "grey");
+    color: @color-grey;
   }
 
   .ant-slider-rail {
-    @include x-multiple-colored-gradient(
-      "left",
+    background-image: linear-gradient(
+      to right,
       #ea5a2e 0%,
       #ade534 50%,
       #48c955 100%
@@ -42,6 +41,6 @@
     height: 1.5rem;
     margin-left: -0.75rem;
     margin-top: -0.55rem;
-    border-color: map-get($namedColors, "blue");
+    border-color: @color-blue;
   }
 }

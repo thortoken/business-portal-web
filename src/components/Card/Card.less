@@ -1,27 +1,23 @@
-@import "styles/variables";
+@import "../../styles/variables.less";
 
-@mixin card-theme($bg, $accent, $text) {
-  $calcBg: map-get($namedColors, $bg);
-  $calcAccent: map-get($namedColors, $accent);
-  $calcText: map-get($namedColors, $text);
-
+.card-theme(@bg, @accent, @text) {
   & {
-    background-color: $calcBg;
-    color: $calcText;
+    background-color: @bg;
+    color: @text;
 
     .Card-title,
     .Card-icon {
-      color: $calcAccent;
+      color: @accent;
     }
 
     .Card-actions {
       .ant-btn {
-        border-color: $calcAccent;
-        color: $calcAccent;
+        border-color: @accent;
+        color: @accent;
 
         &:hover {
-          background-color: $calcAccent !important;
-          color: $calcBg;
+          background-color: @accent !important;
+          color: @bg;
         }
       }
     }
@@ -58,11 +54,11 @@
 }
 
 .Card--black {
-  @include card-theme("black", "green-neon", "white");
+  .card-theme(@color-black, @color-green-neon, @color-white);
 }
 .Card--blue {
-  @include card-theme("blue", "white", "white");
+  .card-theme(@color-blue, @color-white, @color-white);
 }
 .Card--green {
-  @include card-theme("green", "white", "black");
+  .card-theme(@color-green, @color-white, @color-black);
 }

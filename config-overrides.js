@@ -1,25 +1,7 @@
 const path = require('path');
-const { injectBabelPlugin } = require('react-app-rewired');
 
 module.exports = {
   webpack(config, env) {
-    /**
-     * Inject babel plugin for CSS imports.
-     * This way we don't need to include the whole CSS from antd package
-     * in the bundle - just files imported by used components.
-     */
-    config = injectBabelPlugin(
-      [
-        'import',
-        {
-          libraryName: 'antd',
-          libraryDirectory: 'es',
-          style: 'css',
-        },
-      ],
-      config
-    );
-
     /**
      * Aliases for imports to prevent ../../ hell.
      * Also, makes moving things around effortless.
