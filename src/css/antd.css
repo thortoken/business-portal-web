@@ -18537,3 +18537,11 @@ li.ant-select-tree-treenode-disabled > .ant-select-tree-node-content-wrapper:hov
   margin-left: 8px;
   margin-right: -8px;
 }
+.ant-radio-button-wrapper-checked {
+  background: #4c92e0;
+  color: #ffffff;
+}
+.ant-radio-button-wrapper-checked:hover {
+  color: #ffffff;
+  background: #2578d4;
+}

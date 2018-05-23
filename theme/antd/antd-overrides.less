@@ -8,6 +8,7 @@
 @layout-header-background: @color-grey-dark;
 @font-family: "Exo", @font-family-no-number;
 @border-radius-base: 0.4rem;
+@radio-dot-color: @color-blue;
 
 .ant-btn {
   &-background-ghost {
@@ -22,5 +23,17 @@
   & > span + .anticon {
     margin-left: 8px;
     margin-right: -8px;
+  }
+}
+
+.ant-radio {
+  &-button-wrapper-checked {
+    background: @color-blue;
+    color: @color-white;
+
+    &:hover {
+      color: @color-white;
+      background: darken(@color-blue, 10%);
+    }
   }
 }

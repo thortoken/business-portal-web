@@ -37,7 +37,7 @@ class Payments extends React.Component {
       <div>
         <Header title={headerTitle} size="small">
           <Header.Right>
-            <Radio.Group name="type" value={type} onChange={this.handleTypeChange}>
+            <Radio.Group name="type" size="large" value={type} onChange={this.handleTypeChange}>
               <Radio.Button value="revenue">Revenue</Radio.Button>
               <Radio.Button value="payments">Payments</Radio.Button>
               <Radio.Button value="unified">Unified</Radio.Button>
