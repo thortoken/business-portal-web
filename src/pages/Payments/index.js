@@ -1,8 +1,9 @@
 import React from 'react';
-import { Icon, Radio, Table } from 'antd';
+import { Icon, Radio, Row, Col, Table } from 'antd';
 
 import Box from '~components/Box';
 import Header from '~components/Header';
+import Filters from './Filters';
 
 import { upperCaseFirst } from '~utils/string';
 import mockData from './mockData';
@@ -35,7 +36,7 @@ class Payments extends React.Component {
 
     return (
       <div>
-        <Header title={headerTitle} size="small">
+        <Header title={headerTitle} size="large">
           <Header.Right>
             <Radio.Group name="type" size="large" value={type} onChange={this.handleTypeChange}>
               <Radio.Button value="revenue">Revenue</Radio.Button>
@@ -44,6 +45,13 @@ class Payments extends React.Component {
             </Radio.Group>
           </Header.Right>
         </Header>
+        <Header title="April 2018" size="small" />
+        <Box transparent>
+          <Filters />
+        </Box>
+        <Box transparent>
+          <img src="images/thor_charts.png" style={{ marginBottom: '2rem' }} />
+        </Box>
         <Box>
           <Table dataSource={this.props.payments}>
             <Column title="Trans. ID" dataIndex="transId" sorter={numberSorter} />
