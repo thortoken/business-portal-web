@@ -14,7 +14,7 @@ export default class Header extends React.Component {
   };
 
   static headerSizes = {
-    big: 'h1',
+    large: 'h1',
     medium: 'h2',
     small: 'h3',
   };
