@@ -1,8 +1,26 @@
 @import "../../src/styles/variables.less";
+@import url("https://fonts.googleapis.com/css?family=Exo:400,500,600,700");
 
 /* Override default Ant Design variables */
 /* https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less */
 @primary-color: @color-blue;
 
-@border-color-base: @color-grey;
 @layout-header-background: @color-grey-dark;
+@font-family: "Exo", @font-family-no-number;
+@border-radius-base: 0.4rem;
+
+.ant-btn {
+  &-background-ghost {
+    border-color: @color-grey;
+    color: @color-grey;
+  }
+
+  & > .anticon + span {
+    margin-left: -8px;
+    margin-right: 8px;
+  }
+  & > span + .anticon {
+    margin-left: 8px;
+    margin-right: -8px;
+  }
+}
