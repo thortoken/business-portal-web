@@ -7,6 +7,7 @@ import './css/index.css';
 import './css/tokensale.webflow.css';
 import './css/webflow.css';
 import './utilities.js';
+import './css/antd.css';
 
 export default class App extends React.Component {
   render() {

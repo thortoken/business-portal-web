@@ -27,7 +27,7 @@
     "underscore": "^1.8.3"
   },
   "scripts": {
-    "build-antd-css": "less-watch-compiler src/styles/antd src/css antd.less --run-once",
+    "build-antd-css": "less-watch-compiler theme/antd src/css antd.less --run-once --enable-js",
     "watch-css": "less-watch-compiler src src",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
