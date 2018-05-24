@@ -9,27 +9,33 @@ export default class Filters extends React.Component {
   render() {
     return (
       <div className="Filters">
-        <Button size="large">
-          <Icon type="left" />
-        </Button>
-        <Dropdown options={['DAY', 'MONTH', 'YEAR']}>
-          <Button size="large" type="primary">
-            MONTH <Icon type="down" />
+        <div className="Filters-period-selector">
+          <Button size="large">
+            <Icon type="left" />
           </Button>
-        </Dropdown>
-        <Button size="large">
-          <Icon type="right" />
-        </Button>
+          <Dropdown options={['DAY', 'MONTH', 'YEAR']}>
+            <Button size="large" type="primary">
+              MONTH <Icon type="down" />
+            </Button>
+          </Dropdown>
+          <Button size="large">
+            <Icon type="right" />
+          </Button>
+        </div>
         <Input.Search
+          className="Filters-search"
+          size="large"
           placeholder="Search..."
           onSearch={value => console.log('Searching for', value)}
         />
-        <Button type="primary" size="large">
-          Create Report
-        </Button>
-        <Button ghost size="large">
-          Edit contractors
-        </Button>
+        <div className="Filters-actions">
+          <Button type="primary" size="large">
+            Create Report
+          </Button>
+          <Button ghost size="large">
+            Edit contractors
+          </Button>
+        </div>
       </div>
     );
   }

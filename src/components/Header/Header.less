@@ -1,3 +1,5 @@
+@import "../../styles/variables.less";
+
 .Header {
   display: flex;
   align-items: center;
@@ -25,5 +27,30 @@
 
   > * + * {
     margin-right: 1rem;
+  }
+}
+
+@media (max-width: @screen-md-max) {
+  .Header {
+    flex-wrap: wrap;
+  }
+  .Header-title,
+  .Header-left,
+  .Header-right {
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media (max-width: @screen-sm-max) {
+  .Header-left,
+  .Header-right {
+    text-align: left;
+    flex-basis: 100%;
+  }
+}
+
+@media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+  .Header-title {
+    flex-basis: 100%;
   }
 }

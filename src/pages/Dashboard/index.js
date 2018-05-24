@@ -28,7 +28,7 @@ class Dashboard extends React.Component {
           </Header.Right>
         </Header>
         <Row gutter={32}>
-          <Col span={8}>
+          <Col xs={24} lg={8}>
             <Card
               description="USD Wallet Balance"
               icon={<Icon type="pie-chart" />}
@@ -40,7 +40,7 @@ class Dashboard extends React.Component {
               </Button>
             </Card>
           </Col>
-          <Col span={8}>
+          <Col xs={24} lg={8}>
             <Card
               description="560 THOR"
               icon={<Icon type="pie-chart" />}
@@ -52,7 +52,7 @@ class Dashboard extends React.Component {
               </Button>
             </Card>
           </Col>
-          <Col span={8}>
+          <Col xs={24} lg={8}>
             <Card description="Account Value" title="$20,013.65" color="green" rounded />
           </Col>
         </Row>
@@ -87,8 +87,8 @@ class Dashboard extends React.Component {
           </Header.Right>
         </Header>
         <div>
-          <Row gutter={64}>
-            <Col span={8}>
+          <Row gutter={32}>
+            <Col xs={24} lg={8}>
               <Box>
                 <SurveySlider
                   description="How satisfied are you with our new product?"
@@ -101,7 +101,7 @@ class Dashboard extends React.Component {
                 />
               </Box>
             </Col>
-            <Col span={8}>
+            <Col xs={24} lg={8}>
               <Box>
                 <SurveySlider
                   description="How satisfied are you with your workload?"
@@ -114,7 +114,7 @@ class Dashboard extends React.Component {
                 />
               </Box>
             </Col>
-            <Col span={8}>
+            <Col xs={24} lg={8}>
               <Box>
                 <SurveySlider
                   description="Would you recommend working for Luber to a friend?"
