@@ -5,36 +5,31 @@
   justify-content: space-between;
   flex-wrap: wrap;
 
-  > * {
-    margin-right: 0.5rem;
+  > * + * {
+    margin-left: 0.5rem;
     margin-bottom: 0.5rem;
-  }
-  > *:last-child {
-    margin-right: 0;
-  }
-
-  .Filters-period-selector {
-    .ant-btn {
-      margin-right: 0.5rem;
-    }
   }
 
   .Filters-search {
     width: auto;
     flex-basis: 300px;
     flex-grow: 1;
-    margin-right: 0.5rem;
+    margin-left: 0.5rem;
     margin-bottom: 0.5rem;
 
     @media (max-width: @screen-md-max) {
-      margin-right: 0;
+      margin-left: 0;
       order: 4;
     }
   }
 
+  .Filters-period-selector,
   .Filters-actions {
-    * + .ant-btn {
+    > * + .ant-btn {
       margin-left: 0.5rem;
+    }
+    > *:last-child {
+      margin-right: 0;
     }
   }
 }
