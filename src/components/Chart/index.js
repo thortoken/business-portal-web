@@ -1,41 +1,24 @@
 import React from 'react';
-import { AreaClosed, Line, Bar } from '@vx/shape';
+import { Line, Bar } from '@vx/shape';
 import { appleStock } from '@vx/mock-data';
-import { curveMonotoneX } from '@vx/curve';
-import { LinearGradient } from '@vx/gradient';
-import { withParentSize } from '@vx/responsive';
 import { GridRows, GridColumns } from '@vx/grid';
 import { scaleTime, scaleLinear } from '@vx/scale';
 import { withTooltip, Tooltip } from '@vx/tooltip';
 import { localPoint } from '@vx/event';
 import { extent, max, bisector } from 'd3-array';
 import { timeFormat } from 'd3-time-format';
-import { Spring } from 'react-spring';
+
+import withResponsiveness from './withResponsiveness';
+import withTheme from './withTheme';
 
 const formatDate = timeFormat("%b %d, '%y");
-
-const Area = ({ xs, ys, xScale, yScale, themeColors }) => {
-  return (
-    <AreaClosed
-      data={xs.map((x, i) => ({ date: x, close: ys[i] }))}
-      xScale={xScale}
-      yScale={yScale}
-      x={xStock}
-      y={yStock}
-      strokeWidth={1}
-      stroke={themeColors.lineColor}
-      fill={themeColors.areaBackground}
-      curve={curveMonotoneX}
-    />
-  );
-};
 
 // Accessors
 const xStock = d => new Date(d.date);
 const yStock = d => d.close;
 const bisectDate = bisector(d => new Date(d.date)).left;
 
-export class AreaChart extends React.Component {
+export class Chart extends React.Component {
   static defaultProps = {
     margin: { top: 0, right: 0, bottom: 0, left: 0 },
   };
@@ -45,20 +28,9 @@ export class AreaChart extends React.Component {
     stock: appleStock.slice(0, 50),
   };
 
-  static themeColors = {
-    green: {
-      accent: '#80D134',
-      areaBackground: '#B2E29E',
-      background: '#FFFFFF',
-      lineColor: '#90D742',
-      text: '#90D742',
-      tooltipBackground: '#80D134',
-      tooltipText: '#FFFFFF',
-    },
-  };
-
   render() {
     const {
+      component: ChartComponent,
       width,
       height,
       margin,
@@ -67,8 +39,8 @@ export class AreaChart extends React.Component {
       tooltipData,
       tooltipTop,
       tooltipLeft,
-      events,
-      theme,
+      // events,
+      themeColors,
     } = this.props;
 
     const { stock } = this.state;
@@ -76,9 +48,6 @@ export class AreaChart extends React.Component {
     if (width < 10) {
       return null;
     }
-
-    // theme colors
-    const themeColors = this.getThemeColors(theme);
 
     // bounds
     const graphWidth = width - margin.left - margin.right;
@@ -91,13 +60,13 @@ export class AreaChart extends React.Component {
     });
     const yScale = scaleLinear({
       range: [graphHeight, 0],
-      domain: [0, max(stock, yStock) + graphHeight / 3],
-      // nice: true,
+      domain: [0, max(stock, yStock) /* + graphHeight / 3*/],
+      nice: true,
     });
 
     return (
       <div style={{ width: '100%', height: '100%', cursor: 'pointer' }} onClick={this.toggle}>
-        <svg ref={s => (this.svg = s)} width={width} height={height}>
+        <svg width={width} height={height}>
           <rect
             x={0}
             y={0}
@@ -122,13 +91,13 @@ export class AreaChart extends React.Component {
             strokeDasharray="2,2"
             stroke="rgba(255, 255, 255, 0.3)"
           />
-          <Spring
-            to={{ ys: stock.map(yStock) }}
+          <ChartComponent
             xScale={xScale}
             yScale={yScale}
-            xs={stock.map(xStock)}
+            x={xStock}
+            y={yStock}
+            data={stock}
             themeColors={themeColors}
-            children={Area}
           />
           <Bar
             x={0}
@@ -241,18 +210,11 @@ export class AreaChart extends React.Component {
     });
   };
 
-  getThemeColors = theme => {
-    if (typeof theme === 'string') {
-      return AreaChart.themeColors[theme];
-    }
-    return theme;
-  };
-
   toggle = () => {
     this.setState(({ offset }) => {
-      const calcOffset = offset > 800 ? 0 : offset;
+      const calcOffset = offset > 500 ? 0 : offset;
 
-      const howMany = Math.floor(Math.random() * 50);
+      const howMany = 20 + Math.floor(Math.random() * 30);
 
       return {
         offset: calcOffset + howMany,
@@ -263,4 +225,4 @@ export class AreaChart extends React.Component {
   };
 }
 
-export default withTooltip(AreaChart);
+export default withResponsiveness(withTheme(withTooltip(Chart)));
