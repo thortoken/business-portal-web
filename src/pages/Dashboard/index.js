@@ -11,6 +11,8 @@ import Card from '~components/Card';
 import Header from '~components/Header';
 import Dropdown from '~components/Dropdown';
 import SurveySlider from '~components/SurveySlider';
+import Chart from '~components/Chart';
+import AreaChart from '~components/Chart/AreaChart';
 
 class Dashboard extends React.Component {
   componentDidMount() {
@@ -72,9 +74,13 @@ class Dashboard extends React.Component {
             <Link to="#">View All Payments &rarr;</Link>
           </Header.Right>
         </Header>
-        <div>
-          <img src="/images/thor_charts.png" width="100%" />
-        </div>
+        <Row gutter={32}>
+          <Col span={12}>
+            <Box>
+              <Chart height="200" theme="green" component={AreaChart} />
+            </Box>
+          </Col>
+        </Row>
         <Divider />
         <Header title="Satisfaction Rates" size="small">
           <Header.Left>
