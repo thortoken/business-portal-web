@@ -6,16 +6,22 @@ import Dropdown from '~components/Dropdown';
 import './Filters.css';
 
 export default class Filters extends React.Component {
+  state = {
+    chartPeriod: 'MONTH',
+  };
+
   render() {
+    const { chartPeriod } = this.state;
+
     return (
       <div className="Filters">
         <div className="Filters-period-selector">
           <Button size="large">
             <Icon type="left" />
           </Button>
-          <Dropdown options={['DAY', 'MONTH', 'YEAR']}>
+          <Dropdown options={['DAY', 'MONTH', 'YEAR']} onClick={this.handleChartPeriodChange}>
             <Button size="large" type="primary">
-              MONTH <Icon type="down" />
+              {chartPeriod} <Icon type="down" />
             </Button>
           </Dropdown>
           <Button size="large">
@@ -39,4 +45,8 @@ export default class Filters extends React.Component {
       </div>
     );
   }
+
+  handleChartPeriodChange = newPeriod => {
+    this.setState({ chartPeriod: newPeriod });
+  };
 }

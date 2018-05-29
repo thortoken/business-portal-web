@@ -2,6 +2,10 @@ import React from 'react';
 import { Dropdown as AntDropdown, Menu } from 'antd';
 
 export default class Dropdown extends React.Component {
+  state = {
+    currentKey: null,
+  };
+
   render() {
     const { children } = this.props;
 
@@ -13,11 +17,11 @@ export default class Dropdown extends React.Component {
     );
   }
 
-  renderMenu() {
-    const { onClick, options } = this.props;
+  renderMenu = () => {
+    const { options } = this.props;
 
     return (
-      <Menu onClick={onClick}>
+      <Menu onClick={this.handleSelect}>
         {options.map(option => {
           const value = option.value || option;
           const key = option.key || value;
@@ -25,5 +29,10 @@ export default class Dropdown extends React.Component {
         })}
       </Menu>
     );
+  }
+
+  handleSelect = event => {
+    console.log('handleSelect', event.key);
+    this.props.onClick(event.key);
   }
 }

@@ -15,11 +15,17 @@ import Chart from '~components/Chart';
 import AreaChart from '~components/Chart/AreaChart';
 
 class Dashboard extends React.Component {
+  state = {
+    paymentsPeriod: 'MONTH',
+  };
+
   componentDidMount() {
     this.props.syncPayments();
   }
 
   render() {
+    const { paymentsPeriod } = this.state;
+
     return (
       <div className="dashboard">
         <Header title="Account Summary">
@@ -63,7 +69,7 @@ class Dashboard extends React.Component {
           <Header.Left>
             <Dropdown options={['DAY', 'MONTH', 'YEAR']} onClick={this.handlePaymentsPeriodChange}>
               <Button size="large" type="primary" ghost>
-                MONTH <Icon type="down" />
+                {paymentsPeriod} <Icon type="down" />
               </Button>
             </Dropdown>{' '}
             <Button size="large" type="primary">
@@ -140,8 +146,11 @@ class Dashboard extends React.Component {
     );
   }
 
-  handlePaymentsPeriodChange = ({ key }) => {
-    console.log('handlePaymentsPeriodChange', key);
+  handlePaymentsPeriodChange = newPeriod => {
+    console.log('handlePaymentsPeriodChange', newPeriod);
+    this.setState({
+      paymentsPeriod: newPeriod,
+    });
   };
 }
 
