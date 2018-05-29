@@ -69,15 +69,7 @@ export class Chart extends React.Component {
     return (
       <div className="Chart" onClick={this.toggle}>
         <svg width={width} height={height}>
-          <rect
-            x={0}
-            y={0}
-            width={width}
-            height={height}
-            fill={themeColors.background}
-            rx={14}
-            ry={14}
-          />
+          <rect x={0} y={0} width={width} height={height} fill={themeColors.background} />
 
           <GridRows
             lineStyle={{ pointerEvents: 'none' }}
@@ -107,8 +99,6 @@ export class Chart extends React.Component {
             width={width}
             height={height}
             fill="transparent"
-            rx={14}
-            ry={14}
             data={stock}
             onTouchStart={data => event =>
               this.handleTooltip({
@@ -170,7 +160,7 @@ export class Chart extends React.Component {
           )}
         </svg>
         {tooltipData && (
-          <div>
+          <div className="Chart-tooltip-layer">
             <Tooltip
               className="Chart-tooltip-value"
               top={tooltipTop - 12}
@@ -211,8 +201,7 @@ export class Chart extends React.Component {
   toggle = () => {
     this.setState(({ offset }) => {
       const calcOffset = offset > 500 ? 0 : offset;
-
-      const howMany = 20 + Math.floor(Math.random() * 30);
+      const howMany = 50;
 
       return {
         offset: calcOffset + howMany,

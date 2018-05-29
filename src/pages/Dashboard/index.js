@@ -11,7 +11,7 @@ import Card from '~components/Card';
 import Header from '~components/Header';
 import Dropdown from '~components/Dropdown';
 import SurveySlider from '~components/SurveySlider';
-import Chart from '~components/Chart';
+import ChartCard from '~components/ChartCard';
 import AreaChart from '~components/Chart/AreaChart';
 
 class Dashboard extends React.Component {
@@ -81,9 +81,26 @@ class Dashboard extends React.Component {
           </Header.Right>
         </Header>
         <Row gutter={32}>
-          <Col span={12}>
+          <Col lg={12}>
             <Box>
-              <Chart height="200" theme="green" component={AreaChart} />
+              <ChartCard
+                component={AreaChart}
+                height="100"
+                title="Revenue"
+                aggregatedValue="$135,067.89"
+                theme="green"
+              />
+            </Box>
+          </Col>
+          <Col lg={12}>
+            <Box>
+              <ChartCard
+                component={AreaChart}
+                height="100"
+                title="Payments"
+                aggregatedValue="$90,874.54"
+                theme="blue"
+              />
             </Box>
           </Col>
         </Row>
