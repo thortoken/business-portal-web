@@ -71,20 +71,6 @@ export class Chart extends React.Component {
         <svg width={width} height={height}>
           <rect x={0} y={0} width={width} height={height} fill={themeColors.background} />
 
-          <GridRows
-            lineStyle={{ pointerEvents: 'none' }}
-            scale={yScale}
-            width={graphWidth}
-            strokeDasharray="2,2"
-            stroke="rgba(255, 255, 255, 0.3)"
-          />
-          <GridColumns
-            lineStyle={{ pointerEvents: 'none' }}
-            scale={xScale}
-            width={graphHeight}
-            strokeDasharray="2,2"
-            stroke="rgba(255, 255, 255, 0.3)"
-          />
           <ChartComponent
             xScale={xScale}
             yScale={yScale}
