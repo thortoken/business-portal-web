@@ -11,6 +11,8 @@ import { timeFormat } from 'd3-time-format';
 import withResponsiveness from './withResponsiveness';
 import withTheme from './withTheme';
 
+import './Chart.css';
+
 const formatDate = timeFormat("%b %d, '%y");
 
 // Accessors
@@ -65,7 +67,7 @@ export class Chart extends React.Component {
     });
 
     return (
-      <div style={{ width: '100%', height: '100%', cursor: 'pointer' }} onClick={this.toggle}>
+      <div className="Chart" onClick={this.toggle}>
         <svg width={width} height={height}>
           <rect
             x={0}
@@ -170,6 +172,7 @@ export class Chart extends React.Component {
         {tooltipData && (
           <div>
             <Tooltip
+              className="Chart-tooltip-value"
               top={tooltipTop - 12}
               left={tooltipLeft + 12}
               style={{
@@ -178,12 +181,7 @@ export class Chart extends React.Component {
               }}>
               {`$${yStock(tooltipData)}`}
             </Tooltip>
-            <Tooltip
-              top={graphHeight - 14}
-              left={tooltipLeft}
-              style={{
-                transform: 'translateX(-50%)',
-              }}>
+            <Tooltip className="Chart-tooltip-x" top={graphHeight} left={tooltipLeft}>
               {formatDate(xStock(tooltipData))}
             </Tooltip>
           </div>
