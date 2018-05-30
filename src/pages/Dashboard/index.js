@@ -30,6 +30,8 @@ class Dashboard extends React.Component {
     const { transactionsPeriod } = this.state;
     const { transactions } = this.props;
 
+    const { usd, thor, thorAsUsd, total } = this.calcWalletBalance();
+
     return (
       <div className="dashboard">
         <Header title="Account Summary">
@@ -44,7 +46,7 @@ class Dashboard extends React.Component {
             <Card
               description="USD Wallet Balance"
               icon={<Icon type="pie-chart" />}
-              title="$5,000.25"
+              title={`$${usd.toFixed(2)}`}
               color="black"
               rounded>
               <Button size="large" ghost>
@@ -54,9 +56,9 @@ class Dashboard extends React.Component {
           </Col>
           <Col xs={24} lg={8}>
             <Card
-              description="560 THOR"
+              description={`${thor} THOR`}
               icon={<Icon type="pie-chart" />}
-              title="$15,013.6"
+              title={`$${thorAsUsd.toFixed(2)}`}
               color="blue"
               rounded>
               <Button size="large" ghost>
@@ -65,7 +67,12 @@ class Dashboard extends React.Component {
             </Card>
           </Col>
           <Col xs={24} lg={8}>
-            <Card description="Account Value" title="$20,013.65" color="green" rounded />
+            <Card
+              description="Account Value"
+              title={`$${total.toFixed(2)}`}
+              color="green"
+              rounded
+            />
           </Col>
         </Row>
         <Divider />
@@ -175,11 +182,26 @@ class Dashboard extends React.Component {
       transactionsPeriod: newPeriod,
     });
   };
+
+  calcWalletBalance = () => {
+    const { wallet, exchangeRates } = this.props;
+
+    const exchangeRate = exchangeRates['thor-usd'].rate || 0;
+    const usd = wallet.EUSD || 0;
+    const thor = wallet.THOR || 0;
+    const thorAsUsd = thor * exchangeRate;
+    return {
+      usd,
+      thor,
+      thorAsUsd,
+      total: usd + thorAsUsd,
+    };
+  };
 }
 
 const mapStateToProps = state => ({
   transactions: state.transactions.transactions,
-  wallet: state.wallet.balance,
+  wallet: state.wallet.wallet,
   exchangeRates: state.wallet.exchangeRates,
 });
 

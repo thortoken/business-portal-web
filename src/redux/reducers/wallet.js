@@ -2,8 +2,10 @@ import { types } from '../actions/wallet';
 import { convertDateFields } from './utils';
 
 const initialState = {
-  balance: null,
-  exchangeRates: {},
+  wallet: {},
+  exchangeRates: {
+    'thor-usd': {},
+  },
 };
 
 export default function walletReducer(state = initialState, action = {}) {
@@ -11,7 +13,7 @@ export default function walletReducer(state = initialState, action = {}) {
     case types.SYNC_WALLET.SUCCESS:
       return {
         ...state,
-        balance: action.balance,
+        wallet: action.wallet,
       };
     case types.SYNC_EXCHANGE_RATES.SUCCESS:
       return {
