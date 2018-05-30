@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Row, Col, Icon, Button, Divider } from 'antd';
 
-import { syncPayments } from '~redux/actions/dashboard';
+import { syncTransactions } from '~redux/actions/transactions';
 import { syncWallet, syncExchangeRates } from '~redux/actions/wallet';
 
 import Box from '~components/Box';
@@ -17,17 +17,18 @@ import AreaChart from '~components/Chart/AreaChart';
 
 class Dashboard extends React.Component {
   state = {
-    paymentsPeriod: 'MONTH',
+    transactionsPeriod: 'MONTH',
   };
 
   componentDidMount() {
-    this.props.syncPayments();
+    this.props.syncTransactions();
     this.props.syncWallet();
     this.props.syncExchangeRates();
   }
 
   render() {
-    const { paymentsPeriod } = this.state;
+    const { transactionsPeriod } = this.state;
+    const { transactions } = this.props;
 
     return (
       <div className="dashboard">
@@ -68,11 +69,13 @@ class Dashboard extends React.Component {
           </Col>
         </Row>
         <Divider />
-        <Header title="Recent Payments" size="small">
+        <Header title="Recent Transactions" size="small">
           <Header.Left>
-            <Dropdown options={['DAY', 'MONTH', 'YEAR']} onClick={this.handlePaymentsPeriodChange}>
+            <Dropdown
+              options={['DAY', 'MONTH', 'YEAR']}
+              onClick={this.handleTransactionsPeriodChange}>
               <Button size="large" type="primary" ghost>
-                {paymentsPeriod} <Icon type="down" />
+                {transactionsPeriod} <Icon type="down" />
               </Button>
             </Dropdown>{' '}
             <Button size="large" type="primary">
@@ -80,7 +83,7 @@ class Dashboard extends React.Component {
             </Button>
           </Header.Left>
           <Header.Right>
-            <Link to="#">View All Payments &rarr;</Link>
+            <Link to="#">View All Transactions &rarr;</Link>
           </Header.Right>
         </Header>
         <Row gutter={32}>
@@ -100,7 +103,7 @@ class Dashboard extends React.Component {
               <ChartCard
                 component={AreaChart}
                 height="100"
-                title="Payments"
+                title="Transactions"
                 aggregatedValue="$90,874.54"
                 theme="blue"
               />
@@ -161,21 +164,21 @@ class Dashboard extends React.Component {
             </Col>
           </Row>
         </div>
-        <ul>{this.props.payments.map(payment => <li key={payment.id}>{payment.amount}</li>)}</ul>
+        <ul>{transactions.map(payment => <li key={payment.id}>{payment.amount}</li>)}</ul>
       </div>
     );
   }
 
-  handlePaymentsPeriodChange = newPeriod => {
-    console.log('handlePaymentsPeriodChange', newPeriod);
+  handleTransactionsPeriodChange = newPeriod => {
+    console.log('handleTransactionsPeriodChange', newPeriod);
     this.setState({
-      paymentsPeriod: newPeriod,
+      transactionsPeriod: newPeriod,
     });
   };
 }
 
 const mapStateToProps = state => ({
-  payments: state.dashboard.payments,
+  transactions: state.transactions.transactions,
   wallet: state.wallet.balance,
   exchangeRates: state.wallet.exchangeRates,
 });
@@ -183,7 +186,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      syncPayments,
+      syncTransactions,
       syncWallet,
       syncExchangeRates,
     },
