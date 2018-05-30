@@ -8,6 +8,7 @@ import {
   syncPaymentsSuccess,
   syncPaymentsFailure,
 } from '../actions/dashboard';
+import { collectionTransformer } from './utils';
 
 // function* getPaymentsSaga() {
 //   try {
@@ -19,14 +20,11 @@ import {
 //   }
 // }
 
-const paymentsTransformer = payments =>
-  payments.docs.map(payment => ({ id: payment.id, ...payment.data() }));
-
 function* syncPaymentsSaga() {
   yield fork(rsf.firestore.syncCollection, 'payments', {
     failureActionCreator: syncPaymentsFailure,
     successActionCreator: syncPaymentsSuccess,
-    transform: paymentsTransformer,
+    transform: collectionTransformer,
   });
 }
 
