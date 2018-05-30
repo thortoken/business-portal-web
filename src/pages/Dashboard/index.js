@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Row, Col, Icon, Button, Divider } from 'antd';
 
 import { syncPayments } from '~redux/actions/dashboard';
+import { syncWallet, syncExchangeRates } from '~redux/actions/wallet';
 
 import Box from '~components/Box';
 import Card from '~components/Card';
@@ -21,6 +22,8 @@ class Dashboard extends React.Component {
 
   componentDidMount() {
     this.props.syncPayments();
+    this.props.syncWallet();
+    this.props.syncExchangeRates();
   }
 
   render() {
@@ -173,12 +176,16 @@ class Dashboard extends React.Component {
 
 const mapStateToProps = state => ({
   payments: state.dashboard.payments,
+  wallet: state.wallet.balance,
+  exchangeRates: state.wallet.exchangeRates,
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       syncPayments,
+      syncWallet,
+      syncExchangeRates,
     },
     dispatch
   );
