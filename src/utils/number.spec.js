@@ -1,8 +1,9 @@
 import * as number from './number';
 
 describe('utils: number', () => {
+  const value = 1234567.8901;
+
   describe('formatCurrency', () => {
-    const value = 1234567.8901;
     const toLocaleStringSpy = jest.spyOn(Number.prototype, 'toLocaleString');
 
     beforeEach(() => {
@@ -58,6 +59,18 @@ describe('utils: number', () => {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       });
+    });
+  });
+
+  describe('formatUsd', () => {
+    it('should format with currency=USD and precision=2', () => {
+      expect(number.formatUsd(value)).toEqual('$1,234,567.89');
+    });
+  });
+
+  describe('formatThor', () => {
+    it('should call round down, and format with currency=THOR and precision=0', () => {
+      expect(number.formatThor(value)).toEqual('1,234,567 THOR');
     });
   });
 });

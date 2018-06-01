@@ -15,8 +15,7 @@ import SurveySlider from '~components/SurveySlider';
 import ChartCard from '~components/ChartCard';
 import AreaChart from '~components/Chart/AreaChart';
 
-import { toTitleCase } from '~utils/string';
-import { formatCurrency } from '~utils/number';
+import { formatUsd, formatThor } from '~utils/number';
 
 class Dashboard extends React.Component {
   state = {
@@ -48,7 +47,7 @@ class Dashboard extends React.Component {
             <Card
               description="USD Wallet Balance"
               icon={<Icon type="pie-chart" />}
-              title={`${formatCurrency(usd, { currency: 'USD' })}`}
+              title={formatUsd(usd)}
               color="black"
               rounded>
               <Button size="large" ghost>
@@ -58,9 +57,9 @@ class Dashboard extends React.Component {
           </Col>
           <Col xs={24} lg={8}>
             <Card
-              description={`${thor} THOR`}
+              description={formatThor(thor)}
               icon={<Icon type="pie-chart" />}
-              title={`${formatCurrency(thorAsUsd, { currency: 'USD' })}`}
+              title={formatUsd(thorAsUsd)}
               color="blue"
               rounded>
               <Button size="large" ghost>
@@ -69,12 +68,7 @@ class Dashboard extends React.Component {
             </Card>
           </Col>
           <Col xs={24} lg={8}>
-            <Card
-              description="Account Value"
-              title={`${formatCurrency(total, { currency: 'USD' })}`}
-              color="green"
-              rounded
-            />
+            <Card description="Account Value" title={formatUsd(total)} color="green" rounded />
           </Col>
         </Row>
         <Divider />

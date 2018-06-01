@@ -11,3 +11,7 @@ export const formatCurrency = (
   }
   return Number(value).toLocaleString(locale, options);
 };
+
+export const formatUsd = value => formatCurrency(value, { currency: 'USD', precision: 2 });
+export const formatThor = value =>
+  `${formatCurrency(Math.floor(value), { currency: null, precision: 0 })} THOR`;
