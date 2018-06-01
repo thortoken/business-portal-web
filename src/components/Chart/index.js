@@ -1,7 +1,6 @@
 import React from 'react';
 import { Line, Bar } from '@vx/shape';
 import { appleStock } from '@vx/mock-data';
-import { GridRows, GridColumns } from '@vx/grid';
 import { scaleTime, scaleLinear } from '@vx/scale';
 import { withTooltip, Tooltip } from '@vx/tooltip';
 import { localPoint } from '@vx/event';
