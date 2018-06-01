@@ -3,9 +3,11 @@ import { Icon, Radio, Row, Col, Table } from 'antd';
 
 import Box from '~components/Box';
 import Header from '~components/Header';
+import ChartCard from '~components/ChartCard';
+import AreaChart from '~components/Chart/AreaChart';
 import Filters from './Filters';
 
-import { upperCaseFirst } from '~utils/string';
+import { toTitleCase } from '~utils/string';
 import mockData from './mockData';
 
 const { Column } = Table;
@@ -32,7 +34,7 @@ class Payments extends React.Component {
   render() {
     const { type } = this.state;
 
-    const headerTitle = type === 'unified' ? 'Payments + Revenue' : upperCaseFirst(type);
+    const headerTitle = type === 'unified' ? 'Payments + Revenue' : toTitleCase(type);
 
     return (
       <div>
@@ -49,9 +51,30 @@ class Payments extends React.Component {
         <Box transparent>
           <Filters />
         </Box>
-        <Box transparent>
-          <img src="images/thor_charts.png" style={{ marginBottom: '2rem' }} />
-        </Box>
+        <Row gutter={32}>
+          <Col lg={12}>
+            <Box>
+              <ChartCard
+                component={AreaChart}
+                height="100"
+                title="Revenue"
+                aggregatedValue="$135,067.89"
+                theme="green"
+              />
+            </Box>
+          </Col>
+          <Col lg={12}>
+            <Box>
+              <ChartCard
+                component={AreaChart}
+                height="100"
+                title="Transactions"
+                aggregatedValue="$90,874.54"
+                theme="blue"
+              />
+            </Box>
+          </Col>
+        </Row>
         <Box>
           <Table dataSource={this.props.payments}>
             <Column title="Trans. ID" dataIndex="transId" sorter={numberSorter} />
