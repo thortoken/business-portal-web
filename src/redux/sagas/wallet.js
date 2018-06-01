@@ -36,6 +36,6 @@ function* syncWalletSaga() {
 }
 
 export default function* walletRootSaga() {
+  yield fork(syncExchangeRatesSaga);
   yield takeEvery(types.SYNC_WALLET.REQUEST, syncWalletSaga);
-  yield takeEvery(types.SYNC_EXCHANGE_RATES.REQUEST, syncExchangeRatesSaga);
 }
