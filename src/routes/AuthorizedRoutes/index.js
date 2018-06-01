@@ -2,9 +2,10 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Layout } from 'antd';
 
+import WelcomePage from '~pages/Welcome';
 import LandingPage from '~pages/LandingPage';
-import Dashboard from '~pages/Dashboard';
-import Payments from '~pages/Payments';
+import DashboardPage from '~pages/Dashboard';
+import PaymentsPage from '~pages/Payments';
 
 import Sidebar from './components/Sidebar';
 
@@ -17,10 +18,11 @@ export default class AuthorizedRoutes extends React.Component {
         <Sidebar />
         <Layout.Content className="AuthorizedRoutes-content">
           <Switch>
+            <Route exact path="/welcome" component={WelcomePage} />
             <Route exact path="/landing" component={LandingPage} />
-            <Route exact path="/dashboard" component={Dashboard} />
-            <Route exact path="/payments" component={Payments} />
-            <Redirect from="*" to="/dashboard" />
+            <Route exact path="/dashboard" component={DashboardPage} />
+            <Route exact path="/payments" component={PaymentsPage} />
+            <Redirect from="*" to="/welcome" />
           </Switch>
         </Layout.Content>
       </Layout>

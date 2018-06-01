@@ -27,6 +27,12 @@ export class Sidebar extends React.Component {
               <img className="anticon" src="images/THOR-icon.png" />
               <span>Luber</span>
             </Menu.Item>
+            <Menu.Item key="/welcome">
+              <Link to="/welcome">
+                <Icon type="notification" />
+                <span>Welcome!</span>
+              </Link>
+            </Menu.Item>
             <Menu.Item key="/dashboard">
               <Link to="/dashboard">
                 <Icon type="home" />
