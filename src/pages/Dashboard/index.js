@@ -15,6 +15,9 @@ import SurveySlider from '~components/SurveySlider';
 import ChartCard from '~components/ChartCard';
 import AreaChart from '~components/Chart/AreaChart';
 
+import { toTitleCase } from '~utils/string';
+import { formatCurrency } from '~utils/number';
+
 class Dashboard extends React.Component {
   state = {
     transactionsPeriod: 'MONTH',
@@ -45,7 +48,7 @@ class Dashboard extends React.Component {
             <Card
               description="USD Wallet Balance"
               icon={<Icon type="pie-chart" />}
-              title={`$${usd.toFixed(2)}`}
+              title={`${formatCurrency(usd, { currency: 'USD' })}`}
               color="black"
               rounded>
               <Button size="large" ghost>
@@ -57,7 +60,7 @@ class Dashboard extends React.Component {
             <Card
               description={`${thor} THOR`}
               icon={<Icon type="pie-chart" />}
-              title={`$${thorAsUsd.toFixed(2)}`}
+              title={`${formatCurrency(thorAsUsd, { currency: 'USD' })}`}
               color="blue"
               rounded>
               <Button size="large" ghost>
@@ -68,7 +71,7 @@ class Dashboard extends React.Component {
           <Col xs={24} lg={8}>
             <Card
               description="Account Value"
-              title={`$${total.toFixed(2)}`}
+              title={`${formatCurrency(total, { currency: 'USD' })}`}
               color="green"
               rounded
             />
