@@ -16,31 +16,26 @@ export default class Filters extends React.Component {
     return (
       <div className="Filters">
         <div className="Filters-period-selector">
-          <Button size="large">
+          <Button>
             <Icon type="left" />
           </Button>
           <Dropdown options={['DAY', 'MONTH', 'YEAR']} onClick={this.handleChartPeriodChange}>
-            <Button size="large" type="primary">
+            <Button type="primary">
               {chartPeriod} <Icon type="down" />
             </Button>
           </Dropdown>
-          <Button size="large">
+          <Button>
             <Icon type="right" />
           </Button>
         </div>
         <Input.Search
           className="Filters-search"
-          size="large"
           placeholder="Search..."
           onSearch={value => console.log('Searching for', value)}
         />
         <div className="Filters-actions">
-          <Button type="primary" size="large">
-            Create Report
-          </Button>
-          <Button ghost size="large">
-            Edit contractors
-          </Button>
+          <Button type="primary">Create Report</Button>
+          <Button ghost>Edit contractors</Button>
         </div>
       </div>
     );

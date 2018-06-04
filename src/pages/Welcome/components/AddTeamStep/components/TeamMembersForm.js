@@ -49,7 +49,7 @@ export class TeamMembers extends React.Component {
         ))}
         <Actions position="bottom">
           <Actions.Left>
-            <Button ghost icon="user-add" size="large" onClick={this.handleAdd}>
+            <Button type="primary" icon="user-add" onClick={this.handleAdd}>
               Add member
             </Button>
           </Actions.Left>

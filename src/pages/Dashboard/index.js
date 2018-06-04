@@ -39,9 +39,7 @@ class Dashboard extends React.Component {
         <Header title="Account Summary">
           <Actions>
             <Actions.Right>
-              <Button size="large" ghost>
-                Manage Accounts
-              </Button>
+              <Button ghost>Manage Accounts</Button>
             </Actions.Right>
           </Actions>
         </Header>
@@ -53,7 +51,7 @@ class Dashboard extends React.Component {
               title={formatUsd(usd)}
               color="black"
               rounded>
-              <Button size="large" ghost>
+              <Button size="small" ghost>
                 Transfer to Bank
               </Button>
             </Card>
@@ -65,7 +63,7 @@ class Dashboard extends React.Component {
               title={formatUsd(thorAsUsd)}
               color="blue"
               rounded>
-              <Button size="large" ghost>
+              <Button size="small" ghost>
                 BUY / SELL
               </Button>
             </Card>
@@ -81,13 +79,11 @@ class Dashboard extends React.Component {
               <Dropdown
                 options={['DAY', 'MONTH', 'YEAR']}
                 onClick={this.handleTransactionsPeriodChange}>
-                <Button size="large" type="primary" ghost>
+                <Button type="primary" ghost>
                   {transactionsPeriod} <Icon type="down" />
                 </Button>
               </Dropdown>{' '}
-              <Button size="large" type="primary">
-                Create Report
-              </Button>
+              <Button type="primary">Create Report</Button>
             </Actions.Left>
             <Actions.Right>
               <Link to="#">View All Transactions &rarr;</Link>
@@ -122,9 +118,7 @@ class Dashboard extends React.Component {
         <Header title="Satisfaction Rates" size="small">
           <Actions>
             <Actions.Left>
-              <Button size="large" type="primary">
-                Conduct Survey
-              </Button>
+              <Button type="primary">Conduct Survey</Button>
             </Actions.Left>
             <Actions.Right>
               <Link to="#">View All Surveys &rarr;</Link>

@@ -21,9 +21,7 @@ export default class Welcome extends React.Component {
         <Header title="Welcome to the Thor Business Dashboard!">
           <Actions>
             <Actions.Right>
-              <Button size="large" ghost>
-                Manage Accounts
-              </Button>
+              <Button ghost>Manage Accounts</Button>
             </Actions.Right>
           </Actions>
         </Header>
