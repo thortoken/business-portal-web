@@ -8,6 +8,8 @@ import Actions from '~components/Actions';
 const permissions = [
   { label: 'First permission', value: 'p1' },
   { label: 'Second permission', value: 'p2' },
+  { label: 'Third permission', value: 'p3' },
+  { label: 'Fourth permission', value: 'p4' },
 ];
 
 export class TeamMembers extends React.Component {
@@ -31,6 +33,7 @@ export class TeamMembers extends React.Component {
                 placeholder="PERMISSIONS"
                 options={permissions}
                 hasFeedback={false}
+                mode="multiple"
               />
             </Col>
             <Col>
