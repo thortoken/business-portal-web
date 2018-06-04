@@ -2,6 +2,7 @@ import React from 'react';
 import { Icon, Radio, Row, Col, Table } from 'antd';
 
 import Box from '~components/Box';
+import Actions from '~components/Actions';
 import Header from '~components/Header';
 import ChartCard from '~components/ChartCard';
 import AreaChart from '~components/Chart/AreaChart';
@@ -39,13 +40,15 @@ class Payments extends React.Component {
     return (
       <div>
         <Header title={headerTitle} size="large">
-          <Header.Right>
-            <Radio.Group name="type" size="large" value={type} onChange={this.handleTypeChange}>
-              <Radio.Button value="revenue">Revenue</Radio.Button>
-              <Radio.Button value="payments">Payments</Radio.Button>
-              <Radio.Button value="unified">Unified</Radio.Button>
-            </Radio.Group>
-          </Header.Right>
+          <Actions>
+            <Actions.Right>
+              <Radio.Group name="type" size="large" value={type} onChange={this.handleTypeChange}>
+                <Radio.Button value="revenue">Revenue</Radio.Button>
+                <Radio.Button value="payments">Payments</Radio.Button>
+                <Radio.Button value="unified">Unified</Radio.Button>
+              </Radio.Group>
+            </Actions.Right>
+          </Actions>
         </Header>
         <Header title="April 2018" size="small" />
         <Box transparent>

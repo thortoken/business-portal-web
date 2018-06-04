@@ -9,6 +9,7 @@ import { syncWallet } from '~redux/actions/wallet';
 
 import Box from '~components/Box';
 import Card from '~components/Card';
+import Actions from '~components/Actions';
 import Header from '~components/Header';
 import Dropdown from '~components/Dropdown';
 import SurveySlider from '~components/SurveySlider';
@@ -36,11 +37,13 @@ class Dashboard extends React.Component {
     return (
       <div className="dashboard">
         <Header title="Account Summary">
-          <Header.Right>
-            <Button size="large" ghost>
-              Manage Accounts
-            </Button>
-          </Header.Right>
+          <Actions>
+            <Actions.Right>
+              <Button size="large" ghost>
+                Manage Accounts
+              </Button>
+            </Actions.Right>
+          </Actions>
         </Header>
         <Row gutter={32}>
           <Col xs={24} lg={8}>
@@ -73,21 +76,23 @@ class Dashboard extends React.Component {
         </Row>
         <Divider />
         <Header title="Recent Transactions" size="small">
-          <Header.Left>
-            <Dropdown
-              options={['DAY', 'MONTH', 'YEAR']}
-              onClick={this.handleTransactionsPeriodChange}>
-              <Button size="large" type="primary" ghost>
-                {transactionsPeriod} <Icon type="down" />
+          <Actions>
+            <Actions.Left>
+              <Dropdown
+                options={['DAY', 'MONTH', 'YEAR']}
+                onClick={this.handleTransactionsPeriodChange}>
+                <Button size="large" type="primary" ghost>
+                  {transactionsPeriod} <Icon type="down" />
+                </Button>
+              </Dropdown>{' '}
+              <Button size="large" type="primary">
+                Create Report
               </Button>
-            </Dropdown>{' '}
-            <Button size="large" type="primary">
-              Create Report
-            </Button>
-          </Header.Left>
-          <Header.Right>
-            <Link to="#">View All Transactions &rarr;</Link>
-          </Header.Right>
+            </Actions.Left>
+            <Actions.Right>
+              <Link to="#">View All Transactions &rarr;</Link>
+            </Actions.Right>
+          </Actions>
         </Header>
         <Row gutter={32}>
           <Col lg={12}>
@@ -115,14 +120,16 @@ class Dashboard extends React.Component {
         </Row>
         <Divider />
         <Header title="Satisfaction Rates" size="small">
-          <Header.Left>
-            <Button size="large" type="primary">
-              Conduct Survey
-            </Button>
-          </Header.Left>
-          <Header.Right>
-            <Link to="#">View All Surveys &rarr;</Link>
-          </Header.Right>
+          <Actions>
+            <Actions.Left>
+              <Button size="large" type="primary">
+                Conduct Survey
+              </Button>
+            </Actions.Left>
+            <Actions.Right>
+              <Link to="#">View All Surveys &rarr;</Link>
+            </Actions.Right>
+          </Actions>
         </Header>
         <div>
           <Row gutter={32}>

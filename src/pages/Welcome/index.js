@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 
+import Actions from '~components/Actions';
 import Header from '~components/Header';
 
 import Steps from './components/Steps';
@@ -18,11 +19,13 @@ export default class Welcome extends React.Component {
     return (
       <div className="Welcome">
         <Header title="Welcome to the Thor Business Dashboard!">
-          <Header.Right>
-            <Button size="large" ghost>
-              Manage Accounts
-            </Button>
-          </Header.Right>
+          <Actions>
+            <Actions.Right>
+              <Button size="large" ghost>
+                Manage Accounts
+              </Button>
+            </Actions.Right>
+          </Actions>
         </Header>
         <Steps currentStep={currentStep} className="Welcome-steps" />
         {Steps.steps[currentStep].content}
