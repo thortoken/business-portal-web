@@ -33,6 +33,7 @@
     "react-scripts": "1.x",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
+    "redux-form": "^7.3.0",
     "redux-saga": "^0.16.0",
     "redux-saga-firebase": "^0.9.0",
     "styled-components": "^2.4.0",
