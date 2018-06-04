@@ -5,6 +5,7 @@ import Header from '~components/Header';
 
 import BrandingForm from './components/BrandingForm';
 import TeamMembersForm from './components/TeamMembersForm';
+import ContractorsForm from './components/ContractorsForm';
 
 import './AddTeamStep.css';
 
@@ -31,6 +32,10 @@ export default class AddTeamStep extends React.Component {
             initialValues={{ teamMembers }}
             onSubmit={this.handleTeamMembersSubmit}
           />
+        </Box>
+        <Box padding>
+          <Header title="Contractors" size="small" />
+          <ContractorsForm />
         </Box>
       </div>
     );
