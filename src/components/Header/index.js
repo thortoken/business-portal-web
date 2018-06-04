@@ -2,13 +2,7 @@ import React from 'react';
 
 import './Header.css';
 
-const Left = ({ children }) => <div className="Header-left">{children}</div>;
-const Right = ({ children }) => <div className="Header-right">{children}</div>;
-
 export default class Header extends React.Component {
-  static Left = Left;
-  static Right = Right;
-
   static defaultProps = {
     size: 'medium',
   };
@@ -20,19 +14,14 @@ export default class Header extends React.Component {
   };
 
   render() {
-    const { children } = this.props;
+    const { size, title, children } = this.props;
+    const HeaderComponent = Header.headerSizes[size];
+
     return (
       <header className="Header">
-        {this.renderHeader()}
+        <HeaderComponent className="Header-title">{title}</HeaderComponent>
         {children}
       </header>
     );
-  }
-
-  renderHeader() {
-    const { size, title } = this.props;
-    const HeaderComponent = Header.headerSizes[size];
-
-    return <HeaderComponent className="Header-title">{title}</HeaderComponent>;
   }
 }

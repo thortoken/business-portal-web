@@ -5,6 +5,11 @@
   align-items: center;
   justify-content: stretch;
   margin: 0 0 1rem 0;
+
+  .Actions {
+    margin: 0;
+    flex-grow: 1;
+  }
 }
 
 .Header-title {
@@ -13,39 +18,12 @@
   margin: 0 2rem 0 0;
 }
 
-.Header-left {
-  flex-grow: 1;
-  text-align: left;
-
-  > * + * {
-    margin-left: 1rem;
-  }
-}
-.Header-right {
-  flex-grow: 1;
-  text-align: right;
-
-  > * + * {
-    margin-right: 1rem;
-  }
-}
-
 @media (max-width: @screen-md-max) {
   .Header {
     flex-wrap: wrap;
   }
-  .Header-title,
-  .Header-left,
-  .Header-right {
+  .Header-title {
     margin-bottom: 0.5rem;
-  }
-}
-
-@media (max-width: @screen-sm-max) {
-  .Header-left,
-  .Header-right {
-    text-align: left;
-    flex-basis: 100%;
   }
 }
 
