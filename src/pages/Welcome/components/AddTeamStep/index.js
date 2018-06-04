@@ -8,8 +8,6 @@ import TeamMembersForm from './components/TeamMembersForm';
 
 import './AddTeamStep.css';
 
-const createEmptyTeamMember = () => ({ name: '', email: '', permission: [], id: +new Date() });
-
 export default class AddTeamStep extends React.Component {
   state = {
     branding: {
@@ -17,12 +15,6 @@ export default class AddTeamStep extends React.Component {
     },
     teamMembers: [],
   };
-
-  componentWillMount() {
-    this.setState({
-      teamMembers: [createEmptyTeamMember()],
-    });
-  }
 
   render() {
     const { branding, teamMembers } = this.state;
@@ -43,17 +35,6 @@ export default class AddTeamStep extends React.Component {
       </div>
     );
   }
-
-  handleAddTeamMember = () =>
-    this.setState(prevState => ({
-      teamMembers: [...prevState.teamMembers, createEmptyTeamMember()],
-    }));
-  handleDeleteTeamMember = id => {
-    console.log('handleDeleteTeamMember', id);
-    this.setState(prevState => ({
-      teamMembers: prevState.teamMembers.filter(member => member.id !== id),
-    }));
-  };
 
   handleBrandingSubmit = values => {
     console.log('branding submit', values);
