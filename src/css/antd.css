@@ -18526,8 +18526,12 @@ li.ant-select-tree-treenode-disabled > .ant-select-tree-node-content-wrapper:hov
 /* Override default Ant Design variables */
 /* https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less */
 .ant-btn-background-ghost {
-  border-color: #adacad;
-  color: #adacad;
+  border-color: #aeadae;
+  color: #aeadae;
+}
+.ant-btn-secondary {
+  background-color: #aeadae;
+  color: #ffffff;
 }
 .ant-btn > .anticon + span {
   margin-left: -8px;
