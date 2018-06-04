@@ -18545,6 +18545,9 @@ li.ant-select-tree-treenode-disabled > .ant-select-tree-node-content-wrapper:hov
   color: #ffffff;
   background: #2578d4;
 }
-.ant-row + .ant-row {
+.ant-row + .ant-row,
+.ant-row + .ant-row-flex,
+.ant-row-flex + .ant-row,
+.ant-row-flex + .ant-row-flex {
   margin-top: 1rem;
 }
