@@ -11,7 +11,7 @@ import Sidebar from './components/Sidebar';
 
 import './AuthorizedRoutes.css';
 
-export default class AuthorizedRoutes extends React.Component {
+export class AuthorizedRoutes extends React.Component {
   render() {
     return (
       <Layout className="AuthorizedRoutes">
@@ -29,3 +29,5 @@ export default class AuthorizedRoutes extends React.Component {
     );
   }
 }
+
+export default AuthorizedRoutes;
