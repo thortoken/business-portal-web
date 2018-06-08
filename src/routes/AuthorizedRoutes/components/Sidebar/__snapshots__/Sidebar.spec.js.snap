@@ -5,21 +5,11 @@ exports[`routes: <Sidebar /> selected menu item should select the active menu it
   <Sider
     className="Sidebar"
     collapsed={true}
-    collapsedWidth={80}
-    collapsible={false}
-    defaultCollapsed={false}
     onMouseOut={[Function]}
     onMouseOver={[Function]}
-    prefixCls="ant-layout-sider"
-    reverseArrow={false}
-    style={Object {}}
-    width={200}
   >
     <Menu
-      className=""
-      focusable={false}
       mode="inline"
-      prefixCls="ant-menu"
       selectedKeys={
         Array [
           "/contractors",
@@ -145,21 +135,11 @@ exports[`routes: <Sidebar /> should render without errors 1`] = `
   <Sider
     className="Sidebar"
     collapsed={true}
-    collapsedWidth={80}
-    collapsible={false}
-    defaultCollapsed={false}
     onMouseOut={[Function]}
     onMouseOver={[Function]}
-    prefixCls="ant-layout-sider"
-    reverseArrow={false}
-    style={Object {}}
-    width={200}
   >
     <Menu
-      className=""
-      focusable={false}
       mode="inline"
-      prefixCls="ant-menu"
       selectedKeys={
         Array [
           undefined,
