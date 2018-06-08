@@ -1,8 +1,8 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-
 import { Layout, Menu, Icon } from 'antd';
 
 import { logout } from '~redux/actions/login';
@@ -10,18 +10,25 @@ import { logout } from '~redux/actions/login';
 import './Sidebar.css';
 
 export class Sidebar extends React.Component {
+  static propTypes = {
+    logout: PropTypes.func,
+    pathname: PropTypes.string,
+  };
+
   state = {
     collapsed: true,
   };
 
   render() {
+    const { collapsed } = this.state;
+
     return (
       <div>
         <Layout.Sider
           className="Sidebar"
           onMouseOver={this.handleMouseOver}
           onMouseOut={this.handleMouseOut}
-          collapsed={this.state.collapsed}>
+          collapsed={collapsed}>
           <Menu theme="dark" mode="inline" selectedKeys={[this.props.pathname]}>
             <Menu.Item className="Sidebar-header">
               <img className="anticon" src="images/THOR-icon.png" />
