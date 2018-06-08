@@ -30,6 +30,7 @@ module.exports = {
       '^~pages/(.+)': '<rootDir>/src/pages/$1',
       '^~redux/(.+)': '<rootDir>/src/redux/$1',
       '^~utils/(.+)': '<rootDir>/src/utils/$1',
+      '^.+\\.(less|scss|css)$': 'identity-obj-proxy',
     };
     return config;
   },
