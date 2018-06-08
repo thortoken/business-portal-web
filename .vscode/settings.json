@@ -2,4 +2,6 @@
     "eslint.enable": true,
     "prettier.eslintIntegration": true,
     "jest.pathToJest": "yarn test --",
+    "jest.autoEnable": false,
+    "jest.runAllTestsFirst": false
 }
