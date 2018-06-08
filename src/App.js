@@ -9,8 +9,10 @@ import './css/webflow.css';
 import './utilities.js';
 import './css/antd.css';
 
-export default class App extends React.Component {
+export class App extends React.Component {
   render() {
     return <RouteFactory />;
   }
 }
+
+export default App;
