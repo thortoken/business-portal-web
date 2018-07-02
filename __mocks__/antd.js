@@ -4,6 +4,8 @@ const namedComponent = name => {
   return Component;
 };
 
+const Dropdown = namedComponent('Dropdown');
+
 const Icon = namedComponent('Icon');
 
 const Layout = namedComponent('Layout');
@@ -23,6 +25,7 @@ Table.Row = namedComponent('Row');
 const Slider = namedComponent('Slider');
 
 module.exports = {
+  Dropdown,
   Layout,
   Menu,
   Icon,
