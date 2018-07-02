@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component: <Card/> should render children properly 1`] = `
+<div
+  className="Card Card--blue"
+>
+  <div
+    className="Card-content"
+  >
+    <div
+      className="Card-icon"
+    />
+    <div
+      className="Card-text"
+    >
+      <div
+        className="Card-title"
+      />
+      <div
+        className="Card-description"
+      />
+    </div>
+  </div>
+  <div
+    className="Card-actions"
+  >
+    <div>
+      fake child
+    </div>
+  </div>
+</div>
+`;
+
+exports[`component: <Card/> should render title, description and icon properly 1`] = `
+<div
+  className="Card Card--blue"
+>
+  <div
+    className="Card-content"
+  >
+    <div
+      className="Card-icon"
+    >
+      <div>
+        fake icon
+      </div>
+    </div>
+    <div
+      className="Card-text"
+    >
+      <div
+        className="Card-title"
+      >
+        fake title
+      </div>
+      <div
+        className="Card-description"
+      >
+        fake description
+      </div>
+    </div>
+  </div>
+  <div
+    className="Card-actions"
+  />
+</div>
+`;

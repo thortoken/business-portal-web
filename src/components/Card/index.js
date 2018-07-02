@@ -1,12 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Box from '~components/Box';
 
 import './Card.css';
 
-export default class Card extends React.Component {
-  static defaultProps = {
-    color: 'white',
+export class Card extends React.Component {
+  static propTypes = {
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+    color: PropTypes.oneOf(['black', 'blue', 'green']).isRequired,
+    description: PropTypes.string,
+    icon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+    rounded: PropTypes.bool,
+    title: PropTypes.string,
   };
 
   render() {
@@ -27,3 +33,5 @@ export default class Card extends React.Component {
     );
   }
 }
+
+export default Card;
