@@ -74,5 +74,8 @@
       "Firefox ESR",
       "not ie < 11"
     ]
+  },
+  "jest": {
+    "snapshotSerializers": ["enzyme-to-json/serializer"]
   }
 }
