@@ -20,10 +20,13 @@ const Table = namedComponent('Table');
 Table.Column = namedComponent('Column');
 Table.Row = namedComponent('Row');
 
+const Slider = namedComponent('Slider');
+
 module.exports = {
   Layout,
   Menu,
   Icon,
+  Slider,
   Steps,
   Table,
 };
