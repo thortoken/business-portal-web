@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component: <ChartCard/> should render title and aggregated value 1`] = `
+<div
+  className="ChartCard"
+>
+  <header
+    className="ChartCard-header"
+  >
+    <div
+      className="ChartCard-title"
+      style={
+        Object {
+          "color": "#000000",
+        }
+      }
+    >
+      <Icon
+        style={
+          Object {
+            "color": "#ffffff",
+          }
+        }
+        type="area-chart"
+      />
+       
+      Revenue
+    </div>
+    <div
+      className="ChartCard-aggregated-value"
+      style={
+        Object {
+          "color": "#ffffff",
+        }
+      }
+    >
+      $123,456.78
+    </div>
+  </header>
+  <div
+    className="ChartCard-chart"
+  >
+    <withResponsiveness(withTheme(ChartComponent))
+      themeColors={
+        Object {
+          "accent": "#ffffff",
+          "chartColor": "#ff0000",
+          "text": "#000000",
+        }
+      }
+    />
+  </div>
+</div>
+`;

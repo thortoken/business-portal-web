@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Icon } from 'antd';
 
 import Chart from '~components/Chart';
@@ -6,7 +7,16 @@ import withTheme from '~components/Chart/withTheme';
 
 import './ChartCard.css';
 
-class ChartCard extends React.Component {
+export class ChartCard extends React.Component {
+  static propTypes = {
+    aggregatedValue: PropTypes.string,
+    themeColors: PropTypes.shape({
+      accent: PropTypes.string.isRequired,
+      text: PropTypes.string.isRequired,
+    }).isRequired,
+    title: PropTypes.string,
+  };
+
   render() {
     const { title, aggregatedValue, themeColors, ...chartProps } = this.props;
     return (
