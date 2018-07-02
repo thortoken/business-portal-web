@@ -1,9 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Slider } from 'antd';
 
 import './SurveySlider.css';
 
-export default class SurveySlider extends React.Component {
+export class SurveySlider extends React.Component {
+  static propTypes = {
+    description: PropTypes.string,
+    votesCount: PropTypes.number,
+  };
+
+  static defaultProps = {
+    votesCount: 0,
+  };
+
   render() {
     const { description, votesCount, ...sliderProps } = this.props;
     return (
@@ -15,3 +25,5 @@ export default class SurveySlider extends React.Component {
     );
   }
 }
+
+export default SurveySlider;

@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component: <SurveySlider/> should render description, votes count and slider 1`] = `
+<div
+  className="SurveySlider"
+>
+  <p
+    className="SurveySlider-description"
+  >
+    fake description
+  </p>
+  <Slider
+    className="SurveySlider-slider"
+  />
+  <div
+    className="SurveySlider-results"
+  >
+    33
+     responses
+  </div>
+</div>
+`;
