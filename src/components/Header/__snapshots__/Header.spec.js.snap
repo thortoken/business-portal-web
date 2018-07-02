@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component: <Header/> should render children next to the header 1`] = `
+<header
+  className="Header"
+>
+  <h2
+    className="Header-title"
+  />
+  <div>
+    fake child
+  </div>
+</header>
+`;

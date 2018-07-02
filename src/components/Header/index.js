@@ -1,8 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './Header.css';
 
-export default class Header extends React.Component {
+export class Header extends React.Component {
+  static propTypes = {
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+    size: PropTypes.oneOf(['small', 'medium', 'large']),
+    title: PropTypes.string,
+  };
+
   static defaultProps = {
     size: 'medium',
   };
@@ -25,3 +32,5 @@ export default class Header extends React.Component {
     );
   }
 }
+
+export default Header;
