@@ -1,21 +1,33 @@
 export const types = {
-  SYNC_TRANSACTIONS: {
-    REQUEST: 'SYNC_TRANSACTIONS.REQUEST',
-    SUCCESS: 'SYNC_TRANSACTIONS.SUCCESS',
-    FAILURE: 'SYNC_TRANSACTIONS.FAILURE',
+  GET_TRANSACTIONS: {
+    REQUEST: 'GET_TRANSACTIONS.REQUEST',
+    SUCCESS: 'GET_TRANSACTIONS.SUCCESS',
+    FAILURE: 'GET_TRANSACTIONS.FAILURE',
   },
 };
 
-export const syncTransactions = transactions => ({
-  type: types.SYNC_TRANSACTIONS.REQUEST,
+export const getTransactions = ({ direction, page, limit, orderBy }) => ({
+  type: types.GET_TRANSACTIONS.REQUEST,
+  direction,
+  page,
+  limit,
+  orderBy,
 });
 
-export const syncTransactionsSuccess = transactions => ({
-  type: types.SYNC_TRANSACTIONS.SUCCESS,
+export const getTransactionsSuccess = (transactions, { direction, page, limit, orderBy }) => ({
+  type: types.GET_TRANSACTIONS.SUCCESS,
   transactions,
+  direction,
+  page,
+  limit,
+  orderBy,
 });
 
-export const syncTransactionsFailure = error => ({
-  type: types.SYNC_TRANSACTIONS.FAILURE,
+export const getTransactionsFailure = (error, { direction, page, limit, orderBy }) => ({
+  type: types.GET_TRANSACTIONS.FAILURE,
   error,
+  direction,
+  page,
+  limit,
+  orderBy,
 });

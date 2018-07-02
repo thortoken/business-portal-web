@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Row, Col, Icon, Button, Divider } from 'antd';
 
-import { syncTransactions } from '~redux/actions/transactions';
+import { getTransactions } from '~redux/actions/transactions';
 import { syncWallet } from '~redux/actions/wallet';
 
 import Box from '~components/Box';
@@ -24,7 +24,12 @@ class Dashboard extends React.Component {
   };
 
   componentDidMount() {
-    this.props.syncTransactions();
+    this.props.getTransactions({
+      direction: 'revenue',
+      page: 1,
+      limit: 10,
+      orderBy: 'timeCompleted',
+    });
     this.props.syncWallet();
   }
 
@@ -205,7 +210,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      syncTransactions,
+      getTransactions,
       syncWallet,
     },
     dispatch
