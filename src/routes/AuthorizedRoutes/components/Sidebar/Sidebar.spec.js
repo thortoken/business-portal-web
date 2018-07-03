@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import toJson from 'enzyme-to-json';
 
 import { Sidebar } from './index';
 
@@ -12,10 +11,10 @@ const initSidebar = overrides => {
   return { mockProps, wrapper };
 };
 
-describe('routes: <Sidebar />', () => {
-  it('should render without errors', () => {
+describe('routes: <Sidebar/>', () => {
+  it('should render without crashing', () => {
     const { wrapper } = initSidebar();
-    expect(toJson(wrapper)).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
   });
 
   describe('handleLogout', () => {
@@ -44,7 +43,7 @@ describe('routes: <Sidebar />', () => {
   describe('selected menu item', () => {
     it('should select the active menu item based on current route', () => {
       const { wrapper } = initSidebar({ pathname: '/contractors' });
-      expect(toJson(wrapper)).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
     });
   });
 });

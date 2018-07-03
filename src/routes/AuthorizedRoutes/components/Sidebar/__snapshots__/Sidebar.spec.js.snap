@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`routes: <Sidebar /> selected menu item should select the active menu item based on current route 1`] = `
+exports[`routes: <Sidebar/> selected menu item should select the active menu item based on current route 1`] = `
 <div>
   <Sider
     className="Sidebar"
@@ -130,7 +130,7 @@ exports[`routes: <Sidebar /> selected menu item should select the active menu it
 </div>
 `;
 
-exports[`routes: <Sidebar /> should render without errors 1`] = `
+exports[`routes: <Sidebar/> should render without crashing 1`] = `
 <div>
   <Sider
     className="Sidebar"

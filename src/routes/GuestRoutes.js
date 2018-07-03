@@ -7,7 +7,7 @@ import Register from '~pages/Register';
 import UserInfo from '~pages/UserInfo';
 import Status from '~pages/Status';
 
-export default class GuestRoutes extends React.Component {
+export class GuestRoutes extends React.Component {
   render() {
     return (
       <Switch>
@@ -21,3 +21,5 @@ export default class GuestRoutes extends React.Component {
     );
   }
 }
+
+export default GuestRoutes;
