@@ -1,0 +1,236 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`page: <Dashboard/> should render as expected 1`] = `
+<div
+  className="dashboard"
+>
+  <Header
+    size="medium"
+    title="Account Summary"
+  >
+    <Actions
+      position="top"
+    >
+      <Right>
+        <Button
+          ghost={true}
+        >
+          Manage Accounts
+        </Button>
+      </Right>
+    </Actions>
+  </Header>
+  <Row
+    gutter={32}
+  >
+    <Col
+      lg={8}
+      xs={24}
+    >
+      <Card
+        color="black"
+        description="USD Wallet Balance"
+        icon={
+          <Icon
+            type="pie-chart"
+          />
+        }
+        rounded={true}
+        title="$10.00"
+      >
+        <Button
+          ghost={true}
+          size="small"
+        >
+          Transfer to Bank
+        </Button>
+      </Card>
+    </Col>
+    <Col
+      lg={8}
+      xs={24}
+    >
+      <Card
+        color="blue"
+        description="20 THOR"
+        icon={
+          <Icon
+            type="pie-chart"
+          />
+        }
+        rounded={true}
+        title="$20.00"
+      >
+        <Button
+          ghost={true}
+          size="small"
+        >
+          BUY / SELL
+        </Button>
+      </Card>
+    </Col>
+    <Col
+      lg={8}
+      xs={24}
+    >
+      <Card
+        color="green"
+        description="Account Value"
+        rounded={true}
+        title="$30.00"
+      />
+    </Col>
+  </Row>
+  <Divider />
+  <Header
+    size="small"
+    title="Recent Transactions"
+  >
+    <Actions
+      position="top"
+    >
+      <Left>
+        <Dropdown
+          onClick={[Function]}
+          options={
+            Array [
+              "DAY",
+              "MONTH",
+              "YEAR",
+            ]
+          }
+        >
+          <Button
+            ghost={true}
+            type="primary"
+          >
+            MONTH
+             
+            <Icon
+              type="down"
+            />
+          </Button>
+        </Dropdown>
+         
+        <Button
+          type="primary"
+        >
+          Create Report
+        </Button>
+      </Left>
+      <Right>
+        <Link
+          replace={false}
+          to="#"
+        >
+          View All Transactions →
+        </Link>
+      </Right>
+    </Actions>
+  </Header>
+  <Row
+    gutter={32}
+  >
+    <Col
+      lg={12}
+    >
+      <Box>
+        <withTheme(ChartComponent)
+          aggregatedValue="$135,067.89"
+          component={[Function]}
+          height="100"
+          theme="green"
+          title="Revenue"
+        />
+      </Box>
+    </Col>
+    <Col
+      lg={12}
+    >
+      <Box>
+        <withTheme(ChartComponent)
+          aggregatedValue="$90,874.54"
+          component={[Function]}
+          height="100"
+          theme="blue"
+          title="Transactions"
+        />
+      </Box>
+    </Col>
+  </Row>
+  <Divider />
+  <Header
+    size="small"
+    title="Satisfaction Rates"
+  >
+    <Actions
+      position="top"
+    >
+      <Left>
+        <Button
+          type="primary"
+        >
+          Conduct Survey
+        </Button>
+      </Left>
+      <Right>
+        <Link
+          replace={false}
+          to="#"
+        >
+          View All Surveys →
+        </Link>
+      </Right>
+    </Actions>
+  </Header>
+  <div>
+    <Row
+      gutter={32}
+    >
+      <Col
+        lg={8}
+        xs={24}
+      >
+        <Box>
+          <SurveySlider
+            description="How satisfied are you with our new product?"
+            max={100}
+            min={0}
+            onAfterChange={[Function]}
+            votesCount={25}
+          />
+        </Box>
+      </Col>
+      <Col
+        lg={8}
+        xs={24}
+      >
+        <Box>
+          <SurveySlider
+            description="How satisfied are you with your workload?"
+            max={100}
+            min={0}
+            onAfterChange={[Function]}
+            votesCount={31}
+          />
+        </Box>
+      </Col>
+      <Col
+        lg={8}
+        xs={24}
+      >
+        <Box>
+          <SurveySlider
+            description="Would you recommend working for Luber to a friend?"
+            max={100}
+            min={0}
+            onAfterChange={[Function]}
+            votesCount={46}
+          />
+        </Box>
+      </Col>
+    </Row>
+  </div>
+  <ul />
+</div>
+`;
