@@ -8,7 +8,7 @@ import Steps from './components/Steps';
 
 import './Welcome.css';
 
-export default class Welcome extends React.Component {
+export class Welcome extends React.Component {
   state = {
     currentStep: 0,
   };
@@ -19,7 +19,7 @@ export default class Welcome extends React.Component {
     return (
       <div className="Welcome">
         <Header title="Welcome to the Thor Business Dashboard!">
-          <Actions>
+          <Actions position="top">
             <Actions.Right>
               <Button ghost>Manage Accounts</Button>
             </Actions.Right>
@@ -31,3 +31,5 @@ export default class Welcome extends React.Component {
     );
   }
 }
+
+export default Welcome;
