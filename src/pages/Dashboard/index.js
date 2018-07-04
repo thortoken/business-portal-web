@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -18,7 +19,17 @@ import AreaChart from '~components/Chart/AreaChart';
 
 import { formatUsd, formatThor } from '~utils/number';
 
-class Dashboard extends React.Component {
+export class Dashboard extends React.Component {
+  static propTypes = {
+    exchangeRates: PropTypes.shape({
+      'thor-usd': PropTypes.object.isRequired,
+    }).isRequired,
+    syncTransactions: PropTypes.func.isRequired,
+    syncWallet: PropTypes.func.isRequired,
+    transactions: PropTypes.arrayOf(PropTypes.object).isRequired,
+    wallet: PropTypes.object.isRequired,
+  };
+
   state = {
     transactionsPeriod: 'MONTH',
   };
@@ -37,7 +48,7 @@ class Dashboard extends React.Component {
     return (
       <div className="dashboard">
         <Header title="Account Summary">
-          <Actions>
+          <Actions position="top">
             <Actions.Right>
               <Button ghost>Manage Accounts</Button>
             </Actions.Right>
@@ -74,7 +85,7 @@ class Dashboard extends React.Component {
         </Row>
         <Divider />
         <Header title="Recent Transactions" size="small">
-          <Actions>
+          <Actions position="top">
             <Actions.Left>
               <Dropdown
                 options={['DAY', 'MONTH', 'YEAR']}
@@ -116,7 +127,7 @@ class Dashboard extends React.Component {
         </Row>
         <Divider />
         <Header title="Satisfaction Rates" size="small">
-          <Actions>
+          <Actions position="top">
             <Actions.Left>
               <Button type="primary">Conduct Survey</Button>
             </Actions.Left>
