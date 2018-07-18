@@ -1,7 +1,13 @@
 @import "../../styles/variables.less";
 
+.box-theme(@bg, @text) {
+  & {
+    background-color: @bg;
+    color: @text;
+  }
+}
+
 .Box {
-  background-color: #fff;
   border-radius: @border-radius;
   box-shadow: @box-shadow;
   margin-bottom: 1.5rem;
@@ -14,6 +20,15 @@
 
   &--padding {
     padding: 1.5rem 1.7rem;
+  }
+
+  &--bg {
+    &-white {
+      .box-theme(@color-white, @color-black);
+    }
+    &-blue {
+      .box-theme(@color-blue, @color-grey-light);
+    }
   }
 
   .Chart svg {

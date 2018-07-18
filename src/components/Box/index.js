@@ -6,19 +6,28 @@ import './Box.css';
 
 export default class Box extends React.Component {
   static propTypes = {
+    backgroundColor: PropTypes.string,
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     className: PropTypes.string,
     transparent: PropTypes.bool,
     padding: PropTypes.bool,
   };
 
+  static defaultProps = {
+    backgroundColor: 'white',
+    className: null,
+    transparent: false,
+    padding: false,
+  };
+
   render() {
-    const { children, className, transparent, padding } = this.props;
+    const { children, className, backgroundColor, transparent, padding } = this.props;
 
     return (
       <div
         className={classnames('Box', {
           [className]: className,
+          [`Box--bg-${backgroundColor}`]: true,
           'Box--transparent': transparent,
           'Box--padding': padding,
         })}>
