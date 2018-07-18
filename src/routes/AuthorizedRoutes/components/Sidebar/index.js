@@ -28,11 +28,14 @@ export class Sidebar extends React.Component {
           className="Sidebar"
           onMouseOver={this.handleMouseOver}
           onMouseOut={this.handleMouseOut}
-          collapsed={collapsed}>
+          collapsed={collapsed}
+          width="300px">
           <Menu theme="dark" mode="inline" selectedKeys={[this.props.pathname]}>
             <Menu.Item className="Sidebar-header">
-              <img className="anticon" src="images/THOR-icon.png" />
-              <span>Luber</span>
+              <div className="Sidebar-header-brand">
+                <img className="anticon" src="images/THOR-icon.png" />
+                <span>Luber</span>
+              </div>
             </Menu.Item>
             <Menu.Item key="/welcome">
               <Link to="/welcome">
@@ -71,9 +74,6 @@ export class Sidebar extends React.Component {
               </a>
             </Menu.Item>
           </Menu>
-          <div className="Sidebar-footer">
-            <img src="images/Logo-white2x-p-500.png" />
-          </div>
         </Layout.Sider>
       </div>
     );

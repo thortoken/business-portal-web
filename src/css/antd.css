@@ -3926,7 +3926,7 @@ a.ant-btn-sm {
   color: rgba(0, 0, 0, 0.25);
 }
 .ant-fullcalendar-fullscreen .ant-fullcalendar-content {
-  height: 90px;
+  height: 88px;
   overflow-y: auto;
   position: static;
   width: auto;
@@ -18554,5 +18554,20 @@ li.ant-select-tree-treenode-disabled > .ant-select-tree-node-content-wrapper:hov
 .ant-row + .ant-row-flex,
 .ant-row-flex + .ant-row,
 .ant-row-flex + .ant-row-flex {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
+}
+.ant-menu-dark,
+.ant-menu-dark .ant-menu-sub {
+  background-color: #2a292a;
+}
+ul.ant-menu li.ant-menu-item {
+  font-size: 1.25rem;
+  height: 60px;
+  line-height: 60px;
+}
+ul.ant-menu li.ant-menu-item .anticon {
+  font-size: 1.25rem;
+}
+ul.ant-menu li.ant-menu-item-selected {
+  background-color: #0187ed;
 }

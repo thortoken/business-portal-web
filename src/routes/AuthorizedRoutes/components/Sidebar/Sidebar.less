@@ -1,36 +1,36 @@
 @import "../../../../styles/variables.less";
 
-.Sidebar {
+div.Sidebar {
   background-color: @menu-background;
   height: 100vh;
 
-  .Sidebar-header {
-    content: @menu-accent;
-    font-size: 1rem;
-  }
+  ul > li.Sidebar-header {
+    height: 8.625rem;
 
-  .Sidebar-footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    opacity: 0.7;
-    transition: 0.3s ease-out opacity;
-    padding: 16px 24px;
+    div.Sidebar-header-brand {
+      .anticon {
+        width: 3.25rem;
+        transition: none !important;
+      }
 
-    img {
-      width: 100px;
-      max-width: 100px;
+      span {
+        position: absolute;
+        left: 5rem;
+        bottom: 2.25rem;
+        width: 200px;
+        font-size: 1.5rem;
+        font-weight: 100;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: @color-white;
+      }
+
+      img {
+        position: absolute;
+        bottom: 2.5rem;
+        left: 15px;
+      }
     }
-  }
-
-  img.anticon {
-    width: 10px;
-  }
-  &.ant-layout-sider-collapsed .Sidebar-footer {
-    opacity: 0;
-  }
-  .ant-menu-dark,
-  .ant-menu-dark .ant-menu-sub {
-    background-color: @menu-background;
   }
 }

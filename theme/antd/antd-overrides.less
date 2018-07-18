@@ -78,3 +78,24 @@
 .ant-row-flex + .ant-row-flex {
   margin-top: 0.5rem;
 }
+
+.ant-menu-dark,
+.ant-menu-dark .ant-menu-sub {
+  background-color: @menu-background;
+}
+
+ul.ant-menu {
+  li.ant-menu-item {
+    font-size: 1.25rem;
+    height: 60px;
+    line-height: 60px;
+
+    .anticon {
+      font-size: 1.25rem;
+    }
+  }
+
+  li.ant-menu-item-selected {
+    background-color: @active-menu-item-color;
+  }
+}
