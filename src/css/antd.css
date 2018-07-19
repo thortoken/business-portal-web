@@ -3926,7 +3926,7 @@ a.ant-btn-sm {
   color: rgba(0, 0, 0, 0.25);
 }
 .ant-fullcalendar-fullscreen .ant-fullcalendar-content {
-  height: 88px;
+  height: 90px;
   overflow-y: auto;
   position: static;
   width: auto;
@@ -18502,20 +18502,14 @@ li.ant-select-tree-treenode-disabled > .ant-select-tree-node-content-wrapper:hov
 @font-face {
   font-family: 'Exo';
   font-style: normal;
+  font-weight: 300;
+  src: local('Exo Light'), local('Exo-Light'), url(https://fonts.gstatic.com/s/exo/v6/4UaDrEtFpBIa2Fy29xLm.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Exo';
+  font-style: normal;
   font-weight: 400;
   src: local('Exo Regular'), local('Exo-Regular'), url(https://fonts.gstatic.com/s/exo/v6/4UaOrEtFpBISc36m.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Exo';
-  font-style: normal;
-  font-weight: 500;
-  src: local('Exo Medium'), local('Exo-Medium'), url(https://fonts.gstatic.com/s/exo/v6/4UaDrEtFpBIagF229xLm.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Exo';
-  font-style: normal;
-  font-weight: 600;
-  src: local('Exo SemiBold'), local('Exo-SemiBold'), url(https://fonts.gstatic.com/s/exo/v6/4UaDrEtFpBIarFq29xLm.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Exo';
