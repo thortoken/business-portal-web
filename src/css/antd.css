@@ -13293,13 +13293,13 @@ textarea.ant-pagination-options-quick-jumper input {
 .ant-progress-inner {
   display: inline-block;
   width: 100%;
-  background-color: #f5f5f5;
+  background-color: #d8d8d8;
   border-radius: 100px;
   vertical-align: middle;
   position: relative;
 }
 .ant-progress-circle-trail {
-  stroke: #f5f5f5;
+  stroke: #d8d8d8;
 }
 .ant-progress-circle-path {
   stroke: #4c92e0;
@@ -18552,7 +18552,7 @@ li.ant-select-tree-treenode-disabled > .ant-select-tree-node-content-wrapper:hov
 }
 .ant-menu-dark,
 .ant-menu-dark .ant-menu-sub {
-  background-color: #2a292a;
+  background-color: #ffffff;
 }
 ul.ant-menu li.ant-menu-item {
   font-size: 1.25rem;
