@@ -2740,7 +2740,7 @@ mark {
   background-image: none;
   border: 1px solid transparent;
   white-space: nowrap;
-  padding: 0 1.5rem;
+  padding: 0 1.1rem;
   font-size: 16px;
   border-radius: 0.4rem;
   height: 44px;
@@ -5344,7 +5344,7 @@ a.ant-btn-sm {
   background-image: none;
   border: 1px solid transparent;
   white-space: nowrap;
-  padding: 0 1.5rem;
+  padding: 0 1.1rem;
   height: 44px;
   user-select: none;
   transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
