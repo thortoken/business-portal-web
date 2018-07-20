@@ -16,12 +16,17 @@ const Icon = namedComponent('Icon');
 
 const Layout = namedComponent('Layout');
 Layout.Content = namedComponent('Content');
+Layout.Header = namedComponent('Header');
 Layout.Sider = namedComponent('Sider');
 
 const Menu = namedComponent('Menu');
 Menu.Item = namedComponent('MenuItem');
 
+const Progress = namedComponent('Progress');
+
 const Row = namedComponent('Row');
+
+const Slider = namedComponent('Slider');
 
 const Steps = namedComponent('Steps');
 Steps.Step = namedComponent('Step');
@@ -29,8 +34,6 @@ Steps.Step = namedComponent('Step');
 const Table = namedComponent('Table');
 Table.Column = namedComponent('Column');
 Table.Row = namedComponent('Row');
-
-const Slider = namedComponent('Slider');
 
 module.exports = {
   Button,
@@ -40,6 +43,7 @@ module.exports = {
   Layout,
   Menu,
   Icon,
+  Progress,
   Row,
   Slider,
   Steps,
