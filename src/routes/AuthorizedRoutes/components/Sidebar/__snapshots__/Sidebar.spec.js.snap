@@ -1,287 +1,209 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`routes: <Sidebar/> selected menu item should select the active menu item based on current route 1`] = `
-<div>
-  <Sider
-    className="Sidebar"
-    collapsed={true}
-    onMouseOut={[Function]}
-    onMouseOver={[Function]}
-    width="300px"
+<Header
+  className="Sidebar"
+>
+  <Menu
+    mode="horizontal"
+    selectedKeys={
+      Array [
+        "/contractors",
+      ]
+    }
+    theme="light"
   >
-    <Menu
-      mode="inline"
-      selectedKeys={
-        Array [
-          "/contractors",
-        ]
-      }
-      theme="dark"
+    <MenuItem
+      className="Sidebar-header"
     >
-      <MenuItem
-        className="Sidebar-header"
+      <div
+        className="Sidebar-header-brand"
       >
-        <div
-          className="Sidebar-header-brand"
-        >
-          <img
-            className="anticon"
-            src="images/THOR-icon.png"
-          />
-          <span>
-            Luber
-          </span>
-        </div>
-      </MenuItem>
-      <MenuItem
-        key="/welcome"
+        <img
+          className="anticon"
+          src="images/THOR-icon.png"
+        />
+      </div>
+    </MenuItem>
+    <MenuItem
+      key="/welcome"
+    >
+      <Link
+        replace={false}
+        to="/welcome"
       >
-        <Link
-          replace={false}
-          to="/welcome"
-        >
-          <Icon
-            type="notification"
-          />
-          <span>
-            Welcome!
-          </span>
-        </Link>
-      </MenuItem>
-      <MenuItem
-        key="/dashboard"
+        <Icon
+          type="notification"
+        />
+        <span>
+          Welcome!
+        </span>
+      </Link>
+    </MenuItem>
+    <MenuItem
+      key="/dashboard"
+    >
+      <Link
+        replace={false}
+        to="/dashboard"
       >
-        <Link
-          replace={false}
-          to="/dashboard"
-        >
-          <Icon
-            type="home"
-          />
-          <span>
-            Account Summary
-          </span>
-        </Link>
-      </MenuItem>
-      <MenuItem
-        key="/contractors"
+        <Icon
+          type="home"
+        />
+        <span>
+          Account Summary
+        </span>
+      </Link>
+    </MenuItem>
+    <MenuItem
+      key="/payments"
+    >
+      <Link
+        replace={false}
+        to="/payments"
       >
-        <Link
-          replace={false}
-          to="#"
-        >
-          <Icon
-            type="solution"
-          />
-          <span>
-            Contractors
-          </span>
-        </Link>
-      </MenuItem>
-      <MenuItem
-        key="/payments"
+        <Icon
+          type="table"
+        />
+        <span>
+          Payments
+        </span>
+      </Link>
+    </MenuItem>
+    <MenuItem
+      key="/satisfaction-surveys"
+    >
+      <Link
+        replace={false}
+        to="/satisfaction-surveys"
       >
-        <Link
-          replace={false}
-          to="/payments"
-        >
-          <Icon
-            type="table"
-          />
-          <span>
-            Payments
-          </span>
-        </Link>
-      </MenuItem>
-      <MenuItem
-        key="/satisfaction-surveys"
+        <Icon
+          type="smile"
+        />
+        <span>
+          Satisfaction Surveys
+        </span>
+      </Link>
+    </MenuItem>
+    <MenuItem
+      className="Sidebar-item-logout"
+    >
+      <a
+        href="#"
+        onClick={[Function]}
       >
-        <Link
-          replace={false}
-          to="/satisfaction-surveys"
-        >
-          <Icon
-            type="smile"
-          />
-          <span>
-            Satisfaction Surveys
-          </span>
-        </Link>
-      </MenuItem>
-      <MenuItem
-        key="/accounts"
-      >
-        <Link
-          replace={false}
-          to="#"
-        >
-          <Icon
-            type="setting"
-          />
-          <span>
-            Connected Accounts
-          </span>
-        </Link>
-      </MenuItem>
-      <MenuItem
-        className="Sidebar-item-logout"
-      >
-        <a
-          href="#"
-          onClick={[Function]}
-        >
-          <Icon
-            type="logout"
-          />
-          <span>
-            Logout
-          </span>
-        </a>
-      </MenuItem>
-    </Menu>
-  </Sider>
-</div>
+        <Icon
+          type="logout"
+        />
+        <span>
+          Logout
+        </span>
+      </a>
+    </MenuItem>
+  </Menu>
+</Header>
 `;
 
 exports[`routes: <Sidebar/> should render without crashing 1`] = `
-<div>
-  <Sider
-    className="Sidebar"
-    collapsed={true}
-    onMouseOut={[Function]}
-    onMouseOver={[Function]}
-    width="300px"
+<Header
+  className="Sidebar"
+>
+  <Menu
+    mode="horizontal"
+    selectedKeys={
+      Array [
+        "",
+      ]
+    }
+    theme="light"
   >
-    <Menu
-      mode="inline"
-      selectedKeys={
-        Array [
-          "",
-        ]
-      }
-      theme="dark"
+    <MenuItem
+      className="Sidebar-header"
     >
-      <MenuItem
-        className="Sidebar-header"
+      <div
+        className="Sidebar-header-brand"
       >
-        <div
-          className="Sidebar-header-brand"
-        >
-          <img
-            className="anticon"
-            src="images/THOR-icon.png"
-          />
-          <span>
-            Luber
-          </span>
-        </div>
-      </MenuItem>
-      <MenuItem
-        key="/welcome"
+        <img
+          className="anticon"
+          src="images/THOR-icon.png"
+        />
+      </div>
+    </MenuItem>
+    <MenuItem
+      key="/welcome"
+    >
+      <Link
+        replace={false}
+        to="/welcome"
       >
-        <Link
-          replace={false}
-          to="/welcome"
-        >
-          <Icon
-            type="notification"
-          />
-          <span>
-            Welcome!
-          </span>
-        </Link>
-      </MenuItem>
-      <MenuItem
-        key="/dashboard"
+        <Icon
+          type="notification"
+        />
+        <span>
+          Welcome!
+        </span>
+      </Link>
+    </MenuItem>
+    <MenuItem
+      key="/dashboard"
+    >
+      <Link
+        replace={false}
+        to="/dashboard"
       >
-        <Link
-          replace={false}
-          to="/dashboard"
-        >
-          <Icon
-            type="home"
-          />
-          <span>
-            Account Summary
-          </span>
-        </Link>
-      </MenuItem>
-      <MenuItem
-        key="/contractors"
+        <Icon
+          type="home"
+        />
+        <span>
+          Account Summary
+        </span>
+      </Link>
+    </MenuItem>
+    <MenuItem
+      key="/payments"
+    >
+      <Link
+        replace={false}
+        to="/payments"
       >
-        <Link
-          replace={false}
-          to="#"
-        >
-          <Icon
-            type="solution"
-          />
-          <span>
-            Contractors
-          </span>
-        </Link>
-      </MenuItem>
-      <MenuItem
-        key="/payments"
+        <Icon
+          type="table"
+        />
+        <span>
+          Payments
+        </span>
+      </Link>
+    </MenuItem>
+    <MenuItem
+      key="/satisfaction-surveys"
+    >
+      <Link
+        replace={false}
+        to="/satisfaction-surveys"
       >
-        <Link
-          replace={false}
-          to="/payments"
-        >
-          <Icon
-            type="table"
-          />
-          <span>
-            Payments
-          </span>
-        </Link>
-      </MenuItem>
-      <MenuItem
-        key="/satisfaction-surveys"
+        <Icon
+          type="smile"
+        />
+        <span>
+          Satisfaction Surveys
+        </span>
+      </Link>
+    </MenuItem>
+    <MenuItem
+      className="Sidebar-item-logout"
+    >
+      <a
+        href="#"
+        onClick={[Function]}
       >
-        <Link
-          replace={false}
-          to="/satisfaction-surveys"
-        >
-          <Icon
-            type="smile"
-          />
-          <span>
-            Satisfaction Surveys
-          </span>
-        </Link>
-      </MenuItem>
-      <MenuItem
-        key="/accounts"
-      >
-        <Link
-          replace={false}
-          to="#"
-        >
-          <Icon
-            type="setting"
-          />
-          <span>
-            Connected Accounts
-          </span>
-        </Link>
-      </MenuItem>
-      <MenuItem
-        className="Sidebar-item-logout"
-      >
-        <a
-          href="#"
-          onClick={[Function]}
-        >
-          <Icon
-            type="logout"
-          />
-          <span>
-            Logout
-          </span>
-        </a>
-      </MenuItem>
-    </Menu>
-  </Sider>
-</div>
+        <Icon
+          type="logout"
+        />
+        <span>
+          Logout
+        </span>
+      </a>
+    </MenuItem>
+  </Menu>
+</Header>
 `;

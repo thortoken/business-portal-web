@@ -27,19 +27,6 @@ describe('routes: <Sidebar/>', () => {
     });
   });
 
-  describe('hovering with mouse', () => {
-    it('should change collapsed state on mouse over/out', () => {
-      const { wrapper } = initSidebar();
-      expect(wrapper.state('collapsed')).toBe(true);
-
-      wrapper.instance().handleMouseOver();
-      expect(wrapper.state('collapsed')).toBe(false);
-
-      wrapper.instance().handleMouseOut();
-      expect(wrapper.state('collapsed')).toBe(true);
-    });
-  });
-
   describe('selected menu item', () => {
     it('should select the active menu item based on current route', () => {
       const { wrapper } = initSidebar({ pathname: '/contractors' });
