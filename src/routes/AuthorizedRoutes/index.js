@@ -6,6 +6,7 @@ import WelcomePage from '~pages/Welcome';
 import LandingPage from '~pages/LandingPage';
 import DashboardPage from '~pages/Dashboard';
 import PaymentsPage from '~pages/Payments';
+import SatisfactionSurveysPage from '~pages/SatisfactionSurveys';
 
 import Sidebar from './components/Sidebar';
 
@@ -22,6 +23,7 @@ export class AuthorizedRoutes extends React.Component {
             <Route exact path="/landing" component={LandingPage} />
             <Route exact path="/dashboard" component={DashboardPage} />
             <Route exact path="/payments" component={PaymentsPage} />
+            <Route path="/satisfaction-surveys" component={SatisfactionSurveysPage} />
             <Redirect from="*" to="/welcome" />
           </Switch>
         </Layout.Content>

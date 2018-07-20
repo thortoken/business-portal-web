@@ -7,6 +7,7 @@ exports[`routes: <Sidebar/> selected menu item should select the active menu ite
     collapsed={true}
     onMouseOut={[Function]}
     onMouseOver={[Function]}
+    width="300px"
   >
     <Menu
       mode="inline"
@@ -20,13 +21,17 @@ exports[`routes: <Sidebar/> selected menu item should select the active menu ite
       <MenuItem
         className="Sidebar-header"
       >
-        <img
-          className="anticon"
-          src="images/THOR-icon.png"
-        />
-        <span>
-          Luber
-        </span>
+        <div
+          className="Sidebar-header-brand"
+        >
+          <img
+            className="anticon"
+            src="images/THOR-icon.png"
+          />
+          <span>
+            Luber
+          </span>
+        </div>
       </MenuItem>
       <MenuItem
         key="/welcome"
@@ -89,6 +94,21 @@ exports[`routes: <Sidebar/> selected menu item should select the active menu ite
         </Link>
       </MenuItem>
       <MenuItem
+        key="/satisfaction-surveys"
+      >
+        <Link
+          replace={false}
+          to="/satisfaction-surveys"
+        >
+          <Icon
+            type="smile"
+          />
+          <span>
+            Satisfaction Surveys
+          </span>
+        </Link>
+      </MenuItem>
+      <MenuItem
         key="/accounts"
       >
         <Link
@@ -119,13 +139,6 @@ exports[`routes: <Sidebar/> selected menu item should select the active menu ite
         </a>
       </MenuItem>
     </Menu>
-    <div
-      className="Sidebar-footer"
-    >
-      <img
-        src="images/Logo-white2x-p-500.png"
-      />
-    </div>
   </Sider>
 </div>
 `;
@@ -137,12 +150,13 @@ exports[`routes: <Sidebar/> should render without crashing 1`] = `
     collapsed={true}
     onMouseOut={[Function]}
     onMouseOver={[Function]}
+    width="300px"
   >
     <Menu
       mode="inline"
       selectedKeys={
         Array [
-          undefined,
+          "",
         ]
       }
       theme="dark"
@@ -150,13 +164,17 @@ exports[`routes: <Sidebar/> should render without crashing 1`] = `
       <MenuItem
         className="Sidebar-header"
       >
-        <img
-          className="anticon"
-          src="images/THOR-icon.png"
-        />
-        <span>
-          Luber
-        </span>
+        <div
+          className="Sidebar-header-brand"
+        >
+          <img
+            className="anticon"
+            src="images/THOR-icon.png"
+          />
+          <span>
+            Luber
+          </span>
+        </div>
       </MenuItem>
       <MenuItem
         key="/welcome"
@@ -219,6 +237,21 @@ exports[`routes: <Sidebar/> should render without crashing 1`] = `
         </Link>
       </MenuItem>
       <MenuItem
+        key="/satisfaction-surveys"
+      >
+        <Link
+          replace={false}
+          to="/satisfaction-surveys"
+        >
+          <Icon
+            type="smile"
+          />
+          <span>
+            Satisfaction Surveys
+          </span>
+        </Link>
+      </MenuItem>
+      <MenuItem
         key="/accounts"
       >
         <Link
@@ -249,13 +282,6 @@ exports[`routes: <Sidebar/> should render without crashing 1`] = `
         </a>
       </MenuItem>
     </Menu>
-    <div
-      className="Sidebar-footer"
-    >
-      <img
-        src="images/Logo-white2x-p-500.png"
-      />
-    </div>
   </Sider>
 </div>
 `;

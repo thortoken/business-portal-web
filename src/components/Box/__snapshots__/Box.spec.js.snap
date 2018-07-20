@@ -2,7 +2,7 @@
 
 exports[`component: <Box/> Box should render children properly 1`] = `
 <div
-  className="Box"
+  className="Box Box--bg-white"
 >
   <div>
     fake child
@@ -12,6 +12,6 @@ exports[`component: <Box/> Box should render children properly 1`] = `
 
 exports[`component: <Box/> Box should render without crashing 1`] = `
 <div
-  className="Box"
+  className="Box Box--bg-white"
 />
 `;

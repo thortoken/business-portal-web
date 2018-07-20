@@ -134,7 +134,12 @@ exports[`page: <Dashboard/> should render as expected 1`] = `
     <Col
       lg={12}
     >
-      <Box>
+      <Box
+        backgroundColor="white"
+        className={null}
+        padding={false}
+        transparent={false}
+      >
         <withTheme(ChartComponent)
           aggregatedValue="$135,067.89"
           component={[Function]}
@@ -147,7 +152,12 @@ exports[`page: <Dashboard/> should render as expected 1`] = `
     <Col
       lg={12}
     >
-      <Box>
+      <Box
+        backgroundColor="white"
+        className={null}
+        padding={false}
+        transparent={false}
+      >
         <withTheme(ChartComponent)
           aggregatedValue="$90,874.54"
           component={[Function]}
@@ -191,7 +201,12 @@ exports[`page: <Dashboard/> should render as expected 1`] = `
         lg={8}
         xs={24}
       >
-        <Box>
+        <Box
+          backgroundColor="white"
+          className={null}
+          padding={false}
+          transparent={false}
+        >
           <SurveySlider
             description="How satisfied are you with our new product?"
             max={100}
@@ -205,7 +220,12 @@ exports[`page: <Dashboard/> should render as expected 1`] = `
         lg={8}
         xs={24}
       >
-        <Box>
+        <Box
+          backgroundColor="white"
+          className={null}
+          padding={false}
+          transparent={false}
+        >
           <SurveySlider
             description="How satisfied are you with your workload?"
             max={100}
@@ -219,7 +239,12 @@ exports[`page: <Dashboard/> should render as expected 1`] = `
         lg={8}
         xs={24}
       >
-        <Box>
+        <Box
+          backgroundColor="white"
+          className={null}
+          padding={false}
+          transparent={false}
+        >
           <SurveySlider
             description="Would you recommend working for Luber to a friend?"
             max={100}

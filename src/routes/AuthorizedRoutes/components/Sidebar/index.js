@@ -9,6 +9,15 @@ import { logout } from '~redux/actions/login';
 
 import './Sidebar.css';
 
+export const getSelectedKeyFromPath = path => {
+  if (!path) {
+    return '';
+  }
+
+  const matches = path.match(/^(\/[^/]*)/);
+  return matches ? matches[0] : '';
+};
+
 export class Sidebar extends React.Component {
   static propTypes = {
     logout: PropTypes.func,
@@ -21,6 +30,9 @@ export class Sidebar extends React.Component {
 
   render() {
     const { collapsed } = this.state;
+    const { pathname } = this.props;
+
+    const selectedKeys = [getSelectedKeyFromPath(pathname)];
 
     return (
       <div>
@@ -30,7 +42,7 @@ export class Sidebar extends React.Component {
           onMouseOut={this.handleMouseOut}
           collapsed={collapsed}
           width="300px">
-          <Menu theme="dark" mode="inline" selectedKeys={[this.props.pathname]}>
+          <Menu theme="dark" mode="inline" selectedKeys={selectedKeys}>
             <Menu.Item className="Sidebar-header">
               <div className="Sidebar-header-brand">
                 <img className="anticon" src="images/THOR-icon.png" />
@@ -59,6 +71,12 @@ export class Sidebar extends React.Component {
               <Link to="/payments">
                 <Icon type="table" />
                 <span>Payments</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/satisfaction-surveys">
+              <Link to="/satisfaction-surveys">
+                <Icon type="smile" />
+                <span>Satisfaction Surveys</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="/accounts">
