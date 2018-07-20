@@ -5,8 +5,23 @@
 }
 
 .AuthorizedRoutes-content {
+  width: @screen-xl;
   padding: 2rem 3rem;
+  margin: 0 auto;
+
+  @media (max-width: @screen-xs-max) {
+    width: @screen-xs;
+  }
   @media (max-width: @screen-sm-max) {
     padding: 1rem 1.5rem;
+    width: @screen-sm;
+  }
+  @media (max-width: @screen-md-max) {
+    width: @screen-md;
+  }
+  @media (max-width: @screen-lg-max) {
+    width: @screen-lg;
+  }
+  @media (max-width: @screen-sm-max) {
   }
 }

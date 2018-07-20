@@ -2,34 +2,15 @@
 
 div.Sidebar {
   background-color: @menu-background;
-  height: 100vh;
+  padding: 0;
+  height: 60px;
+  line-height: 60px;
 
   ul > li.Sidebar-header {
-    height: 8.625rem;
-
     div.Sidebar-header-brand {
       .anticon {
         width: 3.25rem;
         transition: none !important;
-      }
-
-      span {
-        position: absolute;
-        left: 5rem;
-        bottom: 2.25rem;
-        width: 200px;
-        font-size: 1.5rem;
-        font-weight: 100;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        color: @color-white;
-      }
-
-      img {
-        position: absolute;
-        bottom: 2.5rem;
-        left: 15px;
       }
     }
   }
