@@ -1,4 +1,3 @@
-@import "../../src/styles/variables.less";
 @import url("https://fonts.googleapis.com/css?family=Exo:300,400,700");
 
 /* Override default Ant Design variables */
@@ -39,66 +38,3 @@
 
 @progress-remaining-color: @color-grey-disabled;
 @progress-default-color: @color-blue;
-
-.ant-btn {
-  &-background-ghost {
-    border-color: @color-grey;
-    color: @color-grey;
-  }
-
-  &-secondary {
-    background-color: @secondary-color;
-    color: @color-white;
-  }
-
-  & > .anticon + span {
-    margin-right: 8px;
-  }
-  & > span + .anticon {
-    margin-left: 8px;
-  }
-}
-
-.ant-radio {
-  &-button-wrapper-checked {
-    background: @color-blue;
-    color: @color-white;
-
-    &:hover {
-      color: @color-white;
-      background: darken(@color-blue, 10%);
-    }
-  }
-}
-
-.ant-form-item {
-  margin-bottom: 0;
-}
-
-.ant-row + .ant-row,
-.ant-row + .ant-row-flex,
-.ant-row-flex + .ant-row,
-.ant-row-flex + .ant-row-flex {
-  margin-top: 0.5rem;
-}
-
-.ant-menu-dark,
-.ant-menu-dark .ant-menu-sub {
-  background-color: @menu-background;
-}
-
-ul.ant-menu {
-  li.ant-menu-item {
-    font-size: 1.25rem;
-    height: 60px;
-    line-height: 60px;
-
-    .anticon {
-      font-size: 1.25rem;
-    }
-  }
-
-  li.ant-menu-item-selected {
-    background-color: @active-menu-item-color;
-  }
-}
