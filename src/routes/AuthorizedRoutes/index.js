@@ -16,7 +16,7 @@ export class AuthorizedRoutes extends React.Component {
   render() {
     return (
       <Layout className="AuthorizedRoutes">
-        <Sidebar />
+        <Sidebar className="AuthorizedRoutes-nav" />
         <Layout.Content className="AuthorizedRoutes-content">
           <Switch>
             <Route exact path="/welcome" component={WelcomePage} />

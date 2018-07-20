@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Layout, Menu, Icon } from 'antd';
+import classnames from 'classnames';
 
 import { logout } from '~redux/actions/login';
 
@@ -20,17 +21,18 @@ export const getSelectedKeyFromPath = path => {
 
 export class Sidebar extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     logout: PropTypes.func,
     pathname: PropTypes.string,
   };
 
   render() {
-    const { pathname } = this.props;
+    const { className, pathname } = this.props;
 
     const selectedKeys = [getSelectedKeyFromPath(pathname)];
 
     return (
-      <Layout.Header className="Sidebar">
+      <Layout.Header className={classnames('Sidebar', className)}>
         <Menu theme="light" mode="horizontal" selectedKeys={selectedKeys}>
           <Menu.Item className="Sidebar-header">
             <div className="Sidebar-header-brand">
