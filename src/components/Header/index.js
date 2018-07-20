@@ -6,6 +6,7 @@ import './Header.css';
 export class Header extends React.Component {
   static propTypes = {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+    description: PropTypes.string,
     size: PropTypes.oneOf(['small', 'medium', 'large']),
     title: PropTypes.string,
   };
@@ -21,13 +22,14 @@ export class Header extends React.Component {
   };
 
   render() {
-    const { size, title, children } = this.props;
+    const { description, size, title, children } = this.props;
     const HeaderComponent = Header.headerSizes[size];
 
     return (
       <header className="Header">
         <HeaderComponent className="Header-title">{title}</HeaderComponent>
         {children}
+        {description && <p className="Header-description">{description}</p>}
       </header>
     );
   }
