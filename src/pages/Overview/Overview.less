@@ -1,0 +1,43 @@
+@import '../../styles/variables.less';
+
+.Overview {
+  &-contractors {
+    &-progress {
+      display: flex;
+      justify-content: stretch;
+      align-items: center;
+
+      .anticon {
+        font-size: 2rem;
+        margin-right: 1rem;
+      }
+
+      .Progress {
+        flex-grow: 1;
+      }
+    }
+
+    p {
+      margin: 1rem 0;
+    }
+  }
+
+  &-payments {
+    &-total {
+      color: @color-blue;
+    }
+
+    &-period {
+      font-weight: bold;
+    }
+
+    h3 {
+      font-weight: bold;
+      margin-top: 3rem;
+    }
+
+    p {
+      font-size: 1.25rem;
+    }
+  }
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Layout } from 'antd';
 
-import WelcomePage from '~pages/Welcome';
+import OverviewPage from '~pages/Overview';
 import LandingPage from '~pages/LandingPage';
 import DashboardPage from '~pages/Dashboard';
 import PaymentsPage from '~pages/Payments';
@@ -19,7 +19,7 @@ export class AuthorizedRoutes extends React.Component {
         <Sidebar className="AuthorizedRoutes-nav" />
         <Layout.Content className="AuthorizedRoutes-content">
           <Switch>
-            <Route exact path="/welcome" component={WelcomePage} />
+            <Route exact path="/welcome" component={OverviewPage} />
             <Route exact path="/landing" component={LandingPage} />
             <Route exact path="/dashboard" component={DashboardPage} />
             <Route exact path="/payments" component={PaymentsPage} />
