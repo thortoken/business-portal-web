@@ -27,7 +27,7 @@ export default class Box extends React.Component {
       <div
         className={classnames('Box', {
           [className]: className,
-          [`Box--bg-${backgroundColor}`]: true,
+          [`Box--bg-${backgroundColor}`]: !transparent,
           'Box--transparent': transparent,
           'Box--padding': padding,
         })}>
