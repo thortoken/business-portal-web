@@ -4,10 +4,12 @@
   "private": true,
   "dependencies": {
     "@firebase/app-types": "^0.3.1",
+    "@vx/axis": "^0.0.170",
     "@vx/curve": "^0.0.161",
     "@vx/event": "^0.0.161",
     "@vx/gradient": "^0.0.161",
     "@vx/grid": "^0.0.162",
+    "@vx/group": "^0.0.170",
     "@vx/mock-data": "^0.0.161",
     "@vx/responsive": "^0.0.161",
     "@vx/scale": "^0.0.161",
@@ -77,6 +79,8 @@
     ]
   },
   "jest": {
-    "snapshotSerializers": ["enzyme-to-json/serializer"]
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   }
 }

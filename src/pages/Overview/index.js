@@ -46,7 +46,13 @@ export class OverviewPage extends Component {
             <span className="Overview-payments-total">{paymentsMonthName}</span>
           </p>
           <div className="Overview-payments-chart">
-            <Chart component={AreaChart} height="100" theme="blue" />
+            <Chart
+              component={AreaChart}
+              height={256}
+              theme="blue"
+              margin={{ top: 40, bottom: 40, left: 60, right: 0 }}
+              style={{ marginLeft: -60 }}
+            />
           </div>
           <Button type="primary">View Details &rarr;</Button>
         </div>
