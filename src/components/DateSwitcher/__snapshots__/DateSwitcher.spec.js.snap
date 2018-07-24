@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component: <DateSwitcher /> rendering should render without crashing 1`] = `
+<div
+  className="DateSwitcher"
+>
+  <Button
+    onClick={[Function]}
+  >
+    <Icon
+      type="left"
+    />
+  </Button>
+  <div
+    className="DateSwitcher-value"
+  >
+    Jul 2018
+  </div>
+  <Button
+    onClick={[Function]}
+  >
+    <Icon
+      type="right"
+    />
+  </Button>
+</div>
+`;
