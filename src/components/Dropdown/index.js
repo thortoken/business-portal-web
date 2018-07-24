@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { Dropdown as AntDropdown, Menu } from 'antd';
+
+import './Dropdown.css';
 
 export class Dropdown extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     onClick: PropTypes.func,
     options: PropTypes.arrayOf(
@@ -22,13 +26,15 @@ export class Dropdown extends React.Component {
   };
 
   render() {
-    const { children, options, onClick, ...dropdownProps } = this.props;
+    const { className, children, options, onClick, ...dropdownProps } = this.props;
 
     const menu = this.renderMenu();
     return (
-      <AntDropdown overlay={menu} trigger={['click']} {...dropdownProps}>
-        {children}
-      </AntDropdown>
+      <div className={classNames('Dropdown', className)}>
+        <AntDropdown overlay={menu} trigger={['click']} {...dropdownProps}>
+          {children}
+        </AntDropdown>
+      </div>
     );
   }
 

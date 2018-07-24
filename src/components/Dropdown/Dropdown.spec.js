@@ -17,7 +17,13 @@ describe('component: <Dropdown/>', () => {
     it('should pass all other props to the dropdown', () => {
       const dropdownProps = { other1: 'value1', other2: 'value2' };
       const wrapper = initDropdown(dropdownProps);
-      expect(wrapper.props()).toMatchObject(dropdownProps);
+      expect(wrapper.find('Dropdown').props()).toMatchObject(dropdownProps);
+    });
+
+    it('should append the provided className', () => {
+      const dropdownProps = { className: 'Test-classname' };
+      const wrapper = initDropdown(dropdownProps);
+      expect(wrapper.prop('className')).toContain('Test-classname');
     });
   });
 
