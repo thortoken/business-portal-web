@@ -4,12 +4,12 @@ export default n => {
     rows.push({
       key: i,
       transId: 11067 + i,
-      customerId: 'Jenna Elfman',
-      received: 189.95 + i * 0.1,
-      transId2: 10458 + i,
+      serviceDate: new Date('2018-04-25T11:22:33'),
+      service: ['Oil Change'],
+      payment: 110.45 + i * 0.2,
       contractor: 'Jordy Bahm',
-      paid: 110.45 + i * 0.2,
       date: new Date('2018-04-25T11:22:33'),
+      city: 'San Francisco',
     });
   }
   return rows;

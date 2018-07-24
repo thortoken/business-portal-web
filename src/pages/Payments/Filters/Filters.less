@@ -1,35 +1,58 @@
 @import "../../../styles/variables.less";
 
 .Filters {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  .Filters-row {
+    display: flex;
+    align-items: stretch;
 
-  > * + * {
-    margin-left: 0.5rem;
-    margin-bottom: 0.5rem;
+    > * {
+      margin-bottom: 0.8rem;
+    }
+    > * + * {
+      margin-left: 0.8rem;
+    }
+  }
+
+  .Filters-form {
+    justify-content: stretch;
+  }
+
+  .Filters-chart-summary {
+    justify-content: space-between;
+
+    &-item {
+      font-size: 1.25rem;
+
+      > span {
+        color: @color-blue;
+        font-size: 1.6rem;
+      }
+    }
+  }
+
+  .Filters-interval-selector {
+    .ant-btn {
+      width: 100%;
+      text-transform: uppercase;
+    }
   }
 
   .Filters-search {
     width: auto;
-    flex-basis: 300px;
+    flex-basis: 280px;
     flex-grow: 1;
-    margin-left: 0.5rem;
-    margin-bottom: 0.5rem;
-
-    @media (max-width: @screen-md-max) {
-      margin-left: 0;
-      order: 4;
-    }
   }
 
-  .Filters-period-selector,
-  .Filters-actions {
-    > * + .ant-btn {
-      margin-left: 0.5rem;
-    }
-    > *:last-child {
-      margin-right: 0;
-    }
+  .Filters-date-selector {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5rem;
+  }
+
+  .Filters-date-selector,
+  .Filters-interval-selector {
+    width: auto;
+    flex-basis: 280px;
   }
 }
