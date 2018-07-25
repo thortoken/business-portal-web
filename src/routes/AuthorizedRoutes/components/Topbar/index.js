@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -35,10 +36,10 @@ class Topbar extends React.Component {
   }
 
   render() {
-    const { isAutoRenewOn, balanceValue, paymentDaysLeft } = this.props;
+    const { className, isAutoRenewOn, balanceValue, paymentDaysLeft } = this.props;
 
     return (
-      <div className="Topbar">
+      <div className={classNames('Topbar', className)}>
         <div className="Topbar-left">
           <Logo>
             <img className="Topbar-logo-image" src="images/yoshi_logo.png" />
