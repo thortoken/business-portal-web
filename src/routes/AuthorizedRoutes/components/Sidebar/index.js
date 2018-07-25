@@ -7,17 +7,9 @@ import { Layout, Menu, Icon } from 'antd';
 import classnames from 'classnames';
 
 import { logout } from '~redux/actions/login';
+import { getSelectedKeyFromPath } from '../Topbar/helper';
 
 import './Sidebar.css';
-
-export const getSelectedKeyFromPath = path => {
-  if (!path) {
-    return '';
-  }
-
-  const matches = path.match(/^(\/[^/]*)/);
-  return matches ? matches[0] : '';
-};
 
 export class Sidebar extends React.Component {
   static propTypes = {

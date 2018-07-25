@@ -8,13 +8,15 @@ import './Dropdown.css';
 export class Dropdown extends React.Component {
   static propTypes = {
     className: PropTypes.string,
+    menuClassName: PropTypes.string,
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     onClick: PropTypes.func,
     options: PropTypes.arrayOf(
       PropTypes.oneOfType([
         PropTypes.shape({
           key: PropTypes.string.isRequired,
-          value: PropTypes.string.isRequired,
+          value: PropTypes.oneOfType([PropTypes.string, PropTypes.node, PropTypes.func]).isRequired,
+          className: PropTypes.string,
         }),
         PropTypes.string,
       ])
@@ -39,15 +41,20 @@ export class Dropdown extends React.Component {
   }
 
   renderMenu = () => {
-    const { options } = this.props;
+    const { options, menuClassName } = this.props;
 
     return (
-      <Menu onClick={this.handleSelect}>
+      <Menu onClick={this.handleSelect} className={menuClassName}>
         {options.map(option => {
           const value = option.value || option;
           const key = option.key || value;
+          const className = option.className || '';
 
-          return <Menu.Item key={key}>{value}</Menu.Item>;
+          return (
+            <Menu.Item key={key} className={className}>
+              {value}
+            </Menu.Item>
+          );
         })}
       </Menu>
     );

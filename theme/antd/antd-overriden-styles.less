@@ -47,9 +47,15 @@
 
 ul.ant-menu {
   li.ant-menu-item {
-    font-size: 1.25rem;
-    height: 60px;
-    line-height: 60px;
+    font-size: 1.125rem;
+    height: @Topbar-height;
+    line-height: @Topbar-height;
+    width: 7.625rem;
+
+    &:hover {
+      border-bottom-width: 0.375rem;
+      font-weight: 800;
+    }
 
     .anticon {
       font-size: 1.25rem;
@@ -57,6 +63,35 @@ ul.ant-menu {
   }
 
   li.ant-menu-item-selected {
-    background-color: @active-menu-item-color;
+    border-bottom: 0.375rem solid @active-menu-item-color;
+  }
+}
+
+.ant-dropdown {
+  &-menu {
+    padding: 0.25rem;
+
+    &-item {
+      border-radius: @border-radius-base;
+
+      a > .anticon + span {
+        padding-left: 0.625rem;
+      }
+
+      &:hover {
+        color: @color-white;
+      }
+
+      &&-active,
+      &&-active:first-child,
+      &&-active:last-child {
+        border-radius: @border-radius-base;
+        background-color: @active-menu-item-color;
+
+        a {
+          color: @color-white;
+        }
+      }
+    }
   }
 }

@@ -1,0 +1,45 @@
+@import "../../../../styles/variables.less";
+
+.Topbar {
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: space-between;
+  background-color: @color-white;
+  padding: 0;
+  height: @Topbar-height;
+  line-height: @Topbar-height;
+  box-shadow: -1px 5px 10px 0px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid @color-grey-lighter;
+
+  &-left,
+  &-center,
+  &-right {
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  @media (min-width: @screen-xs-min) {
+    &-left,
+    &-right {
+      min-width: auto;
+    }
+  }
+
+  &-right {
+    justify-content: flex-end;
+  }
+
+  &-logo {
+    height: @Topbar-height;
+    border-bottom: 1px solid @color-grey-lighter;
+
+    img {
+      margin-left: 1.25rem;
+      height: 3.5rem;
+    }
+  }
+}
