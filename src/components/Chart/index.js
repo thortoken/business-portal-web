@@ -59,8 +59,8 @@ export class Chart extends React.Component {
   render() {
     const {
       component: ChartComponent,
-      width,
-      height,
+      width: basicWidth,
+      height: basicHeight,
       hideTooltip,
       style,
       tooltipData,
@@ -71,11 +71,17 @@ export class Chart extends React.Component {
 
     const { chartData } = this.state;
 
-    if (width < 10) {
+    if (basicWidth < 10) {
       return null;
     }
 
     const margin = { ...Chart.defaultProps.margin, ...this.props.margin };
+    const width =
+      basicWidth - Math.min(style.marginLeft || 0, 0) - Math.min(style.marginRight || 0, 0);
+    const height =
+      basicHeight - Math.min(style.marginTop || 0, 0) - Math.min(style.marginBottom || 0, 0);
+
+    console.log({ basicWidth, width });
 
     // bounds
     const graphWidth = width - margin.left - margin.right;
