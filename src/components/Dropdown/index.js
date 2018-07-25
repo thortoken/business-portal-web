@@ -61,7 +61,10 @@ export class Dropdown extends React.Component {
   };
 
   handleSelect = event => {
-    this.props.onClick(event.key);
+    const { onClick } = this.props;
+    if (onClick) {
+      onClick(event.key);
+    }
   };
 }
 
