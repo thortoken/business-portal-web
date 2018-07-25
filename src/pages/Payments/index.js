@@ -42,7 +42,7 @@ class Payments extends React.Component {
         </Box>
 
         <Box transparent>
-          <Chart component={AreaChart} height={256} theme="blue" />
+          <Chart component={AreaChart} height={256} theme="blue" style={{ marginLeft: -60 }} />
         </Box>
 
         <Box>
