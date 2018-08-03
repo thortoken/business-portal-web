@@ -11,7 +11,6 @@ import sagas from './sagas';
 import statusReducer from './reducers/status';
 import transactionsReducer from './reducers/transactions';
 import walletReducer from './reducers/wallet';
-import topbarReducer from './reducers/topbar';
 
 export const history = createHistory();
 
@@ -25,7 +24,6 @@ const allReducers = combineReducers({
   router: routerReducer,
   transactions: transactionsReducer,
   wallet: walletReducer,
-  topbar: topbarReducer,
 });
 
 const store = createStore(
