@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component: <ManageAccount/> Menu items generator render dropdown 1`] = `
+<div
+  className="ManageAccount"
+>
+  <Dropdown
+    className="ManageAccount-btn"
+    menuClassName="ManageAccount-menu"
+    options={
+      Array [
+        Object {
+          "className": "ManageAccount-list-item",
+          "key": "/add-team-member",
+          "value": <Link
+            replace={false}
+            to="/add-team-member"
+      >
+            <Icon
+                  type="plus"
+            />
+             
+            <span>
+                  Add Team Memebers
+            </span>
+      </Link>,
+        },
+        Object {
+          "className": "ManageAccount-list-item",
+          "key": "/add-invite-contractors",
+          "value": <Link
+            replace={false}
+            to="/add-invite-contractors"
+      >
+            <Icon
+                  type="user"
+            />
+             
+            <span>
+                  Add / Invite Contractors
+            </span>
+      </Link>,
+        },
+        Object {
+          "className": "ManageAccount-list-item",
+          "key": "/bank-account",
+          "value": <Link
+            replace={false}
+            to="/bank-account"
+      >
+            <Icon
+                  type="bank"
+            />
+             
+            <span>
+                  Bank Account
+            </span>
+      </Link>,
+        },
+        Object {
+          "className": "ManageAccount-list-item ManageAccount-logout",
+          "key": "",
+          "value": <div
+            onClick={[Function]}
+      >
+            <Icon
+                  type="logout"
+            />
+             
+            <span>
+                  Log Out
+            </span>
+      </div>,
+        },
+      ]
+    }
+  >
+    <Button
+      ghost={true}
+      type="primary"
+    >
+      <Icon
+        className="ManageAccount-icon"
+        type="setting"
+      />
+       Manage Account
+    </Button>
+  </Dropdown>
+</div>
+`;

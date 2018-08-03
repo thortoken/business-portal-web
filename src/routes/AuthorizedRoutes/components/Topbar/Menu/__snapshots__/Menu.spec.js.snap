@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component: <Menu/> should highlight menu item should highlight selected items based on pathname 1`] = `
+<Menu
+  className="Menu"
+  mode="horizontal"
+  selectedKeys={
+    Array [
+      "/welcome",
+    ]
+  }
+  theme="light"
+>
+  <MenuItem
+    key="/welcome"
+  >
+    <Link
+      replace={false}
+      to="/welcome"
+    >
+      <span>
+        Welcome
+      </span>
+    </Link>
+  </MenuItem>
+  <MenuItem
+    key="/payments"
+  >
+    <Link
+      replace={false}
+      to="/payments"
+    >
+      <span>
+        Payments
+      </span>
+    </Link>
+  </MenuItem>
+</Menu>
+`;
+
+exports[`component: <Menu/> should highlight menu item should highlight selected items based on pathname 2`] = `
+<Menu
+  className="Menu"
+  mode="horizontal"
+  selectedKeys={
+    Array [
+      "/payments",
+    ]
+  }
+  theme="light"
+>
+  <MenuItem
+    key="/welcome"
+  >
+    <Link
+      replace={false}
+      to="/welcome"
+    >
+      <span>
+        Welcome
+      </span>
+    </Link>
+  </MenuItem>
+  <MenuItem
+    key="/payments"
+  >
+    <Link
+      replace={false}
+      to="/payments"
+    >
+      <span>
+        Payments
+      </span>
+    </Link>
+  </MenuItem>
+</Menu>
+`;
+
+exports[`component: <Menu/> should highlight menu item should render correct 1`] = `
+Array [
+  <MenuItem>
+    <Link
+        replace={false}
+        to="/example1"
+    >
+        <span>
+            First
+        </span>
+    </Link>
+</MenuItem>,
+  <MenuItem>
+    <Link
+        replace={false}
+        to="/example2"
+    >
+        <span>
+            Second
+        </span>
+    </Link>
+</MenuItem>,
+  <MenuItem>
+    <Link
+        replace={false}
+        to="/example3"
+    >
+        <span>
+            Third
+        </span>
+    </Link>
+</MenuItem>,
+]
+`;

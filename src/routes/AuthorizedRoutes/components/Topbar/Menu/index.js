@@ -8,10 +8,32 @@ import { getSelectedKeyFromPath } from '../helper';
 
 import './Menu.css';
 
+const menuItems = [
+  { route: '/welcome', label: 'Welcome' },
+  { route: '/payments', label: 'Payments' },
+];
+
+export const generateMenuItems = list => {
+  return list.map(item => (
+    <MenuAnt.Item key={item.route}>
+      <Link to={item.route}>
+        <span>{item.label}</span>
+      </Link>
+    </MenuAnt.Item>
+  ));
+};
+
 export class Menu extends React.Component {
   static propTypes = {
     pathname: PropTypes.string,
   };
+
+  constructor(props) {
+    super(props);
+
+    this.menuItems = menuItems;
+    this.generateMenuItems = generateMenuItems;
+  }
 
   render() {
     const { pathname } = this.props;
@@ -20,16 +42,7 @@ export class Menu extends React.Component {
 
     return (
       <MenuAnt theme="light" mode="horizontal" selectedKeys={selectedKeys} className="Menu">
-        <MenuAnt.Item key="/welcome">
-          <Link to="/welcome">
-            <span>Overview</span>
-          </Link>
-        </MenuAnt.Item>
-        <MenuAnt.Item key="/payments">
-          <Link to="/payments">
-            <span>Payments</span>
-          </Link>
-        </MenuAnt.Item>
+        {this.generateMenuItems(menuItems)}
       </MenuAnt>
     );
   }

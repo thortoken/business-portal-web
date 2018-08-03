@@ -10,13 +10,13 @@ import Dropdown from '~components/Dropdown';
 
 import './ManageAccount.css';
 
-const generateMenuItems = list => {
+export const generateMenuItems = list => {
   return list.map(element => {
     const hasKey = element.hasOwnProperty('key') && element.key;
     const hasAction = element.hasOwnProperty('action') && element.action;
 
     if (!hasAction && !hasKey) {
-      return;
+      return null;
     }
 
     let Component = hasKey ? Link : 'div';

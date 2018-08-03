@@ -26,6 +26,8 @@ const Progress = namedComponent('Progress');
 
 const Row = namedComponent('Row');
 
+const Switch = namedComponent('Switch');
+
 const Slider = namedComponent('Slider');
 
 const Steps = namedComponent('Steps');
@@ -45,6 +47,7 @@ module.exports = {
   Icon,
   Progress,
   Row,
+  Switch,
   Slider,
   Steps,
   Table,
