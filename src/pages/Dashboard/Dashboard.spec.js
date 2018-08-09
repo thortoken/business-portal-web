@@ -6,9 +6,7 @@ import { Dashboard } from './index';
 const initDashboard = overrides => {
   const mockProps = {
     exchangeRates: { 'thor-usd': { rate: 1.0 } },
-    syncTransactions: jest.fn(),
     syncWallet: jest.fn(),
-    transactions: [],
     wallet: {},
   };
   const wrapper = shallow(<Dashboard {...mockProps} {...overrides} />);
@@ -33,7 +31,6 @@ describe('page: <Dashboard/>', () => {
 
       instance.componentDidMount();
 
-      expect(mockProps.syncTransactions).toHaveBeenCalled();
       expect(mockProps.syncWallet).toHaveBeenCalled();
     });
   });

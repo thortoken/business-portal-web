@@ -11,6 +11,7 @@ import './Menu.css';
 const menuItems = [
   { route: '/welcome', label: 'Welcome' },
   { route: '/payments', label: 'Payments' },
+  { route: '/contractors', label: 'Contractors' },
 ];
 
 export const generateMenuItems = list => {

@@ -11,6 +11,7 @@ import sagas from './sagas';
 import statusReducer from './reducers/status';
 import transactionsReducer from './reducers/transactions';
 import walletReducer from './reducers/wallet';
+import jobsReducer from './reducers/jobs';
 
 export const history = createHistory();
 
@@ -19,6 +20,7 @@ const sagaMiddleware = createSagaMiddleware();
 const allReducers = combineReducers({
   form: formReducer,
   login: loginReducer,
+  jobs: jobsReducer,
   jumio: jumioReducer,
   status: statusReducer,
   router: routerReducer,

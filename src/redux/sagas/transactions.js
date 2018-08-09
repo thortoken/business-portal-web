@@ -1,28 +1,42 @@
-import { takeEvery, fork } from 'redux-saga/effects';
+import { takeEvery, takeLatest, fork, take, cancel } from 'redux-saga/effects';
 import rsf, { firestore } from '../rsf';
 
-import { types, syncTransactionsSuccess, syncTransactionsFailure } from '../actions/transactions';
+import {
+  types,
+  getPendingTransactionsFailure,
+  getPendingTransactionsSuccess,
+  getPaidTransactionsFailure,
+  getPaidTransactionsSuccess,
+} from '../actions/transactions';
 import { collectionTransformer } from './utils';
 
-// function* getTransactionsSaga() {
-//   try {
-//     const snapshot = yield call(rsf.firestore.getCollection, 'payments');
-//     const payments = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-//     yield put(getTransactionsSuccess(payments));
-//   } catch (error) {
-//     yield put(getTransactionsFailure(error));
-//   }
-// }
+function* getTransactionsSaga(action) {
+  while (true) {
+    const task = yield fork(
+      rsf.firestore.syncCollection,
+      firestore
+        .collection('fakeTransactions')
+        .where('status', '==', action.params.status)
+        .where('date', '>=', new Date(action.params.startDate))
+        .where('date', '<', new Date(action.params.endDate)),
+      {
+        failureActionCreator:
+          action.params.status === 'PENDING'
+            ? getPendingTransactionsFailure
+            : getPaidTransactionsFailure,
+        successActionCreator:
+          action.params.status === 'PENDING'
+            ? getPendingTransactionsSuccess
+            : getPaidTransactionsSuccess,
+        transform: collectionTransformer,
+      }
+    );
 
-function* syncTransactionsSaga() {
-  yield fork(rsf.firestore.syncCollection, firestore.collection('transactions').limit(5), {
-    failureActionCreator: syncTransactionsFailure,
-    successActionCreator: syncTransactionsSuccess,
-    transform: collectionTransformer,
-  });
+    yield take(types.GET_TRANSACTIONS.PAUSE);
+    yield cancel(task);
+  }
 }
 
 export default function* transactionsRootSaga() {
-  yield takeEvery(types.SYNC_TRANSACTIONS.REQUEST, syncTransactionsSaga);
-  // yield takeEvery(types.GET_TRANSACTIONS.REQUEST, getTransactionsSaga);
+  yield takeEvery(types.GET_TRANSACTIONS.REQUEST, getTransactionsSaga);
 }

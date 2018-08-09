@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Row, Col, Icon, Button, Divider } from 'antd';
 
-import { syncTransactions } from '~redux/actions/transactions';
 import { syncWallet } from '~redux/actions/wallet';
 
 import Box from '~components/Box';
@@ -24,7 +23,6 @@ export class Dashboard extends React.Component {
     exchangeRates: PropTypes.shape({
       'thor-usd': PropTypes.object.isRequired,
     }).isRequired,
-    syncTransactions: PropTypes.func.isRequired,
     syncWallet: PropTypes.func.isRequired,
     transactions: PropTypes.arrayOf(PropTypes.object).isRequired,
     wallet: PropTypes.object.isRequired,
@@ -35,13 +33,11 @@ export class Dashboard extends React.Component {
   };
 
   componentDidMount() {
-    this.props.syncTransactions();
     this.props.syncWallet();
   }
 
   render() {
     const { transactionsPeriod } = this.state;
-    const { transactions } = this.props;
 
     const { usd, thor, thorAsUsd, total } = this.calcWalletBalance();
 
@@ -179,7 +175,6 @@ export class Dashboard extends React.Component {
             </Col>
           </Row>
         </div>
-        <ul>{transactions.map(payment => <li key={payment.id}>{payment.amount}</li>)}</ul>
       </div>
     );
   }
@@ -208,7 +203,6 @@ export class Dashboard extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  transactions: state.transactions.transactions,
   wallet: state.wallet.wallet,
   exchangeRates: state.wallet.exchangeRates,
 });
@@ -216,7 +210,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      syncTransactions,
       syncWallet,
     },
     dispatch
