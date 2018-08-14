@@ -1,0 +1,68 @@
+@import "../../../../styles/variables.less";
+
+@Bottom-bar-height: 10rem;
+
+.BottomBar {
+  position: fixed;
+  display: block;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: @Bottom-bar-height;
+  background-color: @color-white;
+  box-shadow: 0px 0px 10px 0px @color-grey-medium;
+
+  &-placeholder {
+    height: @Bottom-bar-height;
+    width: 100%;
+  }
+
+  &-hidden {
+    display: none;
+  }
+
+  &-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: @Bottom-bar-height;
+  }
+
+  &-label,
+  &-value,
+  &-action {
+    display: flex;
+  }
+
+  &-label {
+    font-size: 1.2rem;
+    margin-right: 3.75rem;
+  }
+
+  &-value {
+    font-size: 3rem;
+    color: @color-green-neon;
+    margin-right: 2rem;
+  }
+
+  &-action {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &-btn > button {
+    padding: 0 4.375rem;
+    background-color: @color-green-neon;
+    border-color: @color-green-neon;
+
+    &:hover {
+      background-color: @color-green;
+      border-color: @color-green;
+    }
+  }
+
+  &-contractors-count,
+  &-btn {
+    line-height: initial;
+  }
+}
