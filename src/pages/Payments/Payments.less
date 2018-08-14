@@ -1,4 +1,4 @@
-@import '../../styles/variables.less';
+@import "../../styles/variables.less";
 
 .Payments {
   &-table {
@@ -10,6 +10,85 @@
         border: 1px solid @color-grey;
         color: @color-grey-dark;
         font-size: 1rem;
+      }
+    }
+
+    &-current {
+      color: @color-green-neon;
+    }
+
+    table {
+      thead > tr > th {
+        background: @color-darker-blue;
+        background: linear-gradient(@color-darker-blue, @color-blue);
+        color: @color-white;
+      }
+
+      tbody > tr {
+        &.ant-table-expanded-row > td {
+          padding: 0;
+        }
+
+        td.Payments-table-approve {
+          padding: 0;
+          line-height: 3.375rem;
+
+          button {
+            height: 100%;
+            width: 100%;
+            background-color: @color-grey-disabled;
+            font-size: 1.5rem;
+
+            &:hover {
+              background-color: @color-grey-light;
+            }
+
+            &:focus {
+              outline: none;
+            }
+
+            &.active {
+              color: @color-green-neon;
+              background-color: @color-white;
+            }
+          }
+        }
+
+        td.ant-table-row-expand-icon-cell {
+          span {
+            border-radius: 50%;
+            border: 2px solid @color-blue;
+            height: 1.5rem;
+            width: 1.5rem;
+
+            &:after {
+              color: @color-blue;
+              font-size: 1.2rem;
+              line-height: 1.25rem;
+              margin-left: 0.0625rem;
+            }
+          }
+        }
+      }
+    }
+
+    &-nested {
+      margin-right: 25%;
+
+      .ant-table .ant-table-content table {
+        border: none;
+
+        thead > tr > th {
+          background: initial;
+          color: initial;
+          border-right: 0;
+        }
+
+        tbody > tr > td {
+          padding: 1rem;
+          border-bottom: 0;
+          border-right: 0;
+        }
       }
     }
   }
