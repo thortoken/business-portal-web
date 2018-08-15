@@ -1,4 +1,4 @@
-@import "../../styles/variables.less";
+@import "../../../../styles/variables.less";
 
 @Bottom-bar-height: 10rem;
 
@@ -36,19 +36,18 @@
 
   &-label {
     font-size: 1.2rem;
-    margin-right: 3rem;
+    margin-right: 3.75rem;
   }
 
   &-value {
     font-size: 3rem;
     color: @color-green-neon;
-    margin-right: 3rem;
+    margin-right: 2rem;
   }
 
   &-action {
     flex-direction: column;
     align-items: center;
-    margin-top: -35px;
   }
 
   &-btn > button {
@@ -60,21 +59,10 @@
       background-color: @color-green;
       border-color: @color-green;
     }
-
-    &:active,
-    &:focus {
-      background-color: @color-green-neon;
-      border-color: @color-green-neon;
-    }
   }
 
   &-contractors-count,
   &-btn {
     line-height: initial;
-  }
-
-  &-contractors-count {
-    color: @color-grey;
-    margin-bottom: 10px;
   }
 }

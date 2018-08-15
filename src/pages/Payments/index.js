@@ -27,30 +27,12 @@ const { Column } = Table;
 const transactionsPerContractor = transactions =>
   _.groupBy(transactions, transaction => transaction.contractor.id);
 
-const jobsPerType = jobs => _.groupBy(jobs, job => job.jobId);
-
 const calculateSummaryTransactions = (transactions, period) => {
   const datesForPeriod =
     period === 'prev' ? getPreviousTwoWeeksPeriod() : getCurrentTwoWeeksPeriod();
   const obj = { ...datesForPeriod };
   obj.contractorsCount = Object.keys(transactionsPerContractor(transactions)).length;
   obj.value = _.sumBy(transactions, 'jobCost');
-  return obj;
-};
-
-const calculateJobs = jobs => {
-  const obj = {};
-  Object.keys(jobs).forEach(jobId => {
-    obj[jobId] = {
-      jobId,
-      name: jobs[jobId][0].jobName,
-      count: jobs[jobId].length,
-      prev: 0,
-      current: _.sumBy(jobs[jobId], 'jobCost'),
-      jobs: jobs[jobId],
-    };
-  });
-
   return obj;
 };
 
