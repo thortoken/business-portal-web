@@ -4,13 +4,17 @@ import { Icon, Table } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import classnames from 'classnames';
 
 import { getTransactions, pauseTransactions } from '~redux/actions/transactions';
 import { getJobs, pauseJobs } from '~redux/actions/jobs';
 
 import Box from '~components/Box';
 import Header from '~components/Header';
+import BottomBar from '~components/BottomBar';
 import Summary from './components/Summary';
+import JobsList from './components/JobsList';
+import TitleWithIcon from './components/TitleWithIcon';
 
 import { getCurrentTwoWeeksPeriod, getPreviousTwoWeeksPeriod } from '~utils/time';
 import { formatUsd } from '~utils/number';
@@ -18,14 +22,6 @@ import { formatUsd } from '~utils/number';
 import './Payments.css';
 
 const { Column } = Table;
-
-const TitleWithIcon = ({ title, icon }) => {
-  return (
-    <span>
-      <Icon type={icon} /> {title}
-    </span>
-  );
-};
 
 const transactionsPerContractor = transactions =>
   _.groupBy(transactions, transaction => transaction.contractor.id);
@@ -89,6 +85,9 @@ class Payments extends React.Component {
     calculatedPreviousTransactions: [],
     calculatedCurrentTransactions: [],
     pendingTransactions: [],
+    selectedTransactionsIds: new Set(),
+    selectedContractorsIds: new Set(),
+    selectedTransactionsSummaryValue: 0,
   };
 
   componentDidMount() {
@@ -141,7 +140,14 @@ class Payments extends React.Component {
   }
 
   render() {
-    const { previous, current, calculatedCurrentTransactions } = this.state;
+    const {
+      previous,
+      current,
+      calculatedCurrentTransactions,
+      selectedTransactionsIds,
+      selectedContractorsIds,
+      selectedTransactionsSummaryValue,
+    } = this.state;
 
     return (
       <div>
@@ -150,41 +156,116 @@ class Payments extends React.Component {
         <Summary previous={previous} current={current} />
 
         <Box>
-          <Table dataSource={calculatedCurrentTransactions} bordered>
-            <Column align="center" dataIndex="key" title="Rank" />
+          <Table
+            dataSource={calculatedCurrentTransactions}
+            bordered
+            className="Payments-table"
+            expandedRowRender={record => <div>{this.renderJobsList(record.jobs)}</div>}>
+            <Column align="center" dataIndex="key" title="Rank" width="10%" />
             <Column
               align="center"
               dataIndex="contractor"
+              width="25%"
               title={<TitleWithIcon title="Contractor" icon="user" />}
             />
-            <Column align="center" dataIndex="numOfJobs" title="Num Jobs" />
+            <Column align="center" dataIndex="numOfJobs" title="Num Jobs" width="10%" />
             <Column
               align="center"
               dataIndex="contractorId"
               render={this.showPreviousSalary}
               title="Prev"
+              width="15%"
             />
             <Column
               align="center"
+              className="Payments-table-current"
               dataIndex="salary"
               render={this.renderAmount}
+              width="15%"
               title={<TitleWithIcon title="Current" icon="dollar" />}
             />
-            <Column title="Approval" />
+            <Column
+              className="Payments-table-approve"
+              title="Approval"
+              align="center"
+              width="25%"
+              render={(text, record) => (
+                <button
+                  className={classnames(null, { active: this.isActive(record) })}
+                  onClick={() => this.handleSelectTransaction(record)}>
+                  <Icon type="check" />
+                </button>
+              )}
+            />
           </Table>
         </Box>
+        <BottomBar
+          selectedTransactionsIds={selectedTransactionsIds}
+          selectedContractorsIds={selectedContractorsIds}
+          selectedTransactionsSummaryValue={selectedTransactionsSummaryValue}
+        />
       </div>
     );
   }
 
+  isActive = record => {
+    const { selectedContractorsIds } = this.state;
+    return selectedContractorsIds.has(record.contractorId);
+  };
+
+  handleSelectTransaction = record => {
+    const { selectedTransactionsIds, selectedContractorsIds } = this.state;
+    let { selectedTransactionsSummaryValue } = this.state;
+    const contractorId = record.jobs[0].contractor.id;
+
+    if (selectedContractorsIds.has(contractorId)) {
+      selectedContractorsIds.delete(contractorId);
+    } else {
+      selectedContractorsIds.add(contractorId);
+    }
+
+    record.jobs.forEach(job => {
+      const jobId = job.id;
+
+      if (selectedTransactionsIds.has(jobId)) {
+        selectedTransactionsIds.delete(jobId);
+        selectedTransactionsSummaryValue -= job.jobCost;
+      } else {
+        selectedTransactionsIds.add(jobId);
+        selectedTransactionsSummaryValue += job.jobCost;
+      }
+    });
+
+    this.setState({
+      selectedTransactionsIds,
+      selectedContractorsIds,
+      selectedTransactionsSummaryValue,
+    });
+  };
+
   handleTypeChange = e => this.setState({ type: e.target.value });
 
   renderAmount = amount => formatUsd(amount);
+
   showPreviousSalary = contractorId => {
     const { previousTransactionsMap } = this.state;
     return previousTransactionsMap.get(contractorId)
       ? formatUsd(previousTransactionsMap.get(contractorId))
       : '$0';
+  };
+
+  renderJobsList = jobsList => {
+    const { paidTransactions } = this.state;
+    const { jobs } = this.props;
+
+    return (
+      <JobsList
+        jobs={jobs}
+        jobsList={jobsList}
+        paidTransactions={paidTransactions}
+        renderAmount={this.renderAmount}
+      />
+    );
   };
 }
 
