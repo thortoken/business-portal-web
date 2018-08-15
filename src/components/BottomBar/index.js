@@ -10,10 +10,10 @@ import './BottomBar.css';
 export class BottomBar extends Component {
   render() {
     const { selectedContractorsIds, selectedTransactionsSummaryValue } = this.props;
+    const selectedContractorsCount = selectedContractorsIds.size;
 
     return (
-      <div
-        className={classnames(null, { 'BottomBar-hidden': selectedContractorsIds.length === 0 })}>
+      <div className={classnames(null, { 'BottomBar-hidden': selectedContractorsCount === 0 })}>
         <div className="BottomBar-placeholder" />
         <div className="BottomBar">
           <div className="BottomBar-center">
@@ -21,8 +21,8 @@ export class BottomBar extends Component {
             <div className="BottomBar-value">{formatUsd(selectedTransactionsSummaryValue)}</div>
             <div className="BottomBar-action">
               <div className="BottomBar-contractors-count">
-                {selectedContractorsIds.length}{' '}
-                {selectedContractorsIds.length > 1 ? 'Contractors' : 'Contractor'}
+                {selectedContractorsCount}{' '}
+                {selectedContractorsCount > 1 ? 'Contractors' : 'Contractor'}
               </div>
               <div className="BottomBar-btn">
                 <Button type="primary">Pay Now</Button>

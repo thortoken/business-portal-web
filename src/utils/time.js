@@ -19,7 +19,8 @@ const getFirstWeekOfTheYear = () => {
 };
 
 const getStartPeriodWeek = () => {
-  return moment().week() % 2 ? moment().week() - 1 : moment().week();
+  const currentWeek = moment().week();
+  return currentWeek - currentWeek % 2;
 };
 
 export const getCurrentTwoWeeksPeriod = () => {
