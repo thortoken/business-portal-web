@@ -16,8 +16,8 @@ const menuItems = [
 
 export const generateMenuItems = list => {
   return list.map(item => (
-    <MenuAnt.Item key={item.route}>
-      <Link to={item.route}>
+    <MenuAnt.Item key={item.route} className="Menu__item">
+      <Link to={item.route} className="Menu__link">
         <span>{item.label}</span>
       </Link>
     </MenuAnt.Item>

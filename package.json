@@ -23,6 +23,7 @@
     "d3-time-format": "^2.1.1",
     "firebase": "^4.9.0",
     "history": "^4.7.2",
+    "lodash": "^4.17.10",
     "ls": "^0.2.1",
     "moment": "^2.22.2",
     "password-validator": "^4.0.0",
