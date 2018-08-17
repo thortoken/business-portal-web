@@ -1,0 +1,67 @@
+@import "../../../../styles/variables.less";
+
+.Stats {
+  margin-top: 1.875rem;
+
+  &__box {
+    padding: 1.875rem 1.25rem;
+  }
+
+  &__row {
+    display: flex;
+    flex: 0 0 auto;
+    justify-content: space-between;
+    margin: 1.25rem 0;
+  }
+
+  &__count {
+    flex: 1;
+    font-size: 1.25rem;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  &__type {
+    flex: 1;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    text-align: right;
+    padding-right: 1.25rem;
+    min-width: 120px;
+    letter-spacing: 1px;
+  }
+
+  &__progress {
+    flex: 10;
+    padding-right: 1.25rem;
+    .ant-progress-inner {
+      background: transparent;
+      border-radius: 0;
+      .ant-progress-bg {
+        border-radius: 0;
+        height: 0.875rem !important;
+      }
+    }
+  }
+
+  &--active {
+    color: @color-active;
+    .ant-progress-bg {
+      background-color: @color-active;
+    }
+  }
+
+  &--resting {
+    color: @color-resting;
+    .ant-progress-bg {
+      background-color: @color-resting;
+    }
+  }
+
+  &--inactive {
+    color: @color-inactive;
+    .ant-progress-bg {
+      background-color: @color-inactive;
+    }
+  }
+}
