@@ -1,6 +1,12 @@
 import moment from 'moment';
 
-const weekOfear = weeksToAdd => {
+export const PERIODS = {
+  ONE_WEEK: 'ONE_WEEK',
+  TWO_WEEKS: 'TWO_WEEKS',
+  MONTH: 'MONTH',
+};
+
+export const weekOfYear = weeksToAdd => {
   return moment(
     moment(
       moment()
@@ -18,7 +24,15 @@ const getFirstWeekOfTheYear = () => {
   ).startOf('isoWeek');
 };
 
-const getStartPeriodWeek = () => {
+export const getCurrentWeek = () => {
+  return moment().week();
+};
+
+export const getCurrentWeekPeriod = () => {
+  return { startDate: moment().startOf('week'), endDate: moment().endOf('week') };
+};
+
+export const getStartPeriodWeek = () => {
   const currentWeek = moment().week();
   return currentWeek - currentWeek % 2;
 };
@@ -29,24 +43,28 @@ export const getCurrentTwoWeeksPeriod = () => {
 
   if (moment().week() <= 2) {
     startDate = getFirstWeekOfTheYear();
-    endDate = weekOfear(1).endOf('isoWeek');
+    endDate = weekOfYear(1).endOf('week');
   }
 
   if (moment().week() > 2) {
     let startWeek = getStartPeriodWeek();
 
-    startDate = weekOfear(startWeek).startOf('isoWeek');
-    endDate = weekOfear(startWeek + 1).endOf('isoWeek');
+    startDate = weekOfYear(startWeek).startOf('week');
+    endDate = weekOfYear(startWeek + 1).endOf('week');
   }
 
   return { startDate, endDate };
 };
 
+export const getCurrentMonthPeriod = () => {
+  return { startDate: moment().startOf('month'), endDate: moment().endOf('month') };
+};
+
 export const getPreviousTwoWeeksPeriod = () => {
   let startWeek = getStartPeriodWeek();
 
-  let startDate = weekOfear(startWeek - 2).startOf('isoWeek');
-  let endDate = weekOfear(startWeek - 1).endOf('isoWeek');
+  let startDate = weekOfYear(startWeek - 2).startOf('week');
+  let endDate = weekOfYear(startWeek - 1).endOf('week');
 
   return { startDate, endDate };
 };
