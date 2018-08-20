@@ -34,7 +34,7 @@ export const getCurrentWeekPeriod = () => {
 
 export const getStartPeriodWeek = () => {
   const currentWeek = moment().week();
-  return currentWeek - currentWeek % 2;
+  return currentWeek - (currentWeek % 2 === 0 ? 1 : 0);
 };
 
 export const getCurrentTwoWeeksPeriod = () => {
@@ -67,4 +67,31 @@ export const getPreviousTwoWeeksPeriod = () => {
   let endDate = weekOfYear(startWeek - 1).endOf('week');
 
   return { startDate, endDate };
+};
+
+export const movePeriod = (period, startDate, endDate, side = 'next', format = 'MMM DD') => {
+  let periodInWeeks = 1;
+  if (period === PERIODS.ONE_WEEK) {
+    periodInWeeks = 1;
+  } else if (period === PERIODS.TWO_WEEKS) {
+    periodInWeeks = 2;
+  } else if (period === PERIODS.MONTH) {
+    periodInWeeks = 4;
+  }
+
+  if (side === 'prev') {
+    periodInWeeks *= -1;
+  }
+
+  let previousStartDate = startDate.add(periodInWeeks, 'week');
+  let previousEndDate = endDate.add(periodInWeeks, 'week');
+
+  return {
+    startDate: previousStartDate,
+    endDate: previousEndDate,
+    currentFormattedPeriod: {
+      startDate: previousStartDate.format(format),
+      endDate: previousEndDate.format(format),
+    },
+  };
 };
