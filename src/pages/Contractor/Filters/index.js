@@ -1,7 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Icon } from 'antd';
-import moment from 'moment';
 
 import Dropdown from '~components/Dropdown';
 
@@ -61,6 +59,10 @@ export default class Filters extends React.Component {
     return getTimeRange(period);
   }
 
+  componentDidMount() {
+    this.handleFiltersChange(this.state);
+  }
+
   render() {
     const { period, currentFormattedPeriod } = this.state;
 
@@ -95,20 +97,27 @@ export default class Filters extends React.Component {
     );
   }
 
+  handleFiltersChange = ({ startDate, endDate }) => {
+    this.props.onPeriodChange({ startDate, endDate });
+  };
+
   handlePeriodChange = newPeriod => {
-    console.log('newPeriod', newPeriod);
     this.setState({ ...getTimeRange(newPeriod), period: newPeriod });
   };
 
   handlePrevPeriod = () => {
     const { period, startDate, endDate } = this.state;
+    const newPeriod = { ...movePeriod(period, startDate, endDate, 'next') };
 
-    this.setState({ ...movePeriod(period, startDate, endDate, 'prev') });
+    this.setState(newPeriod);
+    this.handleFiltersChange(newPeriod);
   };
 
   handleNextPeriod = () => {
     const { period, startDate, endDate } = this.state;
+    const newPeriod = { ...movePeriod(period, startDate, endDate, 'next') };
 
-    this.setState({ ...movePeriod(period, startDate, endDate, 'next') });
+    this.setState(newPeriod);
+    this.handleFiltersChange(newPeriod);
   };
 }
