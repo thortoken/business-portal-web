@@ -10,9 +10,16 @@ import {
   getCurrentWeekPeriod,
   getCurrentTwoWeeksPeriod,
   getCurrentMonthPeriod,
+  movePeriod,
 } from '~utils/time';
 
 import './Filters.css';
+
+const readablePeriods = {
+  [PERIODS.ONE_WEEK]: 'ONE WEEK',
+  [PERIODS.TWO_WEEKS]: 'TWO WEEKS',
+  [PERIODS.MONTH]: 'MONTH',
+};
 
 const getTimeRange = period => {
   if (period === PERIODS.ONE_WEEK) {
@@ -38,26 +45,19 @@ const getFormattedTimePeriod = getPeriod => {
 };
 
 export default class Filters extends React.Component {
-  // static propTypes = {
-  //   busiestDay: PropTypes.string,
-  //   totalPayments: PropTypes.string,
-  // };
-
   state = {
     period: PERIODS.ONE_WEEK,
     currentFormattedPeriod: {
       startDate: '',
       endDate: '',
     },
-    startate: '',
+    startDate: '',
     endDate: '',
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log('prevState', prevState);
     const { period } = prevState;
 
-    console.log('asd', getTimeRange(period));
     return getTimeRange(period);
   }
 
@@ -68,10 +68,14 @@ export default class Filters extends React.Component {
       <div className="Filters">
         <div className="Filters-selector">
           <Dropdown
-            options={[PERIODS.ONE_WEEK, PERIODS.TWO_WEEKS, PERIODS.MONTH]}
+            options={[
+              { key: PERIODS.ONE_WEEK, value: readablePeriods[PERIODS.ONE_WEEK] },
+              { key: PERIODS.TWO_WEEKS, value: readablePeriods[PERIODS.TWO_WEEKS] },
+              { key: PERIODS.MONTH, value: readablePeriods[PERIODS.MONTH] },
+            ]}
             onClick={this.handlePeriodChange}>
             <Button type="primary" ghost>
-              {period} <Icon type="down" />
+              {readablePeriods[period]} <Icon type="down" />
             </Button>
           </Dropdown>
         </div>
@@ -92,16 +96,19 @@ export default class Filters extends React.Component {
   }
 
   handlePeriodChange = newPeriod => {
-    console.log('new period', newPeriod, getTimeRange(newPeriod));
-
+    console.log('newPeriod', newPeriod);
     this.setState({ ...getTimeRange(newPeriod), period: newPeriod });
   };
 
   handlePrevPeriod = () => {
-    console.log('prev period');
+    const { period, startDate, endDate } = this.state;
+
+    this.setState({ ...movePeriod(period, startDate, endDate, 'prev') });
   };
 
   handleNextPeriod = () => {
-    console.log('next period');
+    const { period, startDate, endDate } = this.state;
+
+    this.setState({ ...movePeriod(period, startDate, endDate, 'next') });
   };
 }
