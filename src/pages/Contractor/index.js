@@ -1,9 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Icon, Table, Button } from 'antd';
-import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { getContractor } from '~redux/actions/contractor';
+import { getUserTransactions } from '~redux/actions/transactions';
 
 import Dropdown from '~components/Dropdown';
 import BackBtn from '~components/BackBtn';
+import ContractorSummary from './components/ContractorSummary';
+
+import { formatUsd } from '~utils/number';
 
 import Filters from './Filters';
 
@@ -11,12 +19,8 @@ import './Contractor.css';
 
 const { Column } = Table;
 
-// import { generateMenuItems } from './../../routes/AuthorizedRoutes/components/Topbar/ManageAccount';
-
-const generateMenuItems = (list, contractorId) => {
+const generateMenuItems = list => {
   return list.map(element => {
-    console.log('list', list, element, contractorId);
-
     return {
       key: element.key,
       value: (
@@ -30,16 +34,39 @@ const generateMenuItems = (list, contractorId) => {
 };
 
 class Contractor extends React.Component {
+  static propTypes = {
+    getContractor: PropTypes.func.isRequired,
+  };
+
+  state = {
+    contractor: {},
+  };
+
   constructor(props) {
     super(props);
 
     this.generateMenuItems = generateMenuItems;
   }
 
-  render() {
-    const { match } = this.props;
+  componentDidMount() {
+    const { match, getContractor } = this.props;
 
-    console.log('match', match);
+    getContractor(match.params.id);
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.contractor !== prevState.contractor) {
+      return {
+        contractor: nextProps.contractor,
+      };
+    }
+
+    return {};
+  }
+
+  render() {
+    const { match, contractor, userTransactions } = this.props;
+
     const menuList = [
       {
         key: 'edit',
@@ -53,14 +80,25 @@ class Contractor extends React.Component {
       },
     ];
 
-    console.log('params', this.props.match.params);
+    let summary = {
+      rank: 1,
+      numOfJobs: 16,
+      prev: 1087.67,
+      current: 1597.43,
+      yearly: 26512.34,
+    };
+
     return (
       <div className="Contractor">
         <BackBtn to="/payments" label="Payments" />
         <div className="Contractor-box-informations">
           <div className="Contractor-basic-data">
-            <div className="Contractor-name">Owen Dilson</div>
-            <div className="Contractor-since">Contractor since 08/10/2016</div>
+            <div className="Contractor-name">
+              {contractor.firstName} {contractor.lastName}
+            </div>
+            <div className="Contractor-since">
+              Contractor since {contractor.createdAt.toLocaleDateString()}
+            </div>
           </div>
           <div className="Contractor-activity">
             <div className="Activity-active">
@@ -72,11 +110,16 @@ class Contractor extends React.Component {
         <div className="Contractor-box-informations">
           <div className="Contractor-address">
             <div className="Contractor-label">Address</div>
-            <div className="Contractor-value">380 Dillard Ave #15 San Francisco CA 94105</div>
+            <div className="Contractor-value">
+              <div>{contractor.street}</div>
+              <div>
+                {contractor.city} {contractor.state} {contractor.postalCode}
+              </div>
+            </div>
           </div>
           <div className="Contractor-phone">
             <div className="Contractor-label">Phone</div>
-            <div className="Contractor-value">(408)555-2345</div>
+            <div className="Contractor-value">{contractor.phone}</div>
           </div>
           <div className="Contractor-options">
             <Dropdown
@@ -90,21 +133,33 @@ class Contractor extends React.Component {
           </div>
         </div>
 
-        <div className="Contractor-jobs-summary">{/* separate component */}</div>
+        <ContractorSummary summary={summary} />
 
-        <Filters />
+        <Filters onPeriodChange={this.onPeriodChange} />
 
         <div className="Contractor-table">
-          <Table dataSource={[]} bordered>
-            <Column align="center" dataIndex="key" title="Date" width="15%" />
-            <Column align="center" dataIndex="contractor" width="35%" title="Service" />
-            <Column align="center" dataIndex="numOfJobs" title="Location" width="25%" />
-            <Column align="center" dataIndex="contractorId" title="Pay Amt." width="25%" />
+          <Table
+            dataSource={userTransactions.map(item => {
+              return { ...item, key: item.id };
+            })}
+            bordered>
+            <Column align="center" dataIndex="date" title="Date" width="15%" />
+            <Column align="center" dataIndex="jobId" width="35%" title="Service" />
+            {/* <Column align="center" dataIndex="location" title="Location" width="25%" /> */}
+            <Column
+              align="center"
+              dataIndex="jobCost"
+              render={this.renderAmount}
+              title="Pay Amt."
+              width="25%"
+            />
           </Table>
         </div>
       </div>
     );
   }
+
+  renderAmount = amount => formatUsd(amount);
 
   handleDelete = () => {
     const { match } = this.props;
@@ -115,6 +170,26 @@ class Contractor extends React.Component {
     const { match } = this.props;
     console.log('edit contractor', match.params.id);
   };
+
+  onPeriodChange = periodRange => {
+    const { match, getUserTransactions } = this.props;
+
+    getUserTransactions({ ...periodRange, status: 'PAID', userId: match.params.id });
+  };
 }
 
-export default Contractor;
+const mapStateToProps = state => ({
+  contractor: state.contractor.contractor,
+  userTransactions: state.transactions.userTransactions,
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getContractor,
+      getUserTransactions,
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(Contractor);
