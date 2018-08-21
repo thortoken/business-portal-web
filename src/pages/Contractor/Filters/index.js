@@ -43,23 +43,10 @@ const getFormattedTimePeriod = getPeriod => {
 };
 
 export default class Filters extends React.Component {
-  state = {
-    period: PERIODS.ONE_WEEK,
-    currentFormattedPeriod: {
-      startDate: '',
-      endDate: '',
-    },
-    startDate: '',
-    endDate: '',
-  };
+  constructor(props) {
+    super(props);
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { period } = prevState;
-
-    return getTimeRange(period);
-  }
-
-  componentDidMount() {
+    this.state = this.getNewState(PERIODS.ONE_WEEK);
     this.handleFiltersChange(this.state);
   }
 
@@ -97,17 +84,22 @@ export default class Filters extends React.Component {
     );
   }
 
+  getNewState = newPeriod => ({
+    ...getTimeRange(newPeriod),
+    period: newPeriod,
+  });
+
   handleFiltersChange = ({ startDate, endDate }) => {
     this.props.onPeriodChange({ startDate, endDate });
   };
 
   handlePeriodChange = newPeriod => {
-    this.setState({ ...getTimeRange(newPeriod), period: newPeriod });
+    this.setState(this.getNewState(newPeriod));
   };
 
   handlePrevPeriod = () => {
     const { period, startDate, endDate } = this.state;
-    const newPeriod = { ...movePeriod(period, startDate, endDate, 'next') };
+    const newPeriod = { ...movePeriod(period, startDate, endDate, 'prev') };
 
     this.setState(newPeriod);
     this.handleFiltersChange(newPeriod);
