@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Table } from 'antd';
+import { Icon, Table, Checkbox } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -70,6 +70,7 @@ class Payments extends React.Component {
   };
 
   state = {
+    checked: false,
     previous: {
       value: 0,
       contractorsCount: 0,
@@ -142,6 +143,7 @@ class Payments extends React.Component {
 
   render() {
     const {
+      checked,
       previous,
       current,
       calculatedCurrentTransactions,
@@ -155,6 +157,10 @@ class Payments extends React.Component {
         <Header title="Payments" size="medium" />
 
         <Summary previous={previous} current={current} />
+
+        <div className="Payments-selector">
+          <Checkbox onChange={this.onSelectAll} checked={checked} /> Select All
+        </div>
 
         <Box>
           <Table
@@ -230,7 +236,7 @@ class Payments extends React.Component {
   };
 
   handleSelectTransaction = record => {
-    const { selectedTransactionsIds, selectedContractorsIds } = this.state;
+    const { selectedTransactionsIds, selectedContractorsIds, pendingTransactions } = this.state;
     let { selectedTransactionsSummaryValue } = this.state;
     const contractorId = record.jobs[0].contractor.id;
 
@@ -253,15 +259,37 @@ class Payments extends React.Component {
     });
 
     this.setState({
+      checked: selectedTransactionsIds.size === pendingTransactions.length,
       selectedTransactionsIds,
       selectedContractorsIds,
       selectedTransactionsSummaryValue,
     });
   };
 
+  renderAmount = amount => formatUsd(amount);
+
   handleTypeChange = e => this.setState({ type: e.target.value });
 
-  renderAmount = amount => formatUsd(amount);
+  onSelectAll = e => {
+    const { pendingTransactions } = this.props;
+
+    let localState = {
+      checked: e.target.checked,
+      selectedTransactionsSummaryValue: 0,
+      selectedTransactionsIds: new Set(),
+      selectedContractorsIds: new Set(),
+    };
+
+    if (e.target.checked) {
+      pendingTransactions.forEach(transaction => {
+        localState.selectedTransactionsSummaryValue += transaction.jobCost;
+        localState.selectedContractorsIds.add(transaction.contractor.id);
+        localState.selectedTransactionsIds.add(transaction.id);
+      });
+    }
+
+    this.setState(localState);
+  };
 
   showPreviousSalary = contractorId => {
     const { previousTransactionsMap } = this.state;
