@@ -101,16 +101,16 @@ export default class Filters extends React.Component {
   };
 
   handlePrevPeriod = () => {
-    const { period, startDate, endDate } = this.state;
-    const newPeriod = { ...movePeriod(period, startDate, endDate, 'prev') };
-
-    this.setState(newPeriod);
-    this.handleFiltersChange(newPeriod);
+    this.changePeriodAction('prev');
   };
 
   handleNextPeriod = () => {
+    this.changePeriodAction('next');
+  };
+
+  changePeriodAction = direction => {
     const { period, startDate, endDate } = this.state;
-    const newPeriod = { ...movePeriod(period, startDate, endDate, 'next') };
+    const newPeriod = { ...movePeriod(period, startDate, endDate, direction) };
 
     this.setState(newPeriod);
     this.handleFiltersChange(newPeriod);
