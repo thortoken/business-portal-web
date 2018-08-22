@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
-import Contractors from '../Contractors';
+import Contractors from './Contractors';
 import Contractor from './Contractor';
 
 export class RootContractorsPage extends React.Component {
