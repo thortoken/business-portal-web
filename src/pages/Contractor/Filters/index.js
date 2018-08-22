@@ -94,7 +94,10 @@ export default class Filters extends React.Component {
   };
 
   handlePeriodChange = newPeriod => {
-    this.setState(this.getNewState(newPeriod));
+    let localState = this.getNewState(newPeriod);
+
+    this.setState(localState);
+    this.handleFiltersChange(localState);
   };
 
   handlePrevPeriod = () => {

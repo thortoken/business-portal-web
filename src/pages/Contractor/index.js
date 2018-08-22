@@ -1,17 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Table, Button } from 'antd';
+import { Table, Button } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { getContractor } from '~redux/actions/contractor';
 import { getUserTransactions } from '~redux/actions/transactions';
+import { getJobs, pauseJobs } from '~redux/actions/jobs';
 
 import Dropdown from '~components/Dropdown';
 import BackBtn from '~components/BackBtn';
 import ContractorSummary from './components/ContractorSummary';
 
 import { formatUsd } from '~utils/number';
+import { formatDate } from '~utils/time';
 
 import Filters from './Filters';
 
@@ -49,8 +51,9 @@ class Contractor extends React.Component {
   }
 
   componentDidMount() {
-    const { match, getContractor } = this.props;
+    const { match, getContractor, getJobs } = this.props;
 
+    getJobs();
     getContractor(match.params.id);
   }
 
@@ -62,6 +65,10 @@ class Contractor extends React.Component {
     }
 
     return {};
+  }
+
+  componentWillUnmount() {
+    this.props.pauseJobs();
   }
 
   render() {
@@ -143,8 +150,20 @@ class Contractor extends React.Component {
               return { ...item, key: item.id };
             })}
             bordered>
-            <Column align="center" dataIndex="date" title="Date" width="15%" />
-            <Column align="center" dataIndex="jobId" width="35%" title="Service" />
+            <Column
+              align="center"
+              dataIndex="date"
+              render={this.renderDate}
+              title="Date"
+              width="15%"
+            />
+            <Column
+              align="center"
+              dataIndex="jobId"
+              render={this.renderJobName}
+              width="35%"
+              title="Service"
+            />
             {/* <Column align="center" dataIndex="location" title="Location" width="25%" /> */}
             <Column
               align="center"
@@ -160,6 +179,11 @@ class Contractor extends React.Component {
   }
 
   renderAmount = amount => formatUsd(amount);
+  renderDate = date => formatDate(date);
+  renderJobName = jobId => {
+    const { jobs } = this.props;
+    return jobs[jobId] ? jobs[jobId].name : '';
+  };
 
   handleDelete = () => {
     const { match } = this.props;
@@ -181,6 +205,7 @@ class Contractor extends React.Component {
 const mapStateToProps = state => ({
   contractor: state.contractor.contractor,
   userTransactions: state.transactions.userTransactions,
+  jobs: state.jobs.jobs,
 });
 
 const mapDispatchToProps = dispatch =>
@@ -188,6 +213,8 @@ const mapDispatchToProps = dispatch =>
     {
       getContractor,
       getUserTransactions,
+      getJobs,
+      pauseJobs,
     },
     dispatch
   );

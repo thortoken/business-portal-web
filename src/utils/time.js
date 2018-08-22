@@ -75,16 +75,20 @@ export const movePeriod = (period, startDate, endDate, side = 'next', format = '
     periodInWeeks = 1;
   } else if (period === PERIODS.TWO_WEEKS) {
     periodInWeeks = 2;
-  } else if (period === PERIODS.MONTH) {
-    periodInWeeks = 4;
   }
 
   if (side === 'prev') {
     periodInWeeks *= -1;
   }
 
-  let previousStartDate = startDate.add(periodInWeeks, 'week');
-  let previousEndDate = endDate.add(periodInWeeks, 'week');
+  let previousStartDate =
+    period === PERIODS.MONTH
+      ? startDate.add(periodInWeeks, 'month').startOf('month')
+      : startDate.add(periodInWeeks, 'week');
+  let previousEndDate =
+    period === PERIODS.MONTH
+      ? endDate.add(periodInWeeks, 'month').endOf('month')
+      : endDate.add(periodInWeeks, 'week');
 
   return {
     startDate: previousStartDate,
@@ -95,3 +99,5 @@ export const movePeriod = (period, startDate, endDate, side = 'next', format = '
     },
   };
 };
+
+export const formatDate = date => moment.unix(date.seconds).format('MM/DD');
