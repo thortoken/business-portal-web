@@ -153,13 +153,13 @@ class Contractor extends React.Component {
               dataIndex="date"
               render={this.renderDate}
               title="Date"
-              width="15%"
+              width="10%"
             />
             <Column
               align="center"
               dataIndex="jobId"
               render={this.renderJobName}
-              width="35%"
+              width="30%"
               title="Service"
             />
             {/* <Column align="center" dataIndex="location" title="Location" width="25%" /> */}
@@ -168,8 +168,9 @@ class Contractor extends React.Component {
               dataIndex="jobCost"
               render={this.renderAmount}
               title="Pay Amt."
-              width="25%"
+              width="20%"
             />
+            <Column align="center" dataIndex="status" title="Status" width="15%" />
           </Table>
         </div>
       </div>
