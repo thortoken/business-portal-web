@@ -12,12 +12,14 @@ import statusReducer from './reducers/status';
 import transactionsReducer from './reducers/transactions';
 import walletReducer from './reducers/wallet';
 import jobsReducer from './reducers/jobs';
+import contractorReducer from './reducers/contractor';
 
 export const history = createHistory();
 
 const sagaMiddleware = createSagaMiddleware();
 
 const allReducers = combineReducers({
+  contractor: contractorReducer,
   form: formReducer,
   login: loginReducer,
   jobs: jobsReducer,

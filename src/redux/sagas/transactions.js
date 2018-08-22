@@ -7,6 +7,8 @@ import {
   getPendingTransactionsSuccess,
   getPaidTransactionsFailure,
   getPaidTransactionsSuccess,
+  getUserTransactionsFailure,
+  getUserTransactionsSuccess,
 } from '../actions/transactions';
 import { collectionTransformer } from './utils';
 
@@ -37,6 +39,28 @@ function* getTransactionsSaga(action) {
   }
 }
 
+function* getUserTransactionsSaga(action) {
+  while (true) {
+    const task = yield fork(
+      rsf.firestore.syncCollection,
+      firestore
+        .collection('fakeTransactions')
+        .where('contractor.id', '==', action.params.userId)
+        .where('date', '>=', new Date(action.params.startDate))
+        .where('date', '<', new Date(action.params.endDate)),
+      {
+        failureActionCreator: getUserTransactionsFailure,
+        successActionCreator: getUserTransactionsSuccess,
+        transform: collectionTransformer,
+      }
+    );
+
+    yield take(types.GET_USER_TRANSACTIONS.PAUSE);
+    yield cancel(task);
+  }
+}
+
 export default function* transactionsRootSaga() {
   yield takeEvery(types.GET_TRANSACTIONS.REQUEST, getTransactionsSaga);
+  yield takeEvery(types.GET_USER_TRANSACTIONS.REQUEST, getUserTransactionsSaga);
 }

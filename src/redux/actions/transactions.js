@@ -22,6 +22,12 @@ export const types = {
     FAILURE: 'GET_PAID_TRANSACTIONS.FAILURE',
     PAUSE: 'GET_PAID_TRANSACTIONS.PAUSE',
   },
+  GET_USER_TRANSACTIONS: {
+    REQUEST: 'GET_USER_TRANSACTIONS.REQUEST',
+    SUCCESS: 'GET_USER_TRANSACTIONS.SUCCESS',
+    FAILURE: 'GET_USER_TRANSACTIONS.FAILURE',
+    PAUSE: 'GET_USER_TRANSACTIONS.PAUSE',
+  },
 };
 
 export const getPendingTransactions = params => ({
@@ -79,4 +85,23 @@ export const getTransactionsFailure = error => ({
 
 export const pauseTransactions = () => ({
   type: types.GET_TRANSACTIONS.PAUSE,
+});
+
+export const getUserTransactions = params => ({
+  type: types.GET_USER_TRANSACTIONS.REQUEST,
+  params,
+});
+
+export const getUserTransactionsSuccess = userTransactions => ({
+  type: types.GET_USER_TRANSACTIONS.SUCCESS,
+  userTransactions,
+});
+
+export const getUserTransactionsFailure = error => ({
+  type: types.GET_USER_TRANSACTIONS.FAILURE,
+  error,
+});
+
+export const pauseUserTransactions = () => ({
+  type: types.GET_USER_TRANSACTIONS.PAUSE,
 });

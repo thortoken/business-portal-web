@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Icon, Table } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import classnames from 'classnames';
 
@@ -161,31 +162,46 @@ class Payments extends React.Component {
             bordered
             className="Payments-table"
             expandedRowRender={record => <div>{this.renderJobsList(record.jobs)}</div>}>
-            <Column align="center" dataIndex="key" title="Rank" width="10%" />
+            <Column
+              align="center"
+              dataIndex="key"
+              title="Rank"
+              width="10%"
+              className="Payments-rank-selector"
+            />
             <Column
               align="center"
               dataIndex="contractor"
               width="25%"
               title={<TitleWithIcon title="Contractor" icon="user" />}
+              render={this.showContractorName}
+              className="Payments-contractor-selector"
             />
-            <Column align="center" dataIndex="numOfJobs" title="Num Jobs" width="10%" />
+            <Column
+              align="center"
+              dataIndex="numOfJobs"
+              title="Num Jobs"
+              width="10%"
+              className="Payments-numOfJobs-selector"
+            />
             <Column
               align="center"
               dataIndex="contractorId"
               render={this.showPreviousSalary}
               title="Prev"
               width="15%"
+              className="Payments-prev-selector"
             />
             <Column
               align="center"
-              className="Payments-table-current"
+              className="Payments-table-current Payments-current-selector"
               dataIndex="salary"
               render={this.renderAmount}
               width="15%"
               title={<TitleWithIcon title="Current" icon="dollar" />}
             />
             <Column
-              className="Payments-table-approve"
+              className="Payments-table-approve Payments-approve-selector"
               title="Approval"
               align="center"
               width="25%"
@@ -252,6 +268,10 @@ class Payments extends React.Component {
     return previousTransactionsMap.get(contractorId)
       ? formatUsd(previousTransactionsMap.get(contractorId))
       : '$0';
+  };
+
+  showContractorName = (contractorName, record) => {
+    return <Link to={'/contractors/' + record.contractorId}>{contractorName}</Link>;
   };
 
   renderJobsList = jobsList => {
