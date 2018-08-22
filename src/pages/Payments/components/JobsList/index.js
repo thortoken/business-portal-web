@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 
 import TitleWithIcon from '../TitleWithIcon';
 
@@ -61,26 +61,37 @@ export class JobsList extends Component {
     });
 
     return (
-      <Table
-        className="JobsList"
-        showHeader={false}
-        dataSource={Object.keys(summarizedJobs).map((jobsGroup, index) => {
-          return { ...summarizedJobs[jobsGroup], key: index };
-        })}
-        pagination={false}>
-        <Column align="center" dataIndex="name" title="Name" width="42%" />
-        <Column align="center" dataIndex="count" title="Num Jobs" width="12%" />
-        <Column align="center" dataIndex="prev" render={renderAmount} title="Prev" width="18%" />
-        <Column
-          align="center"
-          dataIndex="current"
-          render={renderAmount}
-          width="18%"
-          title={<TitleWithIcon title="Current" icon="dollar" />}
-        />
-      </Table>
+      <div>
+        <Table
+          className="JobsList"
+          showHeader={false}
+          dataSource={Object.keys(summarizedJobs).map((jobsGroup, index) => {
+            return { ...summarizedJobs[jobsGroup], key: index };
+          })}
+          pagination={false}>
+          <Column align="center" dataIndex="name" title="Name" width="42%" />
+          <Column align="center" dataIndex="count" title="Num Jobs" width="12%" />
+          <Column align="center" dataIndex="prev" render={renderAmount} title="Prev" width="18%" />
+          <Column
+            align="center"
+            dataIndex="current"
+            render={renderAmount}
+            width="18%"
+            title={<TitleWithIcon title="Current" icon="dollar" />}
+          />
+        </Table>
+        <div className="JobsList-button">
+          <Button ghost onClick={this.handleCustom}>
+            + Add Custom
+          </Button>
+        </div>
+      </div>
     );
   }
+
+  handleCustom = e => {
+    console.log('event', e);
+  };
 }
 
 export default JobsList;
