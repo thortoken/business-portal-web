@@ -1,0 +1,49 @@
+@import "../../../styles/variables.less";
+
+.Contractor {
+  &-box-informations {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+  }
+
+  &-name {
+    font-size: 1.725rem;
+    color: black;
+  }
+
+  &-address,
+  &-phone {
+    display: flex;
+
+    .Contractor-label {
+      font-style: italic;
+      margin-right: 1rem;
+    }
+
+    .Contractor-value {
+      font-weight: 500;
+      color: black;
+    }
+  }
+
+  &-options-btn {
+    & > button {
+      padding-left: 3rem;
+      padding-right: 3rem;
+    }
+  }
+
+  &-filters {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &-period {
+    font-size: 1.25rem;
+  }
+}

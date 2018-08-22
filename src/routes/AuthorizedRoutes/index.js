@@ -7,8 +7,7 @@ import LandingPage from '~pages/LandingPage';
 import DashboardPage from '~pages/Dashboard';
 import PaymentsPage from '~pages/Payments';
 import SatisfactionSurveysPage from '~pages/SatisfactionSurveys';
-import Contractors from '~pages/Contractors';
-import Contractor from '~pages/Contractor';
+import RootContractorsPage from '~pages/RootContractors';
 
 import Topbar from './components/Topbar';
 
@@ -25,8 +24,7 @@ export class AuthorizedRoutes extends React.Component {
             <Route exact path="/landing" component={LandingPage} />
             <Route exact path="/dashboard" component={DashboardPage} />
             <Route exact path="/payments" component={PaymentsPage} />
-            <Route exact path="/contractors" component={Contractors} />
-            <Route path="/contractors/:id" component={Contractor} />
+            <Route path="/contractors" component={RootContractorsPage} />
             <Route path="/satisfaction-surveys" component={SatisfactionSurveysPage} />
             <Redirect from="*" to="/welcome" />
           </Switch>

@@ -24,17 +24,21 @@ const getFirstWeekOfTheYear = () => {
   ).startOf('isoWeek');
 };
 
+const getCurrent = period => {
+  return { startDate: moment().startOf(period), endDate: moment().endOf(period) };
+};
+
 export const getCurrentWeek = () => {
   return moment().week();
 };
 
 export const getCurrentWeekPeriod = () => {
-  return { startDate: moment().startOf('week'), endDate: moment().endOf('week') };
+  return getCurrent('week');
 };
 
 export const getStartPeriodWeek = () => {
   const currentWeek = moment().week();
-  return currentWeek - (currentWeek % 2 === 0 ? 1 : 0);
+  return currentWeek - (currentWeek - 1) % 2;
 };
 
 export const getCurrentTwoWeeksPeriod = () => {
@@ -57,7 +61,7 @@ export const getCurrentTwoWeeksPeriod = () => {
 };
 
 export const getCurrentMonthPeriod = () => {
-  return { startDate: moment().startOf('month'), endDate: moment().endOf('month') };
+  return getCurrent('month');
 };
 
 export const getPreviousTwoWeeksPeriod = () => {

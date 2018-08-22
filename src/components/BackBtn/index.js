@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Icon } from 'antd';
 import { Link } from 'react-router-dom';
 
@@ -18,9 +19,9 @@ class BackBtn extends React.Component {
   }
 }
 
-BackBtn.defaultProps = {
-  to: '/contractors',
-  label: 'Contractors',
+BackBtn.propTypes = {
+  to: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
 };
 
 export default BackBtn;

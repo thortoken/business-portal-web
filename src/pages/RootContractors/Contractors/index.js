@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Table } from 'antd';
-import Box from '../../components/Box/index';
 import _ from 'lodash';
 import moment from 'moment';
+import Box from '../../../components/Box/index';
 
 import './Contractors.css';
 
@@ -51,7 +51,7 @@ const contractorsMockedData = [
     lastActivity: 1534423595000,
     prev: 1200,
     city: 'Warsaw',
-    rank: 0
+    rank: 0,
   },
   {
     key: 2,
@@ -59,7 +59,7 @@ const contractorsMockedData = [
     lastActivity: 1533991595000,
     prev: 892,
     city: 'Lodz',
-    rank: 0
+    rank: 0,
   },
   {
     key: 3,
@@ -67,7 +67,7 @@ const contractorsMockedData = [
     lastActivity: 1533732395000,
     prev: 900,
     city: 'Warsaw',
-    rank: 0
+    rank: 0,
   },
   {
     key: 4,
@@ -75,7 +75,7 @@ const contractorsMockedData = [
     lastActivity: 1533386795000,
     prev: 1890,
     city: 'Poznan',
-    rank: 0
+    rank: 0,
   },
   {
     key: 5,
@@ -83,7 +83,7 @@ const contractorsMockedData = [
     lastActivity: 1533127595000,
     prev: 876,
     city: 'Kracov',
-    rank: 0
+    rank: 0,
   },
   {
     key: 6,
@@ -91,26 +91,24 @@ const contractorsMockedData = [
     lastActivity: 1530449195000,
     prev: 210,
     city: 'Hogwart',
-    rank: 0
-  }
+    rank: 0,
+  },
 ];
 
 class Contractors extends React.Component {
   static propTypes = {};
 
   state = {
-    contractorsData: []
+    contractorsData: [],
   };
 
   componentDidMount() {
     this.setState({
-      contractorsData: this.prepareActivity(contractorsMockedData)
-    })
+      contractorsData: this.prepareActivity(contractorsMockedData),
+    });
   }
 
-  componentWillUnmount() {
-
-  }
+  componentWillUnmount() {}
 
   calculateRank(data) {
     let calculatedData = _.orderBy(data, ['prev'], ['desc']);
@@ -121,7 +119,7 @@ class Contractors extends React.Component {
   }
 
   prepareActivity(data) {
-    let preparedActivity = _.forEach(data, (value) => {
+    let preparedActivity = _.forEach(data, value => {
       const days = moment().diff(value.lastActivity, 'days');
       value.activity = moment(moment(value.lastActivity)).fromNow();
       if (days < 7) {
@@ -140,24 +138,18 @@ class Contractors extends React.Component {
     const { contractorsData } = this.state;
     return (
       <div className="Contractors">
-        <ActionBar/>
-        <Stats/>
+        <ActionBar />
+        <Stats />
         <Box>
-          <Table
-            dataSource={contractorsData}
-            className="Contractors__table"
-            bordered>
+          <Table dataSource={contractorsData} className="Contractors__table" bordered>
             <Column
               align="center"
               dataIndex="rank"
               defaultSortOrder="ascend"
               sorter={(a, b) => a.rank - b.rank}
-              title="Rank"/>
-            <Column
-              align="center"
-              dataIndex="contractor"
-              title="Contractor"
+              title="Rank"
             />
+            <Column align="center" dataIndex="contractor" title="Contractor" />
             <Column
               align="center"
               dataIndex="activity"
@@ -172,15 +164,11 @@ class Contractors extends React.Component {
               align="center"
               dataIndex="prev"
               title="Prev"
-              render={(text) => {
+              render={text => {
                 return <span>$ {text}</span>;
               }}
             />
-            <Column
-              align="center"
-              dataIndex="city"
-              title="City"
-            />
+            <Column align="center" dataIndex="city" title="City" />
           </Table>
         </Box>
       </div>
@@ -190,10 +178,6 @@ class Contractors extends React.Component {
 
 const mapStateToProps = state => ({});
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {},
-    dispatch
-  );
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Contractors);
