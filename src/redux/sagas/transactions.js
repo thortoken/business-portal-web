@@ -46,7 +46,6 @@ function* getUserTransactionsSaga(action) {
       firestore
         .collection('fakeTransactions')
         .where('contractor.id', '==', action.params.userId)
-        .where('status', '==', action.params.status)
         .where('date', '>=', new Date(action.params.startDate))
         .where('date', '<', new Date(action.params.endDate)),
       {
