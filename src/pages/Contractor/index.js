@@ -11,6 +11,7 @@ import { getJobs, pauseJobs } from '~redux/actions/jobs';
 import Dropdown from '~components/Dropdown';
 import BackBtn from '~components/BackBtn';
 import ContractorSummary from './components/ContractorSummary';
+import Activity from './components/Activity';
 
 import { formatUsd } from '~utils/number';
 import { formatDate } from '~utils/time';
@@ -108,10 +109,7 @@ class Contractor extends React.Component {
             </div>
           </div>
           <div className="Contractor-activity">
-            <div className="Activity-active">
-              Active Today
-              {/* do this as separate component */}
-            </div>
+            <Activity lastActivityDate={contractor.updatedAt} />
           </div>
         </div>
         <div className="Contractor-box-informations">
