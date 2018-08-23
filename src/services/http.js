@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import Config from './config'
+import Config from './config';
 
 const Http = axios.create({
   baseURL: Config.apiUrl,
@@ -9,7 +9,7 @@ const Http = axios.create({
 Http.interceptors.response.use(
   response => response,
   error => {
-    return Promise.reject(error)
+    return Promise.reject(error);
   }
 );
 

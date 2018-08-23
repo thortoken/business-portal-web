@@ -1,5 +1,5 @@
-import Http, { setAuthHeader, removeAuthHeader } from '../services/http';
-import Config from '../services/config';
+import Http, { setAuthHeader, removeAuthHeader } from '~services/http';
+import Config from '~services/config';
 
 const auth = {
   effects: {
