@@ -23,6 +23,7 @@
     "d3-array": "^1.2.1",
     "d3-time-format": "^2.1.1",
     "firebase": "^4.9.0",
+    "formik": "^1.0.3",
     "history": "^4.7.2",
     "lodash": "^4.17.10",
     "ls": "^0.2.1",
@@ -42,7 +43,8 @@
     "redux-form-antd": "^1.0.5",
     "redux-saga": "^0.16.0",
     "redux-saga-firebase": "^0.9.0",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "yup": "^0.26.2"
   },
   "scripts": {
     "build-antd-css": "less-watch-compiler theme/antd src/css antd.less --run-once --enable-js",

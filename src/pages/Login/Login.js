@@ -1,7 +1,14 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React from 'react'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 
 class Login extends React.Component {
+  static propTypes = {
+    currentUser: PropTypes.object,
+    login: PropTypes.func.isRequired,
+    showMessage: PropTypes.func.isRequired,
+  }
+
   state = {
     email: '',
     password: '',
