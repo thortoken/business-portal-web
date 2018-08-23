@@ -8,16 +8,18 @@ export class InputGroup extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+    errors: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     label: PropTypes.string,
   };
 
   render() {
-    const { className, children, label } = this.props;
+    const { className, children, errors, label } = this.props;
 
     return (
-      <div className={classNames('Input-group', className)}>
-        <div className="Input-group--label">{label}</div>
+      <div className={classNames('InputGroup', className)}>
+        <div className="InputGroup-label">{label}</div>
         {children}
+        {errors && <div className="InputGroup-errors">{errors}</div>}
       </div>
     );
   }

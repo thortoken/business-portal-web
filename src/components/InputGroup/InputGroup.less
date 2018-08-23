@@ -1,16 +1,18 @@
 @import "../../styles/variables.less";
 
-.Input-group {
+.InputGroup {
   display: inline-block;
   padding: 1rem;
-  &--label {
+  vertical-align: top;
+
+  &-label {
     text-transform: uppercase;
     font-size: 0.7rem;
     font-weight: 600;
     color: #000;
     letter-spacing: 0.0625rem;
   }
-  &--input.ant-input {
+  &-input.ant-input {
     border-top: 0;
     border-left: 0;
     border-right: 0;
@@ -25,5 +27,8 @@
       border-right-color: transparent !important;
       box-shadow: none;
     }
+  }
+  &-errors {
+    color: red;
   }
 }
