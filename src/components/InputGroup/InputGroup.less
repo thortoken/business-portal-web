@@ -1,0 +1,29 @@
+@import "../../styles/variables.less";
+
+.Input-group {
+  display: inline-block;
+  padding: 1rem;
+  &--label {
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #000;
+    letter-spacing: 0.0625rem;
+  }
+  &--input.ant-input {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid #000;
+    border-radius: 0;
+    color: @color-blue;
+    margin-bottom: 0.5rem;
+    &:focus, &:hover, &:active, &:focus-within, &:visited {
+      outline: none !important;
+      border-top-color: transparent !important;
+      border-left-color: transparent !important;
+      border-right-color: transparent !important;
+      box-shadow: none;
+    }
+  }
+}
