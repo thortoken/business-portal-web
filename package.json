@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@firebase/app-types": "^0.3.1",
+    "@rematch/core": "^1.0.0-beta.4",
     "@vx/axis": "^0.0.170",
     "@vx/curve": "^0.0.161",
     "@vx/event": "^0.0.161",
@@ -16,7 +17,7 @@
     "@vx/shape": "^0.0.162",
     "@vx/tooltip": "^0.0.163",
     "antd": "^3.5.2",
-    "axios": "^0.17.1",
+    "axios": "^0.18.0",
     "base-64": "^0.1.0",
     "classnames": "^2.2.5",
     "d3-array": "^1.2.1",

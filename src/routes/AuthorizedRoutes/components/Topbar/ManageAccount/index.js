@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Icon, Button } from 'antd';
 
-import { logout } from '~redux/actions/login';
 import Dropdown from '~components/Dropdown';
 
 import './ManageAccount.css';
@@ -90,9 +89,14 @@ export class ManageAccount extends React.Component {
   }
 
   handleLogout = () => {
-    this.props.logout();
+    const { logout } = this.props;
+    logout();
   };
 }
 
-const mapDispatch = dispatch => bindActionCreators({ logout }, dispatch);
-export default connect(null, mapDispatch)(ManageAccount);
+const mapDispatch = ({ auth: { logout }}) => ({ logout });
+
+export default connect(
+  null,
+  mapDispatch
+)(ManageAccount)
