@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
 import LandingPage from '~pages/LandingPage'
-import Login from '~pages//Login/index'
+import Login from '~pages/Login'
 import Register from '~pages/Register'
 import UserInfo from '~pages/UserInfo'
 import Status from '~pages/Status'
