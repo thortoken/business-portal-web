@@ -25,7 +25,7 @@ export class FormField extends Component {
 
     return (
       <InputGroup className={className} errors={errors} label={label}>
-        <Component {...field} {...inputProps} />
+        <Component name={name} {...field} {...inputProps} />
       </InputGroup>
     );
   };

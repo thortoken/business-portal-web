@@ -1,8 +1,8 @@
 import React from 'react';
 import { Progress } from 'antd';
-
 import classnames from 'classnames';
-import Box from '../../../../../components/Box/index';
+
+import Box from '~components/Box';
 
 import './Stats.css';
 
@@ -60,7 +60,7 @@ class Stats extends React.Component {
   prepareData(data) {
     const total = data.reduce((total, amount) => ({ count: total.count + amount.count }));
     return data.map(item => {
-      item.percent = parseInt((100 * item.count / total.count).toFixed(0));
+      item.percent = parseInt((100 * item.count / total.count).toFixed(0), 10);
       return item;
     });
   }
