@@ -9,12 +9,12 @@ const initRouteFactory = overrides => shallow(<RouteFactory {...overrides} />);
 
 describe('routes: RouteFactory', () => {
   it('should render guest routes for unauthorized users', () => {
-    const wrapper = initRouteFactory({ isLoggedIn: false });
+    const wrapper = initRouteFactory({ token: false });
     expect(wrapper.is(GuestRoutes)).toBe(true);
   });
 
   it('should render authorized routes for authorized users', () => {
-    const wrapper = initRouteFactory({ isLoggedIn: true });
+    const wrapper = initRouteFactory({ token: 'fake-token' });
     expect(wrapper.is(AuthorizedRoutes)).toBe(true);
   });
 });
