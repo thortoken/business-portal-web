@@ -10,13 +10,12 @@ import * as jobActions from '~redux/actions/jobs';
 
 import Dropdown from '~components/Dropdown';
 import BackBtn from '~components/BackBtn';
-import ContractorSummary from './components/ContractorSummary';
 import Activity from './components/Activity';
+import ContractorSummary from './components/ContractorSummary';
+import Filters from './components/Filters';
 
 import { formatUsd } from '~utils/number';
 import { formatDate } from '~utils/time';
-
-import Filters from './Filters';
 
 import './Contractor.css';
 

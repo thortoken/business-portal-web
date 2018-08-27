@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Table } from 'antd';
@@ -98,17 +97,13 @@ const contractorsMockedData = [
 class Contractors extends React.Component {
   static propTypes = {};
 
-  state = {
-    contractorsData: [],
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    this.setState({
+    this.state = {
       contractorsData: this.prepareActivity(contractorsMockedData),
-    });
+    };
   }
-
-  componentWillUnmount() {}
 
   calculateRank(data) {
     let calculatedData = _.orderBy(data, ['prev'], ['desc']);

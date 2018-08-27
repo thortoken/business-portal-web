@@ -1,5 +1,4 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -94,9 +93,6 @@ export class ManageAccount extends React.Component {
   };
 }
 
-const mapDispatch = ({ auth: { logout }}) => ({ logout });
+const mapDispatch = ({ auth: { logout } }) => ({ logout });
 
-export default connect(
-  null,
-  mapDispatch
-)(ManageAccount)
+export default connect(null, mapDispatch)(ManageAccount);
