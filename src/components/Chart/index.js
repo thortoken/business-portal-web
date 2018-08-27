@@ -81,8 +81,6 @@ export class Chart extends React.Component {
     const height =
       basicHeight - Math.min(style.marginTop || 0, 0) - Math.min(style.marginBottom || 0, 0);
 
-    console.log({ basicWidth, width });
-
     // bounds
     const graphWidth = width - margin.left - margin.right;
     const graphHeight = height - margin.top - margin.bottom;
