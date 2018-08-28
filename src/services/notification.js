@@ -6,7 +6,7 @@ notification.config({
   duration: 3,
 });
 
-const generateNotificationKey = () => `notif-${+new Date()}`;
+export const generateNotificationKey = () => `notif-${+new Date()}`;
 
 const openAndReturnKey = args => {
   const key = generateNotificationKey();
@@ -15,6 +15,7 @@ const openAndReturnKey = args => {
 };
 
 const NotificationService = {
+  config: notification.config,
   open: openAndReturnKey,
   close: notification.close,
   destroy: notification.destroy,

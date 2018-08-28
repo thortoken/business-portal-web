@@ -16,7 +16,7 @@ Http.interceptors.response.use(
 export const setAuthHeader = token => {
   Http.defaults.headers.Authorization = 'Bearer ' + token;
 };
-export const removeAuthHeader = token => {
+export const removeAuthHeader = () => {
   delete Http.defaults.headers.Authorization;
 };
 
