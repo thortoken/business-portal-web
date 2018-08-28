@@ -12,9 +12,11 @@ exports[`component: <Menu/> should highlight menu item should highlight selected
   theme="light"
 >
   <MenuItem
+    className="Menu__item"
     key="/welcome"
   >
     <Link
+      className="Menu__link"
       replace={false}
       to="/welcome"
     >
@@ -24,14 +26,30 @@ exports[`component: <Menu/> should highlight menu item should highlight selected
     </Link>
   </MenuItem>
   <MenuItem
+    className="Menu__item"
     key="/payments"
   >
     <Link
+      className="Menu__link"
       replace={false}
       to="/payments"
     >
       <span>
         Payments
+      </span>
+    </Link>
+  </MenuItem>
+  <MenuItem
+    className="Menu__item"
+    key="/contractors"
+  >
+    <Link
+      className="Menu__link"
+      replace={false}
+      to="/contractors"
+    >
+      <span>
+        Contractors
       </span>
     </Link>
   </MenuItem>
@@ -50,9 +68,11 @@ exports[`component: <Menu/> should highlight menu item should highlight selected
   theme="light"
 >
   <MenuItem
+    className="Menu__item"
     key="/welcome"
   >
     <Link
+      className="Menu__link"
       replace={false}
       to="/welcome"
     >
@@ -62,9 +82,11 @@ exports[`component: <Menu/> should highlight menu item should highlight selected
     </Link>
   </MenuItem>
   <MenuItem
+    className="Menu__item"
     key="/payments"
   >
     <Link
+      className="Menu__link"
       replace={false}
       to="/payments"
     >
@@ -73,13 +95,30 @@ exports[`component: <Menu/> should highlight menu item should highlight selected
       </span>
     </Link>
   </MenuItem>
+  <MenuItem
+    className="Menu__item"
+    key="/contractors"
+  >
+    <Link
+      className="Menu__link"
+      replace={false}
+      to="/contractors"
+    >
+      <span>
+        Contractors
+      </span>
+    </Link>
+  </MenuItem>
 </Menu>
 `;
 
 exports[`component: <Menu/> should highlight menu item should render correct 1`] = `
 Array [
-  <MenuItem>
+  <MenuItem
+    className="Menu__item"
+>
     <Link
+        className="Menu__link"
         replace={false}
         to="/example1"
     >
@@ -88,8 +127,11 @@ Array [
         </span>
     </Link>
 </MenuItem>,
-  <MenuItem>
+  <MenuItem
+    className="Menu__item"
+>
     <Link
+        className="Menu__link"
         replace={false}
         to="/example2"
     >
@@ -98,8 +140,11 @@ Array [
         </span>
     </Link>
 </MenuItem>,
-  <MenuItem>
+  <MenuItem
+    className="Menu__item"
+>
     <Link
+        className="Menu__link"
         replace={false}
         to="/example3"
     >
