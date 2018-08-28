@@ -193,7 +193,7 @@ class Contractor extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  contractor: state.contractor.contractor,
+  contractor: state.users.currentUser,
   userTransactions: state.transactions.userTransactions,
   jobs: state.jobs.jobs,
 });

@@ -18,17 +18,42 @@ const users = {
         throw err;
       }
     },
-    async update({ id, data }) {
+    async updateProfile({ id, profile }) {
       try {
-        const response = await Http.patch(`/users/${id}/profile`, data);
+        const response = await Http.patch(`/users/${id}/profile`, { profile });
+        this.setProfile(profile);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async get(id) {
+      try {
+        const response = await Http.get(`/users/${id}`);
+        this.setCurrent(response.data);
         return response.data;
       } catch (err) {
         throw err;
       }
     },
   },
-  reducers: {},
-  state: {},
+  reducers: {
+    setCurrent(state, payload) {
+      return { ...state, currentUser: payload };
+    },
+    setProfile(state, payload) {
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          profile: { ...state.currentUser.profile, ...payload },
+        },
+      };
+    },
+  },
+  state: {
+    currentUser: null,
+  },
 };
 
 export default users;

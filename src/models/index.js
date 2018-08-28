@@ -1,4 +1,5 @@
 import { init } from '@rematch/core';
+import createLoadingPlugin from '@rematch/loading';
 import createHistory from 'history/createBrowserHistory';
 import { routerMiddleware, routerReducer } from 'react-router-redux';
 
@@ -10,6 +11,8 @@ import users from './users';
 export const history = createHistory();
 const middleware = routerMiddleware(history);
 
+const loading = createLoadingPlugin();
+
 const store = init({
   models: {
     auth,
@@ -17,6 +20,7 @@ const store = init({
     transactions,
     users,
   },
+  plugins: [loading],
   redux: {
     reducers: {
       router: routerReducer,

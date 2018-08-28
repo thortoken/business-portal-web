@@ -231,6 +231,10 @@
   dependencies:
     redux "4.0.0"
 
+"@rematch/loading@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@rematch/loading/-/loading-1.1.0.tgz#9d1da9e9bb90b6419a315f01175558011136b786"
+
 "@types/node@*":
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.1.0.tgz#2783ee1b6c47cbd4044f4a233976c1ac5fa9e942"
