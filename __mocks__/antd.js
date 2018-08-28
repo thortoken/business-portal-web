@@ -37,14 +37,22 @@ const Table = namedComponent('Table');
 Table.Column = namedComponent('Column');
 Table.Row = namedComponent('Row');
 
+const notification = {
+  config: jest.fn(),
+  open: jest.fn(),
+  close: jest.fn(),
+  destroy: jest.fn(),
+};
+
 module.exports = {
   Button,
   Col,
   Divider,
   Dropdown,
+  Icon,
   Layout,
   Menu,
-  Icon,
+  notification,
   Progress,
   Row,
   Switch,
