@@ -1,6 +1,27 @@
-import { makeEmptyInitialValues, makeValidationSchema, transformDateWithMoment } from './forms';
+import {
+  makeEmptyInitialValues,
+  makeValidationSchema,
+  transformDateWithMoment,
+  validateFieldsSchema,
+} from './forms';
 
 describe('utils: forms', () => {
+  describe('validateFieldsSchema', () => {
+    it('should throw if param is not an object', () => {
+      expect(() => validateFieldsSchema(1)).toThrow();
+      expect(() => validateFieldsSchema(true)).toThrow();
+      expect(() => validateFieldsSchema(undefined)).toThrow();
+    });
+
+    it('should throw if object is empty', () => {
+      expect(() => validateFieldsSchema({})).toThrow();
+    });
+
+    it('should not throw if object is a valid schema', () => {
+      expect(() => validateFieldsSchema({ email: {} })).not.toThrow();
+    });
+  });
+
   describe('makeEmptyInitialValues', () => {
     it('should throw an exception on invalid schema', () => {
       expect(() => makeEmptyInitialValues(null)).toThrow();

@@ -28,10 +28,6 @@ const getCurrent = period => {
   return { startDate: moment().startOf(period), endDate: moment().endOf(period) };
 };
 
-export const getCurrentWeek = () => {
-  return moment().week();
-};
-
 export const getCurrentWeekPeriod = () => {
   return getCurrent('week');
 };

@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import { traverseRecursively } from './iterators';
 
-const validateFieldsSchema = fieldsSchema => {
+export const validateFieldsSchema = fieldsSchema => {
   if (typeof fieldsSchema !== 'object' || Object.keys(fieldsSchema).length === 0) {
     throw new Error(
       'Invalid form schema. Provide an object with { [fieldName]: { ... } } structure'
