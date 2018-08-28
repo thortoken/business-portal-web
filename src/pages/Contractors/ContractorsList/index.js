@@ -6,7 +6,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import Box from '../../../components/Box/index';
 
-import './Contractors.css';
+import './ContractorsList.css';
 
 import Stats from './components/Stats/index';
 import ActionBar from './components/ActionBar/index';
@@ -94,7 +94,7 @@ const contractorsMockedData = [
   },
 ];
 
-class Contractors extends React.Component {
+class ContractorsList extends React.Component {
   static propTypes = {};
 
   constructor(props) {
@@ -132,11 +132,11 @@ class Contractors extends React.Component {
   render() {
     const { contractorsData } = this.state;
     return (
-      <div className="Contractors">
+      <div className="ContractorsList">
         <ActionBar />
         <Stats />
         <Box>
-          <Table dataSource={contractorsData} className="Contractors__table" bordered>
+          <Table dataSource={contractorsData} className="ContractorsList__table" bordered>
             <Column
               align="center"
               dataIndex="rank"
@@ -149,9 +149,9 @@ class Contractors extends React.Component {
               align="center"
               dataIndex="activity"
               title="Activity"
-              className="Contractors__activity"
+              className="ContractorsList__activity"
               render={(text, record) => {
-                let activeClass = 'Contractors--' + record.type;
+                let activeClass = 'ContractorsList--' + record.type;
                 return <div className={activeClass}>{text}</div>;
               }}
             />
@@ -175,4 +175,4 @@ const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Contractors);
+export default connect(mapStateToProps, mapDispatchToProps)(ContractorsList);

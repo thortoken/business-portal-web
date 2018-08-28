@@ -2,8 +2,8 @@ import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
 import AddContractor from './AddContractor';
-import Contractors from './Contractors';
-import Contractor from './Contractor';
+import ContractorDetails from './ContractorDetails';
+import ContractorsList from './ContractorsList';
 import EditContractor from './EditContractor';
 
 import { withRouteModal } from '~components/Modal';
@@ -24,8 +24,8 @@ export class RootContractorsPage extends React.Component {
           path={`${match.path}/:id/edit`}
           component={withRouteModal({ component: EditContractor, title: 'Edit Contractor' })}
         />
-        <Route exact path={`${match.path}/:id`} component={Contractor} />
-        <Route path={`${match.path}`} component={Contractors} />
+        <Route exact path={`${match.path}/:id`} component={ContractorDetails} />
+        <Route path={`${match.path}`} component={ContractorsList} />
       </Switch>
     );
   }

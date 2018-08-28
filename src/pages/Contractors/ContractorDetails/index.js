@@ -17,7 +17,7 @@ import Filters from './components/Filters';
 import { formatUsd } from '~utils/number';
 import { formatDate } from '~utils/time';
 
-import './Contractor.css';
+import './ContractorDetails.css';
 
 const { Column } = Table;
 
@@ -35,7 +35,7 @@ const generateMenuItems = list => {
   });
 };
 
-class Contractor extends React.Component {
+class ContractorDetails extends React.Component {
   static propTypes = {
     getContractor: PropTypes.func.isRequired,
   };
@@ -96,38 +96,38 @@ class Contractor extends React.Component {
     };
 
     return (
-      <div className="Contractor">
+      <div className="ContractorDetails">
         <BackBtn to="/payments" label="Payments" />
-        <div className="Contractor-box-informations">
-          <div className="Contractor-basic-data">
-            <div className="Contractor-name">
+        <div className="ContractorDetails-box-informations">
+          <div className="ContractorDetails-basic-data">
+            <div className="ContractorDetails-name">
               {contractor.firstName} {contractor.lastName}
             </div>
-            <div className="Contractor-since">
+            <div className="ContractorDetails-since">
               Contractor since {contractor.createdAt.toLocaleDateString()}
             </div>
           </div>
-          <div className="Contractor-activity">
+          <div className="ContractorDetails-activity">
             <Activity lastActivityDate={contractor.updatedAt} />
           </div>
         </div>
-        <div className="Contractor-box-informations">
-          <div className="Contractor-address">
-            <div className="Contractor-label">Address</div>
-            <div className="Contractor-value">
+        <div className="ContractorDetails-box-informations">
+          <div className="ContractorDetails-address">
+            <div className="ContractorDetails-label">Address</div>
+            <div className="ContractorDetails-value">
               <div>{contractor.street}</div>
               <div>
                 {contractor.city} {contractor.state} {contractor.postalCode}
               </div>
             </div>
           </div>
-          <div className="Contractor-phone">
-            <div className="Contractor-label">Phone</div>
-            <div className="Contractor-value">{contractor.phone}</div>
+          <div className="ContractorDetails-phone">
+            <div className="ContractorDetails-label">Phone</div>
+            <div className="ContractorDetails-value">{contractor.phone}</div>
           </div>
-          <div className="Contractor-options">
+          <div className="ContractorDetails-options">
             <Dropdown
-              className="Contractor-options-btn"
+              className="ContractorDetails-options-btn"
               options={this.generateMenuItems(menuList, match.params.id)}
               onClick={this.handleTransactionsPeriodChange}>
               <Button type="primary" ghost>
@@ -141,7 +141,7 @@ class Contractor extends React.Component {
 
         <Filters onPeriodChange={this.onPeriodChange} />
 
-        <div className="Contractor-table">
+        <div className="ContractorDetails-table">
           <Table
             dataSource={userTransactions.map(item => {
               return { ...item, key: item.id };
@@ -208,4 +208,4 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Contractor);
+export default connect(mapStateToProps, mapDispatchToProps)(ContractorDetails);
