@@ -256,6 +256,5 @@ exports[`page: <Dashboard/> should render as expected 1`] = `
       </Col>
     </Row>
   </div>
-  <ul />
 </div>
 `;

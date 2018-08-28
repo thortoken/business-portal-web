@@ -8,7 +8,9 @@ const initDateSwitcher = overrides => {
   const mockProps = {
     onChange: jest.fn(),
   };
-  const wrapper = shallow(<DateSwitcher {...mockProps} {...overrides} />);
+  const wrapper = shallow(
+    <DateSwitcher date={moment('2018-08-01T00:00:00Z')} {...mockProps} {...overrides} />
+  );
 
   return { mockProps, wrapper };
 };

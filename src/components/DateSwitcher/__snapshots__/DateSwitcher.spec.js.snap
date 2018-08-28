@@ -14,7 +14,7 @@ exports[`component: <DateSwitcher /> rendering should render without crashing 1`
   <div
     className="DateSwitcher-value"
   >
-    Jul 2018
+    Aug 2018
   </div>
   <Button
     onClick={[Function]}
