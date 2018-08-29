@@ -7,19 +7,26 @@
 
   &-label {
     text-transform: uppercase;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    color: #000;
+    color: @color-grey-dark;
     letter-spacing: 0.0625rem;
   }
-  &-input.ant-input {
-    border-top: 0;
-    border-left: 0;
-    border-right: 0;
-    border-bottom: 1px solid #000;
-    border-radius: 0;
+
+  &-errors {
+    margin-top: 0.5rem;
+    color: red;
+  }
+
+  .ant-input {
     color: @color-blue;
-    margin-bottom: 0.5rem;
+    border-color: @color-grey-medium;
+    border-width: 0 0 1px 0;
+    border-radius: 0;
+    padding-bottom: 0;
+    padding: 4px 0 0;
+    height: 36px;
+
     &:focus, &:hover, &:active, &:focus-within, &:visited {
       outline: none !important;
       border-top-color: transparent !important;
@@ -28,7 +35,10 @@
       box-shadow: none;
     }
   }
-  &-errors {
-    color: red;
+
+  .ant-calendar-picker-icon {
+    top: 50%;
+    margin-top: 0;
+    transform: translateY(-50%);
   }
 }

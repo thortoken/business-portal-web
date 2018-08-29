@@ -18,7 +18,9 @@ export class InputGroup extends React.Component {
     return (
       <div className={classNames('InputGroup', className)}>
         <div className="InputGroup-label">{label}</div>
-        {children}
+        {React.Children.map(children, child =>
+          React.cloneElement(child, { className: 'InputGroup-input' })
+        )}
         {errors && <div className="InputGroup-errors">{errors}</div>}
       </div>
     );

@@ -10,7 +10,7 @@ import {
 
 import DatePickerField from '~components/DatePickerField';
 
-const dateFormat = 'YYYY/D/M';
+const dateFormat = 'MM/DD/YY';
 
 const formFields = {
   firstName: {
