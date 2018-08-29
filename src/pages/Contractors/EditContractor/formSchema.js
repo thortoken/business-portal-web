@@ -2,11 +2,7 @@
 import * as Yup from 'yup';
 import moment from 'moment';
 
-import {
-  makeValidationSchema,
-  makeEmptyInitialValues,
-  transformDateWithMoment,
-} from '~utils/forms';
+import { makeValidationSchema, makeEmptyInitialValues, yupDateTransformer } from '~utils/forms';
 
 import DatePickerField from '~components/DatePickerField';
 
@@ -89,7 +85,7 @@ const formFields = {
     validator: Yup.date()
       .required()
       .max(moment().subtract(18, 'years'), 'You must be at least 18 years old to proceed')
-      .transform(transformDateWithMoment(dateFormat)),
+      .transform(yupDateTransformer(dateFormat)),
     input: {
       allowClear: false,
       component: DatePickerField,

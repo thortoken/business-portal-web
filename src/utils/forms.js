@@ -37,7 +37,7 @@ export const makeEmptyInitialValues = (fieldsSchema, values = {}) => {
   });
 };
 
-export const transformDateWithMoment = format =>
+export const yupDateTransformer = format =>
   function(currentValue, originalValue) {
     if (this.isType(currentValue)) {
       return currentValue;

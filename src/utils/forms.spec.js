@@ -1,7 +1,7 @@
 import {
   makeEmptyInitialValues,
   makeValidationSchema,
-  transformDateWithMoment,
+  yupDateTransformer,
   validateFieldsSchema,
 } from './forms';
 
@@ -164,9 +164,9 @@ describe('utils: forms', () => {
     });
   });
 
-  describe('transformDateWithMoment', () => {
+  describe('yupDateTransformer', () => {
     it('should return a function', () => {
-      expect(transformDateWithMoment('YYYY/DD/MM')).toBeInstanceOf(Function);
+      expect(yupDateTransformer('YYYY/DD/MM')).toBeInstanceOf(Function);
     });
 
     const FakeSchema = {
@@ -175,7 +175,7 @@ describe('utils: forms', () => {
 
     it('should return current value if it is already properly transformed', () => {
       FakeSchema.isType.mockReturnValueOnce(true);
-      const transformer = transformDateWithMoment('YYYY/DD/MM').bind(FakeSchema);
+      const transformer = yupDateTransformer('YYYY/DD/MM').bind(FakeSchema);
       const currentValue = 'current';
       const originalValue = 'original';
       const result = transformer(currentValue, originalValue);
@@ -184,7 +184,7 @@ describe('utils: forms', () => {
 
     it('should return original value as Date if it is valid', () => {
       FakeSchema.isType.mockReturnValueOnce(false);
-      const transformer = transformDateWithMoment('YYYY/DD/MM').bind(FakeSchema);
+      const transformer = yupDateTransformer('YYYY/DD/MM').bind(FakeSchema);
       const currentValue = '2010-01-01';
       const originalValue = '2010/01/01';
       const result = transformer(currentValue, originalValue);
@@ -193,7 +193,7 @@ describe('utils: forms', () => {
 
     it('should return current date as Date if original value is invalid', () => {
       FakeSchema.isType.mockReturnValueOnce(false);
-      const transformer = transformDateWithMoment('YYYY/DD/MM').bind(FakeSchema);
+      const transformer = yupDateTransformer('YYYY/DD/MM').bind(FakeSchema);
       const currentValue = '2010-71-01';
       const originalValue = '2010/01/71';
       const result = transformer(currentValue, originalValue);
