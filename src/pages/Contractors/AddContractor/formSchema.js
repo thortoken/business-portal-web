@@ -36,6 +36,9 @@ const formFields = {
   phone: {
     label: 'Phone',
     validator: Yup.string().matches(/\d{10}/, '${label} must have 10 digits'),
+    input: {
+      placeholder: '(000) 000-0000',
+    },
   },
   address1: {
     label: 'Address 1',
@@ -61,6 +64,9 @@ const formFields = {
       .required()
       .max(2)
       .uppercase(),
+    input: {
+      placeholder: 'AB',
+    },
   },
   postalCode: {
     label: 'Postal Code',
@@ -68,6 +74,9 @@ const formFields = {
       .ensure()
       .required()
       .matches(/\d{5}/, '${label} must be a valid zip code'),
+    input: {
+      placeholder: '12345',
+    },
   },
   country: {
     label: 'Country',
@@ -107,6 +116,9 @@ const formFields = {
       .ensure()
       .required()
       .matches(/\d{4}/, 'Please input last 4 digits of your SSN'),
+    input: {
+      placeholder: '0000',
+    },
   },
 };
 
