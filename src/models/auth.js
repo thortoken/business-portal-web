@@ -26,16 +26,16 @@ const auth = {
         const response = await Http.post('/auth/login', {
           login: data.email,
           password: data.password,
-          tenant: Config.tenantId
+          tenant: Config.tenantId,
         });
         const { token, name, phone, email } = response.data;
 
         this.setUser({ name, phone, email });
         this.saveToken(token);
 
-        return { token, name, phone, email }
+        return { token, name, phone, email };
       } catch (err) {
-        throw err
+        throw err;
       }
     },
 
@@ -47,14 +47,14 @@ const auth = {
     setToken(state, action) {
       return {
         ...state,
-        token: action
-      }
+        token: action,
+      };
     },
     setUser(state, action) {
       return {
         ...state,
         user: action.payload,
-      }
+      };
     },
   },
   state: {
@@ -63,4 +63,4 @@ const auth = {
   },
 };
 
-export default auth
+export default auth;
