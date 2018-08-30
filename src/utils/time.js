@@ -101,3 +101,14 @@ export const movePeriod = (period, startDate, endDate, side = 'next', format = '
 };
 
 export const formatDate = date => moment.unix(date.seconds).format('MM/DD');
+
+export const dateAsMoment = defaultFormat => (date, format = defaultFormat) => {
+  if (typeof date === 'string') {
+    const tryDate = moment(date, format);
+    if (tryDate.isValid()) {
+      return tryDate;
+    }
+  }
+
+  return moment(date);
+};

@@ -3,6 +3,7 @@ import * as Yup from 'yup';
 import moment from 'moment';
 
 import { makeValidationSchema, makeEmptyInitialValues, yupDateTransformer } from '~utils/forms';
+import { dateAsMoment } from '~utils/time';
 
 import DatePickerField from '~components/DatePickerField';
 
@@ -123,4 +124,6 @@ const initialValues = makeEmptyInitialValues(formFields, {
   dateOfBirth: moment().format(dateFormat),
 });
 
-export { formFields, validationSchema, initialValues };
+const transformDateToMoment = dateAsMoment(dateFormat);
+
+export { formFields, validationSchema, initialValues, transformDateToMoment };
