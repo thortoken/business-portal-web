@@ -36,8 +36,39 @@ const users = {
         throw err;
       }
     },
+
+    async getUsersWithTransactions({ startDate, endDate, status }) {
+      try {
+        const response = await Http.get(`/users?embed=transactions`, {
+          startDate: startDate.format('YYYY-MM-DD'),
+          endDate: endDate.format('YYYY-MM-DD'),
+          status,
+        });
+
+        if (status === 'done') {
+          this.setUsersPaidTransactions(response.data);
+        } else if (status === 'new') {
+          this.setUsersPendingTransactions(response.data);
+        } else {
+          this.setUsersTransactions(response.data);
+        }
+
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
   },
   reducers: {
+    setUsersPaidTransactions(state, payload) {
+      return { ...state, usersPaidTransactions: payload };
+    },
+    setUsersPendingTransactions(state, payload) {
+      return { ...state, usersPendingTransactions: payload };
+    },
+    setUsersTransactions(state, payload) {
+      return { ...state, transactions: payload };
+    },
     setCurrent(state, payload) {
       return { ...state, currentUser: payload };
     },
@@ -53,6 +84,8 @@ const users = {
   },
   state: {
     currentUser: null,
+    usersPendingTransactions: null,
+    usersPaidTransactions: null,
   },
 };
 

@@ -9,17 +9,23 @@ import './JobsList.css';
 
 const { Column } = Table;
 
-const jobsPerType = jobs => _.groupBy(jobs, job => job.jobId);
+const jobsPerType = jobs => _.groupBy(jobs, j => j.job.id);
+
+const sumTransactions = transactions => {
+  return transactions.reduce((prevValue, currValue) => {
+    return +prevValue + currValue.value * currValue.quantity;
+  }, 0);
+};
 
 const calculateJobs = jobs => {
   const obj = {};
   Object.entries(jobs).forEach(([jobId, job]) => {
     obj[jobId] = {
       jobId,
-      name: job[0].jobName,
+      name: job[0].job.name,
       count: job.length,
       prev: 0,
-      current: _.sumBy(job, 'jobCost'),
+      current: sumTransactions(jobs[jobId]),
       jobs: job,
     };
   });
@@ -29,19 +35,19 @@ const calculateJobs = jobs => {
 
 export class JobsList extends Component {
   render() {
-    const { jobs, paidTransactions, jobsList, renderAmount } = this.props;
+    const { jobs, usersPaidTransactions, jobsList, renderAmount } = this.props;
 
     const summarizedJobs = calculateJobs(jobsPerType(jobsList));
-    let paidTransactionsGroupedByUsers = _.groupBy(paidTransactions, 'contractor.id');
+    let paidTransactionsGroupedByUsers = new Map(usersPaidTransactions.items.map(t => [t.id, t]));
 
     Object.keys(summarizedJobs).forEach(() => {
-      const paidTransactionForUser = paidTransactionsGroupedByUsers[jobsList[0].contractor.id];
+      const paidTransactionForUser = paidTransactionsGroupedByUsers[jobsList[0].userId];
       const paidTransactionForUserGroupedByJobId = _.groupBy(paidTransactionForUser, 'jobId');
 
       Object.keys(summarizedJobs).forEach(summarizedJobKey => {
         summarizedJobs[summarizedJobKey].prev = _.sumBy(
           paidTransactionForUserGroupedByJobId[summarizedJobKey],
-          'jobCost'
+          item => parseFloat(item.job.value)
         );
       });
 

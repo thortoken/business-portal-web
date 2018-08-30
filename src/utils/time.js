@@ -12,7 +12,7 @@ export const weekOfYear = weeksToAdd => {
       moment()
         .year()
         .toString()
-    ).add(weeksToAdd, 'weeks')
+    ).add(weeksToAdd - 1, 'weeks')
   );
 };
 

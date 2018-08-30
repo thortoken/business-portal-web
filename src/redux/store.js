@@ -9,9 +9,7 @@ import loginReducer from './reducers/login';
 import jumioReducer from './reducers/jumio';
 import sagas from './sagas';
 import statusReducer from './reducers/status';
-import transactionsReducer from './reducers/transactions';
 import walletReducer from './reducers/wallet';
-import jobsReducer from './reducers/jobs';
 import contractorReducer from './reducers/contractor';
 
 export const history = createHistory();
@@ -22,11 +20,9 @@ const allReducers = combineReducers({
   contractor: contractorReducer,
   form: formReducer,
   login: loginReducer,
-  jobs: jobsReducer,
   jumio: jumioReducer,
   status: statusReducer,
   router: routerReducer,
-  transactions: transactionsReducer,
   wallet: walletReducer,
 });
 

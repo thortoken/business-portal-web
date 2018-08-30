@@ -5,8 +5,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { getContractor } from '~redux/actions/contractor';
-import { getUserTransactions } from '~redux/actions/transactions';
-import * as jobActions from '~redux/actions/jobs';
 
 import Dropdown from '~components/Dropdown';
 import BackBtn from '~components/BackBtn';
@@ -51,9 +49,9 @@ class ContractorDetails extends React.Component {
   }
 
   componentDidMount() {
-    const { match, getContractor, getJobs } = this.props;
+    const { match, getContractor } = this.props;
 
-    getJobs();
+    // getJobs();
     getContractor(match.params.id);
   }
 
@@ -72,7 +70,7 @@ class ContractorDetails extends React.Component {
   }
 
   render() {
-    const { match, contractor, userTransactions } = this.props;
+    const { match, contractor } = this.props;
 
     const menuList = [
       {
@@ -142,11 +140,7 @@ class ContractorDetails extends React.Component {
         <Filters onPeriodChange={this.onPeriodChange} />
 
         <div className="ContractorDetails-table">
-          <Table
-            dataSource={userTransactions.map(item => {
-              return { ...item, key: item.id };
-            })}
-            bordered>
+          <Table dataSource={[]} bordered>
             <Column align="center" dataIndex="date" render={formatDate} title="Date" width="10%" />
             <Column
               align="center"
@@ -186,15 +180,14 @@ class ContractorDetails extends React.Component {
   };
 
   onPeriodChange = periodRange => {
-    const { match, getUserTransactions } = this.props;
+    const { match } = this.props;
 
-    getUserTransactions({ ...periodRange, status: 'PAID', userId: match.params.id });
+    // getUserTransactions({ ...periodRange, status: 'PAID', userId: match.params.id });
   };
 }
 
 const mapStateToProps = state => ({
   contractor: state.users.currentUser,
-  userTransactions: state.transactions.userTransactions,
   jobs: state.jobs.jobs,
 });
 
@@ -202,8 +195,6 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getContractor,
-      getUserTransactions,
-      ...jobActions,
     },
     dispatch
   );
