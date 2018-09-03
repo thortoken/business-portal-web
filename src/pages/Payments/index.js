@@ -146,12 +146,12 @@ class Payments extends React.Component {
 
     return (
       <div>
-        <Header title="Payments" size="medium" />
+        <Header title="Payments" size="medium"/>
 
-        <Summary previous={previous} current={current} />
+        <Summary previous={previous} current={current}/>
 
         <div className="Payments-selector">
-          <Checkbox onChange={this.onSelectAll} checked={checked} /> Select All
+          <Checkbox onChange={this.onSelectAll} checked={checked}/> Select All
         </div>
 
         <Box>
@@ -171,7 +171,7 @@ class Payments extends React.Component {
               align="center"
               dataIndex="contractor"
               width="25%"
-              title={<TitleWithIcon title="Contractor" icon="user" />}
+              title={<TitleWithIcon title="Contractor" icon="user"/>}
               render={this.showContractorName}
               className="Payments-contractor-selector"
             />
@@ -196,7 +196,7 @@ class Payments extends React.Component {
               dataIndex="transactionsSum"
               render={this.renderAmount}
               width="15%"
-              title={<TitleWithIcon title="Current" icon="dollar" />}
+              title={<TitleWithIcon title="Current" icon="dollar"/>}
             />
             <Column
               className="Payments-table-approve Payments-approve-selector"
@@ -207,7 +207,7 @@ class Payments extends React.Component {
                 <button
                   className={classnames(null, { active: this.isActive(record) })}
                   onClick={() => this.handleSelectTransaction(record)}>
-                  <Icon type="check" />
+                  <Icon type="check"/>
                 </button>
               )}
             />
@@ -298,10 +298,16 @@ class Payments extends React.Component {
   };
 
   showContractorName = (contractorName, record) => {
+    if (record.profile === null) {
+      record.profile = {
+        firstName: '',
+        lastName: ''
+      }
+    }
     return (
-      <Link to={'/contractors/' + record.id}>{`${record.profile.firstName} ${
-        record.profile.lastName
-      }`}</Link>
+      <Link to={'/contractors/' + record.id}>
+        {`${record.profile.firstName} ${record.profile.lastName}`}
+      </Link>
     );
   };
 
