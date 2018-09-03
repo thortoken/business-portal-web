@@ -145,10 +145,10 @@ export class EditContractor extends React.Component {
 
 const mapState = ({ loading, users: { currentUser } }) => ({
   currentUser,
-  isLoading: loading.effects.users.get,
+  isLoading: loading.effects.users.getUser,
 });
-const mapDispatch = ({ users: { get, updateProfile } }) => ({
-  getUser: get,
+const mapDispatch = ({ users: { getUser, updateProfile } }) => ({
+  getUser,
   updateProfile,
 });
 
