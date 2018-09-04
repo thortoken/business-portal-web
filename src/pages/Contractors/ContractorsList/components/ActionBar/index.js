@@ -12,8 +12,8 @@ class ActionBar extends React.Component {
   }
 
   handleAdd() {
-    this.props.history.push('/contractors/confirm');
-    // this.props.history.push('/contractors/add');
+    // this.props.history.push('/contractors/confirm');
+    this.props.history.push('/contractors/add');
   }
 
   render() {

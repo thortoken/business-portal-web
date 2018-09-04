@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button } from 'antd';
 
 import classnames from 'classnames';
 
@@ -39,7 +38,7 @@ export class PeriodCard extends React.Component {
           Payments Postponed: <span className={classnames({ [`Period-card--value`]: active })}>{postponed}</span>
         </div>
         <div className="Period-card__row">
-          Total Payments: <span className={classnames({ [`Period-card--amount`]: active })}>{total}$</span>
+          Total Payments: <span className={classnames({ [`Period-card--amount`]: active })}>${total}</span>
         </div>
       </div>
     );
