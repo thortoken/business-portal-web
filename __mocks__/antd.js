@@ -26,6 +26,8 @@ const Switch = namedComponent('Switch');
 
 const Slider = namedComponent('Slider');
 
+const Spin = namedComponent('Spin');
+
 const Steps = namedComponent('Steps');
 Steps.Step = namedComponent('Step');
 
@@ -53,6 +55,7 @@ module.exports = {
   Row,
   Switch,
   Slider,
+  Spin,
   Steps,
   Table,
 };

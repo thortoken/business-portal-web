@@ -27,7 +27,7 @@ const users = {
         throw err;
       }
     },
-    async get(id) {
+    async getUser(id) {
       try {
         const response = await Http.get(`/users/${id}`);
         this.setCurrent(response.data);
@@ -39,10 +39,13 @@ const users = {
 
     async getUsersWithTransactions({ startDate, endDate, status }) {
       try {
-        const response = await Http.get(`/users?embed=transactions`, {
-          startDate: startDate.format('YYYY-MM-DD'),
-          endDate: endDate.format('YYYY-MM-DD'),
-          status,
+        const response = await Http.get('/users', {
+          params: {
+            embed: 'transactions',
+            startDate: startDate.format('YYYY-MM-DD'),
+            endDate: endDate.format('YYYY-MM-DD'),
+            status,
+          },
         });
 
         if (status === 'done') {

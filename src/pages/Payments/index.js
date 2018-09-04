@@ -15,16 +15,11 @@ import TitleWithIcon from './components/TitleWithIcon';
 
 import { getCurrentTwoWeeksPeriod, getPreviousTwoWeeksPeriod } from '~utils/time';
 import { formatUsd } from '~utils/number';
+import { sumTransactions } from '~utils/summary';
 
 import './Payments.css';
 
 const { Column } = Table;
-
-const sumTransactions = transactions => {
-  return transactions.reduce((prevValue, currValue) => {
-    return +prevValue + currValue.value * currValue.quantity;
-  }, 0);
-};
 
 const calculateSummaryTransactions = (transactions, period) => {
   const datesForPeriod =
@@ -297,17 +292,15 @@ class Payments extends React.Component {
       : '$0';
   };
 
-  showContractorName = (contractorName, record) => {
-    if (record.profile === null) {
-      record.profile = {
-        firstName: '',
-        lastName: ''
-      }
+  showContractorName = (val, user) => {
+    if (!user.profile) {
+      return <div>Profile doesn't exist</div>;
     }
+
     return (
-      <Link to={'/contractors/' + record.id}>
-        {`${record.profile.firstName} ${record.profile.lastName}`}
-      </Link>
+      <Link to={'/contractors/' + user.id}>{`${user.profile.firstName} ${
+        user.profile.lastName
+      }`}</Link>
     );
   };
 

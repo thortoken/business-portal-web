@@ -43,7 +43,7 @@ const Activity = ({ lastActivityDate }) => {
 };
 
 Activity.propTypes = {
-  lastActivityDate: PropTypes.object.isRequired,
+  lastActivityDate: PropTypes.string,
 };
 
 export default Activity;
