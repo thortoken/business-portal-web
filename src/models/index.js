@@ -7,6 +7,7 @@ import auth from './auth';
 import jobs from './jobs';
 import transactions from './transactions';
 import users from './users';
+import tenants from './tenants';
 
 export const history = createHistory();
 const middleware = routerMiddleware(history);
@@ -19,6 +20,7 @@ const store = init({
     jobs,
     transactions,
     users,
+    tenants,
   },
   plugins: [loading],
   redux: {

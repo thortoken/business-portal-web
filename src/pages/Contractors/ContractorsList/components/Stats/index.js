@@ -1,23 +1,21 @@
 import React from 'react';
-import { Progress } from 'antd';
+import { Progress, Badge } from 'antd';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import Box from '~components/Box';
 
 import './Stats.css';
+import connect from "react-redux/es/connect/connect";
 
-const MockData = [
-  { type: 'active', count: 1390 },
-  { type: 'resting', count: 1110 },
-  { type: 'inactive', count: 180 },
-];
 const generateStatsItem = list => {
-  const types = {
-    active: false,
-    resting: false,
-    inactive: false,
-  };
   return list.map(item => {
+    let types = {
+      active: false,
+      inactive: false,
+      resting: false,
+    };
     types[item.type] = true;
     return (
       <div className="Stats__row" key={item.type}>
@@ -25,52 +23,98 @@ const generateStatsItem = list => {
         <div
           className={classnames('Stats__type', {
             'Stats--active': types.active,
-            'Stats--resting': types.resting,
             'Stats--inactive': types.inactive,
+            'Stats--resting': types.resting,
           })}>
           {item.type}
         </div>
         <div
           className={classnames('Stats__progress', {
             'Stats--active': types.active,
-            'Stats--resting': types.resting,
             'Stats--inactive': types.inactive,
+            'Stats--resting': types.resting,
           })}>
-          <Progress percent={item.percent} />
+          <Progress percent={item.percent} successPercent={-1} type="line"/>
         </div>
       </div>
     );
   });
 };
 
+const prepareData = (data) => {
+  let statsData = [];
+  _.forIn(data, (value, key) => {
+    if (value.percent) {
+      statsData.push({
+        type: key.toLowerCase(),
+        count: parseInt(value.count, 10),
+        percent: parseInt(value.percent, 10)
+      });
+    }
+  });
+  return statsData;
+};
+
 class Stats extends React.Component {
+  static propTypes = {
+    stats: PropTypes.object,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
-      statsData: [],
+      statsData: [
+        { type: 'active', count: 0, percent: 0 },
+        { type: 'inactive', count: 0, percent: 0 },
+        { type: 'resting', count: 0, percent: 0 },
+      ],
+      stats: this.props.stats
     };
 
     this.generateStatsItem = generateStatsItem;
   }
 
   componentDidMount() {
-    this.setState({ statsData: this.prepareData(MockData) });
+    this.props.getStats();
   }
 
-  prepareData(data) {
-    const total = data.reduce((total, amount) => ({ count: total.count + amount.count }));
-    return data.map(item => {
-      item.percent = parseInt((100 * item.count / total.count).toFixed(0), 10);
-      return item;
-    });
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.stats !== prevState.stats) {
+      return {
+        stats: nextProps.stats,
+        statsData: prepareData(nextProps.stats),
+      };
+    }
+    return null;
   }
 
   render() {
+    const { total } = this.state.stats;
     return (
       <div className="Stats">
-        <Box className="Stats__box">{this.generateStatsItem(this.state.statsData)}</Box>
+        <Box className="Stats__box">
+          <div className="Stats__header">
+            <div className="Stats__row Stats--header">
+              <div className="Stats__count Stats__badge">
+                <Badge count={total || 0}/>
+              </div>
+              <div className="Stats__header--type">Total contractors</div>
+              <div className="Stats__header--progress" />
+            </div>
+          </div>
+          {this.generateStatsItem(this.state.statsData)}
+        </Box>
       </div>
     );
   }
 }
-export default Stats;
+
+const mapStateToProps = state => ({
+  stats: state.tenants.stats,
+});
+
+const mapDispatchToProps = dispatch => ({
+  getStats: dispatch.tenants.getStats,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Stats);
