@@ -60,16 +60,17 @@ class Stats extends React.Component {
     stats: PropTypes.object,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
+  state = {
       statsData: [
         { type: 'active', count: 0, percent: 0 },
         { type: 'inactive', count: 0, percent: 0 },
         { type: 'resting', count: 0, percent: 0 },
       ],
-      stats: this.props.stats
-    };
+      stats: null
+  };
+
+  constructor(props) {
+    super(props);
 
     this.generateStatsItem = generateStatsItem;
   }
