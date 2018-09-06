@@ -1,13 +1,12 @@
 import React from 'react';
-import { Progress, Badge } from 'antd';
-import classnames from 'classnames';
+import { Badge } from 'antd';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 
 import Box from '~components/Box';
 
 import './Stats.css';
-import connect from "react-redux/es/connect/connect";
+import { connect } from 'react-redux';
+import StatsRow from "./components/StatsRow";
 
 const generateStatsItem = list => {
   return list.map(item => {
@@ -18,42 +17,25 @@ const generateStatsItem = list => {
     };
     types[item.type] = true;
     return (
-      <div className="Stats__row" key={item.type}>
-        <div className="Stats__count">{item.count}</div>
-        <div
-          className={classnames('Stats__type', {
-            'Stats--active': types.active,
-            'Stats--inactive': types.inactive,
-            'Stats--resting': types.resting,
-          })}>
-          {item.type}
-        </div>
-        <div
-          className={classnames('Stats__progress', {
-            'Stats--active': types.active,
-            'Stats--inactive': types.inactive,
-            'Stats--resting': types.resting,
-          })}>
-          <Progress percent={item.percent} successPercent={-1} type="line"/>
-        </div>
-      </div>
+      <StatsRow count={item.count} percent={item.percent} type={item.type} types={types}/>
     );
   });
 };
 
-const prepareData = (data) => {
-  let statsData = [];
-  _.forIn(data, (value, key) => {
-    if (value.percent) {
-      statsData.push({
-        type: key.toLowerCase(),
-        count: parseInt(value.count, 10),
-        percent: parseInt(value.percent, 10)
-      });
-    }
-  });
-  return statsData;
-};
+const prepareData = data =>
+  Object.entries(data)
+    .filter(([key, value]) => value.percent)
+    .reduce(
+      (acc, [key, value]) => [
+        ...acc,
+        {
+          type: key.toLowerCase(),
+          count: parseInt(value.count, 10),
+          percent: parseInt(value.percent, 10),
+        },
+      ],
+      []
+    );
 
 class Stats extends React.Component {
   static propTypes = {
@@ -61,12 +43,12 @@ class Stats extends React.Component {
   };
 
   state = {
-      statsData: [
-        { type: 'active', count: 0, percent: 0 },
-        { type: 'inactive', count: 0, percent: 0 },
-        { type: 'resting', count: 0, percent: 0 },
-      ],
-      stats: null
+    statsData: [
+      { type: 'active', count: 0, percent: 0 },
+      { type: 'inactive', count: 0, percent: 0 },
+      { type: 'resting', count: 0, percent: 0 },
+    ],
+    stats: null
   };
 
   constructor(props) {
@@ -90,7 +72,7 @@ class Stats extends React.Component {
   }
 
   render() {
-    const { total } = this.state.stats;
+    const { stats: { total }, statsData } = this.state;
     return (
       <div className="Stats">
         <Box className="Stats__box">
@@ -100,10 +82,10 @@ class Stats extends React.Component {
                 <Badge count={total || 0}/>
               </div>
               <div className="Stats__header--type">Total contractors</div>
-              <div className="Stats__header--progress" />
+              <div className="Stats__header--progress"/>
             </div>
           </div>
-          {this.generateStatsItem(this.state.statsData)}
+          {this.generateStatsItem(statsData)}
         </Box>
       </div>
     );
