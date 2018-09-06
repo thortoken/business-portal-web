@@ -17,7 +17,7 @@ const generateStatsItem = list => {
     };
     types[item.type] = true;
     return (
-      <StatsRow count={item.count} percent={item.percent} type={item.type} types={types}/>
+      <StatsRow count={item.count} percent={item.percent} type={item.type} types={types} key={item.type}/>
     );
   });
 };

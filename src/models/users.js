@@ -36,7 +36,15 @@ const users = {
         throw err;
       }
     },
-
+    async getUsers() {
+      try {
+        const response = await Http.get('/users');
+        this.setUsers(response.data.items);
+        return response.data.items;
+      } catch (err) {
+        throw err;
+      }
+    },
     async getUsersWithTransactions({ startDate, endDate, status }) {
       try {
         const response = await Http.get('/users', {
@@ -75,6 +83,9 @@ const users = {
     setCurrent(state, payload) {
       return { ...state, currentUser: payload };
     },
+    setUsers(state, payload) {
+      return { ...state, usersList: payload }
+    },
     setProfile(state, payload) {
       return {
         ...state,
@@ -86,6 +97,7 @@ const users = {
     },
   },
   state: {
+    usersList: [],
     currentUser: null,
     usersPendingTransactions: null,
     usersPaidTransactions: null,
