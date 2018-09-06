@@ -5,7 +5,6 @@ const tenants = {
     async getStats() {
       try {
         const response = await Http.get('/tenants/statistics');
-        console.log('response.data', response.data);
         this.setStats(response.data);
         return response.data;
       } catch (err) {
