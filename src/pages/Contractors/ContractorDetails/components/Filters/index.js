@@ -85,8 +85,8 @@ export default class Filters extends React.Component {
     period: newPeriod,
   });
 
-  handleFiltersChange = ({ startDate, endDate }) => {
-    this.props.onPeriodChange({ startDate, endDate });
+  handleFiltersChange = ({ startDate, endDate, period }) => {
+    this.props.onPeriodChange({ startDate, endDate, period });
   };
 
   handlePeriodChange = newPeriod => {

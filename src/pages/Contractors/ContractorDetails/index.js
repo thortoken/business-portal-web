@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 
 import Dropdown from '~components/Dropdown';
 import BackBtn from '~components/BackBtn';
-import Activity from './components/Activity';
 import ContractorSummary from './components/ContractorSummary';
 import Filters from './components/Filters';
+import Profile from './components/Profile';
 
 import { formatUsd } from '~utils/number';
-import { sumTransactions } from '~utils/summary';
+import { movePeriod, renderDate } from '~utils/time';
 
 import './ContractorDetails.css';
 
@@ -38,6 +38,13 @@ class ContractorDetails extends React.Component {
 
   state = {
     currentUser: {},
+    currentUserStatistics: {
+      rank: 0,
+      nJobs: 0,
+      prev: 0,
+      current: 0,
+      ytd: 0,
+    },
     contractorTransactions: {
       items: [],
     },
@@ -75,6 +82,8 @@ class ContractorDetails extends React.Component {
     const {
       match,
       currentUser,
+      currentUserStatistics,
+      loadingUserStatistics,
       loadingContractor,
       contractorTransactions,
       loadingTransactions,
@@ -97,47 +106,16 @@ class ContractorDetails extends React.Component {
       },
     ];
 
-    let summary = {
-      rank: 1,
-      numOfJobs: localTransactions.length,
-      prev: 1087.67,
-      current: sumTransactions(localTransactions),
-      yearly: 26512.34,
-    };
-
     return (
       <Spin size="large" spinning={loadingContractor}>
         <div className="ContractorDetails">
           <BackBtn to="/payments" label="Payments" />
-          <div className="ContractorDetails-box-informations">
-            <div className="ContractorDetails-basic-data">
-              <div className="ContractorDetails-name">
-                {currentUser && `${currentUser.profile.firstName} ${currentUser.profile.lastName}`}
-              </div>
-              <div className="ContractorDetails-since">
-                Contractor since {currentUser && this.renderDate(currentUser.createdAt)}
-              </div>
-            </div>
-            <div className="ContractorDetails-activity">
-              <Activity lastActivityDate={currentUser && `${currentUser.updatedAt}`} />
-            </div>
-          </div>
-          <div className="ContractorDetails-box-informations">
-            <div className="ContractorDetails-address">
-              <div className="ContractorDetails-label">Address</div>
-              <div className="ContractorDetails-value">
-                <div>{currentUser && `${currentUser.address1} ${currentUser.address2}`}</div>
-                <div>
-                  {currentUser &&
-                    `${currentUser.city} ${currentUser.state} ${currentUser.postalCode}`}
-                </div>
-              </div>
-            </div>
-            <div className="ContractorDetails-phone">
-              <div className="ContractorDetails-label">Phone</div>
-              <div className="ContractorDetails-value">{currentUser && `${currentUser.phone}`}</div>
-            </div>
-            <div className="ContractorDetails-options">
+
+          {currentUser && (
+            <Profile
+              {...currentUser.profile}
+              createdAt={currentUser.createdAt}
+              updatedAt={currentUser.updatedAt}>
               <Dropdown
                 className="ContractorDetails-options-btn"
                 options={this.generateMenuItems(menuList, match.params.id)}
@@ -146,22 +124,21 @@ class ContractorDetails extends React.Component {
                   Options
                 </Button>
               </Dropdown>
-            </div>
-          </div>
-
-          <ContractorSummary {...summary} />
-
+            </Profile>
+          )}
+          <Spin size="large" spinning={loadingUserStatistics}>
+            <ContractorSummary {...currentUserStatistics} />
+          </Spin>
           <Filters onPeriodChange={this.onPeriodChange} />
-
           <Spin size="large" spinning={loadingTransactions}>
             <div className="ContractorDetails-table">
               <Table dataSource={localTransactions} bordered>
                 <Column
                   align="center"
                   dataIndex="createdAt"
-                  render={this.renderDate}
+                  render={renderDate}
                   title="Date"
-                  width="10%"
+                  width="15%"
                 />
                 <Column
                   align="center"
@@ -170,7 +147,7 @@ class ContractorDetails extends React.Component {
                   width="30%"
                   title="Service"
                 />
-                {/* <Column align="center" dataIndex="location" title="Location" width="25%" /> */}
+                <Column align="center" dataIndex="location" title="Location" width="20%" />
                 <Column
                   align="center"
                   dataIndex="value"
@@ -191,10 +168,6 @@ class ContractorDetails extends React.Component {
     return job && job.name;
   };
 
-  renderDate = date => {
-    return new Date(date).toLocaleDateString();
-  };
-
   handleDelete = () => {
     const { match } = this.props;
     console.log('delete contractor', match.params.id);
@@ -206,14 +179,27 @@ class ContractorDetails extends React.Component {
   };
 
   onPeriodChange = periodRange => {
-    const { match, getTransactionsForContractor } = this.props;
+    const { match, getTransactionsForContractor, getCurrentUserStatistics } = this.props;
 
     getTransactionsForContractor({ ...periodRange, userId: match.params.id });
+
+    const { period, startDate, endDate } = { ...periodRange };
+    const previousTwoWeeksPeriod = movePeriod(period, startDate, endDate, 'prev');
+
+    getCurrentUserStatistics({
+      id: match.params.id,
+      currentStartDate: startDate,
+      currentEndDate: endDate,
+      previousStartDate: previousTwoWeeksPeriod.startDate,
+      previousEndDate: previousTwoWeeksPeriod.endDate,
+    });
   };
 }
 
 const mapStateToProps = state => ({
   currentUser: state.users.currentUser,
+  currentUserStatistics: state.users.currentUserStatistics,
+  loadingUserStatistics: state.loading.effects.users.getCurrentUserStatistics,
   loadingContractor: state.loading.effects.users.getUser,
   contractorTransactions: state.transactions.contractorTransactions,
   loadingTransactions: state.loading.effects.transactions.getTransactionsForContractor,
@@ -221,10 +207,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = ({
   transactions: { getTransactionsForContractor },
-  users: { getUser },
+  users: { getUser, getCurrentUserStatistics },
 }) => ({
   getTransactionsForContractor,
   getUser,
+  getCurrentUserStatistics,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContractorDetails);

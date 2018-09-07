@@ -33,7 +33,7 @@ const calculateSummaryTransactions = (transactions, period) => {
   return obj;
 };
 
-const calculateTransactions = (usersTransactions, jobs) => {
+const calculateTransactions = usersTransactions => {
   return _.sortBy(
     usersTransactions.map(user => {
       return {
@@ -141,12 +141,12 @@ class Payments extends React.Component {
 
     return (
       <div>
-        <Header title="Payments" size="medium"/>
+        <Header title="Payments" size="medium" />
 
-        <Summary previous={previous} current={current}/>
+        <Summary previous={previous} current={current} />
 
         <div className="Payments-selector">
-          <Checkbox onChange={this.onSelectAll} checked={checked}/> Select All
+          <Checkbox onChange={this.onSelectAll} checked={checked} /> Select All
         </div>
 
         <Box>
@@ -166,7 +166,7 @@ class Payments extends React.Component {
               align="center"
               dataIndex="contractor"
               width="25%"
-              title={<TitleWithIcon title="Contractor" icon="user"/>}
+              title={<TitleWithIcon title="Contractor" icon="user" />}
               render={this.showContractorName}
               className="Payments-contractor-selector"
             />
@@ -191,7 +191,7 @@ class Payments extends React.Component {
               dataIndex="transactionsSum"
               render={this.renderAmount}
               width="15%"
-              title={<TitleWithIcon title="Current" icon="dollar"/>}
+              title={<TitleWithIcon title="Current" icon="dollar" />}
             />
             <Column
               className="Payments-table-approve Payments-approve-selector"
@@ -202,7 +202,7 @@ class Payments extends React.Component {
                 <button
                   className={classnames(null, { active: this.isActive(record) })}
                   onClick={() => this.handleSelectTransaction(record)}>
-                  <Icon type="check"/>
+                  <Icon type="check" />
                 </button>
               )}
             />
@@ -228,6 +228,7 @@ class Payments extends React.Component {
       selectedContractorsIds,
       usersPendingTransactions,
     } = this.state;
+
     let { selectedTransactionsSummaryValue } = this.state;
     const contractorId = user.id;
 
@@ -238,13 +239,13 @@ class Payments extends React.Component {
     }
 
     user.transactions.forEach(transaction => {
-      const jobId = transaction.id;
+      const transactionId = transaction.id;
 
-      if (selectedTransactionsIds.has(jobId)) {
-        selectedTransactionsIds.delete(jobId);
+      if (selectedTransactionsIds.has(transactionId)) {
+        selectedTransactionsIds.delete(transactionId);
         selectedTransactionsSummaryValue -= +transaction.value * transaction.quantity;
       } else {
-        selectedTransactionsIds.add(jobId);
+        selectedTransactionsIds.add(transactionId);
         selectedTransactionsSummaryValue += +transaction.value * transaction.quantity;
       }
     });

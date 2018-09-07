@@ -36,7 +36,28 @@ const users = {
         throw err;
       }
     },
+    async getCurrentUserStatistics({
+      id,
+      currentStartDate,
+      currentEndDate,
+      previousStartDate,
+      previousEndDate,
+    }) {
+      try {
+        const response = await Http.get(`/users/${id}/statistics`, {
+          params: {
+            currentStartDate: currentStartDate.format('YYYY-MM-DD'),
+            currentEndDate: currentEndDate.format('YYYY-MM-DD'),
+            previousStartDate: previousStartDate.format('YYYY-MM-DD'),
+            previousEndDate: previousEndDate.format('YYYY-MM-DD'),
+          },
+        });
 
+        this.setCurrentUserStatistics(response.data);
+      } catch (err) {
+        throw err;
+      }
+    },
     async getUsersWithTransactions({ startDate, endDate, status }) {
       try {
         const response = await Http.get('/users', {
@@ -75,6 +96,9 @@ const users = {
     setCurrent(state, payload) {
       return { ...state, currentUser: payload };
     },
+    setCurrentUserStatistics(state, payload) {
+      return { ...state, currentUserStatistics: payload };
+    },
     setProfile(state, payload) {
       return {
         ...state,
@@ -87,6 +111,13 @@ const users = {
   },
   state: {
     currentUser: null,
+    currentUserStatistics: {
+      rank: '0',
+      nJobs: '0',
+      prev: '0',
+      current: '0',
+      ytd: '0',
+    },
     usersPendingTransactions: null,
     usersPaidTransactions: null,
   },
