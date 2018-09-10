@@ -25,7 +25,7 @@ export class EditContractor extends React.Component {
       }).isRequired,
     }).isRequired,
     onClose: PropTypes.func,
-    updateProfile: PropTypes.func.isRequired,
+    updateTenantProfile: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -75,14 +75,14 @@ export class EditContractor extends React.Component {
       match: {
         params: { id },
       },
-      updateProfile,
+      updateTenantProfile,
     } = this.props;
 
     const data = {
       ...profile,
       dateOfBirth: transformDateToMoment(profile.dateOfBirth).format('YYYY-MM-DD'),
     };
-    await updateProfile({ id, profile: data });
+    await updateTenantProfile({ id, tenantProfile: data });
   };
 
   handleSubmit = async (data, form) => {
@@ -147,9 +147,9 @@ const mapState = ({ loading, users: { currentUser } }) => ({
   currentUser,
   isLoading: loading.effects.users.getUser,
 });
-const mapDispatch = ({ users: { getUser, updateProfile } }) => ({
+const mapDispatch = ({ users: { getUser, updateTenantProfile } }) => ({
   getUser,
-  updateProfile,
+  updateTenantProfile,
 });
 
 export default connect(mapState, mapDispatch)(EditContractor);

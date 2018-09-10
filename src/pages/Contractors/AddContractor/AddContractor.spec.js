@@ -106,7 +106,7 @@ describe('page: AddContractor', () => {
         await instance.createContractor(fakeProfile);
 
         expect(mockProps.createUser).toHaveBeenCalledWith({
-          profile: {
+          tenantProfile: {
             ...fakeProfile,
             dateOfBirth: 'fake moment date',
           },
