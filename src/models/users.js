@@ -53,6 +53,25 @@ const users = {
         return response.data.items;
       } catch (err) {
         this.setUsersListLoading(false);
+    async getCurrentUserStatistics({
+      id,
+      currentStartDate,
+      currentEndDate,
+      previousStartDate,
+      previousEndDate,
+    }) {
+      try {
+        const response = await Http.get(`/users/${id}/statistics`, {
+          params: {
+            currentStartDate: currentStartDate.format('YYYY-MM-DD'),
+            currentEndDate: currentEndDate.format('YYYY-MM-DD'),
+            previousStartDate: previousStartDate.format('YYYY-MM-DD'),
+            previousEndDate: previousEndDate.format('YYYY-MM-DD'),
+          },
+        });
+
+        this.setCurrentUserStatistics(response.data);
+      } catch (err) {
         throw err;
       }
     },
@@ -102,6 +121,8 @@ const users = {
     },
     setUsersListLoading(state, payload){
       return { ...state, usersListLoading: payload}
+    setCurrentUserStatistics(state, payload) {
+      return { ...state, currentUserStatistics: payload };
     },
     setProfile(state, payload) {
       return {
@@ -117,6 +138,13 @@ const users = {
     usersList: [],
     currentUser: null,
     userListPagination: null,
+    currentUserStatistics: {
+      rank: '0',
+      nJobs: '0',
+      prev: '0',
+      current: '0',
+      ytd: '0',
+    },
     usersPendingTransactions: null,
     usersPaidTransactions: null,
     usersListLoading: false,

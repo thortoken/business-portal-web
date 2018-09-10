@@ -1,10 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { formatUsd } from '~utils/number';
 
 import './ContractorSummary.css';
 
-const ContractorSummary = ({ rank, numOfJobs, prev, current, yearly }) => {
+const ContractorSummary = ({ rank, nJobs, prev, current, ytd }) => {
   return (
     <div className="ContractorSummary">
       <div className="ContractorSummary-labels">
@@ -16,21 +15,13 @@ const ContractorSummary = ({ rank, numOfJobs, prev, current, yearly }) => {
       </div>
       <div className="ContractorSummary-values">
         <div>{rank}</div>
-        <div>{numOfJobs}</div>
+        <div>{nJobs}</div>
         <div>{formatUsd(prev)}</div>
         <div>{formatUsd(current)}</div>
-        <div>{formatUsd(yearly)}</div>
+        <div>{formatUsd(ytd)}</div>
       </div>
     </div>
   );
-};
-
-ContractorSummary.propTypes = {
-  rank: PropTypes.number.isRequired,
-  numOfJobs: PropTypes.number.isRequired,
-  prev: PropTypes.number.isRequired,
-  current: PropTypes.number.isRequired,
-  yearly: PropTypes.number.isRequired,
 };
 
 export default ContractorSummary;

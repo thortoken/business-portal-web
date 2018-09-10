@@ -71,9 +71,7 @@ export const getPreviousTwoWeeksPeriod = () => {
 
 export const movePeriod = (period, startDate, endDate, side = 'next', format = 'MMM DD') => {
   let periodInWeeks = 1;
-  if (period === PERIODS.ONE_WEEK) {
-    periodInWeeks = 1;
-  } else if (period === PERIODS.TWO_WEEKS) {
+  if (period === PERIODS.TWO_WEEKS) {
     periodInWeeks = 2;
   }
 
@@ -83,12 +81,18 @@ export const movePeriod = (period, startDate, endDate, side = 'next', format = '
 
   let previousStartDate =
     period === PERIODS.MONTH
-      ? startDate.add(periodInWeeks, 'month').startOf('month')
-      : startDate.add(periodInWeeks, 'week');
+      ? startDate
+          .clone()
+          .add(periodInWeeks, 'month')
+          .startOf('month')
+      : startDate.clone().add(periodInWeeks, 'week');
   let previousEndDate =
     period === PERIODS.MONTH
-      ? endDate.add(periodInWeeks, 'month').endOf('month')
-      : endDate.add(periodInWeeks, 'week');
+      ? endDate
+          .clone()
+          .add(periodInWeeks, 'month')
+          .endOf('month')
+      : endDate.clone().add(periodInWeeks, 'week');
 
   return {
     startDate: previousStartDate,
@@ -101,6 +105,8 @@ export const movePeriod = (period, startDate, endDate, side = 'next', format = '
 };
 
 export const formatDate = date => moment.unix(date.seconds).format('MM/DD');
+
+export const renderDate = date => new Date(date).toLocaleDateString();
 
 export const dateAsMoment = defaultFormat => (date, format = defaultFormat) => {
   if (typeof date === 'string') {
