@@ -74,8 +74,6 @@ class ContractorsList extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log(nextProps);
-    console.log(prevState);
     if (nextProps.usersList !== prevState.usersList) {
       return {
         usersList: nextProps.usersList,
