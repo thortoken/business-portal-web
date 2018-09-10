@@ -36,13 +36,31 @@ const users = {
         throw err;
       }
     },
-    async getCurrentUserStatistics({
-      id,
-      currentStartDate,
-      currentEndDate,
-      previousStartDate,
-      previousEndDate,
-    }) {
+    async getUsers({ page, limit, startDate, endDate }) {
+      try {
+        const response = await Http.get(`/users`, {
+          params: {
+            page: page,
+            limit: limit,
+            startDate: startDate.format('YYYY-MM-DD'),
+            endDate: endDate.format('YYYY-MM-DD'),
+          },
+        });
+        this.setUsers(response.data.items);
+        this.setUsersPagination(response.data.pagination);
+        return response.data.items;
+      } catch (err) {
+        throw err;
+      }
+    },
+
+    async getCurrentUserStatistics(
+      { id,
+        currentStartDate,
+        currentEndDate,
+        previousStartDate,
+        previousEndDate,
+      }) {
       try {
         const response = await Http.get(`/users/${id}/statistics`, {
           params: {
@@ -60,7 +78,7 @@ const users = {
     },
     async getUsersWithTransactions({ startDate, endDate, status }) {
       try {
-        const response = await Http.get('/users', {
+        const response = await Http.get(`/users`, {
           params: {
             embed: 'transactions',
             startDate: startDate.format('YYYY-MM-DD'),
@@ -96,6 +114,15 @@ const users = {
     setCurrent(state, payload) {
       return { ...state, currentUser: payload };
     },
+    setUsers(state, payload) {
+      return { ...state, usersList: payload }
+    },
+    setUsersPagination(state, payload) {
+      return { ...state, userListPagination: payload }
+    },
+    setUsersListLoading(state, payload) {
+      return { ...state, usersListLoading: payload }
+    },
     setCurrentUserStatistics(state, payload) {
       return { ...state, currentUserStatistics: payload };
     },
@@ -107,10 +134,13 @@ const users = {
           profile: { ...state.currentUser.profile, ...payload },
         },
       };
-    },
+    }
+    ,
   },
   state: {
+    usersList: [],
     currentUser: null,
+    userListPagination: null,
     currentUserStatistics: {
       rank: '0',
       nJobs: '0',
@@ -120,6 +150,7 @@ const users = {
     },
     usersPendingTransactions: null,
     usersPaidTransactions: null,
+    usersListLoading: false,
   },
 };
 
