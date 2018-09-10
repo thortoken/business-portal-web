@@ -65,7 +65,7 @@ export class AddContractor extends React.Component {
         ...profile,
         dateOfBirth: transformDateToMoment(profile.dateOfBirth).format('YYYY-MM-DD'),
       };
-      createdContractor = await createUser({ profile: data });
+      createdContractor = await createUser({ tenantProfile: data });
       this.setState({ createdContractor });
     }
   };

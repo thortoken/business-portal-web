@@ -100,12 +100,12 @@ const initialValues = defaults => makeEmptyInitialValues(formFields, defaults);
 
 const transformDateToMoment = dateAsMoment(dateFormat);
 
-const transformData = ({ id, profile }) => {
+const transformData = ({ id, tenantProfile }) => {
   const data = Object.keys(formFields).reduce(
-    (acc, fieldName) => ({ ...acc, [fieldName]: profile[fieldName] }),
+    (acc, fieldName) => ({ ...acc, [fieldName]: tenantProfile[fieldName] }),
     { id }
   );
-  data.dateOfBirth = transformDateToMoment(profile.dateOfBirth);
+  data.dateOfBirth = transformDateToMoment(tenantProfile.dateOfBirth);
   return data;
 };
 

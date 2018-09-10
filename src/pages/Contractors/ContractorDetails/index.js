@@ -113,7 +113,7 @@ class ContractorDetails extends React.Component {
 
           {currentUser && (
             <Profile
-              {...currentUser.profile}
+              {...currentUser.tenantProfile}
               createdAt={currentUser.createdAt}
               updatedAt={currentUser.updatedAt}>
               <Dropdown

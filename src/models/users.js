@@ -18,10 +18,10 @@ const users = {
         throw err;
       }
     },
-    async updateProfile({ id, profile }) {
+    async updateTenantProfile({ id, tenantProfile }) {
       try {
-        const response = await Http.patch(`/users/${id}/profile`, { profile });
-        this.setProfile(profile);
+        const response = await Http.patch(`/users/${id}/profile`, { profile: tenantProfile });
+        this.setTenantProfile(tenantProfile);
         return response.data;
       } catch (err) {
         throw err;
@@ -126,12 +126,12 @@ const users = {
     setCurrentUserStatistics(state, payload) {
       return { ...state, currentUserStatistics: payload };
     },
-    setProfile(state, payload) {
+    setTenantProfile(state, payload) {
       return {
         ...state,
         currentUser: {
           ...state.currentUser,
-          profile: { ...state.currentUser.profile, ...payload },
+          tenantProfile: { ...state.currentUser.tenantProfile, ...payload },
         },
       };
     }

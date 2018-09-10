@@ -6,7 +6,8 @@ import { formatUsd } from '~utils/number';
 
 import './Summary.css';
 
-const monthAndDayTimeFormatter = time => moment(new Date(time).toString()).format('MMMM D');
+const monthAndDayTimeFormatter = time =>
+  time && moment(new Date(time).toISOString()).format('MMMM D');
 
 const SummaryBox = ({ title, summary, period }) => {
   return (

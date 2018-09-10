@@ -7,13 +7,7 @@ export const PERIODS = {
 };
 
 export const weekOfYear = weeksToAdd => {
-  return moment(
-    moment(
-      moment()
-        .year()
-        .toString()
-    ).add(weeksToAdd - 1, 'weeks')
-  );
+  return moment(moment().startOf('year')).add(weeksToAdd - 1, 'weeks');
 };
 
 const getFirstWeekOfTheYear = () => {
