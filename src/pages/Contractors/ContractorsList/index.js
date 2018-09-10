@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import { Table } from 'antd';
 import moment from 'moment';
 import Box from '../../../components/Box/index';
+import PaginationConfig from '~utils/pagination';
+import { getCurrentTwoWeeksPeriod } from '~utils/time';
+import { formatUsd } from '~utils/number';
 
 import './ContractorsList.css';
 
@@ -14,7 +17,8 @@ const { Column } = Table;
 
 export const prepareActivity = list => {
   return list.map((item, index) => {
-    const profile = item.profile;
+    const profile = item.tenantProfile;
+    const lastActivity = item.lastActivity;
     let data = {
       key: index,
       activity: new Date(),
@@ -24,12 +28,11 @@ export const prepareActivity = list => {
       prev: 0,
       city: ''
     };
-    if (profile && profile.lastActivity) {
-      data.activity = profile.lastActivity;
+    if (lastActivity) {
+      data.activity = lastActivity;
     }
-    const timestamp = moment(data.activity).format("x");
-    const days = moment().diff(timestamp, 'days');
-    data.activity = moment(moment(timestamp)).fromNow();
+    const days = moment().diff(moment(data.activity), 'days');
+    data.activity = moment(moment(data.activity)).fromNow();
     if (days < 7) {
       data.type = 'active';
     } else if (days >= 7 && days < 31) {
@@ -40,8 +43,12 @@ export const prepareActivity = list => {
     if (profile) {
       data.contractor = `${profile.firstName} ${profile.lastName}`;
       data.city = profile.city;
-      data.prev = profile.prev || 0;
-      data.rank = profile.rank || index;
+    }
+    if (item.prev) {
+      data.prev = formatUsd(item.prev);
+    }
+    if (item.rank) {
+      data.rank = item.rank;
     }
     return data;
   });
@@ -50,14 +57,20 @@ export const prepareActivity = list => {
 class ContractorsList extends React.Component {
   static propTypes = {
     usersList: PropTypes.arrayOf(PropTypes.object),
+    userListPagination: PropTypes.object,
+    usersListLoading: PropTypes.bool,
   };
 
   state = {
-    usersList: []
+    usersList: [],
+    pagination: PaginationConfig,
+    userListPagination: null,
+    usersListLoading: false,
   };
 
   componentDidMount() {
-    this.props.getUsers();
+    const { pagination } = this.state;
+    this.props.getUsers({ page: pagination.current, limit: pagination.pageSize, ...getCurrentTwoWeeksPeriod() });
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -67,17 +80,45 @@ class ContractorsList extends React.Component {
         contractorsData: prepareActivity(nextProps.usersList),
       };
     }
+    if (nextProps.userListPagination !== prevState.userListPagination) {
+      let pag = prevState.pagination;
+      pag.total = nextProps.userListPagination.total;
+      return {
+        userListPagination: nextProps.userListPagination,
+        pagination: pag,
+      };
+    }
+    if (nextProps.usersListLoading !== prevState.usersListLoading) {
+      return {
+        usersListLoading: nextProps.usersListLoading,
+      };
+    }
     return null;
   }
 
+  handleTableChange = (pagination, filters, sorter) => {
+    const pager = { ...this.state.pagination };
+    pager.current = pagination.current;
+    pager.pageSize = pagination.pageSize;
+    this.setState({ pagination });
+    this.props.getUsers({ page: pager.current, limit: pager.pageSize, ...getCurrentTwoWeeksPeriod() });
+  };
+
   render() {
-    const { contractorsData } = this.state;
+    const { contractorsData, pagination, usersListLoading } = this.state;
     return (
       <div className="ContractorsList">
         <ActionBar/>
         <Stats/>
         <Box>
-          <Table dataSource={contractorsData} className="ContractorsList__table" bordered>
+          <Table
+            dataSource={contractorsData}
+            className="ContractorsList__table"
+            bordered
+            onChange={this.handleTableChange}
+            pagination={pagination}
+            loading={usersListLoading}
+          >
             <Column
               align="center"
               dataIndex="rank"
@@ -101,7 +142,7 @@ class ContractorsList extends React.Component {
               dataIndex="prev"
               title="Prev"
               render={text => {
-                return <span>$ {text}</span>;
+                return <span>{text}</span>;
               }}
             />
             <Column align="center" dataIndex="city" title="City"/>
@@ -114,6 +155,8 @@ class ContractorsList extends React.Component {
 
 const mapStateToProps = state => ({
   usersList: state.users.usersList,
+  userListPagination: state.users.userListPagination,
+  usersListLoading: state.users.usersListLoading
 });
 
 const mapDispatchToProps = dispatch => ({

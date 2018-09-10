@@ -36,18 +36,29 @@ const users = {
         throw err;
       }
     },
-    async getUsers() {
+    async getUsers({page, limit, startDate, endDate}) {
       try {
-        const response = await Http.get('/users');
+        this.setUsersListLoading(true);
+        const response = await Http.get(`/users`, {
+          params: {
+            page: page,
+            limit: limit,
+            startDate: startDate.format('YYYY-MM-DD'),
+            endDate: endDate.format('YYYY-MM-DD'),
+          },
+        });
         this.setUsers(response.data.items);
+        this.setUsersPagination(response.data.pagination);
+        this.setUsersListLoading(false);
         return response.data.items;
       } catch (err) {
+        this.setUsersListLoading(false);
         throw err;
       }
     },
     async getUsersWithTransactions({ startDate, endDate, status }) {
       try {
-        const response = await Http.get('/users', {
+        const response = await Http.get(`/users`, {
           params: {
             embed: 'transactions',
             startDate: startDate.format('YYYY-MM-DD'),
@@ -86,6 +97,12 @@ const users = {
     setUsers(state, payload) {
       return { ...state, usersList: payload }
     },
+    setUsersPagination(state, payload){
+      return { ...state, userListPagination: payload }
+    },
+    setUsersListLoading(state, payload){
+      return { ...state, usersListLoading: payload}
+    },
     setProfile(state, payload) {
       return {
         ...state,
@@ -99,8 +116,10 @@ const users = {
   state: {
     usersList: [],
     currentUser: null,
+    userListPagination: null,
     usersPendingTransactions: null,
     usersPaidTransactions: null,
+    usersListLoading: false,
   },
 };
 
