@@ -36,9 +36,8 @@ const users = {
         throw err;
       }
     },
-    async getUsers({page, limit, startDate, endDate}) {
+    async getUsers({ page, limit, startDate, endDate }) {
       try {
-        this.setUsersListLoading(true);
         const response = await Http.get(`/users`, {
           params: {
             page: page,
@@ -49,17 +48,19 @@ const users = {
         });
         this.setUsers(response.data.items);
         this.setUsersPagination(response.data.pagination);
-        this.setUsersListLoading(false);
         return response.data.items;
       } catch (err) {
-        this.setUsersListLoading(false);
-    async getCurrentUserStatistics({
-      id,
-      currentStartDate,
-      currentEndDate,
-      previousStartDate,
-      previousEndDate,
-    }) {
+        throw err;
+      }
+    },
+
+    async getCurrentUserStatistics(
+      { id,
+        currentStartDate,
+        currentEndDate,
+        previousStartDate,
+        previousEndDate,
+      }) {
       try {
         const response = await Http.get(`/users/${id}/statistics`, {
           params: {
@@ -116,11 +117,12 @@ const users = {
     setUsers(state, payload) {
       return { ...state, usersList: payload }
     },
-    setUsersPagination(state, payload){
+    setUsersPagination(state, payload) {
       return { ...state, userListPagination: payload }
     },
-    setUsersListLoading(state, payload){
-      return { ...state, usersListLoading: payload}
+    setUsersListLoading(state, payload) {
+      return { ...state, usersListLoading: payload }
+    },
     setCurrentUserStatistics(state, payload) {
       return { ...state, currentUserStatistics: payload };
     },
@@ -132,7 +134,8 @@ const users = {
           profile: { ...state.currentUser.profile, ...payload },
         },
       };
-    },
+    }
+    ,
   },
   state: {
     usersList: [],

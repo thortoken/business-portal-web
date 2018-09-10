@@ -58,14 +58,14 @@ class ContractorsList extends React.Component {
   static propTypes = {
     usersList: PropTypes.arrayOf(PropTypes.object),
     userListPagination: PropTypes.object,
-    usersListLoading: PropTypes.bool,
+    isLoading: PropTypes.bool,
   };
 
   state = {
     usersList: [],
     pagination: PaginationConfig,
     userListPagination: null,
-    usersListLoading: false,
+    isLoading: false,
   };
 
   componentDidMount() {
@@ -74,6 +74,8 @@ class ContractorsList extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
+    console.log(nextProps);
+    console.log(prevState);
     if (nextProps.usersList !== prevState.usersList) {
       return {
         usersList: nextProps.usersList,
@@ -88,15 +90,15 @@ class ContractorsList extends React.Component {
         pagination: pag,
       };
     }
-    if (nextProps.usersListLoading !== prevState.usersListLoading) {
+    if (nextProps.isLoading !== prevState.isLoading) {
       return {
-        usersListLoading: nextProps.usersListLoading,
+        isLoading: nextProps.isLoading,
       };
     }
     return null;
   }
 
-  handleTableChange = (pagination, filters, sorter) => {
+  handleTableChange = (pagination) => {
     const pager = { ...this.state.pagination };
     pager.current = pagination.current;
     pager.pageSize = pagination.pageSize;
@@ -105,7 +107,7 @@ class ContractorsList extends React.Component {
   };
 
   render() {
-    const { contractorsData, pagination, usersListLoading } = this.state;
+    const { contractorsData, pagination, isLoading } = this.state;
     return (
       <div className="ContractorsList">
         <ActionBar/>
@@ -117,7 +119,7 @@ class ContractorsList extends React.Component {
             bordered
             onChange={this.handleTableChange}
             pagination={pagination}
-            loading={usersListLoading}
+            loading={isLoading}
           >
             <Column
               align="center"
@@ -156,7 +158,7 @@ class ContractorsList extends React.Component {
 const mapStateToProps = state => ({
   usersList: state.users.usersList,
   userListPagination: state.users.userListPagination,
-  usersListLoading: state.users.usersListLoading
+  isLoading: state.loading.effects.users.getUsers
 });
 
 const mapDispatchToProps = dispatch => ({
