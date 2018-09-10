@@ -30,16 +30,20 @@ export const prepareActivity = list => {
     };
     if (lastActivity) {
       data.activity = lastActivity;
-    }
-    const days = moment().diff(moment(data.activity), 'days');
-    data.activity = moment(moment(data.activity)).fromNow();
-    if (days < 7) {
-      data.type = 'active';
-    } else if (days >= 7 && days < 31) {
-      data.type = 'resting';
+      const days = moment().diff(moment(data.activity), 'days');
+      data.activity = moment(moment(data.activity)).fromNow();
+      if (days < 7) {
+        data.type = 'active';
+      } else if (days >= 7 && days < 31) {
+        data.type = 'resting';
+      } else {
+        data.type = 'inactive';
+      }
     } else {
       data.type = 'inactive';
+      data.activity = 'inactive';
     }
+
     if (profile) {
       data.contractor = `${profile.firstName} ${profile.lastName}`;
       data.city = profile.city;
