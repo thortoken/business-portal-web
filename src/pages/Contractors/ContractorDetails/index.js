@@ -185,8 +185,8 @@ class ContractorDetails extends React.Component {
   };
 
   handleEdit = () => {
-    const { match } = this.props;
-    console.log('edit contractor', match.params.id);
+    const { match, history } = this.props;
+    history.push(`${match.url}/edit`);
   };
 
   onPeriodChange = periodRange => {

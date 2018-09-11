@@ -250,8 +250,14 @@ class Payments extends React.Component {
       }
     });
 
+    const transactionsCount = usersPendingTransactions.items.reduce((prevValue, currValue) => {
+      return +prevValue + currValue.transactions.length;
+    }, 0);
+
     this.setState({
-      checked: selectedTransactionsIds.size === usersPendingTransactions.length,
+      checked:
+        selectedTransactionsIds.size === transactionsCount &&
+        selectedContractorsIds.size === usersPendingTransactions.items.length,
       selectedTransactionsIds,
       selectedContractorsIds,
       selectedTransactionsSummaryValue,
