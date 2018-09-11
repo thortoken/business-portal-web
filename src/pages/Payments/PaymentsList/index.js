@@ -196,7 +196,6 @@ class Payments extends React.Component {
         <Box>
           <Table
             dataSource={calculatedCurrentTransactions}
-            bordered
             className="PaymentsList-table"
             loading={isLoading}
             pagination={pagination}

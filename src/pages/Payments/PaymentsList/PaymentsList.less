@@ -22,6 +22,11 @@
         background: @color-darker-blue;
         background: @gradient-blue;
         color: @color-white;
+        border-right: 0;
+      }
+
+      td {
+        border-right: 0;
       }
 
       tbody > tr {
@@ -29,18 +34,22 @@
           padding: 0;
         }
 
+        &.ant-table-expanded-row > tr:hover > td {
+          background: transparent;
+        }
+
         td.PaymentsList-table-approve {
           padding: 0;
           line-height: 3.375rem;
 
           button {
-            height: 100%;
+            height: 70px;
             width: 100%;
-            background-color: @color-grey-disabled;
             font-size: 1.5rem;
-
+            background: transparent;
+            transition: font-size 0.5s;
             &:hover {
-              background-color: @color-grey-light;
+              font-size: 2.5rem;
             }
 
             &:focus {
@@ -49,7 +58,7 @@
 
             &.active {
               color: @color-green-neon;
-              background-color: @color-white;
+              font-size: 2.5rem;
             }
           }
         }
