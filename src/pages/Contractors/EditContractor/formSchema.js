@@ -2,7 +2,7 @@
 import * as Yup from 'yup';
 import moment from 'moment';
 
-import { makeValidationSchema, makeEmptyInitialValues, yupDateTransformer } from '~utils/forms';
+import formUtils from '~utils/forms';
 import { dateAsMoment } from '~utils/time';
 
 import DatePickerField from '~components/DatePickerField';
@@ -34,7 +34,9 @@ const formFields = {
     label: 'Phone',
     validator: Yup.string().matches(/\d{10}/, '${label} must have 10 digits'),
     input: {
-      placeholder: '(000) 000-0000',
+      placeholder: '000 000-0000',
+      formatter: formUtils.formatters.phone(),
+      parser: formUtils.parsers.digitsOnly(),
     },
   },
   address1: {
@@ -46,7 +48,9 @@ const formFields = {
   },
   address2: {
     label: 'Address 2',
-    validator: Yup.string().max(50),
+    validator: Yup.string()
+      .max(50)
+      .nullable(),
   },
   city: {
     label: 'City',
@@ -86,7 +90,7 @@ const formFields = {
     validator: Yup.date()
       .required()
       .max(moment().subtract(18, 'years'), 'Contractor must be at least 18 years old')
-      .transform(yupDateTransformer(dateFormat)),
+      .transform(formUtils.yup.dateTransformer(dateFormat)),
     input: {
       allowClear: false,
       component: DatePickerField,
@@ -95,8 +99,8 @@ const formFields = {
   },
 };
 
-const validationSchema = makeValidationSchema(formFields);
-const initialValues = defaults => makeEmptyInitialValues(formFields, defaults);
+const validationSchema = formUtils.formik.makeValidationSchema(formFields);
+const initialValues = defaults => formUtils.formik.makeEmptyInitialValues(formFields, defaults);
 
 const transformDateToMoment = dateAsMoment(dateFormat);
 

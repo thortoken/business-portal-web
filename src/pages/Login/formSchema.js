@@ -1,5 +1,5 @@
-import * as Yup from "yup";
-import { makeValidationSchema, makeEmptyInitialValues } from '~utils/forms'
+import * as Yup from 'yup';
+import formUtils from '~utils/forms';
 
 const formFields = {
   email: {
@@ -26,7 +26,7 @@ const formFields = {
   },
 };
 
-const validationSchema = makeValidationSchema(formFields);
-const initialValues = makeEmptyInitialValues(formFields);
+const validationSchema = formUtils.formik.makeValidationSchema(formFields);
+const initialValues = formUtils.formik.makeEmptyInitialValues(formFields);
 
 export { formFields, validationSchema, initialValues };
