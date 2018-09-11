@@ -1,4 +1,4 @@
-import { makeEmptyInitialValues, makeValidationSchema, validateFieldsSchema } from './forms';
+import { makeEmptyInitialValues, makeValidationSchema, validateFieldsSchema } from './formik';
 
 describe('utils: forms/formik', () => {
   describe('validateFieldsSchema', () => {
