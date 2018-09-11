@@ -22,6 +22,9 @@ const Progress = namedComponent('Progress');
 
 const Row = namedComponent('Row');
 
+const Select = namedComponent('Select');
+Select.Option = namedComponent('Option');
+
 const Switch = namedComponent('Switch');
 
 const Slider = namedComponent('Slider');
@@ -53,6 +56,7 @@ module.exports = {
   notification,
   Progress,
   Row,
+  Select,
   Switch,
   Slider,
   Spin,
