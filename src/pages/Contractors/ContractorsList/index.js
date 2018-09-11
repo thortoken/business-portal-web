@@ -10,7 +10,6 @@ import { formatUsd } from '~utils/number';
 
 import './ContractorsList.css';
 
-import Stats from './components/Stats/index';
 import ActionBar from './components/ActionBar/index';
 
 const { Column } = Table;
@@ -26,7 +25,7 @@ export const prepareActivity = list => {
       contractor: '',
       rank: index,
       prev: 0,
-      city: ''
+      city: '',
     };
     if (lastActivity) {
       data.activity = lastActivity;
@@ -74,7 +73,11 @@ class ContractorsList extends React.Component {
 
   componentDidMount() {
     const { pagination } = this.state;
-    this.props.getUsers({ page: pagination.current, limit: pagination.pageSize, ...getCurrentTwoWeeksPeriod() });
+    this.props.getUsers({
+      page: pagination.current,
+      limit: pagination.pageSize,
+      ...getCurrentTwoWeeksPeriod(),
+    });
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -100,20 +103,23 @@ class ContractorsList extends React.Component {
     return null;
   }
 
-  handleTableChange = (pagination) => {
+  handleTableChange = pagination => {
     const pager = { ...this.state.pagination };
     pager.current = pagination.current;
     pager.pageSize = pagination.pageSize;
     this.setState({ pagination });
-    this.props.getUsers({ page: pager.current, limit: pager.pageSize, ...getCurrentTwoWeeksPeriod() });
+    this.props.getUsers({
+      page: pager.current,
+      limit: pager.pageSize,
+      ...getCurrentTwoWeeksPeriod(),
+    });
   };
 
   render() {
     const { contractorsData, pagination, isLoading } = this.state;
     return (
       <div className="ContractorsList">
-        <ActionBar/>
-        <Stats/>
+        <ActionBar />
         <Box>
           <Table
             dataSource={contractorsData}
@@ -121,8 +127,7 @@ class ContractorsList extends React.Component {
             bordered
             onChange={this.handleTableChange}
             pagination={pagination}
-            loading={isLoading}
-          >
+            loading={isLoading}>
             <Column
               align="center"
               dataIndex="rank"
@@ -130,7 +135,7 @@ class ContractorsList extends React.Component {
               sorter={(a, b) => a.rank - b.rank}
               title="Rank"
             />
-            <Column align="center" dataIndex="contractor" title="Contractor"/>
+            <Column align="center" dataIndex="contractor" title="Contractor" />
             <Column
               align="center"
               dataIndex="activity"
@@ -149,7 +154,7 @@ class ContractorsList extends React.Component {
                 return <span>{text}</span>;
               }}
             />
-            <Column align="center" dataIndex="city" title="City"/>
+            <Column align="center" dataIndex="city" title="City" />
           </Table>
         </Box>
       </div>
@@ -160,7 +165,7 @@ class ContractorsList extends React.Component {
 const mapStateToProps = state => ({
   usersList: state.users.usersList,
   userListPagination: state.users.userListPagination,
-  isLoading: state.loading.effects.users.getUsers
+  isLoading: state.loading.effects.users.getUsers,
 });
 
 const mapDispatchToProps = dispatch => ({
