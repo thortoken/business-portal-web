@@ -4,10 +4,11 @@ import { shallow } from 'enzyme';
 import { renderChildrenAsText } from '~utils/tests';
 
 import { AddContractor } from './index';
+import { validationSchema } from './formSchema';
 
 jest.mock('./formSchema', () => ({
   initialValues: 'fake initial values',
-  validationSchema: 'fake validation schema',
+  validationSchema: { cast: jest.fn(x => x) },
   formFields: {
     field1: { label: 'Field 1', input: { placeholder: 'xxx' } },
     field2: { label: 'Field 2' },
@@ -147,13 +148,16 @@ describe('page: AddContractor', () => {
         instance.createFundingSource = jest.fn();
         instance.handleSubmitSuccess = jest.fn();
 
-        await instance.handleSubmit({
+        const formData = {
           firstName: 'John',
           lastName: 'Doe',
           accountNumber: 1234,
           routingNumber: 987654321,
-        });
+        };
 
+        await instance.handleSubmit(formData);
+
+        expect(validationSchema.cast).toHaveBeenCalledWith(formData);
         expect(instance.createContractor).toHaveBeenCalledWith({
           firstName: 'John',
           lastName: 'Doe',
