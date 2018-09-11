@@ -121,7 +121,7 @@ class ContractorDetails extends React.Component {
     return (
       <Spin size="large" spinning={loadingContractor}>
         <div className="ContractorDetails">
-          <BackBtn to="/payments" label="Payments"/>
+          <BackBtn to="/payments" label="Payments" />
 
           {currentUser && (
             <Profile
@@ -141,14 +141,13 @@ class ContractorDetails extends React.Component {
           <Spin size="large" spinning={loadingUserStatistics}>
             <ContractorSummary {...currentUserStatistics} />
           </Spin>
-          <Filters onPeriodChange={this.onPeriodChange}/>
+          <Filters onPeriodChange={this.onPeriodChange} />
           <Spin size="large" spinning={loadingTransactions}>
             <div className="ContractorDetails-table">
               <Table
                 dataSource={localTransactions}
                 pagination={pagination}
-                onChange={this.handleTableChange}
-              >
+                onChange={this.handleTableChange}>
                 <Column
                   align="center"
                   dataIndex="createdAt"
@@ -163,7 +162,7 @@ class ContractorDetails extends React.Component {
                   width="30%"
                   title="Service"
                 />
-                <Column align="center" dataIndex="location" title="Location" width="20%"/>
+                <Column align="center" dataIndex="location" title="Location" width="20%" />
                 <Column
                   align="center"
                   dataIndex="value"
@@ -171,7 +170,7 @@ class ContractorDetails extends React.Component {
                   title="Pay Amt."
                   width="20%"
                 />
-                <Column align="center" dataIndex="status" title="Status" width="15%"/>
+                <Column align="center" dataIndex="status" title="Status" width="15%" />
               </Table>
             </div>
           </Spin>
@@ -227,7 +226,7 @@ class ContractorDetails extends React.Component {
       ...periodRange,
       userId: match.params.id,
       page: pagination.current,
-      limit: pagination.pageSize
+      limit: pagination.pageSize,
     });
 
     const { period, startDate, endDate } = { ...periodRange };
@@ -241,12 +240,10 @@ class ContractorDetails extends React.Component {
       previousEndDate: previousTwoWeeksPeriod.endDate,
     });
 
-    this.setState(
-      {
-        pagination: pagination,
-        periodRange: { ...periodRange }
-      }
-    );
+    this.setState({
+      pagination,
+      periodRange: { ...periodRange },
+    });
   };
 }
 
@@ -261,9 +258,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = ({
-                              transactions: { getTransactionsForContractor },
-                              users: { getUser, deleteUser, getCurrentUserStatistics },
-                            }) => ({
+  transactions: { getTransactionsForContractor },
+  users: { getUser, deleteUser, getCurrentUserStatistics },
+}) => ({
   getTransactionsForContractor,
   getUser,
   deleteUser,

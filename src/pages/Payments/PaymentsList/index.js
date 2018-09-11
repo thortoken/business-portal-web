@@ -87,14 +87,16 @@ class Payments extends React.Component {
     const { pagination } = this.state;
     this.props.getJobs();
     this.props.getUsersWithTransactions({
-      status: 'new', ...getCurrentTwoWeeksPeriod(),
+      status: 'new',
+      ...getCurrentTwoWeeksPeriod(),
       page: pagination.current,
-      limit: pagination.pageSize
+      limit: pagination.pageSize,
     });
     this.props.getUsersWithTransactions({
-      status: 'done', ...getPreviousTwoWeeksPeriod(),
+      status: 'done',
+      ...getPreviousTwoWeeksPeriod(),
       page: pagination.current,
-      limit: pagination.pageSize
+      limit: pagination.pageSize,
     });
   }
 
@@ -157,14 +159,16 @@ class Payments extends React.Component {
     pagination.pageSize = pag.pageSize;
     this.setState({ pag });
     getUsersWithTransactions({
-      status: 'new', ...getCurrentTwoWeeksPeriod(),
+      status: 'new',
+      ...getCurrentTwoWeeksPeriod(),
       page: pagination.current,
-      limit: pagination.pageSize
+      limit: pagination.pageSize,
     });
     getUsersWithTransactions({
-      status: 'done', ...getPreviousTwoWeeksPeriod(),
+      status: 'done',
+      ...getPreviousTwoWeeksPeriod(),
       page: pagination.current,
-      limit: pagination.pageSize
+      limit: pagination.pageSize,
     });
   };
 
@@ -184,12 +188,12 @@ class Payments extends React.Component {
 
     return (
       <div>
-        <Header title="Payments" size="medium"/>
+        <Header title="Payments" size="medium" />
 
-        <Summary previous={previous} current={current}/>
+        <Summary previous={previous} current={current} />
 
         <div className="PaymentsList-selector">
-          <Checkbox onChange={this.onSelectAll} checked={checked}/> Select All
+          <Checkbox onChange={this.onSelectAll} checked={checked} /> Select All
         </div>
 
         <Box>
@@ -212,7 +216,7 @@ class Payments extends React.Component {
               align="center"
               dataIndex="contractor"
               width="25%"
-              title={<TitleWithIcon title="Contractor" icon="user"/>}
+              title={<TitleWithIcon title="Contractor" icon="user" />}
               render={this.showContractorName}
               className="PaymentsList-contractor-selector"
             />
@@ -237,7 +241,7 @@ class Payments extends React.Component {
               dataIndex="transactionsSum"
               render={this.renderAmount}
               width="15%"
-              title={<TitleWithIcon title="Current" icon="dollar"/>}
+              title={<TitleWithIcon title="Current" icon="dollar" />}
             />
             <Column
               className="PaymentsList-table-approve PaymentsList-approve-selector"
@@ -248,7 +252,7 @@ class Payments extends React.Component {
                 <button
                   className={classnames(null, { active: this.isActive(record) })}
                   onClick={() => this.handleSelectTransaction(record)}>
-                  <Icon type="check"/>
+                  <Icon type="check" />
                 </button>
               )}
             />
@@ -353,7 +357,7 @@ class Payments extends React.Component {
     return (
       <Link to={'/contractors/' + user.id}>{`${user.profile.firstName} ${
         user.profile.lastName
-        }`}</Link>
+      }`}</Link>
     );
   };
 

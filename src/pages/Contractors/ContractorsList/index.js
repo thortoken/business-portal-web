@@ -15,7 +15,7 @@ import ActionBar from './components/ActionBar/index';
 const { Column } = Table;
 
 export const prepareActivity = list => {
-  return list.map((item) => {
+  return list.map(item => {
     item.lastActivityLabel = item.lastActivity ? moment(moment(item.lastActivity)).fromNow() : '';
     return item;
   });
