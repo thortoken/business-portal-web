@@ -86,8 +86,10 @@ export class EditContractor extends React.Component {
   };
 
   handleSubmit = async (data, form) => {
+    const normalizedData = validationSchema.cast(data);
+
     try {
-      await this.updateContractor(data);
+      await this.updateContractor(normalizedData);
 
       this.handleSubmitSuccess();
     } catch (err) {
@@ -117,25 +119,28 @@ export class EditContractor extends React.Component {
             onSubmit={this.handleSubmit}
             validationSchema={validationSchema}
             enableReinitialize>
-            {({ handleSubmit, isSubmitting, values, dirty }) => (
-              <form onSubmit={handleSubmit}>
-                {Object.entries(formFields).map(([name, options]) => (
-                  <FormField key={name} name={name} label={options.label} {...options.input} />
-                ))}
+            {({ handleSubmit, isSubmitting, values, dirty, isValid }) => {
+              console.log({ isValid });
+              return (
+                <form onSubmit={handleSubmit}>
+                  {Object.entries(formFields).map(([name, options]) => (
+                    <FormField key={name} name={name} label={options.label} {...options.input} />
+                  ))}
 
-                <div className="Edit-contractor__button-container">
-                  <Button
-                    disabled={!dirty || isSubmitting}
-                    size="large"
-                    type="primary"
-                    loading={isSubmitting}
-                    htmlType="submit"
-                    className="Edit-contractor__button-container--button">
-                    Update {values.firstName}
-                  </Button>
-                </div>
-              </form>
-            )}
+                  <div className="Edit-contractor__button-container">
+                    <Button
+                      disabled={!isValid || isSubmitting}
+                      size="large"
+                      type="primary"
+                      loading={isSubmitting}
+                      htmlType="submit"
+                      className="Edit-contractor__button-container--button">
+                      Update {values.firstName}
+                    </Button>
+                  </div>
+                </form>
+              );
+            }}
           </Formik>
         </div>
       </Spin>
