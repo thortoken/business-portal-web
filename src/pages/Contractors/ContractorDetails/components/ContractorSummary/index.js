@@ -10,7 +10,7 @@ const ContractorSummary = ({ rank, nJobs, prev, current, ytd }) => {
         <div>Rank</div>
         <div>Num Jobs</div>
         <div>Prev</div>
-        <div>Current</div>
+        <div>Selected Period</div>
         <div>YTD EARNINGS</div>
       </div>
       <div className="ContractorSummary-values">
