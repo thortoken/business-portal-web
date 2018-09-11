@@ -291,12 +291,13 @@ class Payments extends React.Component {
 
       if (selectedTransactionsIds.has(transactionId)) {
         selectedTransactionsIds.delete(transactionId);
-        selectedTransactionsSummaryValue -= +transaction.value * transaction.quantity;
+        selectedTransactionsSummaryValue -= +transaction.job.value * transaction.quantity;
       } else {
         selectedTransactionsIds.add(transactionId);
-        selectedTransactionsSummaryValue += +transaction.value * transaction.quantity;
+        selectedTransactionsSummaryValue += +transaction.job.value * transaction.quantity;
       }
     });
+    console.log(selectedTransactionsSummaryValue);
 
     this.setState({
       checked: selectedTransactionsIds.size === usersPendingTransactions.length,
@@ -330,7 +331,8 @@ class Payments extends React.Component {
         localState.selectedContractorsIds.add(user.id);
 
         user.transactions.forEach(transaction => {
-          localState.selectedTransactionsSummaryValue += transaction.value * transaction.quantity;
+          localState.selectedTransactionsSummaryValue +=
+            transaction.job.value * transaction.quantity;
           localState.selectedTransactionsIds.add(transaction.id);
         });
       });
