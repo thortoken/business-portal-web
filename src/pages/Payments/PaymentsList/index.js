@@ -152,12 +152,9 @@ class Payments extends React.Component {
     return null;
   }
 
-  handleTableChange = pag => {
-    const { pagination } = this.state;
+  handleTableChange = pagination => {
     const { getUsersWithTransactions } = this.props;
-    pagination.current = pag.current;
-    pagination.pageSize = pag.pageSize;
-    this.setState({ pag });
+    this.setState({ pagination });
     getUsersWithTransactions({
       status: 'new',
       ...getCurrentTwoWeeksPeriod(),
