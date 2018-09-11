@@ -13,7 +13,7 @@ const jobsPerType = jobs => _.groupBy(jobs, j => j.job.id);
 
 const sumTransactions = transactions => {
   return transactions.reduce((prevValue, currValue) => {
-    return +prevValue + currValue.value * currValue.quantity;
+    return +prevValue + currValue.job.value * currValue.quantity;
   }, 0);
 };
 
