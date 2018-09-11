@@ -120,7 +120,6 @@ export class EditContractor extends React.Component {
             validationSchema={validationSchema}
             enableReinitialize>
             {({ handleSubmit, isSubmitting, values, dirty, isValid }) => {
-              console.log({ isValid });
               return (
                 <form onSubmit={handleSubmit}>
                   {Object.entries(formFields).map(([name, options]) => (

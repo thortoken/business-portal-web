@@ -34,7 +34,10 @@ const formFields = {
     label: 'Phone',
     validator: Yup.string().matches(/\d{10}/, '${label} must have 10 digits'),
     input: {
-      placeholder: '(000) 000-0000',
+      maxLength: 12,
+      placeholder: '000 000-0000',
+      formatter: formUtils.formatters.phone,
+      parser: formUtils.parsers.digitsOnly,
     },
   },
   address1: {
@@ -46,7 +49,9 @@ const formFields = {
   },
   address2: {
     label: 'Address 2',
-    validator: Yup.string().max(50),
+    validator: Yup.string()
+      .max(50)
+      .nullable(),
   },
   city: {
     label: 'City',
@@ -62,16 +67,17 @@ const formFields = {
       .max(2)
       .uppercase(),
     input: {
+      maxLength: 2,
       placeholder: 'AB',
     },
   },
   postalCode: {
     label: 'Postal Code',
-    validator: Yup.string()
-      .ensure()
+    validator: Yup.number()
       .required()
-      .matches(/\d{5}/, '${label} must be a valid zip code'),
+      .max(99999, '${label} must be a valid zip code'),
     input: {
+      maxLength: 5,
       placeholder: '12345',
     },
   },
