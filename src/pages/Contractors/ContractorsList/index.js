@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Table, Button } from 'antd';
 import moment from 'moment';
 import Box from '../../../components/Box/index';
-import PaginationConfig from '~utils/pagination';
+import PaginationFactory from '~utils/pagination';
 import { getCurrentTwoWeeksPeriod } from '~utils/time';
 import { formatUsd } from '~utils/number';
 
@@ -15,7 +15,7 @@ import ActionBar from './components/ActionBar/index';
 const { Column } = Table;
 
 export const prepareActivity = list => {
-  return list.map((item, index) => {
+  return list.map((item) => {
     item.lastActivityLabel = item.lastActivity ? moment(moment(item.lastActivity)).fromNow() : '';
     return item;
   });
@@ -30,7 +30,7 @@ class ContractorsList extends React.Component {
 
   state = {
     usersList: [],
-    pagination: PaginationConfig,
+    pagination: new PaginationFactory(),
     userListPagination: null,
     isLoading: false,
   };
