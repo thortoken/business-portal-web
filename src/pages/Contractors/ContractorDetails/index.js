@@ -82,9 +82,8 @@ class ContractorDetails extends React.Component {
 
     if (nextProps.transactionsListPagination !== prevState.transactionsListPagination) {
       let pag = prevState.pagination;
-      pag.total = nextProps.transactionsListPagination.total;
       localState['transactionsListPagination'] = nextProps.transactionsListPagination;
-      localState['pagination'] = pag;
+      localState['pagination'] = { ...pag, total: nextProps.transactionsListPagination.total };
     }
 
     return Object.keys(localState).length ? localState : null;

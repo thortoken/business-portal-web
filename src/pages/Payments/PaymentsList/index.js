@@ -79,7 +79,6 @@ class Payments extends React.Component {
     selectedTransactionsIds: new Set(),
     selectedContractorsIds: new Set(),
     selectedTransactionsSummaryValue: 0,
-    isLoading: false,
     pagination: makeDefaultPagination(),
     paymentsListPagination: null,
   };
@@ -143,15 +142,9 @@ class Payments extends React.Component {
 
     if (nextProps.paymentsListPagination !== prevState.paymentsListPagination) {
       let pag = prevState.pagination;
-      pag.total = nextProps.paymentsListPagination.total;
       return {
         paymentsListPagination: nextProps.paymentsListPagination,
-        pagination: pag,
-      };
-    }
-    if (nextProps.isLoading !== prevState.isLoading) {
-      return {
-        isLoading: nextProps.isLoading,
+        pagination: { ...pag, total: nextProps.paymentsListPagination.total },
       };
     }
     return null;
@@ -184,9 +177,10 @@ class Payments extends React.Component {
       selectedTransactionsIds,
       selectedContractorsIds,
       selectedTransactionsSummaryValue,
-      isLoading,
       pagination,
     } = this.state;
+
+    const { isLoading } = this.props;
 
     return (
       <div>

@@ -32,7 +32,6 @@ class ContractorsList extends React.Component {
     usersList: [],
     pagination: makeDefaultPagination(),
     userListPagination: null,
-    isLoading: false,
   };
 
   componentDidMount() {
@@ -53,26 +52,17 @@ class ContractorsList extends React.Component {
     }
     if (nextProps.userListPagination !== prevState.userListPagination) {
       let pag = prevState.pagination;
-      pag.total = nextProps.userListPagination.total;
       return {
         userListPagination: nextProps.userListPagination,
-        pagination: pag,
-      };
-    }
-    if (nextProps.isLoading !== prevState.isLoading) {
-      return {
-        isLoading: nextProps.isLoading,
+        pagination: { ...pag, total: nextProps.userListPagination.total },
       };
     }
     return null;
   }
 
-  handleTableChange = pag => {
-    const { pagination } = this.state;
+  handleTableChange = pagination => {
     const { getUsers } = this.props;
-    pagination.current = pag.current;
-    pagination.pageSize = pag.pageSize;
-    this.setState({ pag });
+    this.setState({ pagination });
     getUsers({
       page: pagination.current,
       limit: pagination.pageSize,
@@ -85,7 +75,8 @@ class ContractorsList extends React.Component {
   };
 
   render() {
-    const { contractorsData, pagination, isLoading } = this.state;
+    const { contractorsData, pagination } = this.state;
+    const { isLoading } = this.props;
     return (
       <div className="ContractorsList">
         <ActionBar />
