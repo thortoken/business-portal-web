@@ -46,7 +46,7 @@ const users = {
     },
     async getUsers({ page, limit, startDate, endDate }) {
       try {
-        const response = await Http.get(`/users/payments/list`, {
+        const response = await Http.get(`/users`, {
           params: {
             page,
             limit,

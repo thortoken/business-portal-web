@@ -85,7 +85,7 @@ const formFields = {
     label: 'Date of Birth',
     validator: Yup.date()
       .required()
-      .max(moment().subtract(18, 'years'), 'You must be at least 18 years old to proceed')
+      .max(moment().subtract(18, 'years'), 'Contractor must be at least 18 years old')
       .transform(yupDateTransformer(dateFormat)),
     input: {
       allowClear: false,
