@@ -1,8 +1,7 @@
 import { getIn } from 'formik';
 import * as Yup from 'yup';
-import moment from 'moment';
 
-import { traverseRecursively } from './iterators';
+import { traverseRecursively } from '../iterators';
 
 export const validateFieldsSchema = fieldsSchema => {
   if (typeof fieldsSchema !== 'object' || Object.keys(fieldsSchema).length === 0) {
@@ -36,13 +35,3 @@ export const makeEmptyInitialValues = (fieldsSchema, values = {}) => {
     leafCallback: ({ path }) => getIn(values, path, ''),
   });
 };
-
-export const yupDateTransformer = format =>
-  function(currentValue, originalValue) {
-    if (this.isType(currentValue)) {
-      return currentValue;
-    }
-
-    const date = moment(originalValue, format);
-    return date.isValid() ? date.toDate() : new Date();
-  };
