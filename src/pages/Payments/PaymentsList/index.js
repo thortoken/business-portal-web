@@ -16,6 +16,7 @@ import TitleWithIcon from './components/TitleWithIcon';
 import { getCurrentTwoWeeksPeriod, getPreviousTwoWeeksPeriod } from '~utils/time';
 import { formatUsd } from '~utils/number';
 import { sumTransactions } from '~utils/summary';
+import PaginationFactory from '~utils/pagination';
 
 import './PaymentsList.css';
 
@@ -53,6 +54,8 @@ class Payments extends React.Component {
     usersPaidTransactions: PropTypes.object,
     usersPendingTransactions: PropTypes.object,
     jobs: PropTypes.arrayOf(PropTypes.object).isRequired,
+    isLoading: PropTypes.bool,
+    paymentsListPagination: PropTypes.object,
   };
 
   state = {
@@ -76,12 +79,24 @@ class Payments extends React.Component {
     selectedTransactionsIds: new Set(),
     selectedContractorsIds: new Set(),
     selectedTransactionsSummaryValue: 0,
+    isLoading: false,
+    pagination: new PaginationFactory(),
+    paymentsListPagination: null,
   };
 
   componentDidMount() {
+    const { pagination } = this.state;
     this.props.getJobs();
-    this.props.getUsersWithTransactions({ status: 'new', ...getCurrentTwoWeeksPeriod() });
-    this.props.getUsersWithTransactions({ status: 'done', ...getPreviousTwoWeeksPeriod() });
+    this.props.getUsersWithTransactions({
+      status: 'new', ...getCurrentTwoWeeksPeriod(),
+      page: pagination.current,
+      limit: pagination.pageSize
+    });
+    this.props.getUsersWithTransactions({
+      status: 'done', ...getPreviousTwoWeeksPeriod(),
+      page: pagination.current,
+      limit: pagination.pageSize
+    });
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -125,8 +140,39 @@ class Payments extends React.Component {
       }
       return objState;
     }
+
+    if (nextProps.paymentsListPagination !== prevState.paymentsListPagination) {
+      let pag = prevState.pagination;
+      pag.total = nextProps.paymentsListPagination.total;
+      return {
+        paymentsListPagination: nextProps.paymentsListPagination,
+        pagination: pag,
+      };
+    }
+    if (nextProps.isLoading !== prevState.isLoading) {
+      return {
+        isLoading: nextProps.isLoading,
+      };
+    }
     return null;
   }
+
+  handleTableChange = pagination => {
+    const pager = { ...this.state.pagination };
+    pager.current = pagination.current;
+    pager.pageSize = pagination.pageSize;
+    this.setState({ pagination });
+    this.props.getUsersWithTransactions({
+      status: 'new', ...getCurrentTwoWeeksPeriod(),
+      page: pager.current,
+      limit: pager.pageSize
+    });
+    this.props.getUsersWithTransactions({
+      status: 'done', ...getPreviousTwoWeeksPeriod(),
+      page: pager.current,
+      limit: pager.pageSize
+    });
+  };
 
   render() {
     const {
@@ -137,16 +183,18 @@ class Payments extends React.Component {
       selectedTransactionsIds,
       selectedContractorsIds,
       selectedTransactionsSummaryValue,
+      isLoading,
+      pagination,
     } = this.state;
 
     return (
       <div>
-        <Header title="Payments" size="medium" />
+        <Header title="Payments" size="medium"/>
 
-        <Summary previous={previous} current={current} />
+        <Summary previous={previous} current={current}/>
 
         <div className="PaymentsList-selector">
-          <Checkbox onChange={this.onSelectAll} checked={checked} /> Select All
+          <Checkbox onChange={this.onSelectAll} checked={checked}/> Select All
         </div>
 
         <Box>
@@ -154,6 +202,9 @@ class Payments extends React.Component {
             dataSource={calculatedCurrentTransactions}
             bordered
             className="PaymentsList-table"
+            loading={isLoading}
+            pagination={pagination}
+            onChange={this.handleTableChange}
             expandedRowRender={record => <div>{this.renderJobsList(record.transactions)}</div>}>
             <Column
               align="center"
@@ -166,7 +217,7 @@ class Payments extends React.Component {
               align="center"
               dataIndex="contractor"
               width="25%"
-              title={<TitleWithIcon title="Contractor" icon="user" />}
+              title={<TitleWithIcon title="Contractor" icon="user"/>}
               render={this.showContractorName}
               className="PaymentsList-contractor-selector"
             />
@@ -191,7 +242,7 @@ class Payments extends React.Component {
               dataIndex="transactionsSum"
               render={this.renderAmount}
               width="15%"
-              title={<TitleWithIcon title="Current" icon="dollar" />}
+              title={<TitleWithIcon title="Current" icon="dollar"/>}
             />
             <Column
               className="PaymentsList-table-approve PaymentsList-approve-selector"
@@ -202,7 +253,7 @@ class Payments extends React.Component {
                 <button
                   className={classnames(null, { active: this.isActive(record) })}
                   onClick={() => this.handleSelectTransaction(record)}>
-                  <Icon type="check" />
+                  <Icon type="check"/>
                 </button>
               )}
             />
@@ -307,7 +358,7 @@ class Payments extends React.Component {
     return (
       <Link to={'/contractors/' + user.id}>{`${user.profile.firstName} ${
         user.profile.lastName
-      }`}</Link>
+        }`}</Link>
     );
   };
 
@@ -330,6 +381,8 @@ const mapStateToProps = state => ({
   usersPaidTransactions: state.users.usersPaidTransactions,
   usersPendingTransactions: state.users.usersPendingTransactions,
   jobs: state.jobs.jobs,
+  isLoading: state.loading.effects.jobs.getJobs,
+  paymentsListPagination: state.users.paymentsListPagination,
 });
 
 const mapDispatchToProps = dispatch => ({
