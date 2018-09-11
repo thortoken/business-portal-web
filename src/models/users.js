@@ -38,10 +38,10 @@ const users = {
     },
     async getUsers({ page, limit, startDate, endDate }) {
       try {
-        const response = await Http.get(`/users`, {
+        const response = await Http.get(`/users/payments/list`, {
           params: {
-            page: page,
-            limit: limit,
+            page,
+            limit,
             startDate: startDate.format('YYYY-MM-DD'),
             endDate: endDate.format('YYYY-MM-DD'),
           },
@@ -54,13 +54,13 @@ const users = {
       }
     },
 
-    async getCurrentUserStatistics(
-      { id,
-        currentStartDate,
-        currentEndDate,
-        previousStartDate,
-        previousEndDate,
-      }) {
+    async getCurrentUserStatistics({
+      id,
+      currentStartDate,
+      currentEndDate,
+      previousStartDate,
+      previousEndDate,
+    }) {
       try {
         const response = await Http.get(`/users/${id}/statistics`, {
           params: {
@@ -78,7 +78,7 @@ const users = {
     },
     async getUsersWithTransactions({ startDate, endDate, status }) {
       try {
-        const response = await Http.get(`/users`, {
+        const response = await Http.get(`/users/payments/list`, {
           params: {
             embed: 'transactions',
             startDate: startDate.format('YYYY-MM-DD'),
@@ -115,13 +115,13 @@ const users = {
       return { ...state, currentUser: payload };
     },
     setUsers(state, payload) {
-      return { ...state, usersList: payload }
+      return { ...state, usersList: payload };
     },
     setUsersPagination(state, payload) {
-      return { ...state, userListPagination: payload }
+      return { ...state, userListPagination: payload };
     },
     setUsersListLoading(state, payload) {
-      return { ...state, usersListLoading: payload }
+      return { ...state, usersListLoading: payload };
     },
     setCurrentUserStatistics(state, payload) {
       return { ...state, currentUserStatistics: payload };
@@ -134,8 +134,7 @@ const users = {
           tenantProfile: { ...state.currentUser.tenantProfile, ...payload },
         },
       };
-    }
-    ,
+    },
   },
   state: {
     usersList: [],
