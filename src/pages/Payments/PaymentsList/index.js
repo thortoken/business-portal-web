@@ -297,7 +297,6 @@ class Payments extends React.Component {
         selectedTransactionsSummaryValue += +transaction.job.value * transaction.quantity;
       }
     });
-    console.log(selectedTransactionsSummaryValue);
 
     this.setState({
       checked: selectedTransactionsIds.size === usersPendingTransactions.length,
