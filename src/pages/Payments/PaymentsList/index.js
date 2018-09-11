@@ -16,6 +16,7 @@ import TitleWithIcon from './components/TitleWithIcon';
 import { getCurrentTwoWeeksPeriod, getPreviousTwoWeeksPeriod } from '~utils/time';
 import { formatUsd } from '~utils/number';
 import { sumTransactions } from '~utils/summary';
+import makeDefaultPagination from '~utils/pagination';
 
 import './PaymentsList.css';
 
@@ -53,6 +54,8 @@ class Payments extends React.Component {
     usersPaidTransactions: PropTypes.object,
     usersPendingTransactions: PropTypes.object,
     jobs: PropTypes.arrayOf(PropTypes.object).isRequired,
+    isLoading: PropTypes.bool,
+    paymentsListPagination: PropTypes.object,
   };
 
   state = {
@@ -76,12 +79,25 @@ class Payments extends React.Component {
     selectedTransactionsIds: new Set(),
     selectedContractorsIds: new Set(),
     selectedTransactionsSummaryValue: 0,
+    pagination: makeDefaultPagination(),
+    paymentsListPagination: null,
   };
 
   componentDidMount() {
+    const { pagination } = this.state;
     this.props.getJobs();
-    this.props.getUsersWithTransactions({ status: 'new', ...getCurrentTwoWeeksPeriod() });
-    this.props.getUsersWithTransactions({ status: 'done', ...getPreviousTwoWeeksPeriod() });
+    this.props.getUsersWithTransactions({
+      status: 'new',
+      ...getCurrentTwoWeeksPeriod(),
+      page: pagination.current,
+      limit: pagination.pageSize,
+    });
+    this.props.getUsersWithTransactions({
+      status: 'done',
+      ...getPreviousTwoWeeksPeriod(),
+      page: pagination.current,
+      limit: pagination.pageSize,
+    });
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -125,8 +141,33 @@ class Payments extends React.Component {
       }
       return objState;
     }
+
+    if (nextProps.paymentsListPagination !== prevState.paymentsListPagination) {
+      let pag = prevState.pagination;
+      return {
+        paymentsListPagination: nextProps.paymentsListPagination,
+        pagination: { ...pag, total: nextProps.paymentsListPagination.total },
+      };
+    }
     return null;
   }
+
+  handleTableChange = pagination => {
+    const { getUsersWithTransactions } = this.props;
+    this.setState({ pagination });
+    getUsersWithTransactions({
+      status: 'new',
+      ...getCurrentTwoWeeksPeriod(),
+      page: pagination.current,
+      limit: pagination.pageSize,
+    });
+    getUsersWithTransactions({
+      status: 'done',
+      ...getPreviousTwoWeeksPeriod(),
+      page: pagination.current,
+      limit: pagination.pageSize,
+    });
+  };
 
   render() {
     const {
@@ -137,7 +178,10 @@ class Payments extends React.Component {
       selectedTransactionsIds,
       selectedContractorsIds,
       selectedTransactionsSummaryValue,
+      pagination,
     } = this.state;
+
+    const { isLoading } = this.props;
 
     return (
       <div>
@@ -154,6 +198,9 @@ class Payments extends React.Component {
             dataSource={calculatedCurrentTransactions}
             bordered
             className="PaymentsList-table"
+            loading={isLoading}
+            pagination={pagination}
+            onChange={this.handleTableChange}
             expandedRowRender={record => <div>{this.renderJobsList(record.transactions)}</div>}>
             <Column
               align="center"
@@ -330,6 +377,8 @@ const mapStateToProps = state => ({
   usersPaidTransactions: state.users.usersPaidTransactions,
   usersPendingTransactions: state.users.usersPendingTransactions,
   jobs: state.jobs.jobs,
+  isLoading: state.loading.effects.jobs.getJobs,
+  paymentsListPagination: state.users.paymentsListPagination,
 });
 
 const mapDispatchToProps = dispatch => ({
