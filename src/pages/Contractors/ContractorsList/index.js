@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Table, Button } from 'antd';
 import moment from 'moment';
 import Box from '../../../components/Box/index';
-import PaginationFactory from '~utils/pagination';
+import makeDefaultPagination from '~utils/pagination';
 import { getCurrentTwoWeeksPeriod } from '~utils/time';
 import { formatUsd } from '~utils/number';
 
@@ -15,7 +15,7 @@ import ActionBar from './components/ActionBar/index';
 const { Column } = Table;
 
 export const prepareActivity = list => {
-  return list.map((item) => {
+  return list.map(item => {
     item.lastActivityLabel = item.lastActivity ? moment(moment(item.lastActivity)).fromNow() : '';
     return item;
   });
@@ -30,9 +30,8 @@ class ContractorsList extends React.Component {
 
   state = {
     usersList: [],
-    pagination: new PaginationFactory(),
+    pagination: makeDefaultPagination(),
     userListPagination: null,
-    isLoading: false,
   };
 
   componentDidMount() {
@@ -53,28 +52,20 @@ class ContractorsList extends React.Component {
     }
     if (nextProps.userListPagination !== prevState.userListPagination) {
       let pag = prevState.pagination;
-      pag.total = nextProps.userListPagination.total;
       return {
         userListPagination: nextProps.userListPagination,
-        pagination: pag,
-      };
-    }
-    if (nextProps.isLoading !== prevState.isLoading) {
-      return {
-        isLoading: nextProps.isLoading,
+        pagination: { ...pag, total: nextProps.userListPagination.total },
       };
     }
     return null;
   }
 
   handleTableChange = pagination => {
-    const pager = { ...this.state.pagination };
-    pager.current = pagination.current;
-    pager.pageSize = pagination.pageSize;
+    const { getUsers } = this.props;
     this.setState({ pagination });
-    this.props.getUsers({
-      page: pager.current,
-      limit: pager.pageSize,
+    getUsers({
+      page: pagination.current,
+      limit: pagination.pageSize,
       ...getCurrentTwoWeeksPeriod(),
     });
   };
@@ -84,7 +75,8 @@ class ContractorsList extends React.Component {
   };
 
   render() {
-    const { contractorsData, pagination, isLoading } = this.state;
+    const { contractorsData, pagination } = this.state;
+    const { isLoading } = this.props;
     return (
       <div className="ContractorsList">
         <ActionBar />

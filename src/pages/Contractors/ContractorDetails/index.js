@@ -11,6 +11,7 @@ import Profile from './components/Profile';
 
 import { formatUsd } from '~utils/number';
 import { movePeriod, renderDate } from '~utils/time';
+import makeDefaultPagination from '~utils/pagination';
 
 import './ContractorDetails.css';
 
@@ -34,10 +35,14 @@ class ContractorDetails extends React.Component {
   static propTypes = {
     getUser: PropTypes.func.isRequired,
     getTransactionsForContractor: PropTypes.func.isRequired,
+    transactionsListPagination: PropTypes.object,
   };
 
   state = {
     currentUser: {},
+    periodRange: null,
+    pagination: makeDefaultPagination(),
+    transactionsListPagination: null,
     currentUserStatistics: {
       rank: 0,
       nJobs: 0,
@@ -75,6 +80,12 @@ class ContractorDetails extends React.Component {
       localState['contractorTransactions'] = nextProps.contractorTransactions;
     }
 
+    if (nextProps.transactionsListPagination !== prevState.transactionsListPagination) {
+      let pag = prevState.pagination;
+      localState['transactionsListPagination'] = nextProps.transactionsListPagination;
+      localState['pagination'] = { ...pag, total: nextProps.transactionsListPagination.total };
+    }
+
     return Object.keys(localState).length ? localState : null;
   }
 
@@ -88,6 +99,7 @@ class ContractorDetails extends React.Component {
       contractorTransactions,
       loadingTransactions,
     } = this.props;
+    const { pagination } = this.state;
 
     const localTransactions = contractorTransactions.items.map((item, key) => {
       return { ...item, key };
@@ -132,7 +144,10 @@ class ContractorDetails extends React.Component {
           <Filters onPeriodChange={this.onPeriodChange} />
           <Spin size="large" spinning={loadingTransactions}>
             <div className="ContractorDetails-table">
-              <Table dataSource={localTransactions}>
+              <Table
+                dataSource={localTransactions}
+                pagination={pagination}
+                onChange={this.handleTableChange}>
                 <Column
                   align="center"
                   dataIndex="createdAt"
@@ -189,10 +204,28 @@ class ContractorDetails extends React.Component {
     history.push(`${match.url}/edit`);
   };
 
+  handleTableChange = pagination => {
+    const { periodRange } = this.state;
+    const { match, getTransactionsForContractor } = this.props;
+    this.setState({ pagination });
+    getTransactionsForContractor({
+      userId: match.params.id,
+      page: pagination.current,
+      limit: pagination.pageSize,
+      ...periodRange,
+    });
+  };
+
   onPeriodChange = periodRange => {
     const { match, getTransactionsForContractor, getCurrentUserStatistics } = this.props;
+    const pagination = makeDefaultPagination();
 
-    getTransactionsForContractor({ ...periodRange, userId: match.params.id });
+    getTransactionsForContractor({
+      ...periodRange,
+      userId: match.params.id,
+      page: pagination.current,
+      limit: pagination.pageSize,
+    });
 
     const { period, startDate, endDate } = { ...periodRange };
     const previousTwoWeeksPeriod = movePeriod(period, startDate, endDate, 'prev');
@@ -204,6 +237,11 @@ class ContractorDetails extends React.Component {
       previousStartDate: previousTwoWeeksPeriod.startDate,
       previousEndDate: previousTwoWeeksPeriod.endDate,
     });
+
+    this.setState({
+      pagination,
+      periodRange: { ...periodRange },
+    });
   };
 }
 
@@ -213,6 +251,7 @@ const mapStateToProps = state => ({
   loadingUserStatistics: state.loading.effects.users.getCurrentUserStatistics,
   loadingContractor: state.loading.effects.users.getUser,
   contractorTransactions: state.transactions.contractorTransactions,
+  transactionsListPagination: state.transactions.transactionsListPagination,
   loadingTransactions: state.loading.effects.transactions.getTransactionsForContractor,
 });
 

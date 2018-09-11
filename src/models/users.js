@@ -84,17 +84,18 @@ const users = {
         throw err;
       }
     },
-    async getUsersWithTransactions({ startDate, endDate, status }) {
+    async getUsersWithTransactions({ startDate, endDate, status, page, limit }) {
       try {
         const response = await Http.get(`/users/payments/list`, {
           params: {
+            limit,
+            page,
             embed: 'transactions',
             startDate: startDate.format('YYYY-MM-DD'),
             endDate: endDate.format('YYYY-MM-DD'),
             status,
           },
         });
-
         if (status === 'done') {
           this.setUsersPaidTransactions(response.data);
         } else if (status === 'new') {
@@ -102,6 +103,7 @@ const users = {
         } else {
           this.setUsersTransactions(response.data);
         }
+        this.setPaymentsPagination(response.data.pagination);
 
         return response.data;
       } catch (err) {
@@ -128,8 +130,8 @@ const users = {
     setUsersPagination(state, payload) {
       return { ...state, userListPagination: payload };
     },
-    setUsersListLoading(state, payload) {
-      return { ...state, usersListLoading: payload };
+    setPaymentsPagination(state, payload) {
+      return { ...state, paymentsListPagination: payload };
     },
     setCurrentUserStatistics(state, payload) {
       return { ...state, currentUserStatistics: payload };
@@ -148,6 +150,7 @@ const users = {
     usersList: [],
     currentUser: null,
     userListPagination: null,
+    paymentsListPagination: null,
     currentUserStatistics: {
       rank: 0,
       nJobs: 0,
@@ -157,7 +160,6 @@ const users = {
     },
     usersPendingTransactions: null,
     usersPaidTransactions: null,
-    usersListLoading: false,
   },
 };
 
