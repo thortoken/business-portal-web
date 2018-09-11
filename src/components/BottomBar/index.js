@@ -9,7 +9,7 @@ import './BottomBar.css';
 
 export class BottomBar extends Component {
   render() {
-    const { selectedContractorsIds, selectedTransactionsSummaryValue } = this.props;
+    const { onSubmit, selectedContractorsIds, selectedTransactionsSummaryValue } = this.props;
     const selectedContractorsCount = selectedContractorsIds.size;
 
     return (
@@ -25,7 +25,9 @@ export class BottomBar extends Component {
                 {selectedContractorsCount > 1 ? 'Contractors' : 'Contractor'}
               </div>
               <div className="BottomBar-btn">
-                <Button type="primary">Pay Now</Button>
+                <Button type="primary" onClick={onSubmit}>
+                  Pay Now
+                </Button>
               </div>
             </div>
           </div>

@@ -23,7 +23,7 @@ export class AuthorizedRoutes extends React.Component {
             <Route exact path="/welcome" component={OverviewPage} />
             <Route exact path="/landing" component={LandingPage} />
             <Route exact path="/dashboard" component={DashboardPage} />
-            <Route exact path="/payments" component={PaymentsPage} />
+            <Route path="/payments" component={PaymentsPage} />
             <Route path="/contractors" component={ContractorsPage} />
             <Route path="/satisfaction-surveys" component={SatisfactionSurveysPage} />
             <Redirect from="*" to="/welcome" />
