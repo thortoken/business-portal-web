@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button, Spin } from 'antd';
+import { Table, Button, Spin, Modal } from 'antd';
 import { connect } from 'react-redux';
 
 import Dropdown from '~components/Dropdown';
@@ -168,8 +168,19 @@ class ContractorDetails extends React.Component {
     return job && job.name;
   };
 
-  handleDelete = () => {
-    const { match } = this.props;
+  handleDelete = async () => {
+    const { match, currentUser, deleteUser, history } = this.props;
+    const { firstName, lastName } = currentUser.tenantProfile;
+    Modal.confirm({
+      title: `Are you sure you want to delete ${firstName} ${lastName}?`,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk() {
+        deleteUser(currentUser.id);
+        history.goBack();
+      },
+    });
     console.log('delete contractor', match.params.id);
   };
 
@@ -207,10 +218,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = ({
   transactions: { getTransactionsForContractor },
-  users: { getUser, getCurrentUserStatistics },
+  users: { getUser, deleteUser, getCurrentUserStatistics },
 }) => ({
   getTransactionsForContractor,
   getUser,
+  deleteUser,
   getCurrentUserStatistics,
 });
 

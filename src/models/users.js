@@ -36,6 +36,14 @@ const users = {
         throw err;
       }
     },
+    async deleteUser(id) {
+      try {
+        const response = await Http.delete(`/users/${id}`);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
     async getUsers({ page, limit, startDate, endDate }) {
       try {
         const response = await Http.get(`/users/payments/list`, {
