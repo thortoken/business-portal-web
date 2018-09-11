@@ -11,7 +11,7 @@ import Profile from './components/Profile';
 
 import { formatUsd } from '~utils/number';
 import { movePeriod, renderDate } from '~utils/time';
-import PaginationFactory from '~utils/pagination';
+import makeDefaultPagination from '~utils/pagination';
 
 import './ContractorDetails.css';
 
@@ -41,7 +41,7 @@ class ContractorDetails extends React.Component {
   state = {
     currentUser: {},
     periodRange: null,
-    pagination: new PaginationFactory(),
+    pagination: makeDefaultPagination(),
     transactionsListPagination: null,
     currentUserStatistics: {
       rank: 0,
@@ -222,7 +222,7 @@ class ContractorDetails extends React.Component {
 
   onPeriodChange = periodRange => {
     const { match, getTransactionsForContractor, getCurrentUserStatistics } = this.props;
-    const pagination = new PaginationFactory();
+    const pagination = makeDefaultPagination();
 
     getTransactionsForContractor({
       ...periodRange,

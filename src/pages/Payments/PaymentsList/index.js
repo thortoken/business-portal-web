@@ -16,7 +16,7 @@ import TitleWithIcon from './components/TitleWithIcon';
 import { getCurrentTwoWeeksPeriod, getPreviousTwoWeeksPeriod } from '~utils/time';
 import { formatUsd } from '~utils/number';
 import { sumTransactions } from '~utils/summary';
-import PaginationFactory from '~utils/pagination';
+import makeDefaultPagination from '~utils/pagination';
 
 import './PaymentsList.css';
 
@@ -80,7 +80,7 @@ class Payments extends React.Component {
     selectedContractorsIds: new Set(),
     selectedTransactionsSummaryValue: 0,
     isLoading: false,
-    pagination: new PaginationFactory(),
+    pagination: makeDefaultPagination(),
     paymentsListPagination: null,
   };
 

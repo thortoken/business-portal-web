@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Table, Button } from 'antd';
 import moment from 'moment';
 import Box from '../../../components/Box/index';
-import PaginationFactory from '~utils/pagination';
+import makeDefaultPagination from '~utils/pagination';
 import { getCurrentTwoWeeksPeriod } from '~utils/time';
 import { formatUsd } from '~utils/number';
 
@@ -30,7 +30,7 @@ class ContractorsList extends React.Component {
 
   state = {
     usersList: [],
-    pagination: new PaginationFactory(),
+    pagination: makeDefaultPagination(),
     userListPagination: null,
     isLoading: false,
   };
