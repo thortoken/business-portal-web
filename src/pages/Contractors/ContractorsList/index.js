@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 import moment from 'moment';
 import Box from '../../../components/Box/index';
 import PaginationConfig from '~utils/pagination';
@@ -16,44 +16,8 @@ const { Column } = Table;
 
 export const prepareActivity = list => {
   return list.map((item, index) => {
-    const profile = item.tenantProfile;
-    const lastActivity = item.lastActivity;
-    let data = {
-      key: index,
-      activity: new Date(),
-      type: 'active',
-      contractor: '',
-      rank: index,
-      prev: 0,
-      city: '',
-    };
-    if (lastActivity) {
-      data.activity = lastActivity;
-      const days = moment().diff(moment(data.activity), 'days');
-      data.activity = moment(moment(data.activity)).fromNow();
-      if (days < 7) {
-        data.type = 'active';
-      } else if (days >= 7 && days < 31) {
-        data.type = 'resting';
-      } else {
-        data.type = 'inactive';
-      }
-    } else {
-      data.type = 'inactive';
-      data.activity = 'inactive';
-    }
-
-    if (profile) {
-      data.contractor = `${profile.firstName} ${profile.lastName}`;
-      data.city = profile.city;
-    }
-    if (item.prev) {
-      data.prev = formatUsd(item.prev);
-    }
-    if (item.rank) {
-      data.rank = item.rank;
-    }
-    return data;
+    item.lastActivityLabel = item.lastActivity ? moment(moment(item.lastActivity)).fromNow() : '';
+    return item;
   });
 };
 
@@ -115,6 +79,10 @@ class ContractorsList extends React.Component {
     });
   };
 
+  handleButtonClick = user => {
+    this.props.history.push(`/contractors/${user.id}`);
+  };
+
   render() {
     const { contractorsData, pagination, isLoading } = this.state;
     return (
@@ -128,33 +96,25 @@ class ContractorsList extends React.Component {
             onChange={this.handleTableChange}
             pagination={pagination}
             loading={isLoading}>
+            <Column align="center" dataIndex="tenantProfile.firstName" title="First Name" />
+            <Column align="center" dataIndex="tenantProfile.lastName" title="Last Name" />
+            <Column align="center" dataIndex="tenantProfile.city" title="City" />
+            <Column align="center" dataIndex="tenantProfile.state" title="State" />
             <Column
               align="center"
-              dataIndex="rank"
-              defaultSortOrder="ascend"
-              sorter={(a, b) => a.rank - b.rank}
-              title="Rank"
-            />
-            <Column align="center" dataIndex="contractor" title="Contractor" />
-            <Column
-              align="center"
-              dataIndex="activity"
-              title="Activity"
+              title="Last Activity"
               className="ContractorsList__activity"
               render={(text, record) => {
-                let activeClass = 'ContractorsList--' + record.type;
-                return <div className={activeClass}>{text}</div>;
+                return <div>{record.lastActivityLabel}</div>;
               }}
             />
             <Column
               align="center"
-              dataIndex="prev"
-              title="Prev"
-              render={text => {
-                return <span>{text}</span>;
+              title="Actions"
+              render={(text, record) => {
+                return <Button onClick={() => this.handleButtonClick(record)}>View Details</Button>;
               }}
             />
-            <Column align="center" dataIndex="city" title="City" />
           </Table>
         </Box>
       </div>
