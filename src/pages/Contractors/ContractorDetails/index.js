@@ -132,7 +132,7 @@ class ContractorDetails extends React.Component {
           <Filters onPeriodChange={this.onPeriodChange} />
           <Spin size="large" spinning={loadingTransactions}>
             <div className="ContractorDetails-table">
-              <Table dataSource={localTransactions} bordered>
+              <Table dataSource={localTransactions}>
                 <Column
                   align="center"
                   dataIndex="createdAt"

@@ -152,7 +152,6 @@ class Payments extends React.Component {
         <Box>
           <Table
             dataSource={calculatedCurrentTransactions}
-            bordered
             className="Payments-table"
             expandedRowRender={record => <div>{this.renderJobsList(record.transactions)}</div>}>
             <Column

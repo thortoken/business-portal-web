@@ -93,7 +93,6 @@ class ContractorsList extends React.Component {
             dataSource={contractorsData}
             className="ContractorsList__table"
             rowKey="id"
-            bordered
             onChange={this.handleTableChange}
             pagination={pagination}
             loading={isLoading}>
