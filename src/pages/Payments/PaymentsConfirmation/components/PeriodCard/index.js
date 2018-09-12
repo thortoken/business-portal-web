@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import classnames from 'classnames';
+import { formatUsd } from '~utils/number';
 
 import './PeriodCard.css';
 
@@ -10,7 +11,7 @@ export class PeriodCard extends React.Component {
   static propTypes = {
     active: PropTypes.bool,
     title: PropTypes.string,
-    range: PropTypes.string,
+    range: PropTypes.object,
     approved: PropTypes.number,
     postponed: PropTypes.number,
     total: PropTypes.number,
@@ -29,22 +30,27 @@ export class PeriodCard extends React.Component {
           {title}
         </div>
         <div className="Period-card__row">
-          {range}
+          {range.startDate.format('YYYY-MMM-Do')} - {range.endDate.format('YYYY-MMM-Do')}
         </div>
         <div className="Period-card__row">
-          Payments Approved: <span className={classnames({ [`Period-card--value`]: active })}>{approved}</span>
+          Payments Approved:{' '}
+          <span className={classnames({ [`Period-card--value`]: active })}>{approved}</span>
+        </div>
+        <div className="Period-card__row" style={{ display: 'none' }}>
+          Payments Postponed:{' '}
+          <span className={classnames({ [`Period-card--value`]: active })}>{postponed}</span>
         </div>
         <div className="Period-card__row">
-          Payments Postponed: <span className={classnames({ [`Period-card--value`]: active })}>{postponed}</span>
-        </div>
-        <div className="Period-card__row">
-          Total Payments: <span className={classnames({ [`Period-card--amount`]: active })}>${total}</span>
+          Total Payments:{' '}
+          <span className={classnames({ [`Period-card--amount`]: active })}>
+            {formatUsd(total)}
+          </span>
         </div>
       </div>
     );
   }
 }
 
-const mapDispatch = ({});
+const mapDispatch = {};
 
 export default connect(null, mapDispatch)(PeriodCard);

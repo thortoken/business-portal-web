@@ -6,7 +6,6 @@ import moment from 'moment';
 import Box from '../../../components/Box/index';
 import makeDefaultPagination from '~utils/pagination';
 import { getCurrentTwoWeeksPeriod } from '~utils/time';
-import { formatUsd } from '~utils/number';
 
 import './ContractorsList.css';
 

@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button, Icon } from 'antd';
+import { Button, Select } from 'antd';
 
 import './PaymentsConfirmation.css';
-import { PeriodCard } from "./components/PeriodCard";
-import { Select } from 'antd';
+import { PeriodCard } from './components/PeriodCard';
+
+import { getCurrentTwoWeeksPeriod } from '~utils/time';
+import { formatUsd } from '~utils/number';
 
 const Option = Select.Option;
 
@@ -14,33 +16,62 @@ function handleChange(value) {
 }
 
 export class PaymentsConfirmation extends React.Component {
-  static propTypes = {};
+  static propTypes = {
+    selectedTransactionsSummaryValue: PropTypes.number,
+    selectedTransactionsIds: PropTypes.object,
+    selectedContractorsIds: PropTypes.object,
+  };
 
   state = {};
 
   render() {
+    const {
+      selectedTransactionsSummaryValue,
+      selectedTransactionsIds,
+      selectedContractorsIds,
+    } = this.props;
     return (
       <div className="Payments-confirmation">
-        <div className="Payments-confirmation__card">
-          <PeriodCard active={false} approved={10} postponed={5} range={'Sept 1 - Sept 15'}
-                      title={'Last period payments'} total={32.200}/>
+        <div className="Payments-confirmation__card" style={{ display: 'none' }}>
+          <PeriodCard
+            active={false}
+            approved={10}
+            postponed={5}
+            range={getCurrentTwoWeeksPeriod()}
+            title={'Last period payments'}
+            total={32.2}
+          />
         </div>
         <div className="Payments-confirmation__card">
-          <PeriodCard active={true} approved={12} postponed={2} range={'Sept 16 - Sept 21'}
-                      title={'This period payments'} total={10.500}/>
+          <PeriodCard
+            active
+            approved={selectedTransactionsIds.size}
+            postponed={0}
+            range={getCurrentTwoWeeksPeriod()}
+            title={'This period payments'}
+            total={selectedTransactionsSummaryValue}
+          />
         </div>
-        <div className="Payments-confirmation__methods">
+        <div className="Payments-confirmation__methods" style={{ display: 'none' }}>
           <span className="Payments-confirmation__methods--text">Payments will be released: </span>
-          <Select defaultValue="immediately" className="Payments-confirmation__methods--select" onChange={handleChange}>
+          <Select
+            defaultValue="immediately"
+            className="Payments-confirmation__methods--select"
+            onChange={handleChange}>
             <Option value="immediately">Immediately</Option>
             <Option value="later">Later</Option>
           </Select>
         </div>
         <div className="Payments-confirmation__summary">
           <span className="Payments-confirmation__summary--text">Current approved pay total:</span>
-          <span className="Payments-confirmation__summary--amount">$ 10.500</span>
+          <span className="Payments-confirmation__summary--amount">
+            {formatUsd(selectedTransactionsSummaryValue)}
+          </span>
           <span className="Payments-confirmation__summary__submit">
-            <div className="Payments-confirmation__summary--contractors">888 Contractors</div>
+            <div className="Payments-confirmation__summary--contractors">
+              {selectedContractorsIds.size}{' '}
+              {selectedContractorsIds.size > 1 ? 'Contractors' : 'Contractor'}
+            </div>
             <div className="Payments-confirmation__summary--button">
               <Button type="default">Confirm Payment</Button>
             </div>
@@ -51,6 +82,12 @@ export class PaymentsConfirmation extends React.Component {
   }
 }
 
-const mapDispatch = ({});
+const mapStateToProps = state => ({
+  selectedTransactionsIds: state.payments.selectedTransactionsIds,
+  selectedContractorsIds: state.payments.selectedContractorsIds,
+  selectedTransactionsSummaryValue: state.payments.selectedTransactionsSummaryValue,
+});
 
-export default connect(null, mapDispatch)(PaymentsConfirmation);
+const mapDispatchToProps = dispatch => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PaymentsConfirmation);
