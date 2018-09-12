@@ -1,6 +1,17 @@
 @import "../../../styles/variables.less";
 
 .Payments-confirmation {
+  &__loader {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    text-align: center;
+  }
+  &__success {
+    color: @success-color;
+    font-size: 3.5rem;
+    font-weight: bold;
+  }
   &__card {
     width: 100%;
     padding: 0.625rem;
