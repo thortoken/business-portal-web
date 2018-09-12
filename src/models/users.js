@@ -84,6 +84,24 @@ const users = {
         throw err;
       }
     },
+    async getUsersForPaymentsList({ startDate, endDate, status, page, limit }) {
+      try {
+        const response = await Http.get(`/users/rating/period`, {
+          params: {
+            limit,
+            page,
+            startDate: startDate.format('YYYY-MM-DD'),
+            endDate: endDate.format('YYYY-MM-DD'),
+            status,
+          },
+        });
+        this.setUsersForPaymentsList(response.data.items);
+        this.setPaymentsPagination(response.data.pagination);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
     async getUsersWithTransactions({ startDate, endDate, status, page, limit }) {
       try {
         const response = await Http.get(`/users/payments/list`, {
@@ -120,6 +138,9 @@ const users = {
     },
     setUsersTransactions(state, payload) {
       return { ...state, transactions: payload };
+    },
+    setUsersForPaymentsList(state, payload) {
+      return { ...state, usersPaymentList: payload };
     },
     setCurrent(state, payload) {
       return { ...state, currentUser: payload };
@@ -169,6 +190,7 @@ const users = {
   },
   state: {
     usersList: [],
+    usersPaymentList: [],
     currentUser: null,
     userListPagination: null,
     paymentsListPagination: null,

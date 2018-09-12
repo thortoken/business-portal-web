@@ -13,46 +13,17 @@ import Summary from './components/Summary';
 import JobsList from './components/JobsList';
 import TitleWithIcon from './components/TitleWithIcon';
 
-import { getCurrentTwoWeeksPeriod, getPreviousTwoWeeksPeriod } from '~utils/time';
+import { getCurrentTwoWeeksPeriod } from '~utils/time';
 import { formatUsd } from '~utils/number';
-import { sumTransactions } from '~utils/summary';
 import makeDefaultPagination from '~utils/pagination';
 
 import './PaymentsList.css';
 
 const { Column } = Table;
 
-const calculateSummaryTransactions = (transactions, period) => {
-  const datesForPeriod =
-    period === 'prev' ? getPreviousTwoWeeksPeriod() : getCurrentTwoWeeksPeriod();
-  const obj = { ...datesForPeriod };
-  obj.contractorsCount = transactions.length;
-  obj.value = transactions.reduce((prevValue, currValue) => {
-    return prevValue + sumTransactions(currValue.transactions);
-  }, 0);
-
-  return obj;
-};
-
-const calculateTransactions = usersTransactions => {
-  return _.sortBy(
-    usersTransactions.map(user => {
-      return {
-        ...user,
-        numOfJobs: user.transactions.length,
-        transactionsSum: sumTransactions(user.transactions),
-      };
-    }),
-    'transactionsSum'
-  )
-    .reverse()
-    .map((contractor, index) => ({ ...contractor, key: index + 1 }));
-};
-
 class Payments extends React.Component {
   static propTypes = {
-    usersPaidTransactions: PropTypes.object,
-    usersPendingTransactions: PropTypes.object,
+    usersPaymentList: PropTypes.arrayOf(PropTypes.object).isRequired,
     jobs: PropTypes.arrayOf(PropTypes.object).isRequired,
     isLoading: PropTypes.bool,
     paymentsListPagination: PropTypes.object,
@@ -72,11 +43,6 @@ class Payments extends React.Component {
       startDate: new Date(),
       endDate: new Date(),
     },
-    previousTransactionsMap: new Map(),
-    calculatedPreviousTransactions: [],
-    calculatedCurrentTransactions: [],
-    usersPendingTransactions: [],
-    selectedTransactionsIds: new Set(),
     selectedContractorsIds: new Set(),
     selectedTransactionsSummaryValue: 0,
     pagination: makeDefaultPagination(),
@@ -86,84 +52,20 @@ class Payments extends React.Component {
   componentDidMount() {
     const { pagination } = this.state;
     this.props.getJobs();
-    this.props.getUsersWithTransactions({
+    this.props.getUsersForPaymentsList({
       status: 'new',
       ...getCurrentTwoWeeksPeriod(),
       page: pagination.current,
       limit: pagination.pageSize,
     });
-    this.props.getUsersWithTransactions({
-      status: 'done',
-      ...getPreviousTwoWeeksPeriod(),
-      page: pagination.current,
-      limit: pagination.pageSize,
-    });
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const hasJobs = Object.keys(nextProps.jobs).length > 0;
-
-    if (nextProps.usersPendingTransactions !== prevState.usersPendingTransactions) {
-      const objState = {
-        usersPendingTransactions: nextProps.usersPendingTransactions,
-      };
-
-      if (hasJobs) {
-        objState.current = calculateSummaryTransactions(
-          nextProps.usersPendingTransactions.items,
-          'curr'
-        );
-        objState.calculatedCurrentTransactions = calculateTransactions(
-          nextProps.usersPendingTransactions.items,
-          nextProps.jobs
-        );
-      }
-
-      return objState;
-    }
-
-    if (nextProps.usersPaidTransactions !== prevState.usersPaidTransactions) {
-      const objState = {
-        usersPaidTransactions: nextProps.usersPaidTransactions,
-      };
-      if (hasJobs) {
-        objState.previous = calculateSummaryTransactions(
-          nextProps.usersPaidTransactions ? nextProps.usersPaidTransactions.items : [],
-          'prev'
-        );
-        objState.calculatedPreviousTransactions = calculateTransactions(
-          nextProps.usersPaidTransactions ? nextProps.usersPaidTransactions.items : [],
-          nextProps.jobs
-        );
-        objState.previousTransactionsMap = new Map(
-          objState.calculatedPreviousTransactions.map(t => [t.contractorId, t.salary])
-        );
-      }
-      return objState;
-    }
-
-    if (nextProps.paymentsListPagination !== prevState.paymentsListPagination) {
-      let pag = prevState.pagination;
-      return {
-        paymentsListPagination: nextProps.paymentsListPagination,
-        pagination: { ...pag, total: nextProps.paymentsListPagination.total },
-      };
-    }
-    return null;
   }
 
   handleTableChange = pagination => {
-    const { getUsersWithTransactions } = this.props;
+    const { getUsersForPaymentsList } = this.props;
     this.setState({ pagination });
-    getUsersWithTransactions({
+    getUsersForPaymentsList({
       status: 'new',
       ...getCurrentTwoWeeksPeriod(),
-      page: pagination.current,
-      limit: pagination.pageSize,
-    });
-    getUsersWithTransactions({
-      status: 'done',
-      ...getPreviousTwoWeeksPeriod(),
       page: pagination.current,
       limit: pagination.pageSize,
     });
@@ -174,14 +76,13 @@ class Payments extends React.Component {
       checked,
       previous,
       current,
-      calculatedCurrentTransactions,
       selectedTransactionsIds,
       selectedContractorsIds,
       selectedTransactionsSummaryValue,
       pagination,
     } = this.state;
 
-    const { isLoading } = this.props;
+    const { isLoading, usersPaymentList } = this.props;
 
     return (
       <div>
@@ -195,22 +96,22 @@ class Payments extends React.Component {
 
         <Box>
           <Table
-            dataSource={calculatedCurrentTransactions}
+            dataSource={usersPaymentList}
             className="PaymentsList-table"
             loading={isLoading}
             pagination={pagination}
+            rowKey="id"
             onChange={this.handleTableChange}
             expandedRowRender={record => <div>{this.renderJobsList(record)}</div>}>
             <Column
               align="center"
-              dataIndex="key"
+              dataIndex="rank"
               title="Rank"
               width="10%"
               className="PaymentsList-rank-selector"
             />
             <Column
               align="center"
-              dataIndex="contractor"
               width="30%"
               title={<TitleWithIcon title="Contractor" icon="user" />}
               render={this.showContractorName}
@@ -226,7 +127,7 @@ class Payments extends React.Component {
             <Column
               align="center"
               className="PaymentsList-table-current PaymentsList-current-selector"
-              dataIndex="transactionsSum"
+              dataIndex="total"
               render={this.renderAmount}
               width="20%"
               title={<TitleWithIcon title="Current" icon="dollar" />}
@@ -239,7 +140,7 @@ class Payments extends React.Component {
               render={(text, record) => (
                 <button
                   className={classnames(null, { active: this.isActive(record) })}
-                  onClick={() => this.handleSelectTransaction(record)}>
+                  onClick={() => this.handleSelectUserTransactions(record)}>
                   <Icon type="check" />
                 </button>
               )}
@@ -261,45 +162,22 @@ class Payments extends React.Component {
     return selectedContractorsIds.has(record.id);
   };
 
-  handleSelectTransaction = user => {
-    const {
-      selectedTransactionsIds,
-      selectedContractorsIds,
-      usersPendingTransactions,
-    } = this.state;
-
+  handleSelectUserTransactions = user => {
+    const { selectedContractorsIds } = this.state;
     let { selectedTransactionsSummaryValue } = this.state;
     const contractorId = user.id;
 
     if (selectedContractorsIds.has(contractorId)) {
       selectedContractorsIds.delete(contractorId);
+      selectedTransactionsSummaryValue -= user.total;
     } else {
       selectedContractorsIds.add(contractorId);
+      selectedTransactionsSummaryValue += user.total;
     }
-
-    user.transactions.forEach(transaction => {
-      const transactionId = transaction.id;
-
-      if (selectedTransactionsIds.has(transactionId)) {
-        selectedTransactionsIds.delete(transactionId);
-        selectedTransactionsSummaryValue -= +transaction.job.value * transaction.quantity;
-      } else {
-        selectedTransactionsIds.add(transactionId);
-        selectedTransactionsSummaryValue += +transaction.job.value * transaction.quantity;
-      }
-    });
-
-    this.setState({
-      checked: selectedTransactionsIds.size === usersPendingTransactions.length,
-      selectedTransactionsIds,
-      selectedContractorsIds,
-      selectedTransactionsSummaryValue,
-    });
+    this.setState({ selectedContractorsIds, selectedTransactionsSummaryValue });
   };
 
   renderAmount = amount => formatUsd(amount);
-
-  handleTypeChange = e => this.setState({ type: e.target.value });
 
   handlePay = () => {
     const { history, match } = this.props;
@@ -307,68 +185,37 @@ class Payments extends React.Component {
   };
 
   onSelectAll = e => {
-    const { usersPendingTransactions } = this.props;
+    const { usersPaymentList } = this.props;
 
     let localState = {
       checked: e.target.checked,
       selectedTransactionsSummaryValue: 0,
-      selectedTransactionsIds: new Set(),
       selectedContractorsIds: new Set(),
     };
 
     if (e.target.checked) {
-      usersPendingTransactions.items.forEach(user => {
+      usersPaymentList.forEach(user => {
         localState.selectedContractorsIds.add(user.id);
-
-        user.transactions.forEach(transaction => {
-          localState.selectedTransactionsSummaryValue +=
-            transaction.job.value * transaction.quantity;
-          localState.selectedTransactionsIds.add(transaction.id);
-        });
+        localState.selectedTransactionsSummaryValue += user.total;
       });
     }
 
     this.setState(localState);
   };
 
-  showPreviousSalary = contractorId => {
-    const { previousTransactionsMap } = this.state;
-    return previousTransactionsMap.get(contractorId)
-      ? formatUsd(previousTransactionsMap.get(contractorId))
-      : '$0';
-  };
-
   showContractorName = (val, user) => {
-    if (!user.tenantProfile) {
-      return <div>Profile doesn't exist</div>;
-    }
-
-    return (
-      <Link to={'/contractors/' + user.id}>{`${user.tenantProfile.firstName} ${
-        user.tenantProfile.lastName
-      }`}</Link>
-    );
+    return <Link to={'/contractors/' + user.id}>{`${user.firstName} ${user.lastName}`}</Link>;
   };
 
   renderJobsList = record => {
-    const { usersPaidTransactions } = this.state;
     const { jobs } = this.props;
 
-    return (
-      <JobsList
-        jobs={jobs}
-        jobsList={record.transactions}
-        userId={record.id}
-        usersPaidTransactions={usersPaidTransactions}
-        renderAmount={this.renderAmount}
-      />
-    );
+    return <JobsList jobs={jobs} userId={record.id} renderAmount={this.renderAmount} />;
   };
 }
 
 const mapStateToProps = state => ({
-  usersPaidTransactions: state.users.usersPaidTransactions,
-  usersPendingTransactions: state.users.usersPendingTransactions,
+  usersPaymentList: state.users.usersPaymentList,
   jobs: state.jobs.jobs,
   isLoading: state.loading.effects.jobs.getJobs,
   paymentsListPagination: state.users.paymentsListPagination,
@@ -376,7 +223,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getJobs: dispatch.jobs.getJobs,
-  getUsersWithTransactions: dispatch.users.getUsersWithTransactions,
+  getUsersForPaymentsList: dispatch.users.getUsersForPaymentsList,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Payments);
