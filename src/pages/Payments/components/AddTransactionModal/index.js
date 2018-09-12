@@ -8,26 +8,53 @@ import './AddTransaction.css';
 
 import { initialValues, formFields, validationSchema } from './formSchema';
 
-export { validationSchema } from './formSchema';
-
 export class AddTransactionModal extends Component {
   state = {
     createdTransaction: null,
     isValid: false,
+    errorMsg: '',
+  };
+
+  handleModalSave = async (transaction, form) => {
+    const { createTransaction, userId, onChangeVisibility } = this.props;
+
+    const data = {
+      ...validationSchema.cast(transaction),
+      userId,
+    };
+
+    try {
+      await createTransaction(data);
+      onChangeVisibility(false, true);
+    } catch (err) {
+      if (err.response) {
+        this.setState({ errorMsg: err.response.data.error });
+      }
+      form.setSubmitting(false);
+    }
+  };
+
+  handleModalCancel = () => {
+    const { onChangeVisibility } = this.props;
+    onChangeVisibility(false);
+    this.setState({ errorMsg: '' });
   };
 
   render() {
-    const { onSave, onCancel, errorMsg } = this.props;
+    const { errorMsg } = this.state;
 
     return (
       <Modal
         title="Add transaction"
         visible={this.props.isModalVisible}
         footer={null}
-        onCancel={onCancel}
+        onCancel={this.handleModalCancel}
         destroyOnClose>
         <div className="AddTransaction_error-message">{errorMsg}</div>
-        <Formik initialValues={initialValues} onSubmit={onSave} validationSchema={validationSchema}>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={this.handleModalSave}
+          validationSchema={validationSchema}>
           {this.renderForm}
         </Formik>
       </Modal>

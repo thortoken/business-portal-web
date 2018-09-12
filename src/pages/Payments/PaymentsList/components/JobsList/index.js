@@ -5,10 +5,7 @@ import _ from 'lodash';
 import { Table, Button } from 'antd';
 
 import TitleWithIcon from '../TitleWithIcon';
-import {
-  AddTransactionModal,
-  validationSchema,
-} from '../../../../Payments/components/AddTransactionModal';
+import { AddTransactionModal } from '../../../../Payments/components/AddTransactionModal';
 
 import './JobsList.css';
 
@@ -47,31 +44,15 @@ export class JobsList extends Component {
     };
   }
 
-  handleModalSave = async (transaction, form) => {
-    const { createTransaction, userId } = this.props;
-
-    const data = {
-      ...validationSchema.cast(transaction),
-      userId,
-    };
-    try {
-      await createTransaction(data);
-      this.setState({ isModalVisible: false });
-    } catch (err) {
-      if (err.response) {
-        this.setState({ createTransactionErrorMessage: err.response.data.error });
-      }
-      form.setSubmitting(false);
-    }
-  };
-
-  handleModalCancel = () => {
-    this.setState({ isModalVisible: false, createTransactionErrorMessage: '' });
-  };
-
   render() {
-    const { jobs, usersPaidTransactions, jobsList, renderAmount } = this.props;
-    const { createTransactionErrorMessage } = this.state;
+    const {
+      jobs,
+      usersPaidTransactions,
+      jobsList,
+      renderAmount,
+      userId,
+      createTransaction,
+    } = this.props;
 
     const summarizedJobs = calculateJobs(jobsPerType(jobsList));
     let paidTransactionsGroupedByUsers = new Map(usersPaidTransactions.items.map(t => [t.id, t]));
@@ -105,10 +86,10 @@ export class JobsList extends Component {
     return (
       <div>
         <AddTransactionModal
-          onSave={this.handleModalSave}
-          onCancel={this.handleModalCancel}
+          userId={userId}
+          createTransaction={createTransaction}
           isModalVisible={this.state.isModalVisible}
-          errorMsg={createTransactionErrorMessage}
+          onChangeVisibility={this.onChangeVisibility}
         />
         <Table
           className="JobsList"
@@ -137,14 +118,19 @@ export class JobsList extends Component {
     );
   }
 
+  onChangeVisibility = (isModalVisible, refreshData = false) => {
+    this.setState({ isModalVisible });
+  };
+
   handleCustom = () => {
     this.setState({ isModalVisible: true });
   };
 }
-const mapStateToProps = state => ({ auth: { user } }) => ({ user });
 
 const mapDispatch = ({ transactions: { createTransaction } }) => ({
   createTransaction,
 });
+
+const mapStateToProps = state => ({ auth: { user } }) => ({ user });
 
 export default connect(mapStateToProps, mapDispatch)(JobsList);

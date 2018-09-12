@@ -347,13 +347,13 @@ class Payments extends React.Component {
   };
 
   showContractorName = (val, user) => {
-    if (!user.profile) {
+    if (!user.tenantProfile) {
       return <div>Profile doesn't exist</div>;
     }
 
     return (
-      <Link to={'/contractors/' + user.id}>{`${user.profile.firstName} ${
-        user.profile.lastName
+      <Link to={'/contractors/' + user.id}>{`${user.tenantProfile.firstName} ${
+        user.tenantProfile.lastName
       }`}</Link>
     );
   };

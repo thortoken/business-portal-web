@@ -51,6 +51,7 @@ export default class Filters extends React.Component {
   }
 
   render() {
+    const { children } = this.props;
     const { period, currentFormattedPeriod } = this.state;
 
     const periodOptions = Object.entries(readablePeriods).map(([key, value]) => ({ key, value }));
@@ -76,6 +77,8 @@ export default class Filters extends React.Component {
             <Icon type="right" />
           </div>
         </div>
+
+        <div className="Filters-right-action">{children}</div>
       </div>
     );
   }
