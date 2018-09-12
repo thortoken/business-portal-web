@@ -26,7 +26,7 @@ export class AuthorizedRoutes extends React.Component {
             <Route path="/payments" component={PaymentsPage} />
             <Route path="/contractors" component={ContractorsPage} />
             <Route path="/satisfaction-surveys" component={SatisfactionSurveysPage} />
-            <Redirect from="*" to="/welcome" />
+            <Redirect from="*" to="/payments" />
           </Switch>
         </Layout.Content>
       </Layout>

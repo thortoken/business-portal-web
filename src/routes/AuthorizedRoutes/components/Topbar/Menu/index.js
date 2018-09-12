@@ -9,7 +9,6 @@ import { getSelectedKeyFromPath } from '../helper';
 import './Menu.css';
 
 const menuItems = [
-  { route: '/welcome', label: 'Welcome' },
   { route: '/payments', label: 'Payments' },
   { route: '/contractors', label: 'Contractors' },
 ];
