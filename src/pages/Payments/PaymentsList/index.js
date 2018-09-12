@@ -200,7 +200,7 @@ class Payments extends React.Component {
             loading={isLoading}
             pagination={pagination}
             onChange={this.handleTableChange}
-            expandedRowRender={record => <div>{this.renderJobsList(record.transactions)}</div>}>
+            expandedRowRender={record => <div>{this.renderJobsList(record)}</div>}>
             <Column
               align="center"
               dataIndex="key"
@@ -358,14 +358,15 @@ class Payments extends React.Component {
     );
   };
 
-  renderJobsList = jobsList => {
+  renderJobsList = record => {
     const { usersPaidTransactions } = this.state;
     const { jobs } = this.props;
 
     return (
       <JobsList
         jobs={jobs}
-        jobsList={jobsList}
+        jobsList={record.transactions}
+        userId={record.id}
         usersPaidTransactions={usersPaidTransactions}
         renderAmount={this.renderAmount}
       />

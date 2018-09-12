@@ -1,7 +1,30 @@
 import Http from '~services/http';
 
 const transactions = {
-  effects: {
+  effects: dispatch => ({
+    async createTransaction({ userId, name, value }) {
+      try {
+        const response = await Http.post('/transactions', {
+          quantity: 1,
+          userId,
+          job: {
+            id: null,
+            name,
+            value,
+            description: name,
+          },
+        });
+
+        dispatch.users.addTransaction({
+          userId,
+          transaction: response.data,
+          type: 'pending',
+        });
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
     async getTransactionsForContractor({ userId, startDate, endDate, status, page, limit }) {
       try {
         const response = await Http.get(`/users/${userId}/transactions`, {
@@ -20,7 +43,7 @@ const transactions = {
         throw err;
       }
     },
-  },
+  }),
   reducers: {
     setTransactionsForContractor(state, payload) {
       return { ...state, contractorTransactions: payload };

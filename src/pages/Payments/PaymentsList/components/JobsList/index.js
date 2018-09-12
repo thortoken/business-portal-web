@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import { Table, Button } from 'antd';
 
 import TitleWithIcon from '../TitleWithIcon';
+import {
+  AddTransactionModal,
+  validationSchema,
+} from '../../../../Payments/components/AddTransactionModal';
 
 import './JobsList.css';
 
@@ -34,8 +39,39 @@ const calculateJobs = jobs => {
 };
 
 export class JobsList extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isModalVisible: false,
+    };
+  }
+
+  handleModalSave = async (transaction, form) => {
+    const { createTransaction, userId } = this.props;
+
+    const data = {
+      ...validationSchema.cast(transaction),
+      userId,
+    };
+    try {
+      await createTransaction(data);
+      this.setState({ isModalVisible: false });
+    } catch (err) {
+      if (err.response) {
+        this.setState({ createTransactionErrorMessage: err.response.data.error });
+      }
+      form.setSubmitting(false);
+    }
+  };
+
+  handleModalCancel = () => {
+    this.setState({ isModalVisible: false, createTransactionErrorMessage: '' });
+  };
+
   render() {
     const { jobs, usersPaidTransactions, jobsList, renderAmount } = this.props;
+    const { createTransactionErrorMessage } = this.state;
 
     const summarizedJobs = calculateJobs(jobsPerType(jobsList));
     let paidTransactionsGroupedByUsers = new Map(usersPaidTransactions.items.map(t => [t.id, t]));
@@ -68,6 +104,12 @@ export class JobsList extends Component {
 
     return (
       <div>
+        <AddTransactionModal
+          onSave={this.handleModalSave}
+          onCancel={this.handleModalCancel}
+          isModalVisible={this.state.isModalVisible}
+          errorMsg={createTransactionErrorMessage}
+        />
         <Table
           className="JobsList"
           showHeader={false}
@@ -95,9 +137,14 @@ export class JobsList extends Component {
     );
   }
 
-  handleCustom = e => {
-    console.log('event', e);
+  handleCustom = () => {
+    this.setState({ isModalVisible: true });
   };
 }
+const mapStateToProps = state => ({ auth: { user } }) => ({ user });
 
-export default JobsList;
+const mapDispatch = ({ transactions: { createTransaction } }) => ({
+  createTransaction,
+});
+
+export default connect(mapStateToProps, mapDispatch)(JobsList);
