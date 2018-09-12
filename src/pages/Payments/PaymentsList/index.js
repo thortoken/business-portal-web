@@ -211,7 +211,7 @@ class Payments extends React.Component {
             <Column
               align="center"
               dataIndex="contractor"
-              width="25%"
+              width="30%"
               title={<TitleWithIcon title="Contractor" icon="user" />}
               render={this.showContractorName}
               className="PaymentsList-contractor-selector"
@@ -220,23 +220,15 @@ class Payments extends React.Component {
               align="center"
               dataIndex="numOfJobs"
               title="Num Jobs"
-              width="10%"
-              className="PaymentsList-numOfJobs-selector"
-            />
-            <Column
-              align="center"
-              dataIndex="contractorId"
-              render={this.showPreviousSalary}
-              title="Prev"
               width="15%"
-              className="PaymentsList-prev-selector"
+              className="PaymentsList-numOfJobs-selector"
             />
             <Column
               align="center"
               className="PaymentsList-table-current PaymentsList-current-selector"
               dataIndex="transactionsSum"
               render={this.renderAmount}
-              width="15%"
+              width="20%"
               title={<TitleWithIcon title="Current" icon="dollar" />}
             />
             <Column

@@ -98,14 +98,13 @@ export class JobsList extends Component {
             return { ...summarizedJobs[jobsGroup], key: index };
           })}
           pagination={false}>
-          <Column align="center" dataIndex="name" title="Name" width="42%" />
-          <Column align="center" dataIndex="count" title="Num Jobs" width="12%" />
-          <Column align="center" dataIndex="prev" render={renderAmount} title="Prev" width="18%" />
+          <Column align="center" dataIndex="name" title="Name" width="30%" />
+          <Column align="center" dataIndex="count" title="Num Jobs" width="15%" />
           <Column
             align="center"
             dataIndex="current"
             render={renderAmount}
-            width="18%"
+            width="20%"
             title={<TitleWithIcon title="Current" icon="dollar" />}
           />
         </Table>
