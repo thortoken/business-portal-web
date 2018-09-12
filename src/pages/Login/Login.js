@@ -1,13 +1,13 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
-import { Formik } from 'formik'
-import { Button } from 'antd'
-import FormField from '~components/FormField'
+import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Formik } from 'formik';
+import { Button } from 'antd';
+import FormField from '~components/FormField';
 
 import './Login.css';
 
-import { formFields, validationSchema, initialValues } from './formSchema'
+import { formFields, validationSchema, initialValues } from './formSchema';
 
 class Login extends React.Component {
   static propTypes = {
@@ -15,21 +15,26 @@ class Login extends React.Component {
   };
 
   render() {
-
     return (
       <div className="Login">
         <div className="Login__form-container">
-          <h1 className="Login__title">Sign In</h1>
+          <img className="Login__image-top" src="images/loginImage.png" />
           <Formik
             initialValues={initialValues}
             onSubmit={this.handleSubmit}
-            validationSchema={validationSchema}
-          >
+            validationSchema={validationSchema}>
             {({ handleSubmit, isSubmitting }) => (
               <form onSubmit={handleSubmit}>
                 {Object.entries(formFields).map(([name, options]) => {
                   return (
-                    <FormField key={name} name={name} label={options.label} {...options.input} className='Login__input-group-container'/>)
+                    <FormField
+                      key={name}
+                      name={name}
+                      label={options.label}
+                      {...options.input}
+                      className="Login__input-group-container"
+                    />
+                  );
                 })}
 
                 <Button
@@ -37,13 +42,15 @@ class Login extends React.Component {
                   type="submit"
                   htmlType="submit"
                   disabled={isSubmitting}
-                  loading={isSubmitting}
-                >
+                  loading={isSubmitting}>
                   Sign in
                 </Button>
               </form>
             )}
           </Formik>
+          <div className="Login__image-container">
+            <img className="Login__image-bottom" src="images/poweredBy.png" />
+          </div>
         </div>
       </div>
     );
@@ -56,7 +63,7 @@ class Login extends React.Component {
       await login({ email, password });
     } catch (err) {
       if (err.response && err.response.status === 401) {
-        console.log(err.response)
+        console.log(err.response);
       }
       form.setSubmitting(false);
     }
@@ -65,7 +72,4 @@ class Login extends React.Component {
 
 const mapDispatch = ({ auth: { login } }) => ({ login });
 
-export default connect(
-  null,
-  mapDispatch
-)(Login)
+export default connect(null, mapDispatch)(Login);

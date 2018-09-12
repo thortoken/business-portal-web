@@ -21,7 +21,8 @@ class Topbar extends React.Component {
       <div className={classNames('Topbar', className)}>
         <div className="Topbar-left">
           <Logo>
-            <img className="Topbar-logo-image" src="images/yoshi_logo.png" />
+            <img className="Topbar-logo-svg" src="images/logo.svg" />
+            <img className="Topbar-logo-image" src="images/logoText.png" />
           </Logo>
         </div>
         <div className="Topbar-center">

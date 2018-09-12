@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="34px" height="35px" viewBox="0 0 34 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>ODIN O_trans</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M0,17.5 C0,7.94227778 7.61141573,0.194444444 17,0.194444444 C26.3889663,0.194444444 34,7.94227778 34,17.5 C34,27.0577222 26.3889663,34.8055556 17,34.8055556 C7.61141573,34.8055556 0,27.0577222 0,17.5 Z M32,17.5 C32,8.93968354 25.0603165,2 16.5,2 C7.93968354,2 1,8.93968354 1,17.5 C1,26.0603165 7.93968354,33 16.5,33 C25.0603165,33 32,26.0603165 32,17.5 Z" id="path-1"></path>
+        <linearGradient x1="100%" y1="-64.8362259%" x2="48.4996653%" y2="73.2135951%" id="linearGradient-3">
+            <stop stop-color="#355FE6" offset="0%"></stop>
+            <stop stop-color="#0188EE" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ODIN-O_trans">
+            <g>
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Combined-Shape"></g>
+                <path d="M0,17.5 C0,27.0577222 7.61141573,34.8055556 17,34.8055556 C26.3889663,34.8055556 34,27.0577222 34,17.5 C34,7.94227778 26.3889663,0.194444444 17,0.194444444 C7.61141573,0.194444444 0,7.94227778 0,17.5" id="Fill-5" fill="url(#linearGradient-3)" mask="url(#mask-2)"></path>
+            </g>
+        </g>
+    </g>
+</svg>
