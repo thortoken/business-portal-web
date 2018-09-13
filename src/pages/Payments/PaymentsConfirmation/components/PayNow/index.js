@@ -5,30 +5,50 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import './PayNow.css';
+import { Progress } from 'antd';
 
 export class PayNow extends React.Component {
   static propTypes = {
     active: PropTypes.bool,
     title: PropTypes.string,
-    left: PropTypes.number,
+    done: PropTypes.number,
+    error: PropTypes.number,
     all: PropTypes.number,
+    submitted: PropTypes.bool,
+    errorList: PropTypes.object,
+    isLoading: PropTypes.bool,
   };
 
   render() {
-    const { active, title, left, all } = this.props;
+    const { active, title, done, error, all, submitted, errorList, isLoading } = this.props;
+    const percent = parseInt(((done + error) * 100 / all).toFixed(0), 10);
+    let status = 'active';
+    if (!isLoading && errorList.size === 0) {
+      status = 'success';
+    } else if (!isLoading && errorList.size > 0) {
+      status = 'exception';
+    }
     return (
-      <div className={classnames('Period-card', { [`Period-card--active`]: active })}>
-        <div className={classnames('Period-card__header', { [`Period-card--value`]: active })}>
-          {title}
+      <div className={classnames('Pay-now', { [`Pay-now--active`]: active })}>
+        <div className={classnames('Pay-now__header', { [`Pay-now--value`]: active })}>{title}</div>
+        <div className="Pay-now__box">
+          <div className="Pay-now__row">
+            Payments Transferred:{' '}
+            <span className={classnames({ [`Pay-now--done`]: active })}>{done}</span>
+          </div>
+          <div className="Pay-now__row">
+            Payments Rejected:{' '}
+            <span className={classnames({ [`Pay-now--error`]: active })}>{error}</span>
+          </div>
+          <div className="Pay-now__row">
+            Total Payments: <span className={classnames({ [`Pay-now--all`]: active })}>{all}</span>
+          </div>
         </div>
-        <div className="Period-card__row">
-          Payments Transferred:{' '}
-          <span className={classnames({ [`Period-card--value`]: active })}>{all - left}</span>
-        </div>
-        <div className="Period-card__row">
-          Total Payments:{' '}
-          <span className={classnames({ [`Period-card--amount`]: active })}>{all}</span>
-        </div>
+        {submitted && (
+          <div className="Pay-now__box Pay-now__box--centered">
+            <Progress type="circle" percent={percent} status={status} />
+          </div>
+        )}
       </div>
     );
   }

@@ -15,14 +15,25 @@
     text-transform: uppercase;
     margin-bottom: 0.625rem;
   }
+  &__box {
+    display: inline-block;
+    vertical-align: middle;
+    width: 50%;
+    &--centered {
+      text-align: center;
+    }
+  }
   &__row {
     padding: 0.625rem 1.25rem;
     font-size: 1.1rem;
   }
-  &--value {
+  &--all {
     color: @primary-color;
   }
-  &--amount {
+  &--done {
     color: @success-color;
+  }
+  &--error {
+    color: @error-color;
   }
 }

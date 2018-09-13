@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button, Icon, Select, Spin } from 'antd';
+import { Button, Select, Progress } from 'antd';
 
 import './PaymentsConfirmation.css';
 import { PeriodCard } from './components/PeriodCard';
@@ -21,18 +21,32 @@ export class PaymentsConfirmation extends React.Component {
     selectedTransactionsSummaryValue: PropTypes.number,
     selectedTransactionsIds: PropTypes.object,
     selectedContractorsIds: PropTypes.object,
-    transactionList: PropTypes.object,
+    transactionErrorList: PropTypes.object,
+    transactionsDone: PropTypes.number,
+    transactionsError: PropTypes.number,
   };
 
   state = {
-    transactionList: new Set(),
+    transactionsDone: 0,
+    transactionsError: 0,
+    transactionErrorList: new Set(),
     submitted: false,
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.transactionList.size !== prevState.transactionList.size) {
+    if (nextProps.transactionsDone !== prevState.transactionsDone) {
       return {
-        transactionList: nextProps.transactionList,
+        transactionsDone: nextProps.transactionsDone,
+      };
+    }
+    if (nextProps.transactionsError !== prevState.transactionsError) {
+      return {
+        transactionsError: nextProps.transactionsError,
+      };
+    }
+    if (nextProps.transactionErrorList.size !== prevState.transactionErrorList.size) {
+      return {
+        transactionErrorList: nextProps.transactionErrorList,
       };
     }
     return null;
@@ -50,6 +64,12 @@ export class PaymentsConfirmation extends React.Component {
     }
   };
 
+  handleBack = async () => {
+    const { reset } = this.props;
+    await reset();
+    this.props.history.push(`/payments`);
+  };
+
   render() {
     const {
       selectedTransactionsSummaryValue,
@@ -57,7 +77,7 @@ export class PaymentsConfirmation extends React.Component {
       selectedContractorsIds,
       isLoading,
     } = this.props;
-    const { transactionList, submitted } = this.state;
+    const { transactionsDone, transactionsError, submitted, transactionErrorList } = this.state;
     return (
       <div className="Payments-confirmation">
         <div className="Payments-confirmation__card" style={{ display: 'none' }}>
@@ -88,8 +108,12 @@ export class PaymentsConfirmation extends React.Component {
             <PayNow
               active
               title={'Transferring Payments'}
-              left={transactionList.size}
+              done={transactionsDone}
+              error={transactionsError}
               all={selectedTransactionsIds.size}
+              submitted={submitted}
+              errorList={transactionErrorList}
+              isLoading={isLoading}
             />
           </div>
         )}
@@ -117,20 +141,26 @@ export class PaymentsConfirmation extends React.Component {
                 {selectedContractorsIds.size > 1 ? 'Contractors' : 'Contractor'}
               </div>
               <div className="Payments-confirmation__summary--button">
-                <Button type="default" onClick={this.handleSubmit}>
+                <Button
+                  type="default"
+                  disabled={selectedTransactionsIds.size === 0}
+                  onClick={this.handleSubmit}>
                   Confirm Payment
                 </Button>
               </div>
             </span>
           </div>
         )}
-        {submitted && (
-          <div className="Payments-confirmation__loader">
-            <Spin size="large" spinning={isLoading} />
-            {submitted &&
-              !isLoading && <Icon type="check" className="Payments-confirmation__success" />}
-          </div>
-        )}
+        {submitted &&
+          !isLoading && (
+            <div className="Payments-confirmation__summary">
+              <div className="Payments-confirmation__summary--back-button">
+                <Button type="default" onClick={this.handleBack}>
+                  Back to Payments
+                </Button>
+              </div>
+            </div>
+          )}
       </div>
     );
   }
@@ -138,7 +168,9 @@ export class PaymentsConfirmation extends React.Component {
 
 const mapStateToProps = state => ({
   selectedTransactionsIds: state.payments.selectedTransactionsIds,
-  transactionList: state.payments.transactionList,
+  transactionErrorList: state.payments.transactionErrorList,
+  transactionsDone: state.payments.transactionsDone,
+  transactionsError: state.payments.transactionsError,
   selectedContractorsIds: state.payments.selectedContractorsIds,
   selectedTransactionsSummaryValue: state.payments.selectedTransactionsSummaryValue,
   isLoading: state.loading.effects.payments.payNow,
@@ -146,6 +178,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   payNow: dispatch.payments.payNow,
+  reset: dispatch.payments.reset,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentsConfirmation);
