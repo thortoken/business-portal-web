@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="974px" height="978px" viewBox="0 0 974 978" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="8.95746186%" y1="76.3579601%" x2="126.607099%" y2="-1.13342766%" id="linearGradient-1">
+            <stop stop-color="#0187ED" offset="0%"></stop>
+            <stop stop-color="#345EE6" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="27.1414103%" y1="95.8611181%" x2="34.3869977%" y2="41.403131%" id="linearGradient-2">
+            <stop stop-color="#F1EEEE" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Account-Summary" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.257589286">
+        <g id="Odin-Login" transform="translate(-233.000000, -40.000000)">
+            <g id="Group" transform="translate(53.000000, -106.000000)">
+                <g transform="translate(180.000000, 146.000000)" id="Fill-1">
+                    <path d="M487,0 C218.036035,0 0,218.933386 0,489 C0,759.068539 218.036035,978 487,978 C755.962047,978 974,759.068539 974,489 C974,218.933386 755.962047,0 487,0 Z" fill="url(#linearGradient-1)"></path>
+                    <path d="M905,503.499036 C905,263.532075 711.363354,69 472.499041,69 C233.636646,69 40,263.532075 40,503.499036 C40,743.467925 233.636646,938 472.499041,938 C711.363354,938 905,743.467925 905,503.499036" fill="url(#linearGradient-2)"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
