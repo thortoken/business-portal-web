@@ -43,6 +43,22 @@ const transactions = {
         throw err;
       }
     },
+    async getTransactionsSummary({ page, limit, status, startDate, endDate }) {
+      try {
+        const response = await Http.get(`/transactions/rating/period`, {
+          params: {
+            page,
+            limit,
+            startDate: startDate.format('YYYY-MM-DD'),
+            endDate: endDate.format('YYYY-MM-DD'),
+          },
+        });
+        this.setTransactionsSummary(response.data);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
   }),
   reducers: {
     setTransactionsForContractor(state, payload) {
@@ -51,10 +67,14 @@ const transactions = {
     setTransactionsPagination(state, payload) {
       return { ...state, transactionsListPagination: payload };
     },
+    setTransactionsSummary(state, payload) {
+      return { ...state, transactionsSummary: payload };
+    },
   },
   state: {
     transactions: [],
     transactionsListPagination: null,
+    transactionsSummary: null,
     pendingTransactions: [],
     paidTransactions: [],
     userTransactions: [],

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Table, Checkbox } from 'antd';
+import { Icon, Table, Checkbox, Spin } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
@@ -61,16 +61,16 @@ class Payments extends React.Component {
   state = {
     checked: false,
     previous: {
-      value: 0,
-      contractorsCount: 0,
-      startDate: new Date(),
-      endDate: new Date(),
+      total: '',
+      users: '',
+      startDate: '',
+      endDate: '',
     },
     current: {
-      value: 0,
-      contractorsCount: 0,
-      startDate: new Date(),
-      endDate: new Date(),
+      total: '',
+      users: '',
+      startDate: '',
+      endDate: '',
     },
     previousTransactionsMap: new Map(),
     calculatedPreviousTransactions: [],
@@ -86,6 +86,10 @@ class Payments extends React.Component {
   componentDidMount() {
     const { pagination } = this.state;
     this.props.getJobs();
+    this.props.getTransactionsSummary({
+      status: 'new',
+      ...getCurrentTwoWeeksPeriod(),
+    });
     this.props.getUsersWithTransactions({
       status: 'new',
       ...getCurrentTwoWeeksPeriod(),
@@ -103,16 +107,24 @@ class Payments extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const hasJobs = Object.keys(nextProps.jobs).length > 0;
 
+    if (
+      nextProps.transactionsSummary &&
+      (nextProps.transactionsSummary.previous !== prevState.previous ||
+        nextProps.transactionsSummary.current !== prevState.current)
+    ) {
+      const { previous, current } = nextProps.transactionsSummary;
+      return {
+        previous,
+        current,
+      };
+    }
+
     if (nextProps.usersPendingTransactions !== prevState.usersPendingTransactions) {
       const objState = {
         usersPendingTransactions: nextProps.usersPendingTransactions,
       };
 
       if (hasJobs) {
-        objState.current = calculateSummaryTransactions(
-          nextProps.usersPendingTransactions.items,
-          'curr'
-        );
         objState.calculatedCurrentTransactions = calculateTransactions(
           nextProps.usersPendingTransactions.items,
           nextProps.jobs
@@ -127,10 +139,6 @@ class Payments extends React.Component {
         usersPaidTransactions: nextProps.usersPaidTransactions,
       };
       if (hasJobs) {
-        objState.previous = calculateSummaryTransactions(
-          nextProps.usersPaidTransactions ? nextProps.usersPaidTransactions.items : [],
-          'prev'
-        );
         objState.calculatedPreviousTransactions = calculateTransactions(
           nextProps.usersPaidTransactions ? nextProps.usersPaidTransactions.items : [],
           nextProps.jobs
@@ -156,7 +164,6 @@ class Payments extends React.Component {
     const { getUsersWithTransactions } = this.props;
     this.setState({ pagination });
     getUsersWithTransactions({
-      status: 'new',
       ...getCurrentTwoWeeksPeriod(),
       page: pagination.current,
       limit: pagination.pageSize,
@@ -187,7 +194,9 @@ class Payments extends React.Component {
       <div>
         <Header title="Payments" size="medium" />
 
-        <Summary previous={previous} current={current} />
+        <Spin spinning={isLoading}>
+          <Summary previous={previous} current={current} />
+        </Spin>
 
         <div className="PaymentsList-selector">
           <Checkbox onChange={this.onSelectAll} checked={checked} /> Select All
@@ -377,6 +386,7 @@ class Payments extends React.Component {
 const mapStateToProps = state => ({
   usersPaidTransactions: state.users.usersPaidTransactions,
   usersPendingTransactions: state.users.usersPendingTransactions,
+  transactionsSummary: state.transactions.transactionsSummary,
   jobs: state.jobs.jobs,
   isLoading: state.loading.effects.jobs.getJobs,
   paymentsListPagination: state.users.paymentsListPagination,
@@ -385,6 +395,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getJobs: dispatch.jobs.getJobs,
   getUsersWithTransactions: dispatch.users.getUsersWithTransactions,
+  getTransactionsSummary: dispatch.transactions.getTransactionsSummary,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Payments);
