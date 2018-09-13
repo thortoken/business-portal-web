@@ -12,7 +12,7 @@ const payments = {
       for (const id of data) {
         try {
           await Http.post(`/transactions/${id}/transfer`);
-          await delayed();
+          // await delayed();
           list.delete(id);
           this.setTransactionList(list);
         } catch (err) {
