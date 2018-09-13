@@ -5,7 +5,18 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import './PayNow.css';
-import { Progress } from 'antd';
+import { Icon, Progress, Popover } from 'antd';
+
+const generateErrorItems = list => {
+  list = new Array(list);
+  return list.map((item, index) => {
+    return (
+      <p key={item} className="Pay-now__error">
+        {index + 1}. {item}
+      </p>
+    );
+  });
+};
 
 export class PayNow extends React.Component {
   static propTypes = {
@@ -28,6 +39,7 @@ export class PayNow extends React.Component {
     } else if (!isLoading && errorList.size > 0) {
       status = 'exception';
     }
+    const content = <div>{generateErrorItems(errorList)}</div>;
     return (
       <div className={classnames('Pay-now', { [`Pay-now--active`]: active })}>
         <div className={classnames('Pay-now__header', { [`Pay-now--value`]: active })}>{title}</div>
@@ -39,6 +51,11 @@ export class PayNow extends React.Component {
           <div className="Pay-now__row">
             Payments Rejected:{' '}
             <span className={classnames({ [`Pay-now--error`]: active })}>{error}</span>
+            {errorList.size > 0 && (
+              <Popover content={content} title="Errors" placement="right" trigger="hover">
+                <Icon type="eye" theme="outlined" className="Pay-now__error-icon" />
+              </Popover>
+            )}
           </div>
           <div className="Pay-now__row">
             Total Payments: <span className={classnames({ [`Pay-now--all`]: active })}>{all}</span>
