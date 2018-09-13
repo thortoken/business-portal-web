@@ -8,6 +8,7 @@ import BackBtn from '~components/BackBtn';
 import ContractorSummary from './components/ContractorSummary';
 import Filters from './components/Filters';
 import Profile from './components/Profile';
+import { AddTransactionModal } from '../../Payments/components/AddTransactionModal';
 
 import { formatUsd } from '~utils/number';
 import { movePeriod, renderDate } from '~utils/time';
@@ -39,6 +40,7 @@ class ContractorDetails extends React.Component {
   };
 
   state = {
+    isModalVisible: false,
     currentUser: {},
     periodRange: null,
     pagination: makeDefaultPagination(),
@@ -98,6 +100,7 @@ class ContractorDetails extends React.Component {
       loadingContractor,
       contractorTransactions,
       loadingTransactions,
+      createTransaction,
     } = this.props;
     const { pagination } = this.state;
 
@@ -119,63 +122,75 @@ class ContractorDetails extends React.Component {
     ];
 
     return (
-      <Spin size="large" spinning={loadingContractor}>
-        <div className="ContractorDetails">
-          <BackBtn to="/payments" label="Payments" />
+      <div>
+        <AddTransactionModal
+          userId={match.params.id}
+          createTransaction={createTransaction}
+          isModalVisible={this.state.isModalVisible}
+          onChangeVisibility={this.onChangeVisibility}
+        />
+        <Spin size="large" spinning={loadingContractor}>
+          <div className="ContractorDetails">
+            <BackBtn to="/payments" label="Payments" />
 
-          {currentUser && (
-            <Profile
-              {...currentUser.tenantProfile}
-              createdAt={currentUser.createdAt}
-              updatedAt={currentUser.updatedAt}>
-              <Dropdown
-                className="ContractorDetails-options-btn"
-                options={this.generateMenuItems(menuList, match.params.id)}
-                onClick={this.handleTransactionsPeriodChange}>
-                <Button type="primary" ghost>
-                  Options
-                </Button>
-              </Dropdown>
-            </Profile>
-          )}
-          <Spin size="large" spinning={loadingUserStatistics}>
-            <ContractorSummary {...currentUserStatistics} />
-          </Spin>
-          <Filters onPeriodChange={this.onPeriodChange} />
-          <Spin size="large" spinning={loadingTransactions}>
-            <div className="ContractorDetails-table">
-              <Table
-                dataSource={localTransactions}
-                pagination={pagination}
-                onChange={this.handleTableChange}>
-                <Column
-                  align="center"
-                  dataIndex="createdAt"
-                  render={renderDate}
-                  title="Date"
-                  width="15%"
-                />
-                <Column
-                  align="center"
-                  dataIndex="job"
-                  render={this.renderJobName}
-                  width="30%"
-                  title="Service"
-                />
-                <Column align="center" dataIndex="location" title="Location" width="20%" />
-                <Column
-                  align="center"
-                  dataIndex="value"
-                  render={formatUsd}
-                  title="Pay Amt."
-                  width="20%"
-                />
-                <Column align="center" dataIndex="status" title="Status" width="15%" />
-              </Table>
-            </div>
-          </Spin>
-        </div>
-      </Spin>
+            {currentUser && (
+              <Profile
+                {...currentUser.tenantProfile}
+                createdAt={currentUser.createdAt}
+                updatedAt={currentUser.updatedAt}>
+                <Dropdown
+                  className="ContractorDetails-options-btn"
+                  options={this.generateMenuItems(menuList, match.params.id)}
+                  onClick={this.handleTransactionsPeriodChange}>
+                  <Button type="primary" ghost>
+                    Options
+                  </Button>
+                </Dropdown>
+              </Profile>
+            )}
+            <Spin size="large" spinning={loadingUserStatistics}>
+              <ContractorSummary {...currentUserStatistics} />
+            </Spin>
+            <Filters onPeriodChange={this.onPeriodChange}>
+              <Button type="primary" icon="plus" size="default" onClick={this.handleCustom}>
+                Add custom transaction
+              </Button>
+            </Filters>
+            <Spin size="large" spinning={loadingTransactions}>
+              <div className="ContractorDetails-table">
+                <Table
+                  dataSource={localTransactions}
+                  pagination={pagination}
+                  onChange={this.handleTableChange}>
+                  <Column
+                    align="center"
+                    dataIndex="createdAt"
+                    render={renderDate}
+                    title="Date"
+                    width="15%"
+                  />
+                  <Column
+                    align="center"
+                    dataIndex="job"
+                    render={this.renderJobName}
+                    width="30%"
+                    title="Service"
+                  />
+                  <Column align="center" dataIndex="location" title="Location" width="20%" />
+                  <Column
+                    align="center"
+                    dataIndex="value"
+                    render={formatUsd}
+                    title="Pay Amt."
+                    width="20%"
+                  />
+                  <Column align="center" dataIndex="status" title="Status" width="15%" />
+                </Table>
+              </div>
+            </Spin>
+          </div>
+        </Spin>
+      </div>
     );
   }
 
@@ -197,6 +212,18 @@ class ContractorDetails extends React.Component {
       },
     });
     console.log('delete contractor', match.params.id);
+  };
+
+  handleCustom = () => {
+    this.setState({ isModalVisible: true });
+  };
+
+  onChangeVisibility = (isModalVisible, refreshData = false) => {
+    if (refreshData) {
+      this.handleTableChange({ ...makeDefaultPagination() });
+    }
+
+    this.setState({ isModalVisible });
   };
 
   handleEdit = () => {
@@ -256,9 +283,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = ({
-  transactions: { getTransactionsForContractor },
+  transactions: { getTransactionsForContractor, createTransaction },
   users: { getUser, deleteUser, getCurrentUserStatistics },
 }) => ({
+  createTransaction,
   getTransactionsForContractor,
   getUser,
   deleteUser,

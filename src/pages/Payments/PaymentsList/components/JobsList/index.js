@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import { Table, Button } from 'antd';
 
 import TitleWithIcon from '../TitleWithIcon';
+import { AddTransactionModal } from '../../../../Payments/components/AddTransactionModal';
 
 import './JobsList.css';
 
@@ -34,8 +36,23 @@ const calculateJobs = jobs => {
 };
 
 export class JobsList extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isModalVisible: false,
+    };
+  }
+
   render() {
-    const { jobs, usersPaidTransactions, jobsList, renderAmount } = this.props;
+    const {
+      jobs,
+      usersPaidTransactions,
+      jobsList,
+      renderAmount,
+      userId,
+      createTransaction,
+    } = this.props;
 
     const summarizedJobs = calculateJobs(jobsPerType(jobsList));
     let paidTransactionsGroupedByUsers = new Map(usersPaidTransactions.items.map(t => [t.id, t]));
@@ -68,6 +85,12 @@ export class JobsList extends Component {
 
     return (
       <div>
+        <AddTransactionModal
+          userId={userId}
+          createTransaction={createTransaction}
+          isModalVisible={this.state.isModalVisible}
+          onChangeVisibility={this.onChangeVisibility}
+        />
         <Table
           className="JobsList"
           showHeader={false}
@@ -95,9 +118,19 @@ export class JobsList extends Component {
     );
   }
 
-  handleCustom = e => {
-    console.log('event', e);
+  onChangeVisibility = (isModalVisible, refreshData = false) => {
+    this.setState({ isModalVisible });
+  };
+
+  handleCustom = () => {
+    this.setState({ isModalVisible: true });
   };
 }
 
-export default JobsList;
+const mapDispatch = ({ transactions: { createTransaction } }) => ({
+  createTransaction,
+});
+
+const mapStateToProps = state => ({ auth: { user } }) => ({ user });
+
+export default connect(mapStateToProps, mapDispatch)(JobsList);

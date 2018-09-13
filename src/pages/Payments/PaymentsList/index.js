@@ -221,7 +221,7 @@ class Payments extends React.Component {
             loading={isLoading}
             pagination={pagination}
             onChange={this.handleTableChange}
-            expandedRowRender={record => <div>{this.renderJobsList(record.transactions)}</div>}>
+            expandedRowRender={record => <div>{this.renderJobsList(record)}</div>}>
             <Column
               align="center"
               dataIndex="key"
@@ -373,25 +373,26 @@ class Payments extends React.Component {
   };
 
   showContractorName = (val, user) => {
-    if (!user.profile) {
+    if (!user.tenantProfile) {
       return <div>Profile doesn't exist</div>;
     }
 
     return (
-      <Link to={'/contractors/' + user.id}>{`${user.profile.firstName} ${
-        user.profile.lastName
+      <Link to={'/contractors/' + user.id}>{`${user.tenantProfile.firstName} ${
+        user.tenantProfile.lastName
       }`}</Link>
     );
   };
 
-  renderJobsList = jobsList => {
+  renderJobsList = record => {
     const { usersPaidTransactions } = this.state;
     const { jobs } = this.props;
 
     return (
       <JobsList
         jobs={jobs}
-        jobsList={jobsList}
+        jobsList={record.transactions}
+        userId={record.id}
         usersPaidTransactions={usersPaidTransactions}
         renderAmount={this.renderAmount}
       />

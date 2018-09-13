@@ -39,6 +39,7 @@
 
   &-right {
     min-width: 15.625rem;
+    margin-right: 2rem;
     justify-content: flex-end;
   }
 
@@ -64,10 +65,23 @@
   &-logo {
     height: @Topbar-height;
     border-bottom: 1px solid @color-grey-lighter;
-
-    img {
-      margin-left: 1.25rem;
-      height: 3.5rem;
+    &-svg{
+      margin-left: 2.25rem;
+      height: 2.5rem;
+      &:hover + img{
+        opacity: 1;
+      }
     }
+    &-image{
+      margin-left: 1.5rem;
+      width: 2.5rem;
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
+    }
+  }
+
+  button > i.Topbar-icon {
+    float: initial;
+    margin-top: initial;
   }
 }

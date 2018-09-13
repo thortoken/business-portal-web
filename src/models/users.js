@@ -145,6 +145,27 @@ const users = {
         },
       };
     },
+    addTransaction(state, payload) {
+      const field =
+        payload.type === 'pending' ? 'usersPendingTransactions' : 'usersPaidTransactions';
+
+      return {
+        ...state,
+        [field]: {
+          ...state[field],
+          items: state[field].items.map(user => {
+            if (user.id !== payload.userId) {
+              return user;
+            }
+
+            return {
+              ...user,
+              transactions: [...user.transactions, payload.transaction],
+            };
+          }),
+        },
+      };
+    },
   },
   state: {
     usersList: [],
