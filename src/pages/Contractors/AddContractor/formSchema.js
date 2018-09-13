@@ -68,7 +68,7 @@ const formFields = {
       .uppercase(),
     input: {
       maxLength: 2,
-      placeholder: 'AB',
+      placeholder: 'e.g. CA',
     },
   },
   postalCode: {
@@ -104,7 +104,11 @@ const formFields = {
     validator: Yup.string()
       .ensure()
       .required()
+      .max(9)
       .min(9),
+    input: {
+      maxLength: 9,
+    },
   },
   accountNumber: {
     label: 'Bank account number',
@@ -120,7 +124,7 @@ const formFields = {
       .required()
       .matches(/\d{4}/, 'Please input last 4 digits of your SSN'),
     input: {
-      placeholder: '0000',
+      maxLength: 4,
     },
   },
 };
