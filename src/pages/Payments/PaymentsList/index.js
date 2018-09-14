@@ -56,6 +56,9 @@ class Payments extends React.Component {
     jobs: PropTypes.arrayOf(PropTypes.object).isRequired,
     isLoading: PropTypes.bool,
     paymentsListPagination: PropTypes.object,
+    selectedTransactionsSummaryValue: PropTypes.number,
+    selectedTransactionsIds: PropTypes.object,
+    selectedContractorsIds: PropTypes.object,
   };
 
   state = {
@@ -140,6 +143,24 @@ class Payments extends React.Component {
         );
       }
       return objState;
+    }
+
+    if (nextProps.selectedContractorsIds.size !== prevState.selectedContractorsIds.size) {
+      return {
+        selectedContractorsIds: nextProps.selectedContractorsIds,
+      };
+    }
+
+    if (nextProps.selectedTransactionsIds.size !== prevState.selectedTransactionsIds.size) {
+      return {
+        selectedTransactionsIds: nextProps.selectedTransactionsIds,
+      };
+    }
+
+    if (nextProps.selectedTransactionsSummaryValue !== prevState.selectedTransactionsSummaryValue) {
+      return {
+        selectedTransactionsSummaryValue: nextProps.selectedTransactionsSummaryValue,
+      };
     }
 
     if (nextProps.paymentsListPagination !== prevState.paymentsListPagination) {
@@ -276,6 +297,8 @@ class Payments extends React.Component {
       usersPendingTransactions,
     } = this.state;
 
+    const { updatePaymentsList } = this.props;
+
     let { selectedTransactionsSummaryValue } = this.state;
     const contractorId = user.id;
 
@@ -299,8 +322,11 @@ class Payments extends React.Component {
 
     this.setState({
       checked: selectedTransactionsIds.size === usersPendingTransactions.length,
-      selectedTransactionsIds,
+    });
+
+    updatePaymentsList({
       selectedContractorsIds,
+      selectedTransactionsIds,
       selectedTransactionsSummaryValue,
     });
   };
@@ -315,10 +341,9 @@ class Payments extends React.Component {
   };
 
   onSelectAll = e => {
-    const { usersPendingTransactions } = this.props;
+    const { usersPendingTransactions, updatePaymentsList } = this.props;
 
-    let localState = {
-      checked: e.target.checked,
+    let data = {
       selectedTransactionsSummaryValue: 0,
       selectedTransactionsIds: new Set(),
       selectedContractorsIds: new Set(),
@@ -326,17 +351,18 @@ class Payments extends React.Component {
 
     if (e.target.checked) {
       usersPendingTransactions.items.forEach(user => {
-        localState.selectedContractorsIds.add(user.id);
+        data.selectedContractorsIds.add(user.id);
 
         user.transactions.forEach(transaction => {
-          localState.selectedTransactionsSummaryValue +=
-            transaction.job.value * transaction.quantity;
-          localState.selectedTransactionsIds.add(transaction.id);
+          data.selectedTransactionsSummaryValue += transaction.job.value * transaction.quantity;
+          data.selectedTransactionsIds.add(transaction.id);
         });
       });
     }
 
-    this.setState(localState);
+    this.setState({ checked: e.target.checked });
+
+    updatePaymentsList({ ...data });
   };
 
   showPreviousSalary = contractorId => {
@@ -380,11 +406,15 @@ const mapStateToProps = state => ({
   jobs: state.jobs.jobs,
   isLoading: state.loading.effects.jobs.getJobs,
   paymentsListPagination: state.users.paymentsListPagination,
+  selectedTransactionsIds: state.payments.selectedTransactionsIds,
+  selectedContractorsIds: state.payments.selectedContractorsIds,
+  selectedTransactionsSummaryValue: state.payments.selectedTransactionsSummaryValue,
 });
 
 const mapDispatchToProps = dispatch => ({
   getJobs: dispatch.jobs.getJobs,
   getUsersWithTransactions: dispatch.users.getUsersWithTransactions,
+  updatePaymentsList: dispatch.payments.updatePaymentsList,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Payments);
