@@ -8,8 +8,11 @@ import './PayNow.css';
 import { Icon, Progress, Popover } from 'antd';
 
 const generateErrorItems = list => {
-  list = new Array(list);
-  return list.map((item, index) => {
+  const arr = [];
+  list.forEach(item => {
+    arr.push(item);
+  });
+  return arr.map((item, index) => {
     return (
       <p key={item} className="Pay-now__error">
         {index + 1}. {item}
