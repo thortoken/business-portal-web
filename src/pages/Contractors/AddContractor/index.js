@@ -63,9 +63,10 @@ export class AddContractor extends React.Component {
     if (!createdContractor) {
       const data = {
         ...profile,
+        postalCode: String(profile.postalCode),
         dateOfBirth: transformDateToMoment(profile.dateOfBirth).format('YYYY-MM-DD'),
       };
-      createdContractor = await createUser({ tenantProfile: data });
+      createdContractor = await createUser({ profile: data });
       this.setState({ createdContractor });
     }
   };
@@ -108,6 +109,8 @@ export class AddContractor extends React.Component {
       const { createdContractor } = this.state;
       onSubmit(createdContractor);
     }
+    
+    this.props.history.goBack();
   };
 }
 
