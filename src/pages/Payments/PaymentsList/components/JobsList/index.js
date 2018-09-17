@@ -92,7 +92,7 @@ export class JobsList extends Component {
           onChangeVisibility={this.onChangeVisibility}
         />
         <Table
-          className="JobsList"
+          className="JobsList JobsList--hidden-empty-state"
           showHeader={false}
           dataSource={Object.keys(summarizedJobs).map((jobsGroup, index) => {
             return { ...summarizedJobs[jobsGroup], key: index };
