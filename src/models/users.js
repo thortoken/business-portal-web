@@ -61,7 +61,6 @@ const users = {
         throw err;
       }
     },
-
     async getCurrentUserStatistics({
       id,
       currentStartDate,

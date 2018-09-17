@@ -18,9 +18,9 @@ const SummaryBox = ({ title, summary, period }) => {
           className={classnames('Summary-value', {
             [`Summary-${period}`]: true,
           })}>
-          {formatUsd(summary.value)}
+          {summary.total ? formatUsd(summary.total) : ''}
         </div>
-        <span>{summary.contractorsCount} Contractors</span>
+        <span>{summary.users} Contractors</span>
         <span>
           {monthAndDayTimeFormatter(summary.startDate)} -{' '}
           {monthAndDayTimeFormatter(summary.endDate)}
@@ -42,26 +42,26 @@ const Summary = ({ previous, current }) => {
 SummaryBox.propTypes = {
   title: PropTypes.string.isRequired,
   summary: PropTypes.shape({
-    value: PropTypes.number.isRequired,
-    contractorsCount: PropTypes.number.isRequired,
-    startDate: PropTypes.object.isRequired,
-    endDate: PropTypes.object.isRequired,
+    total: PropTypes.string.isRequired,
+    users: PropTypes.string.isRequired,
+    startDate: PropTypes.string.isRequired,
+    endDate: PropTypes.string.isRequired,
   }),
   period: PropTypes.oneOf(['prev', 'current']),
 };
 
 Summary.propTypes = {
   previous: PropTypes.shape({
-    value: PropTypes.number.isRequired,
-    contractorsCount: PropTypes.number.isRequired,
-    startDate: PropTypes.object.isRequired,
-    endDate: PropTypes.object.isRequired,
+    total: PropTypes.string.isRequired,
+    users: PropTypes.string.isRequired,
+    startDate: PropTypes.string.isRequired,
+    endDate: PropTypes.string.isRequired,
   }).isRequired,
   current: PropTypes.shape({
-    value: PropTypes.number.isRequired,
-    contractorsCount: PropTypes.number.isRequired,
-    startDate: PropTypes.object.isRequired,
-    endDate: PropTypes.object.isRequired,
+    total: PropTypes.string.isRequired,
+    users: PropTypes.string.isRequired,
+    startDate: PropTypes.string.isRequired,
+    endDate: PropTypes.string.isRequired,
   }).isRequired,
 };
 export default Summary;
