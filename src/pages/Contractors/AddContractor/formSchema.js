@@ -99,6 +99,16 @@ const formFields = {
       format: dateFormat,
     },
   },
+  ssn: {
+    label: 'Last 4 digits of SSN',
+    validator: Yup.string()
+      .ensure()
+      .required()
+      .matches(/\d{4}/, 'Please input last 4 digits of your SSN'),
+    input: {
+      maxLength: 4,
+    },
+  },
   routingNumber: {
     label: 'Bank routing number',
     validator: Yup.string()
@@ -117,22 +127,10 @@ const formFields = {
       .required()
       .min(4),
   },
-  ssn: {
-    label: 'Last 4 digits of SSN',
-    validator: Yup.string()
-      .ensure()
-      .required()
-      .matches(/\d{4}/, 'Please input last 4 digits of your SSN'),
-    input: {
-      maxLength: 4,
-    },
-  },
 };
 
 const validationSchema = formUtils.formik.makeValidationSchema(formFields);
-const initialValues = formUtils.formik.makeEmptyInitialValues(formFields, {
-  dateOfBirth: moment().format(dateFormat),
-});
+const initialValues = formUtils.formik.makeEmptyInitialValues(formFields);
 
 const transformDateToMoment = dateAsMoment(dateFormat);
 
