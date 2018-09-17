@@ -229,10 +229,14 @@ class ContractorDetails extends React.Component {
     history.push(`${match.url}/edit`);
   };
 
-  handleTableChange = pagination => {
-    const { periodRange } = this.state;
+  handleTableChange = pag => {
+    const { periodRange, pagination } = this.state;
     const { match, getTransactionsForContractor } = this.props;
-    this.setState({ pagination });
+    if (pagination.pageSize !== pag.pageSize) {
+      this.setState({ pagination: { ...pag, current: 1 } });
+    } else {
+      this.setState({ pagination: pag });
+    }
     getTransactionsForContractor({
       userId: match.params.id,
       page: pagination.current,
