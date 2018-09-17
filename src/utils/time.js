@@ -102,6 +102,8 @@ export const formatDate = date => moment.unix(date.seconds).format('MM/DD');
 
 export const renderDate = date => new Date(date).toLocaleDateString();
 
+export const renderShortDate = date => moment(date).format('MM/DD');
+
 export const dateAsMoment = defaultFormat => (date, format = defaultFormat) => {
   if (typeof date === 'string') {
     const tryDate = moment(date, format);

@@ -11,7 +11,7 @@ import Profile from './components/Profile';
 import { AddTransactionModal } from '../../Payments/components/AddTransactionModal';
 
 import { formatUsd } from '~utils/number';
-import { movePeriod, renderDate } from '~utils/time';
+import { movePeriod, renderShortDate } from '~utils/time';
 import makeDefaultPagination from '~utils/pagination';
 
 import './ContractorDetails.css';
@@ -157,36 +157,35 @@ class ContractorDetails extends React.Component {
               </Button>
             </Filters>
             <Spin size="large" spinning={loadingTransactions}>
-              <div className="ContractorDetails-table">
-                <Table
-                  dataSource={localTransactions}
-                  pagination={pagination}
-                  onChange={this.handleTableChange}>
-                  <Column
-                    align="center"
-                    dataIndex="createdAt"
-                    render={renderDate}
-                    title="Date"
-                    width="15%"
-                  />
-                  <Column
-                    align="center"
-                    dataIndex="job"
-                    render={this.renderJobName}
-                    width="30%"
-                    title="Service"
-                  />
-                  <Column align="center" dataIndex="location" title="Location" width="20%" />
-                  <Column
-                    align="center"
-                    dataIndex="value"
-                    render={formatUsd}
-                    title="Pay Amt."
-                    width="20%"
-                  />
-                  <Column align="center" dataIndex="status" title="Status" width="15%" />
-                </Table>
-              </div>
+              <Table
+                className="ContractorDetails-table"
+                dataSource={localTransactions}
+                pagination={pagination}
+                onChange={this.handleTableChange}>
+                <Column
+                  align="center"
+                  dataIndex="createdAt"
+                  render={renderShortDate}
+                  title="Date"
+                  width="15%"
+                />
+                <Column
+                  align="center"
+                  dataIndex="job"
+                  render={this.renderJobName}
+                  width="30%"
+                  title="Service"
+                />
+                <Column align="center" dataIndex="location" title="Location" width="20%" />
+                <Column
+                  align="center"
+                  dataIndex="value"
+                  render={formatUsd}
+                  title="Pay Amt."
+                  width="20%"
+                />
+                <Column align="center" dataIndex="status" title="Status" width="15%" />
+              </Table>
             </Spin>
           </div>
         </Spin>
@@ -199,7 +198,7 @@ class ContractorDetails extends React.Component {
   };
 
   handleDelete = async () => {
-    const { match, currentUser, deleteUser, history } = this.props;
+    const { currentUser, deleteUser, history } = this.props;
     const { firstName, lastName } = currentUser.tenantProfile;
     Modal.confirm({
       title: `Are you sure you want to delete ${firstName} ${lastName}?`,
@@ -211,7 +210,6 @@ class ContractorDetails extends React.Component {
         history.goBack();
       },
     });
-    console.log('delete contractor', match.params.id);
   };
 
   handleCustom = () => {
