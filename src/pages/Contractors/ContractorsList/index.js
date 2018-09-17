@@ -59,9 +59,14 @@ class ContractorsList extends React.Component {
     return null;
   }
 
-  handleTableChange = pagination => {
+  handleTableChange = pag => {
     const { getUsers } = this.props;
-    this.setState({ pagination });
+    const { pagination } = this.state;
+    if (pagination.pageSize !== pag.pageSize) {
+      this.setState({ pagination: { ...pag, current: 1 } });
+    } else {
+      this.setState({ pagination: pag });
+    }
     getUsers({
       page: pagination.current,
       limit: pagination.pageSize,
