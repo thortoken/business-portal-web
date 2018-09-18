@@ -27,7 +27,7 @@ class ActionBar extends React.Component {
       <div>
         <div className="ActionBar">
           <Button type="primary" icon="plus" size="default" onClick={this.handleAdd}>
-            Add contractors
+            Add contractor
           </Button>
           <RefreshButton handleRefresh={handleRefresh} isLoading={isLoading} />
         </div>
