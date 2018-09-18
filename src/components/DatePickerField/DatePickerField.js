@@ -8,6 +8,7 @@ class DatePickerField extends React.Component {
     format: PropTypes.string,
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
+    showToday: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -20,15 +21,16 @@ class DatePickerField extends React.Component {
   };
 
   render() {
-    const { format, value, ...inputProps } = this.props;
+    const { format, value, showToday, ...inputProps } = this.props;
 
     return (
       <DatePicker
         {...inputProps}
         format={format}
         onChange={this.handleChange}
-        value={value ? moment(value, format) : moment()}
+        value={value ? moment(value, format) : undefined}
         onBlur={undefined}
+        showToday={showToday ? showToday : false}
       />
     );
   }

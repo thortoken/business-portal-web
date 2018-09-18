@@ -109,7 +109,7 @@ export class AddContractor extends React.Component {
       const { createdContractor } = this.state;
       onSubmit(createdContractor);
     }
-    
+
     this.props.history.goBack();
   };
 }
