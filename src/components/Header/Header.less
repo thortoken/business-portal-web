@@ -6,6 +6,7 @@
   justify-content: stretch;
   margin: 0 0 1.8rem 0;
   flex-wrap: wrap;
+  width: auto;
 
   .Actions {
     margin: 0;
@@ -14,9 +15,13 @@
 }
 
 .Header-title {
+  width: 100%;
   flex-grow: 0;
   font-weight: 500;
-  margin: 0 2rem 0 0;
+  margin: 0;
+  &__refresh {
+    float: right;
+  }
 }
 
 .Header-description {

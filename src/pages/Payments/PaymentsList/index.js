@@ -85,6 +85,12 @@ class Payments extends React.Component {
     paymentsListPagination: null,
   };
 
+  constructor(props) {
+    super(props);
+
+    this.handleRefresh = this.handleRefresh.bind(this);
+  }
+
   componentDidMount() {
     const { pagination } = this.state;
     this.props.getJobs();
@@ -180,6 +186,27 @@ class Payments extends React.Component {
     return null;
   }
 
+  handleRefresh() {
+    const { getUsersWithTransactions, getTransactionsSummary } = this.props;
+    const { pagination } = this.state;
+    getTransactionsSummary({
+      status: 'new',
+      ...getCurrentTwoWeeksPeriod(),
+    });
+    getUsersWithTransactions({
+      status: 'new',
+      ...getCurrentTwoWeeksPeriod(),
+      page: pagination.current,
+      limit: pagination.pageSize,
+    });
+    getUsersWithTransactions({
+      status: 'done',
+      ...getPreviousTwoWeeksPeriod(),
+      page: pagination.current,
+      limit: pagination.pageSize,
+    });
+  }
+
   handleTableChange = pag => {
     const { getUsersWithTransactions, getTransactionsSummary } = this.props;
     const { pagination } = this.state;
@@ -218,11 +245,17 @@ class Payments extends React.Component {
       pagination,
     } = this.state;
 
-    const { isLoading } = this.props;
+    const { isLoading, loadingTransactions } = this.props;
 
     return (
       <div>
-        <Header title="Payments" size="medium" />
+        <Header
+          title="Payments"
+          size="medium"
+          refresh
+          refreshLoading={loadingTransactions}
+          handleRefresh={this.handleRefresh}
+        />
 
         <Spin spinning={isLoading}>
           <Summary previous={previous} current={current} />
@@ -236,7 +269,7 @@ class Payments extends React.Component {
           <Table
             dataSource={calculatedCurrentTransactions}
             className="PaymentsList-table"
-            loading={isLoading}
+            loading={loadingTransactions}
             pagination={pagination}
             onChange={this.handleTableChange}
             rowKey={record => record.id}
@@ -429,6 +462,7 @@ const mapStateToProps = state => ({
   selectedTransactionsIds: state.payments.selectedTransactionsIds,
   selectedContractorsIds: state.payments.selectedContractorsIds,
   selectedTransactionsSummaryValue: state.payments.selectedTransactionsSummaryValue,
+  loadingTransactions: state.loading.effects.users.getUsersWithTransactions,
 });
 
 const mapDispatchToProps = dispatch => ({
