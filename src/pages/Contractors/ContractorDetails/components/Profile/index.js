@@ -1,12 +1,19 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
 import Activity from '../Activity';
 
 import { renderDate } from '~utils/time';
 
 import './Profile.css';
+import RefreshButton from '~components/RefreshButton';
 
 export default class Profile extends React.PureComponent {
+  static propTypes = {
+    handleRefresh: PropTypes.func,
+    isLoading: PropTypes.bool,
+  };
+
   render() {
     const {
       firstName,
@@ -20,6 +27,8 @@ export default class Profile extends React.PureComponent {
       postalCode,
       phone,
       children,
+      handleRefresh,
+      isLoading,
     } = this.props;
 
     return (
@@ -33,6 +42,7 @@ export default class Profile extends React.PureComponent {
           </div>
           <div className="Profile-activity">
             <Activity lastActivityDate={updatedAt} />
+            <RefreshButton handleRefresh={handleRefresh} isLoading={isLoading} />
           </div>
         </div>
         <div className="Profile-box-informations">
