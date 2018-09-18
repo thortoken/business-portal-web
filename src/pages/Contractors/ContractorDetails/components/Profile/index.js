@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Activity from '../Activity';
 
 import { renderDate } from '~utils/time';
+import { formatPhone } from '~utils/number';
 
 import './Profile.css';
 import RefreshButton from '~components/RefreshButton';
@@ -60,7 +61,7 @@ export default class Profile extends React.PureComponent {
           </div>
           <div className="Profile-phone">
             <div className="Profile-label">Phone</div>
-            <div className="Profile-value">{phone}</div>
+            <div className="Profile-value">{formatPhone(phone)}</div>
           </div>
           <div className="Profile-options">{children}</div>
         </div>
