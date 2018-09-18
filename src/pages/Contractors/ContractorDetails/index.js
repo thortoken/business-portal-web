@@ -61,12 +61,25 @@ class ContractorDetails extends React.Component {
     super(props);
 
     this.generateMenuItems = generateMenuItems;
+    this.handleRefresh = this.handleRefresh.bind(this);
   }
 
   componentDidMount() {
     const { match, getUser } = this.props;
 
     getUser(match.params.id);
+  }
+
+  handleRefresh() {
+    const { getTransactionsForContractor, match } = this.props;
+    const { pagination, periodRange } = this.state;
+
+    getTransactionsForContractor({
+      userId: match.params.id,
+      page: pagination.current,
+      limit: pagination.pageSize,
+      ...periodRange,
+    });
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -135,6 +148,8 @@ class ContractorDetails extends React.Component {
 
             {currentUser && (
               <Profile
+                handleRefresh={this.handleRefresh}
+                isLoading={loadingTransactions}
                 {...currentUser.tenantProfile}
                 createdAt={currentUser.createdAt}
                 updatedAt={currentUser.updatedAt}>

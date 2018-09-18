@@ -33,6 +33,12 @@ class ContractorsList extends React.Component {
     userListPagination: null,
   };
 
+  constructor(props) {
+    super(props);
+
+    this.handleRefresh = this.handleRefresh.bind(this);
+  }
+
   componentDidMount() {
     const { pagination } = this.state;
     this.props.getUsers({
@@ -78,12 +84,22 @@ class ContractorsList extends React.Component {
     this.props.history.push(`/contractors/${user.id}`);
   };
 
+  handleRefresh() {
+    const { getUsers } = this.props;
+    const { pagination } = this.state;
+    getUsers({
+      page: pagination.current,
+      limit: pagination.pageSize,
+      ...getCurrentTwoWeeksPeriod(),
+    });
+  }
+
   render() {
     const { contractorsData, pagination } = this.state;
     const { isLoading } = this.props;
     return (
       <div className="ContractorsList">
-        <ActionBar />
+        <ActionBar handleRefresh={this.handleRefresh} isLoading={isLoading} />
         <Box>
           <Table
             dataSource={contractorsData}
