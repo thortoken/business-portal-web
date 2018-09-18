@@ -10,3 +10,21 @@ export const phone = value =>
     }
     return `${g1}`;
   });
+
+export const price = value => {
+  if (/^\d.*/.test(value)) {
+    // check if first chracter is a digit
+    value = value.replace(/[^0-9.,]+/g, ''); // don't allow non digit or ',', '.'
+
+    value = value.toString();
+    if (value.includes(',')) {
+      value = value.replace(',', '.'); // replace ',' => '.'
+    }
+    if (value.split('.').length - 1 > 1) {
+      value = value.replace(/.([^.]*)$/, '$1'); // allow only one '.'
+      return value && Number(value).toFixed(2);
+    } else {
+      return value;
+    }
+  }
+};

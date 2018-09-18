@@ -1,12 +1,15 @@
 /* eslint-disable no-template-curly-in-string */
 import * as Yup from 'yup';
 
+import formUtils from '~utils/forms';
+
 import { makeValidationSchema, makeEmptyInitialValues } from '~utils/forms/formik';
 
 const formFields = {
   name: {
     label: 'Name',
     validator: Yup.string()
+      .trim()
       .ensure()
       .required(),
   },
@@ -15,6 +18,11 @@ const formFields = {
     validator: Yup.number()
       .positive()
       .required(),
+    input: {
+      placeholder: '123.45',
+      formatter: formUtils.formatters.price,
+      parser: formUtils.parsers.numberAndDecimalsOnly,
+    },
   },
 };
 
