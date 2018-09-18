@@ -27,6 +27,7 @@
     "firebase": "^4.9.0",
     "formik": "^1.0.3",
     "history": "^4.7.2",
+    "libphonenumber-js": "^1.4.6",
     "lodash": "^4.17.10",
     "ls": "^0.2.1",
     "moment": "^2.22.2",
