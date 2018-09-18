@@ -247,15 +247,15 @@ class ContractorDetails extends React.Component {
   handleTableChange = pag => {
     const { periodRange, pagination } = this.state;
     const { match, getTransactionsForContractor } = this.props;
+    let curr = pag.current;
     if (pagination.pageSize !== pag.pageSize) {
-      this.setState({ pagination: { ...pag, current: 1 } });
-    } else {
-      this.setState({ pagination: pag });
+      curr = 1;
     }
+    this.setState({ pagination: { ...pag, current: curr } });
     getTransactionsForContractor({
       userId: match.params.id,
-      page: pagination.current,
-      limit: pagination.pageSize,
+      page: curr,
+      limit: pag.pageSize,
       ...periodRange,
     });
   };
