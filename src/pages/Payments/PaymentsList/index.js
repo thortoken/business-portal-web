@@ -39,14 +39,13 @@ const calculateTransactions = usersTransactions => {
     usersTransactions.map(user => {
       return {
         ...user,
+        rank: parseInt(user.rank),
         numOfJobs: user.transactions.length,
         transactionsSum: sumTransactions(user.transactions),
       };
     }),
-    'transactionsSum'
-  )
-    .reverse()
-    .map((contractor, index) => ({ ...contractor, key: index + 1 }));
+    'rank'
+  );
 };
 
 class Payments extends React.Component {
@@ -182,14 +181,19 @@ class Payments extends React.Component {
   }
 
   handleTableChange = pag => {
-    const { getUsersWithTransactions } = this.props;
+    const { getUsersWithTransactions, getTransactionsSummary } = this.props;
     const { pagination } = this.state;
     let curr = pag.current;
     if (pagination.pageSize !== pag.pageSize) {
       curr = 1;
     }
     this.setState({ pagination: { ...pag, current: curr } });
+    getTransactionsSummary({
+      status: 'new',
+      ...getCurrentTwoWeeksPeriod(),
+    });
     getUsersWithTransactions({
+      status: 'new',
       ...getCurrentTwoWeeksPeriod(),
       page: curr,
       limit: pag.pageSize,
@@ -239,7 +243,7 @@ class Payments extends React.Component {
             expandedRowRender={record => <div>{this.renderJobsList(record)}</div>}>
             <Column
               align="center"
-              dataIndex="key"
+              dataIndex="rank"
               title="Rank"
               width="10%"
               className="PaymentsList-rank-selector"
