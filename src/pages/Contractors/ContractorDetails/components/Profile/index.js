@@ -1,6 +1,7 @@
 import React from 'react';
 
 import PropTypes from 'prop-types';
+import { Icon, Popover } from 'antd';
 import Activity from '../Activity';
 
 import { renderDate } from '~utils/time';
@@ -13,6 +14,7 @@ export default class Profile extends React.PureComponent {
   static propTypes = {
     handleRefresh: PropTypes.func,
     isLoading: PropTypes.bool,
+    openAddFundingSourceModal: PropTypes.func,
   };
 
   render() {
@@ -31,13 +33,18 @@ export default class Profile extends React.PureComponent {
       handleRefresh,
       isLoading,
     } = this.props;
-
+    const warningsList = this.verifyUserProfile();
     return (
       <div className="Profile">
         <div className="Profile-box-informations">
           <div className="Profile-basic-data">
             <div className="Profile-name">
               {firstName} {lastName}
+              {warningsList.length > 0 && (
+                <Popover content={this.renderPopOver(warningsList)} title="Warning">
+                  <Icon type="exclamation-circle" theme="twoTone" className="Profile-icon" />
+                </Popover>
+              )}
             </div>
             <div className="Profile-since">Contractor since {renderDate(createdAt)}</div>
           </div>
@@ -68,4 +75,25 @@ export default class Profile extends React.PureComponent {
       </div>
     );
   }
+
+  verifyUserProfile = () => {
+    const { accountNumber, accountRouting } = this.props;
+    const warnings = [];
+    if (!(accountNumber && accountRouting)) {
+      const { openAddFundingSourceModal } = this.props;
+      warnings.push({
+        key: 'Funding Source',
+        content: (
+          <p className="Profile-warning">
+            1. Add funding source for this user <a onClick={openAddFundingSourceModal}>here</a>.
+          </p>
+        ),
+      });
+    }
+    return warnings;
+  };
+
+  renderPopOver = warnings => {
+    return <div>{warnings.map(warning => <div key={warning.key}>{warning.content}</div>)}</div>;
+  };
 }

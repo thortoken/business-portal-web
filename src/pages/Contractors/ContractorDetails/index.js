@@ -20,7 +20,7 @@ import { AddFundingSourceModal } from './components/AddFundingSourceModal';
 const { Column } = Table;
 
 const generateMenuItems = list => {
-  return list.map(element => {
+  return list.filter(e => !e.isHidden).map(element => {
     return {
       key: element.key,
       value: (
@@ -119,7 +119,11 @@ class ContractorDetails extends React.Component {
       createFundingSource,
     } = this.props;
     const { pagination } = this.state;
-
+    const hasFundingSource =
+      currentUser &&
+      currentUser.tenantProfile &&
+      currentUser.tenantProfile.accountNumber &&
+      currentUser.tenantProfile.accountRouting;
     const localTransactions = contractorTransactions.items.map((item, key) => {
       return { ...item, key };
     });
@@ -136,11 +140,13 @@ class ContractorDetails extends React.Component {
         label: 'Delete Contractor',
       },
       {
+        isHidden: hasFundingSource,
         key: 'addFundingSource',
         action: this.openAddFundingSourceModal,
         label: 'Add funding source',
       },
       {
+        isHidden: !hasFundingSource,
         key: 'deleteFundingSource',
         action: this.handleDeleteFundingSource,
         label: 'Delete funding source',
@@ -171,6 +177,7 @@ class ContractorDetails extends React.Component {
                 isLoading={loadingTransactions}
                 {...currentUser.tenantProfile}
                 createdAt={currentUser.createdAt}
+                openAddFundingSourceModal={this.openAddFundingSourceModal}
                 updatedAt={currentUser.updatedAt}>
                 <Dropdown
                   className="ContractorDetails-options-btn"
@@ -251,15 +258,16 @@ class ContractorDetails extends React.Component {
   };
 
   handleDeleteFundingSource = async () => {
-    const { currentUser, deleteFundingSource } = this.props;
+    const { currentUser, deleteFundingSource, getUser, match } = this.props;
     const { firstName, lastName } = currentUser.tenantProfile;
     Modal.confirm({
       title: `Are you sure you want to delete funding source for ${firstName} ${lastName}?`,
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
-      onOk() {
-        deleteFundingSource(currentUser.id);
+      onOk: async () => {
+        await deleteFundingSource(currentUser.id);
+        return getUser(match.params.id);
       },
     });
   };
@@ -280,7 +288,11 @@ class ContractorDetails extends React.Component {
     this.setState({ isAddTransactionModalVisible });
   };
 
-  onChangeVisibilityFundingSourceModal = isAddFundingSourcelVisible => {
+  onChangeVisibilityFundingSourceModal = (isAddFundingSourcelVisible, refreshData = false) => {
+    if (refreshData) {
+      const { match, getUser } = this.props;
+      getUser(match.params.id);
+    }
     this.setState({ isAddFundingSourcelVisible });
   };
 

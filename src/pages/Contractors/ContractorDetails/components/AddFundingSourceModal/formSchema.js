@@ -4,16 +4,6 @@ import * as Yup from 'yup';
 import { makeValidationSchema, makeEmptyInitialValues } from '~utils/forms/formik';
 
 const formFields = {
-  ssn: {
-    label: 'Last 4 digits of SSN',
-    validator: Yup.string()
-      .ensure()
-      .required()
-      .matches(/\d{4}/, 'Please input last 4 digits of your SSN'),
-    input: {
-      maxLength: 4,
-    },
-  },
   routingNumber: {
     label: 'Bank routing number',
     validator: Yup.string()
