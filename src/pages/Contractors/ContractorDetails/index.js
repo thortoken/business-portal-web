@@ -15,6 +15,7 @@ import { movePeriod, renderShortDate } from '~utils/time';
 import makeDefaultPagination from '~utils/pagination';
 
 import './ContractorDetails.css';
+import { AddFundingSourceModal } from './components/AddFundingSourceModal';
 
 const { Column } = Table;
 
@@ -40,7 +41,8 @@ class ContractorDetails extends React.Component {
   };
 
   state = {
-    isModalVisible: false,
+    isAddTransactionModalVisible: false,
+    isAddFundingSourceModalVisible: false,
     currentUser: {},
     periodRange: null,
     pagination: makeDefaultPagination(),
@@ -114,6 +116,7 @@ class ContractorDetails extends React.Component {
       contractorTransactions,
       loadingTransactions,
       createTransaction,
+      createFundingSource,
     } = this.props;
     const { pagination } = this.state;
 
@@ -132,6 +135,16 @@ class ContractorDetails extends React.Component {
         action: this.handleDelete,
         label: 'Delete Contractor',
       },
+      {
+        key: 'addFundingSource',
+        action: this.openAddFundingSourceModal,
+        label: 'Add funding source',
+      },
+      {
+        key: 'deleteFundingSource',
+        action: this.handleDeleteFundingSource,
+        label: 'Delete funding source',
+      },
     ];
 
     return (
@@ -139,8 +152,14 @@ class ContractorDetails extends React.Component {
         <AddTransactionModal
           userId={match.params.id}
           createTransaction={createTransaction}
-          isModalVisible={this.state.isModalVisible}
-          onChangeVisibility={this.onChangeVisibility}
+          isModalVisible={this.state.isAddTransactionModalVisible}
+          onChangeVisibility={this.onChangeVisibilityTransactionModal}
+        />
+        <AddFundingSourceModal
+          createFundingSource={createFundingSource}
+          userId={match.params.id}
+          isModalVisible={this.state.isAddFundingSourcelVisible}
+          onChangeVisibility={this.onChangeVisibilityFundingSourceModal}
         />
         <Spin size="large" spinning={loadingContractor}>
           <div className="ContractorDetails">
@@ -167,7 +186,11 @@ class ContractorDetails extends React.Component {
               <ContractorSummary {...currentUserStatistics} />
             </Spin>
             <Filters onPeriodChange={this.onPeriodChange}>
-              <Button type="primary" icon="plus" size="default" onClick={this.handleCustom}>
+              <Button
+                type="primary"
+                icon="plus"
+                size="default"
+                onClick={this.openAddTransactionModal}>
                 Add custom transaction
               </Button>
             </Filters>
@@ -227,16 +250,38 @@ class ContractorDetails extends React.Component {
     });
   };
 
-  handleCustom = () => {
-    this.setState({ isModalVisible: true });
+  handleDeleteFundingSource = async () => {
+    const { currentUser, deleteFundingSource } = this.props;
+    const { firstName, lastName } = currentUser.tenantProfile;
+    Modal.confirm({
+      title: `Are you sure you want to delete funding source for ${firstName} ${lastName}?`,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk() {
+        deleteFundingSource(currentUser.id);
+      },
+    });
   };
 
-  onChangeVisibility = (isModalVisible, refreshData = false) => {
+  openAddTransactionModal = () => {
+    this.setState({ isAddTransactionModalVisible: true });
+  };
+
+  openAddFundingSourceModal = () => {
+    this.setState({ isAddFundingSourcelVisible: true });
+  };
+
+  onChangeVisibilityTransactionModal = (isAddTransactionModalVisible, refreshData = false) => {
     if (refreshData) {
       this.handleTableChange({ ...makeDefaultPagination() });
     }
 
-    this.setState({ isModalVisible });
+    this.setState({ isAddTransactionModalVisible });
+  };
+
+  onChangeVisibilityFundingSourceModal = isAddFundingSourcelVisible => {
+    this.setState({ isAddFundingSourcelVisible });
   };
 
   handleEdit = () => {
@@ -301,13 +346,21 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = ({
   transactions: { getTransactionsForContractor, createTransaction },
-  users: { getUser, deleteUser, getCurrentUserStatistics },
+  users: {
+    getUser,
+    deleteUser,
+    getCurrentUserStatistics,
+    createFundingSource,
+    deleteFundingSource,
+  },
 }) => ({
   createTransaction,
   getTransactionsForContractor,
   getUser,
   deleteUser,
   getCurrentUserStatistics,
+  createFundingSource,
+  deleteFundingSource,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContractorDetails);

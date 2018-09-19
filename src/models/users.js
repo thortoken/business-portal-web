@@ -18,6 +18,14 @@ const users = {
         throw err;
       }
     },
+    async deleteFundingSource(id) {
+      try {
+        const response = await Http.delete(`/users/${id}/fundingSource`);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
     async updateTenantProfile({ id, tenantProfile }) {
       try {
         const response = await Http.patch(`/users/${id}/profile`, { profile: tenantProfile });
