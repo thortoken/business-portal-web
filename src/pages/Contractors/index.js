@@ -5,6 +5,7 @@ import AddContractor from './AddContractor';
 import ContractorDetails from './ContractorDetails';
 import ContractorsList from './ContractorsList';
 import EditContractor from './EditContractor';
+import ContractorTransactions from './ContractorTransactions';
 
 import { withRouteModal } from '~components/Modal';
 
@@ -25,6 +26,11 @@ export class RootContractorsPage extends React.Component {
           component={withRouteModal({ component: EditContractor, title: 'Edit Contractor' })}
         />
         <Route exact path={`${match.path}/:id`} component={ContractorDetails} />
+        <Route
+          exact
+          path={`${match.path}/:id/transactions/:jobId`}
+          component={ContractorTransactions}
+        />
         <Route path={`${match.path}`} component={ContractorsList} />
       </Switch>
     );
