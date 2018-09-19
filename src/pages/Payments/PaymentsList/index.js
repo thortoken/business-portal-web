@@ -21,7 +21,8 @@ const { Column } = Table;
 
 class Payments extends React.Component {
   static propTypes = {
-    isLoading: PropTypes.bool,
+    isSummaryLoading: PropTypes.bool,
+    isJobsLoading: PropTypes.bool,
     paymentsListPagination: PropTypes.object,
     usersJobs: PropTypes.array,
     selectedTransactionsSummaryValue: PropTypes.number,
@@ -73,99 +74,74 @@ class Payments extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
+    let localState = {};
     if (
       nextProps.transactionsSummary &&
       (nextProps.transactionsSummary.previous !== prevState.previous ||
         nextProps.transactionsSummary.current !== prevState.current)
     ) {
       const { previous, current } = nextProps.transactionsSummary;
-      return {
-        previous,
-        current,
-      };
+      localState['previous'] = { ...previous };
+      localState['current'] = { ...current };
     }
 
     if (nextProps.usersJobs !== prevState.usersJobs) {
-      return {
-        usersJobs: nextProps.usersJobs,
-      };
+      localState['usersJobs'] = nextProps.usersJobs;
     }
 
     if (nextProps.selectedContractorsIds.size !== prevState.selectedContractorsIds.size) {
-      return {
-        selectedContractorsIds: nextProps.selectedContractorsIds,
-      };
+      localState['selectedContractorsIds'] = nextProps.selectedContractorsIds;
     }
 
     if (nextProps.selectedTransactionsIds.size !== prevState.selectedTransactionsIds.size) {
-      return {
-        selectedTransactionsIds: nextProps.selectedTransactionsIds,
-      };
+      localState['selectedTransactionsIds'] = nextProps.selectedTransactionsIds;
     }
 
     if (nextProps.selectedTransactionsSummaryValue !== prevState.selectedTransactionsSummaryValue) {
-      return {
-        selectedTransactionsSummaryValue: nextProps.selectedTransactionsSummaryValue,
-      };
+      localState['selectedTransactionsSummaryValue'] = nextProps.selectedTransactionsSummaryValue;
     }
 
     if (nextProps.paymentsListPagination !== prevState.paymentsListPagination) {
       let pag = prevState.pagination;
-      return {
-        paymentsListPagination: nextProps.paymentsListPagination,
-        pagination: { ...pag, total: nextProps.paymentsListPagination.total },
-      };
+      localState['paymentsListPagination'] = nextProps.paymentsListPagination;
+      localState['pagination'] = { ...pag, total: nextProps.paymentsListPagination.total };
     }
-    return null;
+    return Object.keys(localState).length ? localState : null;
   }
 
   handleRefresh() {
-    console.log('refresh');
-    // const { getUsersWithTransactions, getTransactionsSummary } = this.props;
-    // const { pagination } = this.state;
-    // getTransactionsSummary({
-    //   status: 'new',
-    //   ...getCurrentTwoWeeksPeriod(),
-    // });
-    // getUsersWithTransactions({
-    //   status: 'new',
-    //   ...getCurrentTwoWeeksPeriod(),
-    //   page: pagination.current,
-    //   limit: pagination.pageSize,
-    // });
-    // getUsersWithTransactions({
-    //   status: 'done',
-    //   ...getPreviousTwoWeeksPeriod(),
-    //   page: pagination.current,
-    //   limit: pagination.pageSize,
-    // });
+    const { getUsersJobs, getTransactionsSummary } = this.props;
+    const { pagination } = this.state;
+    getTransactionsSummary({
+      status: 'new',
+      ...getCurrentTwoWeeksPeriod(),
+    });
+    getUsersJobs({
+      status: 'new',
+      ...getCurrentTwoWeeksPeriod(),
+      page: pagination.current,
+      limit: pagination.pageSize,
+    });
   }
 
   handleTableChange = pag => {
-    console.log('pag');
-    // const { getUsersWithTransactions, getTransactionsSummary } = this.props;
-    // const { pagination } = this.state;
-    // let curr = pag.current;
-    // if (pagination.pageSize !== pag.pageSize) {
-    //   curr = 1;
-    // }
-    // this.setState({ pagination: { ...pag, current: curr } });
-    // getTransactionsSummary({
-    //   status: 'new',
-    //   ...getCurrentTwoWeeksPeriod(),
-    // });
-    // getUsersWithTransactions({
-    //   status: 'new',
-    //   ...getCurrentTwoWeeksPeriod(),
-    //   page: curr,
-    //   limit: pag.pageSize,
-    // });
-    // getUsersWithTransactions({
-    //   status: 'done',
-    //   ...getPreviousTwoWeeksPeriod(),
-    //   page: curr,
-    //   limit: pag.pageSize,
-    // });
+    const { getUsersJobs, getTransactionsSummary } = this.props;
+    const { pagination } = this.state;
+    let curr = pag.current;
+    if (pagination.pageSize !== pag.pageSize) {
+      curr = 1;
+    }
+    this.setState({ pagination: { ...pag, current: curr } });
+    getTransactionsSummary({
+      status: 'new',
+      ...getCurrentTwoWeeksPeriod(),
+    });
+    getUsersJobs({
+      status: 'new',
+      ...getCurrentTwoWeeksPeriod(),
+      page: curr,
+      limit: pag.pageSize,
+    });
   };
 
   render() {
@@ -180,7 +156,7 @@ class Payments extends React.Component {
       pagination,
     } = this.state;
 
-    const { isLoading, loadingTransactions } = this.props;
+    const { isSummaryLoading, isJobsLoading } = this.props;
 
     return (
       <div>
@@ -188,11 +164,11 @@ class Payments extends React.Component {
           title="Payments"
           size="medium"
           refresh
-          refreshLoading={loadingTransactions}
+          refreshLoading={isJobsLoading}
           handleRefresh={this.handleRefresh}
         />
 
-        <Spin spinning={isLoading}>
+        <Spin spinning={isSummaryLoading}>
           <Summary previous={previous} current={current} />
         </Spin>
 
@@ -204,7 +180,7 @@ class Payments extends React.Component {
           <Table
             dataSource={usersJobs}
             className="PaymentsList-table"
-            loading={loadingTransactions}
+            loading={isJobsLoading}
             pagination={pagination}
             onChange={this.handleTableChange}
             rowKey={record => record.id}
@@ -279,19 +255,17 @@ class Payments extends React.Component {
 
     if (selectedContractorsIds.has(contractorId)) {
       selectedContractorsIds.delete(contractorId);
+      selectedTransactionsSummaryValue -= user.total;
     } else {
       selectedContractorsIds.add(contractorId);
+      selectedTransactionsSummaryValue += user.total;
     }
 
     user.transactionsIds.forEach(transaction => {
-      const transactionId = transaction.id;
-
       if (selectedTransactionsIds.has(transaction)) {
         selectedTransactionsIds.delete(transaction);
-        selectedTransactionsSummaryValue -= user.total;
       } else {
-        selectedTransactionsIds.add(transactionId);
-        selectedTransactionsSummaryValue += user.total;
+        selectedTransactionsIds.add(transaction);
       }
     });
 
@@ -316,29 +290,28 @@ class Payments extends React.Component {
   };
 
   onSelectAll = e => {
-    console.log('select all');
-    // const { usersPendingTransactions, updatePaymentsList } = this.props;
-    //
-    // let data = {
-    //   selectedTransactionsSummaryValue: 0,
-    //   selectedTransactionsIds: new Set(),
-    //   selectedContractorsIds: new Set(),
-    // };
-    //
-    // if (e.target.checked) {
-    //   usersPendingTransactions.items.forEach(user => {
-    //     data.selectedContractorsIds.add(user.id);
-    //
-    //     user.transactions.forEach(transaction => {
-    //       data.selectedTransactionsSummaryValue += transaction.job.value * transaction.quantity;
-    //       data.selectedTransactionsIds.add(transaction.id);
-    //     });
-    //   });
-    // }
-    //
-    // this.setState({ checked: e.target.checked });
-    //
-    // updatePaymentsList({ ...data });
+    const { usersJobs, updatePaymentsList } = this.props;
+
+    let data = {
+      selectedTransactionsSummaryValue: 0,
+      selectedTransactionsIds: new Set(),
+      selectedContractorsIds: new Set(),
+    };
+
+    if (e.target.checked) {
+      usersJobs.forEach(user => {
+        data.selectedContractorsIds.add(user.id);
+        data.selectedTransactionsSummaryValue += user.total;
+
+        user.transactions.forEach(transaction => {
+          data.selectedTransactionsIds.add(transaction);
+        });
+      });
+    }
+
+    this.setState({ checked: e.target.checked });
+
+    updatePaymentsList({ ...data });
   };
 
   showContractorName = (val, user) => {
@@ -346,19 +319,11 @@ class Payments extends React.Component {
       return <div>Profile doesn't exist</div>;
     }
 
-    return (
-      <Link to={'/contractors/' + user.id}>{user.contractor}</Link>
-    );
+    return <Link to={'/contractors/' + user.id}>{user.contractor}</Link>;
   };
 
   renderJobsList = record => {
-    return (
-          <JobsList
-    jobsList={record.jobs}
-    userId={record.id}
-    renderAmount={this.renderAmount}
-    />
-    );
+    return <JobsList jobsList={record.jobs} userId={record.id} renderAmount={this.renderAmount} />;
   };
 }
 
@@ -369,8 +334,8 @@ const mapStateToProps = state => ({
   selectedTransactionsIds: state.payments.selectedTransactionsIds,
   selectedContractorsIds: state.payments.selectedContractorsIds,
   selectedTransactionsSummaryValue: state.payments.selectedTransactionsSummaryValue,
-  loadingTransactions: state.loading.effects.users.getUsersWithTransactions,
-  isLoading: state.loading.effects.jobs.getJobs,
+  isSummaryLoading: state.loading.effects.transactions.getTransactionsSummary,
+  isJobsLoading: state.loading.effects.users.getUsersJobs,
 });
 
 const mapDispatchToProps = dispatch => ({
