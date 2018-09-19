@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import _ from 'lodash';
 
 import { Table, Button } from 'antd';
 
@@ -52,8 +54,15 @@ export class JobsList extends Component {
           showHeader={false}
           dataSource={prepareList(jobsList)}
           pagination={false}>
-          <Column align="center" dataIndex="name" title="Name" width="54%" />
-          <Column align="center" dataIndex="jobs" title="Num Jobs" width="18%" />
+          <Column
+            align="center"
+            dataIndex="name"
+            title="Name"
+            render={this.renderTransactionsLink}
+            width="42%"
+          />
+          <Column align="center" dataIndex="count" title="Num Jobs" width="12%" />
+          <Column align="center" dataIndex="prev" render={renderAmount} title="Prev" width="18%" />
           <Column
             align="center"
             dataIndex="total"
@@ -70,6 +79,12 @@ export class JobsList extends Component {
       </div>
     );
   }
+
+  renderTransactionsLink = (val, job) => {
+    const { userId } = this.props;
+
+    return <Link to={`/contractors/${userId}/transactions/${job.jobId}`}>{val}</Link>;
+  };
 
   onChangeVisibility = (isModalVisible, refreshData = false) => {
     this.setState({ isModalVisible });

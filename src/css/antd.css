@@ -5853,7 +5853,7 @@ div.ant-calendar-range-quick-selector > a {
   max-height: 206px;
 }
 .ant-calendar-time-picker-select li {
-  text-align: center;
+  padding-left: 32px;
   list-style: none;
   box-sizing: content-box;
   margin: 0;
@@ -18525,6 +18525,16 @@ li.ant-select-tree-treenode-disabled > .ant-select-tree-node-content-wrapper:hov
 .ant-btn-secondary {
   background-color: #aeadae;
   color: #ffffff;
+}
+.ant-btn-danger {
+  border: none;
+  color: white;
+  background-color: #f5222d;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+.ant-btn-danger:hover {
+  background-color: #f9848a;
 }
 .ant-btn > .anticon + span {
   margin-right: 8px;

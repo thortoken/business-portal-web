@@ -9,6 +9,18 @@
     color: @color-white;
   }
 
+  &-danger {
+    border: none;
+    color: white;
+    background-color: @color-danger;
+    padding-left: 2rem;
+    padding-right: 2rem;
+
+    &:hover {
+      background-color: lighten(@color-danger, 20%);
+    }
+  }
+
   & > .anticon + span {
     margin-right: 8px;
   }
