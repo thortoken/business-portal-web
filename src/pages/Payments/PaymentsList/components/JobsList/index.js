@@ -9,6 +9,15 @@ import './JobsList.css';
 
 const { Column } = Table;
 
+const prepareList = list => {
+  return list.map((element, index) => {
+    return {
+      ...element,
+      key: index,
+    };
+  });
+};
+
 export class JobsList extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +41,7 @@ export class JobsList extends Component {
         <Table
           className="JobsList JobsList--hidden-empty-state"
           showHeader={false}
-          dataSource={jobsList}
+          dataSource={prepareList(jobsList)}
           pagination={false}>
           <Column align="center" dataIndex="name" title="Name" width="54%" />
           <Column align="center" dataIndex="jobs" title="Num Jobs" width="18%" />
