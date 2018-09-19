@@ -24,8 +24,6 @@ export class AddFundingSourceModal extends Component {
       id: userId,
     };
 
-    console.log(data);
-
     try {
       await createFundingSource(data);
       onChangeVisibility(false, true);
