@@ -91,6 +91,27 @@ const users = {
         throw err;
       }
     },
+    async getUsersJobs({ startDate, endDate, status, page, limit }) {
+      try {
+        const response = await Http.get(`/users/rating/jobs`, {
+          params: {
+            limit,
+            page,
+            startDate: startDate.format('YYYY-MM-DD'),
+            endDate: endDate.format('YYYY-MM-DD'),
+            status,
+          },
+        });
+        const res = response.data.items.map(userJob => {
+          return { ...userJob, contractor: `${userJob.firstName} ${userJob.lastName}` };
+        });
+        this.setUsersJobs(res);
+        this.setPaymentsPagination(response.data.pagination);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
     async getUsersWithTransactions({ startDate, endDate, status, page, limit }) {
       try {
         const response = await Http.get(`/users/payments/list`, {
@@ -143,6 +164,9 @@ const users = {
     setCurrentUserStatistics(state, payload) {
       return { ...state, currentUserStatistics: payload };
     },
+    setUsersJobs(state, payload) {
+      return { ...state, usersJobs: payload };
+    },
     setTenantProfile(state, payload) {
       return {
         ...state,
@@ -188,6 +212,7 @@ const users = {
     },
     usersPendingTransactions: null,
     usersPaidTransactions: null,
+    usersJobs: null,
   },
 };
 
