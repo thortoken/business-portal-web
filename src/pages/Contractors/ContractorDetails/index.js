@@ -199,7 +199,14 @@ class ContractorDetails extends React.Component {
                   title="Pay Amt."
                   width="20%"
                 />
-                <Column align="center" dataIndex="status" title="Status" width="15%" />
+                <Column
+                  align="center"
+                  dataIndex="status"
+                  className="ContractorDetails-column-status"
+                  render={this.renderJobStatus}
+                  title="Status"
+                  width="15%"
+                />
               </Table>
             </Spin>
           </div>
