@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Button } from 'antd';
+import PropTypes from 'prop-types';
 
 import { Formik } from 'formik';
 
@@ -9,6 +10,12 @@ import './AddTransaction.css';
 import { initialValues, formFields, validationSchema } from './formSchema';
 
 export class AddTransactionModal extends Component {
+  static propTypes = {
+    createTransaction: PropTypes.func,
+    onChangeVisibility: PropTypes.func,
+    handleRefresh: PropTypes.func,
+    userId: PropTypes.string,
+  };
   state = {
     createdTransaction: null,
     isValid: false,
@@ -16,8 +23,7 @@ export class AddTransactionModal extends Component {
   };
 
   handleModalSave = async (transaction, form) => {
-    const { createTransaction, userId, onChangeVisibility } = this.props;
-
+    const { createTransaction, userId, onChangeVisibility, handleRefresh } = this.props;
     const data = {
       ...validationSchema.cast(transaction),
       userId,
@@ -26,6 +32,7 @@ export class AddTransactionModal extends Component {
     try {
       await createTransaction(data);
       onChangeVisibility(false, true);
+      handleRefresh();
     } catch (err) {
       if (err.response) {
         this.setState({ errorMsg: err.response.data.error });
