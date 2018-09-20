@@ -5,6 +5,7 @@ const users = {
     async create(data) {
       try {
         const response = await Http.post('/users', data);
+        this.setLastCreatedContractor(response.data);
         return response.data;
       } catch (err) {
         throw err;

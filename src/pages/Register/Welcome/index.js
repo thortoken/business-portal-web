@@ -656,5 +656,4 @@ If you have questions or concerns regarding this Privacy Policy, or if you have 
   };
 }
 
-
 export default Welcome;
