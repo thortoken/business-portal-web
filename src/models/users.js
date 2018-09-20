@@ -5,7 +5,6 @@ const users = {
     async create(data) {
       try {
         const response = await Http.post('/users', data);
-        this.setLastCreatedContractor(response.data);
         return response.data;
       } catch (err) {
         throw err;
@@ -46,7 +45,9 @@ const users = {
     },
     async updateTenantProfile({ id, tenantProfile }) {
       try {
-        const response = await Http.patch(`/users/${id}/profile`, { profile: tenantProfile });
+        const response = await Http.patch(`/users/${id}/profile`, {
+          profile: tenantProfile,
+        });
         this.setTenantProfile(tenantProfile);
         return response.data;
       } catch (err) {
@@ -121,7 +122,10 @@ const users = {
           },
         });
         const res = response.data.items.map(userJob => {
-          return { ...userJob, contractor: `${userJob.firstName} ${userJob.lastName}` };
+          return {
+            ...userJob,
+            contractor: `${userJob.firstName} ${userJob.lastName}`,
+          };
         });
         this.setUsersJobs(res);
         this.setPaymentsPagination(response.data.pagination);
