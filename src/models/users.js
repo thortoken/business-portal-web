@@ -5,6 +5,14 @@ const users = {
     async create(data) {
       try {
         const response = await Http.post('/users', data);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async createDemo(data) {
+      try {
+        const response = await Http.post('/auth/registerDemo', data);
         this.setLastCreatedContractor(response.data);
         return response.data;
       } catch (err) {
@@ -14,6 +22,14 @@ const users = {
     async createFundingSource({ id, data }) {
       try {
         const response = await Http.post(`/users/${id}/fundingSource`, data);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async createFundingSourceDemo({ id, data }) {
+      try {
+        const response = await Http.post(`/users/${id}/fundingSourceDemo`, data);
         return response.data;
       } catch (err) {
         throw err;

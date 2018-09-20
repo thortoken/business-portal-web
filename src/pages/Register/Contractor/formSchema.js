@@ -22,6 +22,12 @@ const formFields = {
       .ensure()
       .required(),
   },
+  password: {
+    label: 'Password',
+    validator: Yup.string()
+      .ensure()
+      .required(),
+  },
   email: {
     label: 'E-mail',
     validator: Yup.string()
