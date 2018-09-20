@@ -114,8 +114,8 @@ const formFields = {
     validator: Yup.string()
       .ensure()
       .required()
-      .max(9)
-      .min(9),
+      .max(9, 'Bank routing number must have 9 digits')
+      .min(9, 'Bank routing number must have 9 digits'),
     input: {
       maxLength: 9,
     },
@@ -125,7 +125,8 @@ const formFields = {
     validator: Yup.string()
       .ensure()
       .required()
-      .min(4),
+      .min(3, 'Bank account number must have minimum 3 digits')
+      .max(17, 'Bank account number must have maximum 17 digits'),
   },
 };
 
