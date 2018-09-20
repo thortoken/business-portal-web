@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button, Select, Progress } from 'antd';
+import { Button, Select } from 'antd';
 
 import './PaymentsConfirmation.css';
 import { PeriodCard } from './components/PeriodCard';

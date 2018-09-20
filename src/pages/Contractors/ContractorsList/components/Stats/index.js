@@ -6,7 +6,7 @@ import Box from '~components/Box';
 
 import './Stats.css';
 import { connect } from 'react-redux';
-import StatsRow from "./components/StatsRow";
+import StatsRow from './components/StatsRow';
 
 const generateStatsItem = list => {
   return list.map(item => {
@@ -17,7 +17,13 @@ const generateStatsItem = list => {
     };
     types[item.type] = true;
     return (
-      <StatsRow count={item.count} percent={item.percent} type={item.type} types={types} key={item.type}/>
+      <StatsRow
+        count={item.count}
+        percent={item.percent}
+        type={item.type}
+        types={types}
+        key={item.type}
+      />
     );
   });
 };
@@ -48,7 +54,7 @@ class Stats extends React.Component {
       { type: 'inactive', count: 0, percent: 0 },
       { type: 'resting', count: 0, percent: 0 },
     ],
-    stats: null
+    stats: null,
   };
 
   constructor(props) {
@@ -72,17 +78,20 @@ class Stats extends React.Component {
   }
 
   render() {
-    const { stats: { total }, statsData } = this.state;
+    const {
+      stats: { total },
+      statsData,
+    } = this.state;
     return (
       <div className="Stats">
         <Box className="Stats__box">
           <div className="Stats__header">
             <div className="Stats__row Stats--header">
               <div className="Stats__count Stats__badge">
-                <Badge count={total || 0}/>
+                <Badge count={total || 0} />
               </div>
               <div className="Stats__header--type">Total contractors</div>
-              <div className="Stats__header--progress"/>
+              <div className="Stats__header--progress" />
             </div>
           </div>
           {this.generateStatsItem(statsData)}

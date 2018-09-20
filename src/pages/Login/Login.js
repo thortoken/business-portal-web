@@ -18,7 +18,7 @@ class Login extends React.Component {
     return (
       <div className="Login">
         <div className="Login__form-container">
-          <img className="Login__image-top" src="images/loginImage.png" />
+          <img className="Login__image-top" src="images/loginImage.png" alt="" />
           <Formik
             initialValues={initialValues}
             onSubmit={this.handleSubmit}
@@ -49,7 +49,7 @@ class Login extends React.Component {
             )}
           </Formik>
           <div className="Login__image-container">
-            <img className="Login__image-bottom" src="images/poweredBy.png" />
+            <img className="Login__image-bottom" src="images/poweredBy.png" alt="" />
           </div>
         </div>
       </div>
