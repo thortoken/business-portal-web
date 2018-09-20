@@ -5,6 +5,7 @@ const users = {
     async create(data) {
       try {
         const response = await Http.post('/users', data);
+        this.setLastCreatedContractor(response.data);
         return response.data;
       } catch (err) {
         throw err;
@@ -140,6 +141,9 @@ const users = {
     },
   },
   reducers: {
+    setLastCreatedContractor(state, payload) {
+      return { ...state, lastCreatedContractor: payload };
+    },
     setUsersPaidTransactions(state, payload) {
       return { ...state, usersPaidTransactions: payload };
     },
@@ -199,6 +203,7 @@ const users = {
     },
   },
   state: {
+    lastCreatedContractor: [],
     usersList: [],
     currentUser: null,
     userListPagination: null,
