@@ -58,28 +58,35 @@ export class Contractor extends React.Component {
     </form>
   );
 
-  createContractor = async profile => {
-    const { createUser } = this.props;
+  createDemo = async data => {
+    const { createDemo } = this.props;
     let { createdContractor } = this.state;
 
     if (!createdContractor) {
-      const data = {
-        ...profile,
-        postalCode: String(profile.postalCode),
-        dateOfBirth: transformDateToMoment(profile.dateOfBirth).format('YYYY-MM-DD'),
-      };
-      createdContractor = await createUser({ profile: data });
+      data.profile.postalCode = String(data.profile.postalCode);
+      data.profile.dateOfBirth = transformDateToMoment(data.profile.dateOfBirth).format(
+        'YYYY-MM-DD'
+      );
+      createdContractor = await createDemo(data);
       this.setState({ createdContractor });
     }
   };
 
   handleSubmit = async (data, form) => {
     const normalizedData = validationSchema.cast(data);
-    const tenantId = '7bc0447a-ea99-4ba2-93bb-c84f5b325c50';
+    const tenant = '7bc0447a-ea99-4ba2-93bb-c84f5b325c50';
     const { ...profile } = normalizedData;
 
+    const contractor = {
+      profile: {
+        ...normalizedData,
+      },
+      tenant,
+      password: profile.password,
+    };
+
     try {
-      await this.createContractor({ ...profile, tenantId });
+      await this.createDemo(contractor);
 
       this.handleSubmitSuccess();
     } catch (err) {
@@ -103,8 +110,8 @@ export class Contractor extends React.Component {
   };
 }
 
-const mapDispatch = ({ users: { create } }) => ({
-  createUser: create,
+const mapDispatch = ({ users: { createDemo } }) => ({
+  createDemo,
 });
 
 export default connect(null, mapDispatch)(Contractor);

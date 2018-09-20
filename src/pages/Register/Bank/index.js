@@ -11,7 +11,7 @@ import './Bank.css';
 
 export class Bank extends React.Component {
   static propTypes = {
-    createFundingSource: PropTypes.func.isRequired,
+    createFundingSourceDemo: PropTypes.func.isRequired,
   };
 
   state = {
@@ -57,10 +57,10 @@ export class Bank extends React.Component {
     </form>
   );
 
-  createFundingSource = async ({ accountNumber, routingNumber }) => {
-    const { createFundingSource, lastCreatedContractor } = this.props;
+  createFundingSourceDemo = async ({ accountNumber, routingNumber }) => {
+    const { createFundingSourceDemo, lastCreatedContractor } = this.props;
 
-    await createFundingSource({
+    await createFundingSourceDemo({
       id: lastCreatedContractor.id,
       data: {
         accountNumber,
@@ -74,7 +74,7 @@ export class Bank extends React.Component {
     const { routingNumber, accountNumber } = normalizedData;
 
     try {
-      await this.createFundingSource({ accountNumber, routingNumber });
+      await this.createFundingSourceDemo({ accountNumber, routingNumber });
 
       this.handleSubmitSuccess();
     } catch (err) {
@@ -101,8 +101,8 @@ const mapStateToProps = state => ({
   lastCreatedContractor: state.users.lastCreatedContractor,
 });
 
-const mapDispatch = ({ users: { createFundingSource } }) => ({
-  createFundingSource,
+const mapDispatch = ({ users: { createFundingSourceDemo } }) => ({
+  createFundingSourceDemo,
 });
 
 export default connect(mapStateToProps, mapDispatch)(Bank);
