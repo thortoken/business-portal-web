@@ -63,7 +63,6 @@ class ContractorDetails extends React.Component {
     super(props);
 
     this.generateMenuItems = generateMenuItems;
-    this.handleRefresh = this.handleRefresh.bind(this);
   }
 
   componentDidMount() {
@@ -72,7 +71,7 @@ class ContractorDetails extends React.Component {
     getUser(match.params.id);
   }
 
-  handleRefresh() {
+  handleRefresh = () => {
     const { getTransactionsForContractor, match } = this.props;
     const { pagination, periodRange } = this.state;
 
@@ -82,7 +81,7 @@ class ContractorDetails extends React.Component {
       limit: pagination.pageSize,
       ...periodRange,
     });
-  }
+  };
 
   static getDerivedStateFromProps(nextProps, prevState) {
     let localState = {};
