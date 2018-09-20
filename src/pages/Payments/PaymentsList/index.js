@@ -52,12 +52,6 @@ class Payments extends React.Component {
     paymentsListPagination: null,
   };
 
-  constructor(props) {
-    super(props);
-
-    this.handleRefresh = this.handleRefresh.bind(this);
-  }
-
   componentDidMount() {
     const { pagination } = this.state;
     const { getTransactionsSummary, getUsersJobs } = this.props;
@@ -109,7 +103,7 @@ class Payments extends React.Component {
     return Object.keys(localState).length ? localState : null;
   }
 
-  handleRefresh() {
+  handleRefresh = () => {
     const { getUsersJobs, getTransactionsSummary } = this.props;
     const { pagination } = this.state;
     getTransactionsSummary({
@@ -122,7 +116,7 @@ class Payments extends React.Component {
       page: pagination.current,
       limit: pagination.pageSize,
     });
-  }
+  };
 
   handleTableChange = pag => {
     const { getUsersJobs, getTransactionsSummary } = this.props;
@@ -323,7 +317,15 @@ class Payments extends React.Component {
   };
 
   renderJobsList = record => {
-    return <JobsList jobsList={record.jobs} userId={record.id} renderAmount={this.renderAmount} />;
+    return (
+      <JobsList
+        jobsList={record.jobs}
+        userId={record.id}
+        renderAmount={this.renderAmount}
+        handleRefresh={this.handleRefresh}
+        createTransaction={this.props.createTransaction}
+      />
+    );
   };
 }
 
@@ -342,6 +344,7 @@ const mapDispatchToProps = dispatch => ({
   getUsersJobs: dispatch.users.getUsersJobs,
   updatePaymentsList: dispatch.payments.updatePaymentsList,
   getTransactionsSummary: dispatch.transactions.getTransactionsSummary,
+  createTransaction: dispatch.transactions.createTransaction,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Payments);

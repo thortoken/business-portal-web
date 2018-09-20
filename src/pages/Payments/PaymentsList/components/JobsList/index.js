@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { Table, Button } from 'antd';
 
-import { AddTransactionModal } from '../../../../Payments/components/AddTransactionModal';
+import { AddTransactionModal } from '~pages/Payments/components/AddTransactionModal';
 
 import './JobsList.css';
 
@@ -19,6 +20,13 @@ const prepareList = list => {
 };
 
 export class JobsList extends Component {
+  static propTypes = {
+    jobsList: PropTypes.array,
+    renderAmount: PropTypes.func,
+    userId: PropTypes.string,
+    createTransaction: PropTypes.func,
+    handleRefresh: PropTypes.func,
+  };
   constructor(props) {
     super(props);
 
@@ -28,7 +36,7 @@ export class JobsList extends Component {
   }
 
   render() {
-    const { jobsList, renderAmount, userId, createTransaction } = this.props;
+    const { jobsList, renderAmount, userId, createTransaction, handleRefresh } = this.props;
 
     return (
       <div>
@@ -37,6 +45,7 @@ export class JobsList extends Component {
           createTransaction={createTransaction}
           isModalVisible={this.state.isModalVisible}
           onChangeVisibility={this.onChangeVisibility}
+          handleRefresh={handleRefresh}
         />
         <Table
           className="JobsList JobsList--hidden-empty-state"
@@ -71,10 +80,12 @@ export class JobsList extends Component {
   };
 }
 
-const mapDispatch = ({ transactions: { createTransaction } }) => ({
-  createTransaction,
+const mapStateToProps = state => ({
+  user: state.auth.user,
 });
 
-const mapStateToProps = state => ({ auth: { user } }) => ({ user });
+const mapDispatchToProps = dispatch => ({
+  createTransaction: dispatch.transactions.createTransaction,
+});
 
-export default connect(mapStateToProps, mapDispatch)(JobsList);
+export default connect(mapStateToProps, mapDispatchToProps)(JobsList);
