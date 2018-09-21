@@ -11,8 +11,9 @@ export class Thanks extends React.Component {
       <div className="Thanks">
         <div className="Thanks__register">
           <div className="Thanks__msg">
-            Thanks for registration {lastCreatedContractor && lastCreatedContractor.firstName}{' '}
-            {lastCreatedContractor && lastCreatedContractor.lastName}!
+            Thanks for registration{' '}
+            {lastCreatedContractor && lastCreatedContractor.tenantProfile.firstName}{' '}
+            {lastCreatedContractor && lastCreatedContractor.tenantProfile.lastName}!
           </div>
         </div>
       </div>
