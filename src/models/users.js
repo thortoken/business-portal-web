@@ -29,7 +29,7 @@ const users = {
     },
     async createFundingSourceDemo({ id, data }) {
       try {
-        const response = await Http.post(`/users/${id}/fundingSourceDemo`, data);
+        const response = await Http.post(`/demo/${id}/fundingSourceDemo`, data);
         return response.data;
       } catch (err) {
         throw err;
