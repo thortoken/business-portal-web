@@ -11,7 +11,7 @@ import './Contractor.css';
 
 export class Contractor extends React.Component {
   static propTypes = {
-    createUser: PropTypes.func.isRequired,
+    createDemo: PropTypes.func.isRequired,
   };
 
   state = {
