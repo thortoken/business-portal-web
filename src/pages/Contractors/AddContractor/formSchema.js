@@ -69,6 +69,7 @@ const formFields = {
     input: {
       maxLength: 2,
       placeholder: 'e.g. CA',
+      parser: formUtils.parsers.lettersOnly,
     },
   },
   postalCode: {
