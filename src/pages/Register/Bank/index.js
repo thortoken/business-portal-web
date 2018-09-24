@@ -24,7 +24,7 @@ export class Bank extends React.Component {
     return (
       <div className="Contractor">
         <div className="Contractor__form">
-          <div className="Contractor__title">Add Founding Source</div>
+          <div className="Contractor__title">Add Funding Source</div>
           <div className="Contractor__errors">{error}</div>
           <Formik
             initialValues={initialValues}
@@ -51,7 +51,7 @@ export class Bank extends React.Component {
           loading={isSubmitting}
           htmlType="submit"
           className="Add-contractor__button-container--button">
-          Connect Founding Source
+          Connect Funding Source
         </Button>
       </div>
     </form>
