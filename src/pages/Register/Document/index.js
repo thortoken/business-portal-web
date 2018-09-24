@@ -26,7 +26,7 @@ export class Document extends React.Component {
 
     // You can use any AJAX library you like
     reqwest({
-      url: `/users/${this.getUserId()}/documents?type=${documentType}`,
+      url: `/users/${this.getUserId()}/documents?type=${documentType}&tenant=7bc0447a-ea99-4ba2-93bb-c84f5b325c50`,
       method: 'post',
       contentType: 'multipart/form-data',
       enctype: 'multipart/form-data',
@@ -53,7 +53,7 @@ export class Document extends React.Component {
   render() {
     const { uploading, documentType } = this.state;
     const props = {
-      action: `/users/${this.getUserId()}/documents?type=${documentType}`,
+      action: `/users/${this.getUserId()}/documents?type=${documentType}&tenant=7bc0447a-ea99-4ba2-93bb-c84f5b325c50`,
       contentType: 'multipart/form-data',
       enctype: 'multipart/form-data',
       onRemove: file => {
