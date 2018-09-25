@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button } from 'antd';
+import { Modal, Button, AutoComplete } from 'antd';
 import PropTypes from 'prop-types';
 
 import { Formik } from 'formik';
@@ -9,12 +9,19 @@ import './AddTransaction.css';
 
 import { initialValues, formFields, validationSchema } from './formSchema';
 
+const Option = AutoComplete.Option;
+
+export const generateOptions = list => {
+  return list.map((item, index) => <Option key={`${item.name}${index}`}>{item.name}</Option>);
+};
+
 export class AddTransactionModal extends Component {
   static propTypes = {
     createTransaction: PropTypes.func,
     onChangeVisibility: PropTypes.func,
     handleRefresh: PropTypes.func,
     userId: PropTypes.string,
+    jobs: PropTypes.array,
   };
   state = {
     createdTransaction: null,
@@ -41,6 +48,10 @@ export class AddTransactionModal extends Component {
     }
   };
 
+  handleChange = value => {
+    console.log(value);
+  };
+
   handleModalCancel = () => {
     const { onChangeVisibility } = this.props;
     onChangeVisibility(false);
@@ -49,7 +60,6 @@ export class AddTransactionModal extends Component {
 
   render() {
     const { errorMsg } = this.state;
-
     return (
       <Modal
         title="Add transaction"
@@ -61,25 +71,51 @@ export class AddTransactionModal extends Component {
         <Formik
           initialValues={initialValues}
           onSubmit={this.handleModalSave}
-          validationSchema={validationSchema}>
+          validationSchema={validationSchema}
+          validateOnChange>
           {this.renderForm}
         </Formik>
       </Modal>
     );
   }
 
-  renderForm = ({ handleSubmit, isSubmitting, values, dirty, isValid }) => {
+  renderForm = ({ handleSubmit, isSubmitting, values, dirty, isValid, setFieldValue }) => {
+    const { jobs } = this.props;
+    console.log(setFieldValue);
     return (
       <form onSubmit={handleSubmit}>
-        {Object.entries(formFields).map(([name, options]) => (
-          <FormField
-            key={name}
-            name={name}
-            label={options.label}
-            {...options.input}
-            className="AddTransaction_half"
-          />
-        ))}
+        {Object.entries(formFields).map(([name, options]) => {
+          if (options.nameField) {
+            return (
+              <AutoComplete
+                key={name}
+                onChange={this.handleChange}
+                dataSource={generateOptions(jobs)}
+                filterOption={(inputValue, option) =>
+                  option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                }>
+                <FormField
+                  key={name}
+                  name={name}
+                  autoComplete="off"
+                  label={options.label}
+                  {...options.input}
+                  className="AddTransaction_half"
+                />
+              </AutoComplete>
+            );
+          } else {
+            return (
+              <FormField
+                key={name}
+                name={name}
+                label={options.label}
+                {...options.input}
+                className="AddTransaction_half"
+              />
+            );
+          }
+        })}
 
         <div className="AddTransaction_button">
           <Button disabled={!isValid} type="primary" loading={isSubmitting} htmlType="submit">

@@ -28,9 +28,11 @@ class Payments extends React.Component {
     selectedTransactionsSummaryValue: PropTypes.number,
     selectedTransactionsIds: PropTypes.object,
     selectedContractorsIds: PropTypes.object,
+    jobs: PropTypes.array,
   };
 
   state = {
+    jobs: [],
     checked: false,
     previous: {
       total: '',
@@ -54,7 +56,8 @@ class Payments extends React.Component {
 
   componentDidMount() {
     const { pagination } = this.state;
-    const { getTransactionsSummary, getUsersJobs } = this.props;
+    const { getTransactionsSummary, getUsersJobs, getJobs } = this.props;
+    getJobs();
     getTransactionsSummary({
       status: 'new',
       ...getCurrentTwoWeeksPeriod(),
@@ -77,6 +80,10 @@ class Payments extends React.Component {
       const { previous, current } = nextProps.transactionsSummary;
       localState['previous'] = { ...previous };
       localState['current'] = { ...current };
+    }
+
+    if (nextProps.jobs !== prevState.jobs) {
+      localState['jobs'] = nextProps.jobs;
     }
 
     if (nextProps.usersJobs !== prevState.usersJobs) {
@@ -317,9 +324,11 @@ class Payments extends React.Component {
   };
 
   renderJobsList = record => {
+    const { jobs } = this.state;
     return (
       <JobsList
         jobsList={record.jobs}
+        jobs={jobs}
         userId={record.id}
         renderAmount={this.renderAmount}
         handleRefresh={this.handleRefresh}
@@ -336,11 +345,13 @@ const mapStateToProps = state => ({
   selectedTransactionsIds: state.payments.selectedTransactionsIds,
   selectedContractorsIds: state.payments.selectedContractorsIds,
   selectedTransactionsSummaryValue: state.payments.selectedTransactionsSummaryValue,
+  jobs: state.jobs.jobs,
   isSummaryLoading: state.loading.effects.transactions.getTransactionsSummary,
   isJobsLoading: state.loading.effects.users.getUsersJobs,
 });
 
 const mapDispatchToProps = dispatch => ({
+  getJobs: dispatch.jobs.getJobs,
   getUsersJobs: dispatch.users.getUsersJobs,
   updatePaymentsList: dispatch.payments.updatePaymentsList,
   getTransactionsSummary: dispatch.transactions.getTransactionsSummary,

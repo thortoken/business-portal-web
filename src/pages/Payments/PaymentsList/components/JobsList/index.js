@@ -26,6 +26,7 @@ export class JobsList extends Component {
     userId: PropTypes.string,
     createTransaction: PropTypes.func,
     handleRefresh: PropTypes.func,
+    jobs: PropTypes.array,
   };
   constructor(props) {
     super(props);
@@ -36,7 +37,7 @@ export class JobsList extends Component {
   }
 
   render() {
-    const { jobsList, renderAmount, userId, createTransaction, handleRefresh } = this.props;
+    const { jobsList, renderAmount, userId, createTransaction, handleRefresh, jobs } = this.props;
 
     return (
       <div>
@@ -46,6 +47,7 @@ export class JobsList extends Component {
           isModalVisible={this.state.isModalVisible}
           onChangeVisibility={this.onChangeVisibility}
           handleRefresh={handleRefresh}
+          jobs={jobs}
         />
         <Table
           className="JobsList JobsList--hidden-empty-state"

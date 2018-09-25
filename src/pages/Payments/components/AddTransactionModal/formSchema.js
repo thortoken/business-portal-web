@@ -8,10 +8,11 @@ import { makeValidationSchema, makeEmptyInitialValues } from '~utils/forms/formi
 const formFields = {
   name: {
     label: 'Name',
-    validator: Yup.string()
-      .trim()
-      .ensure()
-      .required(),
+    validator: Yup.string().required(),
+    nameField: true,
+    input: {
+      parser: formUtils.parsers.lettersOnly,
+    },
   },
   value: {
     label: 'Value',
