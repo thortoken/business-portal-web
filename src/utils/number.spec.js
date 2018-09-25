@@ -2,6 +2,7 @@ import * as number from './number';
 
 describe('utils: number', () => {
   const value = 1234567.8901;
+  const phoneNumber = '5551234567';
 
   describe('formatCurrency', () => {
     const toLocaleStringSpy = jest.spyOn(Number.prototype, 'toLocaleString');
@@ -71,6 +72,12 @@ describe('utils: number', () => {
   describe('formatThor', () => {
     it('should call round down, and format with currency=THOR and precision=0', () => {
       expect(number.formatThor(value)).toEqual('1,234,567 THOR');
+    });
+  });
+
+  describe('formatPhone', () => {
+    it('should format phone number in US format', () => {
+      expect(number.formatPhone(phoneNumber)).toEqual('(555) 123-4567');
     });
   });
 });
