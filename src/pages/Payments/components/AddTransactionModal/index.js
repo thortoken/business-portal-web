@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import { Formik } from 'formik';
 
+import AutoCompleteField from '~components/AutoCompleteField';
 import FormField from '~components/FormField';
 import './AddTransaction.css';
 
@@ -81,28 +82,23 @@ export class AddTransactionModal extends Component {
 
   renderForm = ({ handleSubmit, isSubmitting, values, dirty, isValid, setFieldValue }) => {
     const { jobs } = this.props;
-    console.log(setFieldValue);
     return (
       <form onSubmit={handleSubmit}>
         {Object.entries(formFields).map(([name, options]) => {
           if (options.nameField) {
             return (
-              <AutoComplete
+              <FormField
                 key={name}
-                onChange={this.handleChange}
+                name={name}
+                component={AutoCompleteField}
                 dataSource={generateOptions(jobs)}
                 filterOption={(inputValue, option) =>
                   option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
-                }>
-                <FormField
-                  key={name}
-                  name={name}
-                  autoComplete="off"
-                  label={options.label}
-                  {...options.input}
-                  className="AddTransaction_half"
-                />
-              </AutoComplete>
+                }
+                className="AddTransaction_half"
+                label={options.label}
+                {...options.input}
+              />
             );
           } else {
             return (

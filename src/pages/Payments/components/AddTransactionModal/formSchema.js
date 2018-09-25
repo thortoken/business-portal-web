@@ -11,7 +11,7 @@ const formFields = {
     validator: Yup.string().required(),
     nameField: true,
     input: {
-      parser: formUtils.parsers.lettersOnly,
+      placeholder: 'Select job',
     },
   },
   value: {
