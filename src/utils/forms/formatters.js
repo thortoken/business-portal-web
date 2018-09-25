@@ -20,6 +20,15 @@ export const price = value => {
     if (value.includes(',')) {
       value = value.replace(',', '.'); // replace ',' => '.'
     }
+    if (value.includes('.')) {
+      // allow only two decimal digits
+      let splited = value.split('.');
+
+      if (splited[1].length > 2) {
+        splited[1] = splited[1].substring(0, 2);
+        value = Number(splited.join('.')).toFixed(2);
+      }
+    }
     if (value.split('.').length - 1 > 1) {
       value = value.replace(/.([^.]*)$/, '$1'); // allow only one '.'
       return value && Number(value).toFixed(2);
