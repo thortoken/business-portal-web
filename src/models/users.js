@@ -39,10 +39,7 @@ const users = {
     },
     async createFundingSourceDemo({ id, data }) {
       try {
-        const response = await Http.post(
-          `/demo/users/${id}/fundingSource?tenant=7bc0447a-ea99-4ba2-93bb-c84f5b325c50`,
-          data
-        );
+        const response = await Http.post(`/demo/${id}/fundingSourceDemo`, data);
         return response.data;
       } catch (err) {
         throw err;

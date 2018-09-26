@@ -52,8 +52,9 @@ export class Document extends React.Component {
             <div className="Document__type-dropdown">
               <Select defaultValue="license" style={{ width: 120 }} onChange={this.handleChange}>
                 <Select.Option value="passport">Passport</Select.Option>
-                <Select.Option value="license">Lincese</Select.Option>
+                <Select.Option value="license">License</Select.Option>
                 <Select.Option value="idCard">Id Card</Select.Option>
+                <Select.Option value="other">Other</Select.Option>
               </Select>
             </div>
             <Upload {...props}>

@@ -41,3 +41,13 @@ or
 ```
 yarn build-antd-css
 ```
+
+
+## Build app and deploy
+```
+yarn build
+```
+```
+firebase deploy --only hosting:prod
+```
+

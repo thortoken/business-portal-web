@@ -7,6 +7,7 @@ import FormField from '~components/FormField';
 
 import './Login.css';
 
+import { Link } from 'react-router-dom';
 import { formFields, validationSchema, initialValues } from './formSchema';
 
 class Login extends React.Component {
@@ -45,6 +46,11 @@ class Login extends React.Component {
                   loading={isSubmitting}>
                   Sign in
                 </Button>
+                <div className="Login__register-link">
+                  <Link to="/register">
+                    <span>Register</span>
+                  </Link>
+                </div>
               </form>
             )}
           </Formik>
