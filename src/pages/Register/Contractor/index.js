@@ -25,7 +25,7 @@ export class Contractor extends React.Component {
     return (
       <div className="Contractor">
         <div className="Contractor__form">
-          <div className="Contractor__title">Create Contractor</div>
+          <div className="Contractor__title">Create Profile</div>
           <div className="Contractor__errors">{error}</div>
           <Formik
             initialValues={initialValues}
