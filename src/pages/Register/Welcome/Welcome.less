@@ -1,9 +1,15 @@
+@import "../../../styles/variables";
+
 .Welcome {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
 
+  &__accept {
+    width: 400px;
+    text-align: justify;
+  }
   &__msg {
     font-size: 3rem;
     text-align: center;
@@ -31,6 +37,13 @@
     font-weight: bold;
     margin-top: 10px;
   }
+  &__termscheckbox {
+    margin-top: 1rem;
+    &--text {
+      color: @primary-color;
+      font-weight: 600;
+    }
+  }
 
   img {
     height: 120px;
@@ -41,4 +54,5 @@
     align-items: center;
     justify-content: center;
   }
+
 }
