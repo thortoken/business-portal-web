@@ -104,6 +104,8 @@ export const renderDate = date => new Date(date).toLocaleDateString();
 
 export const renderShortDate = date => moment(date).format('MM/DD');
 
+export const renderLongDate = date => moment(date).format('MM/DD/YYYY HH:MM');
+
 export const dateAsMoment = defaultFormat => (date, format = defaultFormat) => {
   if (typeof date === 'string') {
     const tryDate = moment(date, format);

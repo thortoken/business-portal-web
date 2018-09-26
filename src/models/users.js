@@ -27,9 +27,22 @@ const users = {
         throw err;
       }
     },
+    async getUserDocuments({ id }) {
+      try {
+        const response = await Http.get(
+          `/demo/users/${id}/documents?tenant=7bc0447a-ea99-4ba2-93bb-c84f5b325c50`
+        );
+        this.setUserDocuments(response.data);
+      } catch (err) {
+        throw err;
+      }
+    },
     async createFundingSourceDemo({ id, data }) {
       try {
-        const response = await Http.post(`/demo/${id}/fundingSourceDemo`, data);
+        const response = await Http.post(
+          `/demo/users/${id}/fundingSource?tenant=7bc0447a-ea99-4ba2-93bb-c84f5b325c50`,
+          data
+        );
         return response.data;
       } catch (err) {
         throw err;
@@ -168,6 +181,9 @@ const users = {
     setUsersPaidTransactions(state, payload) {
       return { ...state, usersPaidTransactions: payload };
     },
+    setUserDocuments(state, payload) {
+      return { ...state, userDocuments: payload };
+    },
     setUsersPendingTransactions(state, payload) {
       return { ...state, usersPendingTransactions: payload };
     },
@@ -203,6 +219,7 @@ const users = {
     },
   },
   state: {
+    userDocuments: [],
     lastCreatedContractor: [],
     usersList: [],
     currentUser: null,

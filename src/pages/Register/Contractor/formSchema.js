@@ -27,6 +27,9 @@ const formFields = {
     validator: Yup.string()
       .ensure()
       .required(),
+    input: {
+      type: 'password',
+    },
   },
   email: {
     label: 'E-mail',
