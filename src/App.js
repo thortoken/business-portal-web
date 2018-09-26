@@ -10,6 +10,8 @@ import './css/antd.css';
 
 export class App extends React.Component {
   render() {
+    console.log('Version: 1.0.0');
+
     return <RouteFactory />;
   }
 }

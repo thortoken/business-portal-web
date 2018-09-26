@@ -8,7 +8,7 @@ const payments = {
       let done = 0;
 
       let requests = [...data].map(id => {
-        return Http.post(`/transactions/${id}/transfer`)
+        return Http.post(`/transactions/${id}/transfers`)
           .then(res => {
             done++;
             this.setTransactionDone(done);

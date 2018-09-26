@@ -10,9 +10,26 @@ const users = {
         throw err;
       }
     },
+    async createDemo(data) {
+      try {
+        const response = await Http.post('/auth/registerDemo', data);
+        this.setLastCreatedContractor(response.data);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
     async createFundingSource({ id, data }) {
       try {
         const response = await Http.post(`/users/${id}/fundingSource`, data);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async createFundingSourceDemo({ id, data }) {
+      try {
+        const response = await Http.post(`/demo/${id}/fundingSourceDemo`, data);
         return response.data;
       } catch (err) {
         throw err;
@@ -140,6 +157,9 @@ const users = {
     },
   },
   reducers: {
+    setLastCreatedContractor(state, payload) {
+      return { ...state, lastCreatedContractor: payload };
+    },
     setUsersPaidTransactions(state, payload) {
       return { ...state, usersPaidTransactions: payload };
     },
@@ -178,6 +198,7 @@ const users = {
     },
   },
   state: {
+    lastCreatedContractor: [],
     usersList: [],
     currentUser: null,
     userListPagination: null,

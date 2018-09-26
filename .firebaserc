@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "thor-test-47e28"
+  },
+  "targets": {
+    "thor-test-47e28": {
+      "hosting": {
+        "prod": [
+          "odin-prod"
+        ],
+        "dev": [
+          "odin-dev"
+        ]
+      }
+    }
   }
 }
