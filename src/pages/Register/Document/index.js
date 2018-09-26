@@ -20,7 +20,6 @@ export class Document extends React.Component {
 
   render() {
     const { userDocuments } = this.props;
-    console.log('userDocuments', userDocuments);
     const { uploading, documentType } = this.state;
     const props = {
       action: `https://odin-api.prod.gothor.com/demo/users/${this.getUserId()}/documents?type=${documentType}&tenant=7bc0447a-ea99-4ba2-93bb-c84f5b325c50`,
@@ -118,6 +117,7 @@ export class Document extends React.Component {
         });
         // message.success('upload successfully.');
         console.log('upload successfully.');
+        this.handleUpdateUserFilesList();
       },
       error: () => {
         this.setState({
