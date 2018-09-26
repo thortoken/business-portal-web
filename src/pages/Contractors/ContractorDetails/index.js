@@ -264,7 +264,7 @@ class ContractorDetails extends React.Component {
   };
 
   handleDeleteFundingSource = async () => {
-    const { currentUser, createFundingSourceDemo, getUser, match } = this.props;
+    const { currentUser, deleteFundingSource, getUser, match } = this.props;
     const { firstName, lastName } = currentUser.tenantProfile;
     Modal.confirm({
       title: `Are you sure you want to delete funding source for ${firstName} ${lastName}?`,
@@ -272,7 +272,7 @@ class ContractorDetails extends React.Component {
       okType: 'danger',
       cancelText: 'No',
       onOk: async () => {
-        await createFundingSourceDemo(currentUser.id);
+        await deleteFundingSource(currentUser.id);
         return getUser(match.params.id);
       },
     });
@@ -370,6 +370,7 @@ const mapDispatchToProps = ({
     getCurrentUserStatistics,
     createFundingSource,
     createFundingSourceDemo,
+    deleteFundingSource,
   },
 }) => ({
   createTransaction,
@@ -379,6 +380,7 @@ const mapDispatchToProps = ({
   getCurrentUserStatistics,
   createFundingSource,
   createFundingSourceDemo,
+  deleteFundingSource,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContractorDetails);
