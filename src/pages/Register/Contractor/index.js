@@ -74,6 +74,7 @@ export class Contractor extends React.Component {
 
   handleSubmit = async (data, form) => {
     const normalizedData = validationSchema.cast(data);
+    normalizedData['country'] = 'USA';
     const tenant = '7bc0447a-ea99-4ba2-93bb-c84f5b325c50';
     const { ...profile } = normalizedData;
 

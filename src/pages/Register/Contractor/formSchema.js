@@ -78,6 +78,7 @@ const formFields = {
     input: {
       maxLength: 2,
       placeholder: 'e.g. CA',
+      parser: formUtils.parsers.lettersOnly,
     },
   },
   postalCode: {
@@ -89,12 +90,6 @@ const formFields = {
       maxLength: 5,
       placeholder: '12345',
     },
-  },
-  country: {
-    label: 'Country',
-    validator: Yup.string()
-      .ensure()
-      .required(),
   },
   dateOfBirth: {
     label: 'Date of Birth',
