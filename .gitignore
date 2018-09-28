@@ -21,6 +21,7 @@
 # firebase
 /src/credentials.js
 /functions/service-account.json
+/.firebase
 firebase-debug.log
 
 # functions
