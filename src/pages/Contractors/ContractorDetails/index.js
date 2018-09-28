@@ -116,6 +116,7 @@ class ContractorDetails extends React.Component {
       loadingTransactions,
       createTransaction,
       createFundingSource,
+      history,
     } = this.props;
     const { pagination } = this.state;
     const hasFundingSource =
@@ -168,7 +169,7 @@ class ContractorDetails extends React.Component {
         />
         <Spin size="large" spinning={loadingContractor}>
           <div className="ContractorDetails">
-            <BackBtn to="/payments" label="Payments" />
+            <BackBtn history={history} />
 
             {currentUser && (
               <Profile
