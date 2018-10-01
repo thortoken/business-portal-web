@@ -9,10 +9,35 @@ import './Login.css';
 
 import { formFields, validationSchema, initialValues } from './formSchema';
 
-class Login extends React.Component {
+export class Login extends React.Component {
   static propTypes = {
-    login: PropTypes.func.isRequired,
+    login: PropTypes.func,
   };
+
+  renderForm = ({ handleSubmit, isSubmitting, dirty }) => (
+    <form onSubmit={handleSubmit}>
+      {Object.entries(formFields).map(([name, options]) => {
+        return (
+          <FormField
+            key={name}
+            name={name}
+            label={options.label}
+            {...options.input}
+            className="Login__input-group-container"
+          />
+        );
+      })}
+
+      <Button
+        className="Login__submit-btn"
+        type="submit"
+        htmlType="submit"
+        disabled={!dirty || isSubmitting}
+        loading={isSubmitting}>
+        Sign in
+      </Button>
+    </form>
+  );
 
   render() {
     return (
@@ -23,30 +48,7 @@ class Login extends React.Component {
             initialValues={initialValues}
             onSubmit={this.handleSubmit}
             validationSchema={validationSchema}>
-            {({ handleSubmit, isSubmitting }) => (
-              <form onSubmit={handleSubmit}>
-                {Object.entries(formFields).map(([name, options]) => {
-                  return (
-                    <FormField
-                      key={name}
-                      name={name}
-                      label={options.label}
-                      {...options.input}
-                      className="Login__input-group-container"
-                    />
-                  );
-                })}
-
-                <Button
-                  className="Login__submit-btn"
-                  type="submit"
-                  htmlType="submit"
-                  disabled={isSubmitting}
-                  loading={isSubmitting}>
-                  Sign in
-                </Button>
-              </form>
-            )}
+            {this.renderForm}
           </Formik>
           <div className="Login__image-container">
             <img className="Login__image-bottom" src="images/poweredBy.png" alt="" />
@@ -56,11 +58,15 @@ class Login extends React.Component {
     );
   }
 
-  handleSubmit = async (data, form) => {
+  checkLogin = async data => {
     const { login } = this.props;
     const { email, password } = data;
+    await login({ email, password });
+  };
+
+  handleSubmit = async (data, form) => {
     try {
-      await login({ email, password });
+      await this.checkLogin(data);
     } catch (err) {
       if (err.response && err.response.status === 401) {
         console.log(err.response);
