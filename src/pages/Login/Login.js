@@ -57,10 +57,11 @@ class Login extends React.Component {
   }
 
   handleSubmit = async (data, form) => {
-    const { login } = this.props;
+    const { login, location } = this.props;
+    const tenant = new URLSearchParams(location.search).get('tenant');
     const { email, password } = data;
     try {
-      await login({ email, password });
+      await login({ email, password, tenant });
     } catch (err) {
       if (err.response && err.response.status === 401) {
         console.log(err.response);

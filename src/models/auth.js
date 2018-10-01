@@ -26,7 +26,7 @@ const auth = {
         const response = await Http.post('/auth/login', {
           login: data.email,
           password: data.password,
-          tenant: Config.tenantId,
+          tenant: data.tenant || Config.tenantId,
         });
         const { token, name, phone, email } = response.data;
 
