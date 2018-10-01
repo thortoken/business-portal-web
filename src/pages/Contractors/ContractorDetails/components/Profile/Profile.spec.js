@@ -20,7 +20,7 @@ const initProfile = overrides => {
     phone: '5551234567',
     children: '',
     accountNumber: '123123123',
-    accountRouting: '345345345',
+    accountRouting: '3453453456',
   };
 
   const wrapper = shallow(<Profile {...mockProps} {...overrides} />);
