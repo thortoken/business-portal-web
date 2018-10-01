@@ -13,20 +13,6 @@ exports[`component: <Menu/> should highlight menu item should highlight selected
 >
   <MenuItem
     className="Menu__item"
-    key="/welcome"
-  >
-    <Link
-      className="Menu__link"
-      replace={false}
-      to="/welcome"
-    >
-      <span>
-        Welcome
-      </span>
-    </Link>
-  </MenuItem>
-  <MenuItem
-    className="Menu__item"
     key="/payments"
   >
     <Link
@@ -67,20 +53,6 @@ exports[`component: <Menu/> should highlight menu item should highlight selected
   }
   theme="light"
 >
-  <MenuItem
-    className="Menu__item"
-    key="/welcome"
-  >
-    <Link
-      className="Menu__link"
-      replace={false}
-      to="/welcome"
-    >
-      <span>
-        Welcome
-      </span>
-    </Link>
-  </MenuItem>
   <MenuItem
     className="Menu__item"
     key="/payments"

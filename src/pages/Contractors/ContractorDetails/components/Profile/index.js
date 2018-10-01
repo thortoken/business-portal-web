@@ -10,7 +10,7 @@ import { formatPhone } from '~utils/number';
 import './Profile.css';
 import RefreshButton from '~components/RefreshButton';
 
-export default class Profile extends React.PureComponent {
+export class Profile extends React.PureComponent {
   static propTypes = {
     handleRefresh: PropTypes.func,
     isLoading: PropTypes.bool,
@@ -97,3 +97,5 @@ export default class Profile extends React.PureComponent {
     return <div>{warnings.map(warning => <div key={warning.key}>{warning.content}</div>)}</div>;
   };
 }
+
+export default Profile;
