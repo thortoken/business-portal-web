@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component: <Profile/> render Popover if any warnings 1`] = `
+<div
+  className="Profile"
+>
+  <div
+    className="Profile-box-informations"
+  >
+    <div
+      className="Profile-basic-data"
+    >
+      <div
+        className="Profile-name"
+      >
+        John
+         
+        Doe
+      </div>
+      <div
+        className="Profile-since"
+      >
+        Contractor since 
+        Invalid Date
+      </div>
+    </div>
+    <div
+      className="Profile-activity"
+    >
+      <Activity
+        lastActivityDate=""
+      />
+      <RefreshButton
+        handleRefresh={[Function]}
+        isLoading={false}
+        size="default"
+        type="primary"
+      />
+    </div>
+  </div>
+  <div
+    className="Profile-box-informations"
+  >
+    <div
+      className="Profile-address"
+    >
+      <div
+        className="Profile-label"
+      >
+        Address
+      </div>
+      <div
+        className="Profile-value"
+      >
+        <div>
+          Address1
+           
+          Address2
+        </div>
+        <div>
+          San Francisco
+           
+          CA
+          74234
+        </div>
+      </div>
+    </div>
+    <div
+      className="Profile-phone"
+    >
+      <div
+        className="Profile-label"
+      >
+        Phone
+      </div>
+      <div
+        className="Profile-value"
+      >
+        (555) 123-4567
+      </div>
+    </div>
+    <div
+      className="Profile-options"
+    />
+  </div>
+</div>
+`;
