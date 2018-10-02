@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Box from './index';
+import { Box } from './Box';
 
 describe('component: <Box/>', () => {
   describe('Box', () => {
