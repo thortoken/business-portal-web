@@ -59,9 +59,10 @@ export class Login extends React.Component {
   }
 
   checkLogin = async data => {
-    const { login } = this.props;
+    const { login, location } = this.props;
+    const tenant = new URLSearchParams(location.search).get('tenant');
     const { email, password } = data;
-    await login({ email, password });
+    await login({ email, password, tenant });
   };
 
   handleSubmit = async (data, form) => {

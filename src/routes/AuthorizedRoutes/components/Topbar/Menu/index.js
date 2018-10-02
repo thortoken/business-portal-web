@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -12,6 +13,8 @@ const menuItems = [
   { route: '/payments', label: 'Payments' },
   { route: '/contractors', label: 'Contractors' },
 ];
+
+const Logo = ({ children }) => <div className="Topbar-logo">{children}</div>;
 
 export const generateMenuItems = list => {
   return list.map(item => (
@@ -30,7 +33,6 @@ export class Menu extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.menuItems = menuItems;
     this.generateMenuItems = generateMenuItems;
   }
@@ -41,9 +43,22 @@ export class Menu extends React.Component {
     const selectedKeys = [getSelectedKeyFromPath(pathname)];
 
     return (
-      <MenuAnt theme="light" mode="horizontal" selectedKeys={selectedKeys} className="Menu">
-        {this.generateMenuItems(menuItems)}
-      </MenuAnt>
+      <div className="Topbar-center">
+        <MenuAnt theme="light" mode="horizontal" selectedKeys={selectedKeys} className="Menu">
+          <MenuAnt.Item
+            key={'/dashboard'}
+            id="Menu__dashboard"
+            className="Menu__item  Menu__dashboard">
+            <Link to={'/dashboard'} className="Menu__link">
+              <Logo>
+                <img className="Topbar-logo-svg" src="images/logo.svg" alt="" />
+                <img className="Topbar-logo-image" src="images/logoText.png" alt="" />
+              </Logo>
+            </Link>
+          </MenuAnt.Item>
+          {this.generateMenuItems(menuItems)}
+        </MenuAnt>
+      </div>
     );
   }
 }

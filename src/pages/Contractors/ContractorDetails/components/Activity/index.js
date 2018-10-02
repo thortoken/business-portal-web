@@ -6,8 +6,12 @@ import moment from 'moment';
 
 import './Activity.css';
 
+export const values = {
+  now: moment(),
+};
+
 const Activity = ({ lastActivityDate }) => {
-  const days = moment().diff(lastActivityDate, 'days');
+  const days = values.now.diff(lastActivityDate, 'days');
   let type = {
     label: '',
     className: '',

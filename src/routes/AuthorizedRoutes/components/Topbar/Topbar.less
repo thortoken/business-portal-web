@@ -11,7 +11,6 @@
   box-shadow: -1px 5px 10px 0px rgba(0, 0, 0, 0.05);
   border-bottom: 1px solid @color-grey-lighter;
 
-  &-left,
   &-center,
   &-right {
     display: flex;
@@ -23,17 +22,8 @@
   }
 
   @media (min-width: @screen-xs-min) {
-    &-left,
     &-right {
       min-width: auto;
-    }
-  }
-
-  &-left {
-    width: 6.25rem;
-
-    @media (min-width: @screen-mac-pro) {
-      width: 12.5rem;
     }
   }
 
@@ -50,6 +40,7 @@
     @media (min-width: @screen-sm-min) {
       padding: 1rem 3rem;
       width: @screen-sm;
+      padding-left: 0px;
     }
     @media (min-width: @screen-md-min) {
       width: @screen-md;
@@ -66,16 +57,15 @@
     height: @Topbar-height;
     border-bottom: 1px solid @color-grey-lighter;
     &-svg{
-      margin-left: 2.25rem;
       height: 2.5rem;
       &:hover + img{
-        opacity: 1;
+        opacity: 0;
       }
     }
     &-image{
       margin-left: 1.5rem;
       width: 2.5rem;
-      opacity: 0;
+      opacity: 1;
       transition: opacity 0.2s ease-in-out;
     }
   }
