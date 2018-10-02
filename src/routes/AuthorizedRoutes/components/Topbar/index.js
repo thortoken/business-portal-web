@@ -8,9 +8,7 @@ import Menu from './Menu';
 
 import './Topbar.css';
 
-const Logo = ({ children }) => <div className="Topbar-logo">{children}</div>;
-
-class Topbar extends React.Component {
+export class Topbar extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     logout: PropTypes.func,

@@ -8,6 +8,7 @@ import FormField from '~components/FormField';
 import './Login.css';
 
 import { formFields, validationSchema, initialValues } from './formSchema';
+import NotificationService from '../../services/notification';
 
 export class Login extends React.Component {
   static propTypes = {
@@ -70,7 +71,11 @@ export class Login extends React.Component {
       await this.checkLogin(data);
     } catch (err) {
       if (err.response && err.response.status === 401) {
-        console.log(err.response);
+        NotificationService.open({
+          type: 'error',
+          message: err.response.data.error,
+          description: 'Try again.',
+        });
       }
       form.setSubmitting(false);
     }
