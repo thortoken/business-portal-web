@@ -53,6 +53,7 @@ export class JobsList extends Component {
           className="JobsList JobsList--hidden-empty-state"
           showHeader={false}
           dataSource={prepareList(jobsList)}
+          rowKey={record => record.key}
           pagination={false}>
           <Column
             align="center"
