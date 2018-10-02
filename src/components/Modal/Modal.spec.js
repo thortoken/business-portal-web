@@ -11,8 +11,8 @@ const initModal = overrides => {
   return { mockProps, wrapper };
 };
 
-describe('component: <RefreshButton/>', () => {
-  describe('RefreshButton', () => {
+describe('component: <Modal/>', () => {
+  describe('Modal', () => {
     it('should render without crashing', () => {
       const { wrapper } = initModal();
       expect(wrapper).toMatchSnapshot();
