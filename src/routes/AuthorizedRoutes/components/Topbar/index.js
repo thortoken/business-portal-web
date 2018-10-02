@@ -21,15 +21,7 @@ class Topbar extends React.Component {
 
     return (
       <div className={classNames('Topbar', className)}>
-        <div className="Topbar-left">
-          <Logo>
-            <img className="Topbar-logo-svg" src="images/logo.svg" alt="" />
-            <img className="Topbar-logo-image" src="images/logoText.png" alt="" />
-          </Logo>
-        </div>
-        <div className="Topbar-center">
-          <Menu />
-        </div>
+        <Menu />
         <div className="Topbar-right">
           <Button type="primary" ghost onClick={logout}>
             <Icon type="logout" className="Topbar-icon" /> Logout
