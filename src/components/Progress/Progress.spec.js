@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Progress from './index';
+import Progress from './Progress';
 
 describe('component: <Progress/>', () => {
   describe('Progress', () => {

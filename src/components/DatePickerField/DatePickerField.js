@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { DatePicker } from 'antd';
 import moment from 'moment';
 
-class DatePickerField extends React.Component {
+export class DatePickerField extends React.Component {
   static propTypes = {
     format: PropTypes.string,
     name: PropTypes.string.isRequired,
@@ -13,6 +13,7 @@ class DatePickerField extends React.Component {
 
   static defaultProps = {
     format: 'YYYY-MM-DD',
+    showToday: false,
   };
 
   handleChange = (date, dateStr) => {
@@ -30,10 +31,9 @@ class DatePickerField extends React.Component {
         onChange={this.handleChange}
         value={value ? moment(value, format) : undefined}
         onBlur={undefined}
-        showToday={showToday ? showToday : false}
+        showToday={showToday}
       />
     );
   }
 }
-
 export default DatePickerField;

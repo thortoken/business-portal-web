@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { Dropdown } from './index';
+import { Dropdown } from './Dropdown';
 
 const fakeOptions = [{ key: 'v1', value: 'one' }, { key: 'v2', value: 'two' }];
 

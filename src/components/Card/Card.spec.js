@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { Card } from './index';
+import { Card } from './Card';
 
 const initCard = overrides => {
   return shallow(<Card color="blue" {...overrides} />);

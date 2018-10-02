@@ -4,6 +4,8 @@ const Button = namedComponent('Button');
 
 const Col = namedComponent('Col');
 
+const DatePicker = namedComponent('DatePicker');
+
 const Dropdown = namedComponent('Dropdown');
 
 const Divider = namedComponent('Divider');
@@ -48,6 +50,7 @@ const notification = {
 module.exports = {
   Button,
   Col,
+  DatePicker,
   Divider,
   Dropdown,
   Icon,

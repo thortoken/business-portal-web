@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { ChartCard } from './index';
+import { ChartCard } from './ChartCard';
 
 const fakeThemeColors = {
   accent: '#ffffff',
