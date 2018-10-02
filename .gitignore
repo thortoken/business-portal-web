@@ -23,6 +23,7 @@
 /functions/service-account.json
 /.firebase
 firebase-debug.log
+/.firebase
 
 # functions
 /functions/node_modules

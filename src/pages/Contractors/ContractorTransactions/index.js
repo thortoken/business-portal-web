@@ -71,11 +71,12 @@ class ContractorTransactions extends React.Component {
           visible={isDeleteModalVisible}
           footer={null}
           onCancel={this.handleDeleteModalCancel}
+          closable={false}
           destroyOnClose>
           <div className="ContractorTransactions__delete-msg">
             Are you sure you want to delete this event{selectedTransactionsIds.size > 1 ? 's' : ''}?
           </div>
-          <div className="">
+          <div className="ContractorTransactions__delete-btns">
             <Button ghost type="ghost" size="default" onClick={this.handleCancelDeleteModal}>
               Cancel
             </Button>
