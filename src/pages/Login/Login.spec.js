@@ -15,6 +15,7 @@ jest.mock('./formSchema', () => ({
 const initLogin = overrides => {
   const mockProps = {
     login: jest.fn(),
+    location: {},
   };
   const wrapper = shallow(<Login {...mockProps} {...overrides} />);
   return { mockProps, wrapper };
@@ -76,6 +77,22 @@ describe('page: Login', () => {
       await instance.handleSubmit(fakeLoginData);
 
       expect(instance.checkLogin).toHaveBeenCalledWith({
+        email: 'test@test.com',
+        password: '123',
+      });
+    });
+    it('should use login prop function', async () => {
+      const { wrapper, mockProps } = initLogin();
+      const instance = wrapper.instance();
+
+      const fakeLoginData = {
+        email: 'test@test.com',
+        password: '123',
+      };
+
+      await instance.checkLogin(fakeLoginData);
+
+      expect(mockProps.login).toHaveBeenCalledWith({
         email: 'test@test.com',
         password: '123',
       });
