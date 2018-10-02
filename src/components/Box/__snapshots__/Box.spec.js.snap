@@ -3,11 +3,7 @@
 exports[`component: <Box/> Box should render children properly 1`] = `
 <div
   className="Box Box--bg-white"
->
-  <div>
-    fake child
-  </div>
-</div>
+/>
 `;
 
 exports[`component: <Box/> Box should render without crashing 1`] = `
