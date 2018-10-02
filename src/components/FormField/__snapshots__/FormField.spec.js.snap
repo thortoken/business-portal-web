@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component: <FormField/> should render without crashing 1`] = `
+Object {
+  "mockProps": Object {
+    "name": "testName",
+  },
+  "wrapper": <C
+    name="testName"
+    render={[Function]}
+/>,
+}
+`;
