@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { Login } from './Login';
-import { validationSchema } from './formSchema';
 
 jest.mock('./formSchema', () => ({
   initialValues: 'fake initial values',
@@ -64,7 +63,7 @@ describe('page: Login', () => {
   });
 
   describe('login submit action', () => {
-    it('should login', async () => {
+    it('should submit form with proper data', async () => {
       const { wrapper } = initLogin();
       const instance = wrapper.instance();
       instance.checkLogin = jest.fn();
