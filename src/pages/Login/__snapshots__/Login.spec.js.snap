@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`page: Login renderForm should render without crashing 1`] = `
+<form
+  onSubmit={[Function]}
+>
+  <FormField
+    className="Login__input-group-container"
+    key="email"
+    label="Email"
+    name="email"
+  />
+  <FormField
+    className="Login__input-group-container"
+    key="password"
+    label="Password"
+    name="password"
+  />
+  <Button
+    className="Login__submit-btn"
+    disabled={true}
+    htmlType="submit"
+    loading={false}
+    type="submit"
+  >
+    Sign in
+  </Button>
+</form>
+`;
