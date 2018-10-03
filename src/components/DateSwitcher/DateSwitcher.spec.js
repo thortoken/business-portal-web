@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import moment from 'moment';
 
-import DateSwitcher, { addToDate } from './index';
+import DateSwitcher, { addToDate } from './DateSwitcher';
 
 const initDateSwitcher = overrides => {
   const mockProps = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import DividedSection from './index';
+import DividedSection from './DividedSection';
 
 const initDividedSection = overrides => {
   const wrapper = shallow(<DividedSection {...overrides} />);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { Header } from './index';
+import { Header } from './Header';
 
 const initHeader = overrides => shallow(<Header {...overrides} />);
 

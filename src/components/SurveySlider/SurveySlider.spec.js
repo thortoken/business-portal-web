@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { SurveySlider } from './index';
+import { SurveySlider } from './SurveySlider';
 
 const initSurveySlider = overrides => shallow(<SurveySlider {...overrides} />);
 

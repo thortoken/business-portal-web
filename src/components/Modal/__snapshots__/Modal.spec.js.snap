@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component: <RefreshButton/> RefreshButton should render without crashing 1`] = `
+<div
+  className="Modal animated slideInUp"
+>
+  <div
+    className="Modal__body"
+  >
+    <div
+      className="Modal__container"
+    >
+      <div
+        className="Modal__header"
+      >
+        <Button
+          className="Modal__header--close-button"
+          icon="close"
+          onClick={[Function]}
+          shape="circle"
+          size="default"
+          type="default"
+        />
+        <div
+          className="Modal__header--title"
+        />
+      </div>
+      <div
+        className="Modal__content"
+      />
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component: <InputGroup/> InputGroup should render children properly 1`] = `
+<div
+  className="InputGroup"
+>
+  <div
+    className="InputGroup-label"
+  />
+  <div
+    className="InputGroup-input"
+    key=".0"
+  >
+    fake child
+  </div>
+</div>
+`;
+
+exports[`component: <InputGroup/> InputGroup should render without crashing 1`] = `
+<div
+  className="InputGroup"
+>
+  <div
+    className="InputGroup-label"
+  />
+</div>
+`;

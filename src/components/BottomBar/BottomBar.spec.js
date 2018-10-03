@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { BottomBar } from './index';
+import { BottomBar } from './BottomBar';
 
 const initBottomBar = overrides => {
   const mockProps = {
