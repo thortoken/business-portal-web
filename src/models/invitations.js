@@ -1,8 +1,9 @@
 import Http from '~services/http';
+import _ from 'lodash';
 
 const invitations = {
   effects: {
-    async sendInvite({ email }) {
+    async sendInvitation({ email }) {
       try {
         const response = await Http.post('/contractors/invitations/', {
           email,
@@ -21,7 +22,7 @@ const invitations = {
             status,
           },
         });
-        this.setInvitations(response.data);
+        this.setInvitations(_.orderBy(response.data.items, ['status'], ['asc']));
         this.setInvitationsPagination(response.data.pagination);
         return response.data;
       } catch (err) {

@@ -156,7 +156,7 @@ class Payments extends React.Component {
 
     return (
       <div>
-        <Header title="Payments" size="medium">
+        <Header title="Payments List" size="medium">
           <RefreshButton handleRefresh={this.handleRefresh} isLoading={isJobsLoading} />
         </Header>
 

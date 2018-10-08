@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Table, Button } from 'antd';
 import moment from 'moment';
+import classnames from 'classnames';
 import Box from '../../../components/Box/index';
 import makeDefaultPagination from '~utils/pagination';
-import { getCurrentTwoWeeksPeriod } from '~utils/time';
 
 import './InvitationsList.css';
 
@@ -15,69 +15,55 @@ import AddContractorMenu from '../AddContractorMenu';
 
 const { Column } = Table;
 
-export const prepareActivity = list => {
-  return list.map(item => {
-    item.lastActivityLabel = item.lastActivity ? moment(moment(item.lastActivity)).fromNow() : '';
-    return item;
-  });
-};
-
 class InvitationsList extends React.Component {
   static propTypes = {
-    usersList: PropTypes.arrayOf(PropTypes.object),
-    userListPagination: PropTypes.object,
+    invitationsList: PropTypes.arrayOf(PropTypes.object),
+    invitationsListPagination: PropTypes.object,
     isLoading: PropTypes.bool,
   };
 
   state = {
-    usersList: [],
+    invitationsList: [],
     pagination: makeDefaultPagination(),
-    userListPagination: null,
+    invitationsListPagination: null,
   };
 
   componentDidMount() {
     const { pagination } = this.state;
-    this.props.getUsers({
+    this.props.getInvitations({
       page: pagination.current,
       limit: pagination.pageSize,
-      ...getCurrentTwoWeeksPeriod(),
     });
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.usersList !== prevState.usersList) {
+    if (nextProps.invitationsList !== prevState.invitationsList) {
       return {
-        usersList: nextProps.usersList,
-        contractorsData: prepareActivity(nextProps.usersList),
+        invitationsList: nextProps.invitationsList,
       };
     }
-    if (nextProps.userListPagination !== prevState.userListPagination) {
+    if (nextProps.invitationsListPagination !== prevState.invitationsListPagination) {
       let pag = prevState.pagination;
       return {
-        userListPagination: nextProps.userListPagination,
-        pagination: { ...pag, total: nextProps.userListPagination.total },
+        invitationsListPagination: nextProps.invitationsListPagination,
+        pagination: { ...pag, total: nextProps.invitationsListPagination.total },
       };
     }
     return null;
   }
 
   handleTableChange = pag => {
-    const { getUsers } = this.props;
+    const { getInvitations } = this.props;
     const { pagination } = this.state;
     let curr = pag.current;
     if (pagination.pageSize !== pag.pageSize) {
       curr = 1;
     }
     this.setState({ pagination: { ...pag, current: curr } });
-    getUsers({
+    getInvitations({
       page: curr,
       limit: pag.pageSize,
-      ...getCurrentTwoWeeksPeriod(),
     });
-  };
-
-  handleButtonClick = user => {
-    this.props.history.push(`/contractors/${user.id}`);
   };
 
   handleGoContractor = () => {
@@ -85,20 +71,19 @@ class InvitationsList extends React.Component {
   };
 
   handleRefresh = () => {
-    const { getUsers } = this.props;
+    const { getInvitations } = this.props;
     const { pagination } = this.state;
-    getUsers({
+    getInvitations({
       page: pagination.current,
       limit: pagination.pageSize,
-      ...getCurrentTwoWeeksPeriod(),
     });
   };
 
   render() {
-    const { contractorsData, pagination } = this.state;
+    const { invitationsList, pagination } = this.state;
     const { isLoading } = this.props;
     return (
-      <div className="ContractorsList">
+      <div className="InvitationsList">
         <Header title="Invitations List" size="medium">
           <Button type="primary" ghost onClick={this.handleGoContractor}>
             Contractors List
@@ -108,29 +93,33 @@ class InvitationsList extends React.Component {
         </Header>
         <Box>
           <Table
-            dataSource={contractorsData}
-            className="ContractorsList__table"
+            dataSource={invitationsList}
+            className="InvitationsList__table"
             rowKey="id"
             onChange={this.handleTableChange}
             pagination={pagination}
             loading={isLoading}>
-            <Column align="center" dataIndex="tenantProfile.firstName" title="First Name" />
-            <Column align="center" dataIndex="tenantProfile.lastName" title="Last Name" />
-            <Column align="center" dataIndex="tenantProfile.city" title="City" />
-            <Column align="center" dataIndex="tenantProfile.state" title="State" />
+            <Column align="left" dataIndex="email" title="Email" />
             <Column
               align="center"
-              title="Last Activity"
-              className="ContractorsList__activity"
-              render={(text, record) => {
-                return <div>{record.lastActivityLabel}</div>;
-              }}
+              className="InvitationsList__date"
+              dataIndex="date"
+              title="Date"
             />
             <Column
               align="center"
-              title="Actions"
-              render={(text, record) => {
-                return <Button onClick={() => this.handleButtonClick(record)}>View Details</Button>;
+              dataIndex="status"
+              title="Status"
+              render={(text) => {
+                return (
+                  <div
+                    className={classnames('InvitationsList__status', {
+                      'InvitationsList__status--pending': text === 'pending',
+                      'InvitationsList__status--registered': text === 'registered',
+                    })}>
+                    {text}
+                  </div>
+                );
               }}
             />
           </Table>
@@ -141,13 +130,13 @@ class InvitationsList extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  usersList: state.users.usersList,
-  userListPagination: state.users.userListPagination,
-  isLoading: state.loading.effects.users.getUsers,
+  invitationsList: state.invitations.invitationsList,
+  invitationsListPagination: state.invitations.invitationsListPagination,
+  isLoading: state.loading.effects.invitations.getInvitations,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getUsers: dispatch.users.getUsers,
+  getInvitations: dispatch.invitations.getInvitations,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InvitationsList);
