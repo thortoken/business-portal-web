@@ -5,6 +5,8 @@ import AddContractor from './AddContractor';
 import ContractorDetails from './ContractorDetails';
 import ContractorsList from './ContractorsList';
 import EditContractor from './EditContractor';
+import InvitationsList from './InvitationsList';
+import InviteContractor from './InviteContractor';
 
 import { withRouteModal } from '~components/Modal';
 
@@ -14,10 +16,16 @@ export class RootContractorsPage extends React.Component {
 
     return (
       <Switch>
+        <Route exact path={`${match.path}/invitationsList`} component={InvitationsList} />
         <Route
           exact
           path={`${match.path}/add`}
           component={withRouteModal({ component: AddContractor, title: 'Add Contractor' })}
+        />
+        <Route
+          exact
+          path={`${match.path}/invite`}
+          component={withRouteModal({ component: InviteContractor, title: 'Invite Contractor' })}
         />
         <Route
           exact

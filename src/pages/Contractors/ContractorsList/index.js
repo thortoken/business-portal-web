@@ -9,7 +9,9 @@ import { getCurrentTwoWeeksPeriod } from '~utils/time';
 
 import './ContractorsList.css';
 
-import ActionBar from './components/ActionBar/index';
+import Header from '~components/Header';
+import RefreshButton from '~components/RefreshButton';
+import AddContractorMenu from '../AddContractorMenu';
 
 const { Column } = Table;
 
@@ -78,6 +80,10 @@ class ContractorsList extends React.Component {
     this.props.history.push(`/contractors/${user.id}`);
   };
 
+  handleGoInv = () => {
+    this.props.history.push(`/contractors/invitationsList`);
+  };
+
   handleRefresh = () => {
     const { getUsers } = this.props;
     const { pagination } = this.state;
@@ -93,7 +99,13 @@ class ContractorsList extends React.Component {
     const { isLoading } = this.props;
     return (
       <div className="ContractorsList">
-        <ActionBar handleRefresh={this.handleRefresh} isLoading={isLoading} />
+        <Header title="Contractors List" size="medium">
+          <Button type="primary" ghost onClick={this.handleGoInv}>
+            Invitations List
+          </Button>
+          <AddContractorMenu />
+          <RefreshButton handleRefresh={this.handleRefresh} isLoading={isLoading} />
+        </Header>
         <Box>
           <Table
             dataSource={contractorsData}
