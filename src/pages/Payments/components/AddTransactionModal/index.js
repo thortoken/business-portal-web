@@ -8,6 +8,7 @@ import FormField from '~components/FormField';
 import './AddTransaction.css';
 
 import { initialValues, formFields, validationSchema } from './formSchema';
+import NotificationService from "../../../../services/notification";
 
 export class AddTransactionModal extends Component {
   static propTypes = {
@@ -35,7 +36,12 @@ export class AddTransactionModal extends Component {
       handleRefresh();
     } catch (err) {
       if (err.response) {
-        this.setState({ errorMsg: err.response.data.error });
+        this.setState({ errorMsg: err.response.data.error.message || '' });
+        NotificationService.open({
+          type: 'warning',
+          message: 'Warning',
+          description: err.response.data.error.message || '',
+        });
       }
       form.setSubmitting(false);
     }
