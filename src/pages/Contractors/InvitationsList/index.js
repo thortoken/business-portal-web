@@ -7,7 +7,7 @@ import Box from '../../../components/Box/index';
 import makeDefaultPagination from '~utils/pagination';
 import { getCurrentTwoWeeksPeriod } from '~utils/time';
 
-import './ContractorsList.css';
+import './InvitationsList.css';
 
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
@@ -22,7 +22,7 @@ export const prepareActivity = list => {
   });
 };
 
-class ContractorsList extends React.Component {
+class InvitationsList extends React.Component {
   static propTypes = {
     usersList: PropTypes.arrayOf(PropTypes.object),
     userListPagination: PropTypes.object,
@@ -80,8 +80,8 @@ class ContractorsList extends React.Component {
     this.props.history.push(`/contractors/${user.id}`);
   };
 
-  handleGoInv = () => {
-    this.props.history.push(`/contractors/invitationsList`);
+  handleGoContractor = () => {
+    this.props.history.push(`/contractors`);
   };
 
   handleRefresh = () => {
@@ -99,9 +99,9 @@ class ContractorsList extends React.Component {
     const { isLoading } = this.props;
     return (
       <div className="ContractorsList">
-        <Header title="Contractors List" size="medium">
-          <Button type="primary" ghost onClick={this.handleGoInv}>
-            Invitations List
+        <Header title="Invitations List" size="medium">
+          <Button type="primary" ghost onClick={this.handleGoContractor}>
+            Contractors List
           </Button>
           <AddContractorMenu />
           <RefreshButton handleRefresh={this.handleRefresh} isLoading={isLoading} />
@@ -150,4 +150,4 @@ const mapDispatchToProps = dispatch => ({
   getUsers: dispatch.users.getUsers,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContractorsList);
+export default connect(mapStateToProps, mapDispatchToProps)(InvitationsList);

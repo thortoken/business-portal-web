@@ -15,6 +15,8 @@ import { formatUsd } from '~utils/number';
 import { JobsList } from './components/JobsList';
 import makeDefaultPagination from '~utils/pagination';
 
+import RefreshButton from '~components/RefreshButton';
+
 import './PaymentsList.css';
 
 const { Column } = Table;
@@ -154,13 +156,9 @@ class Payments extends React.Component {
 
     return (
       <div>
-        <Header
-          title="Payments"
-          size="medium"
-          refresh
-          refreshLoading={isJobsLoading}
-          handleRefresh={this.handleRefresh}
-        />
+        <Header title="Payments" size="medium">
+          <RefreshButton handleRefresh={this.handleRefresh} isLoading={isJobsLoading} />
+        </Header>
 
         <Spin spinning={isSummaryLoading}>
           <Summary previous={previous} current={current} />
