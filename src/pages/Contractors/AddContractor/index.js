@@ -8,6 +8,7 @@ import FormField from '~components/FormField';
 
 import { initialValues, formFields, transformDateToMoment, validationSchema } from './formSchema';
 import './AddContractor.css';
+import NotificationService from '../../../services/notification';
 
 export class AddContractor extends React.Component {
   static propTypes = {
@@ -104,13 +105,17 @@ export class AddContractor extends React.Component {
   handleSubmitSuccess = () => {
     this.setState({ error: null });
 
-    const { onSubmit } = this.props;
+    const { onSubmit, history } = this.props;
     if (typeof onSubmit === 'function') {
       const { createdContractor } = this.state;
       onSubmit(createdContractor);
     }
-
-    this.props.history.goBack();
+    NotificationService.open({
+      type: 'success',
+      message: 'Success',
+      description: 'Contractor successfully added.',
+    });
+    history.push(`/contractors`);
   };
 }
 

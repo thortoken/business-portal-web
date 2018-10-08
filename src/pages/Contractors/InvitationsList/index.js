@@ -103,14 +103,17 @@ class InvitationsList extends React.Component {
             <Column
               align="center"
               className="InvitationsList__date"
-              dataIndex="date"
-              title="Date"
+              dataIndex="createdAt"
+              title="Post Date"
+              render={text => {
+                return <div>{ moment(text).format("MM/DD/YY, hh:mm").toString() }</div>;
+              }}
             />
             <Column
               align="center"
               dataIndex="status"
               title="Status"
-              render={(text) => {
+              render={text => {
                 return (
                   <div
                     className={classnames('InvitationsList__status', {

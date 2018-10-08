@@ -25,13 +25,13 @@ class AddContractorMenu extends React.Component {
   };
 
   handleAdd = () => {
-    const { match, history } = this.props;
-    history.push(`${match.url}/add`);
+    const { history } = this.props;
+    history.push(`/contractors/add`);
   };
 
   handleInvite = () => {
-    const { match, history } = this.props;
-    history.push(`${match.url}/invite`);
+    const { history } = this.props;
+    history.push(`/contractors/invite`);
   };
 
   render() {
