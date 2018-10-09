@@ -10,6 +10,8 @@ import { initialValues, formFields, transformDateToMoment, validationSchema } fr
 import './AddContractor.css';
 import NotificationService from '../../../services/notification';
 
+import { handleFormHttpResponse } from '~utils/forms/errors';
+
 export class AddContractor extends React.Component {
   static propTypes = {
     createFundingSource: PropTypes.func.isRequired,
@@ -37,7 +39,7 @@ export class AddContractor extends React.Component {
     );
   }
 
-  renderForm = ({ handleSubmit, isSubmitting, values, dirty }) => (
+  renderForm = ({ handleSubmit, isSubmitting, values, dirty, errors }) => (
     <form onSubmit={handleSubmit}>
       {Object.entries(formFields).map(([name, options]) => (
         <FormField key={name} name={name} label={options.label} {...options.input} />
@@ -95,10 +97,7 @@ export class AddContractor extends React.Component {
 
       this.handleSubmitSuccess();
     } catch (err) {
-      if (err.response) {
-        this.setState({ error: err.response.data.error });
-      }
-      form.setSubmitting(false);
+      handleFormHttpResponse(form, err.response.data.error.profile, err.response);
     }
   };
 
