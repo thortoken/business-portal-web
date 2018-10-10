@@ -39,7 +39,7 @@ export class AddContractor extends React.Component {
     );
   }
 
-  renderForm = ({ handleSubmit, isSubmitting, values, dirty, errors }) => (
+  renderForm = ({ handleSubmit, isSubmitting, values, dirty }) => (
     <form onSubmit={handleSubmit}>
       {Object.entries(formFields).map(([name, options]) => (
         <FormField key={name} name={name} label={options.label} {...options.input} />
@@ -97,7 +97,7 @@ export class AddContractor extends React.Component {
 
       this.handleSubmitSuccess();
     } catch (err) {
-      handleFormHttpResponse(form, err.response.data.error.profile, err.response);
+      handleFormHttpResponse(form, err.response.data.error, err.response);
     }
   };
 
