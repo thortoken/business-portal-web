@@ -8,6 +8,7 @@ export class GuestRoutes extends React.Component {
     return (
       <Switch>
         <Route exact path="/sign-in" component={Login} />
+        {/*<Route exact path="/sign-up/:invitationId" component={Register} />*/}
         <Redirect from="*" to="/sign-in" />
       </Switch>
     );

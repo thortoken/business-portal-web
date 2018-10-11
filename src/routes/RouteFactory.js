@@ -7,12 +7,12 @@ import GuestRoutes from './GuestRoutes';
 
 export class RouteFactory extends Component {
   render() {
-    const { token } = this.props;
+    const { token, roles } = this.props;
 
-    return token ? <AuthorizedRoutes /> : <GuestRoutes />;
+    return token && roles ? <AuthorizedRoutes /> : <GuestRoutes />;
   }
 }
 
-const mapState = ({ auth: { token } }) => ({ token });
+const mapState = ({ auth: { token, roles } }) => ({ token, roles });
 
 export default withRouter(connect(mapState)(RouteFactory));

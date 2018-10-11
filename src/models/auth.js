@@ -15,6 +15,19 @@ const auth = {
       this.setToken(token);
     },
 
+    async pickRoles() {
+      let roles = localStorage.getItem('thor-roles') || [];
+      this.setRoles(roles);
+    },
+
+    async saveRole(roles) {
+      let mappedRoles = roles.map(value => {
+        return value.name;
+      });
+      localStorage.setItem('thor-roles', mappedRoles);
+      this.setRoles(roles);
+    },
+
     async removeToken() {
       localStorage.removeItem('thor-token');
       removeAuthHeader();
@@ -28,10 +41,12 @@ const auth = {
           password: data.password,
           tenant: data.tenant || Config.tenantId,
         });
-        const { token, name, phone, email } = response.data;
 
+        const { token, name, phone, email } = response.data;
+        const { roles } = response.data.tenantProfile;
         this.setUser({ name, phone, email });
         this.saveToken(token);
+        this.saveRole(roles);
 
         return { token, name, phone, email };
       } catch (err) {
@@ -50,6 +65,12 @@ const auth = {
         token: action,
       };
     },
+    setRoles(state, action) {
+      return {
+        ...state,
+        roles: action,
+      };
+    },
     setUser(state, action) {
       return {
         ...state,
@@ -60,6 +81,7 @@ const auth = {
   state: {
     user: null,
     token: null,
+    roles: [],
   },
 };
 

@@ -9,6 +9,11 @@ import Topbar from './components/Topbar';
 
 import './AuthorizedRoutes.css';
 
+import { RouteGuard } from '../RouteGuard';
+
+const Admin = RouteGuard(['admin']);
+const Contractor = RouteGuard(['admin', 'contractor']);
+
 export class AuthorizedRoutes extends React.Component {
   render() {
     return (
@@ -16,8 +21,8 @@ export class AuthorizedRoutes extends React.Component {
         <Topbar className="AuthorizedRoutes-nav" />
         <Layout.Content className="AuthorizedRoutes-content">
           <Switch>
-            <Route path="/payments" component={PaymentsPage} />
-            <Route path="/contractors" component={ContractorsPage} />
+            <Route path="/payments" component={Admin(PaymentsPage)} />
+            <Route path="/contractors" component={Admin(ContractorsPage)} />
             <Redirect from="*" to="/payments" />
           </Switch>
         </Layout.Content>
