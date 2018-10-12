@@ -9,13 +9,19 @@ export const RouteGuard = allowedRoles => WrappedComponent => {
         roles: localStorage.getItem('thor-roles') || [],
       };
     }
-    render() {
+
+    UNSAFE_componentWillMount() {
       const { history } = this.props;
+      const { roles } = this.state;
+      if (!allowedRoles.includes(roles) && roles.includes('contractor')) {
+        history.push('/contractor-profile');
+      }
+    }
+
+    render() {
       const { roles } = this.state;
       if (allowedRoles.includes(roles)) {
         return <WrappedComponent {...this.props} />;
-      } else if(roles.includes('contractor')) {
-
       } else {
         return <h1>No page for you!</h1>;
       }
