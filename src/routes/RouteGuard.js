@@ -4,7 +4,6 @@ export const RouteGuard = allowedRoles => WrappedComponent => {
   return class WithGuard extends React.Component {
     constructor(props, state) {
       super(props, state);
-      console.log(state, props);
       this.state = {
         roles: localStorage.getItem('thor-roles') || [],
       };
