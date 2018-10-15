@@ -18347,3 +18347,7 @@ ul.ant-menu li.ant-menu-item-selected {
 .ant-dropdown-menu-item.ant-dropdown-menu-item-active:last-child a {
   color: #ffffff;
 }
+.ant-input:hover,
+.ant-input:focus {
+  border-right-width: 0 !important;
+}

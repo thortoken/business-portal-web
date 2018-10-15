@@ -2,23 +2,16 @@ import React from 'react';
 
 import { Button, Checkbox } from 'antd';
 
-import PropTypes from 'prop-types';
-
 import './Terms.css';
 import connect from 'react-redux/es/connect/connect';
-import NotificationService from '../../../services/notification';
 
 export class Terms extends React.Component {
-  static propTypes = {
-    handleSignUp: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool,
-    id: PropTypes.string,
-  };
+  static propTypes = {};
   state = {
     agreeChecked: false,
   };
   render() {
-    const { isLoading } = this.props;
+    const { getAgreement } = this.props;
     return (
       <div className="Terms">
         <div className="Terms__register">
@@ -67,9 +60,8 @@ export class Terms extends React.Component {
             <Button
               type="primary"
               size="large"
-              onClick={this.handleSubmit}
-              loading={isLoading}
-              disabled={!this.state.agreeChecked || isLoading}>
+              onClick={getAgreement}
+              disabled={!this.state.agreeChecked}>
               Sign Up
             </Button>
           </div>
@@ -78,49 +70,21 @@ export class Terms extends React.Component {
     );
   }
 
-  setAgreement = value => {
-    if (value) {
-      localStorage.setItem('thor-terms-agreement', 'true');
-    } else {
-      localStorage.removeItem('thor-terms-agreement');
-    }
-  };
-
-  handleSubmit = async () => {
-    const { checkInvitation, id, handleSignUp } = this.props;
-    try {
-      let response = await checkInvitation({ id });
-      if (response.status === 'pending') {
-        handleSignUp();
-      }
-    } catch (err) {
-      if (err.response && err.response.status === 401) {
-        NotificationService.open({
-          type: 'error',
-          message: err.response.data.error,
-          description: 'Try again.',
-        });
-      }
-      console.log(err);
-    }
-  };
-
   onAgreeChecked = e => {
+    const { saveAgreement } = this.props;
     if (e.target.checked) {
-      this.setAgreement(true);
+      saveAgreement(true);
       this.setState({ agreeChecked: true });
     } else {
-      this.setAgreement(false);
+      saveAgreement(false);
       this.setState({ agreeChecked: false });
     }
   };
 }
-const mapStateToProps = state => ({
-  isLoading: state.loading.effects.invitations.checkInvitation,
-});
 
 const mapDispatchToProps = dispatch => ({
-  checkInvitation: dispatch.invitations.checkInvitation,
+  saveAgreement: dispatch.onBoarding.saveAgreement,
+  getAgreement: dispatch.onBoarding.getAgreement,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Terms);
+export default connect(null, mapDispatchToProps)(Terms);

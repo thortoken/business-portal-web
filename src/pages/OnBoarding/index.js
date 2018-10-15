@@ -3,9 +3,11 @@ import React from 'react';
 import { Steps, Icon } from 'antd';
 
 import PropTypes from 'prop-types';
+import connect from 'react-redux/es/connect/connect';
 import Terms from './Terms';
 
 import './OnBoarding.css';
+import SignUp from './SignUp';
 
 const Step = Steps.Step;
 
@@ -16,42 +18,60 @@ export class OnBoarding extends React.Component {
         invitationId: PropTypes.string.isRequired,
       }).isRequired,
     }).isRequired,
+    contractor: PropTypes.object,
+    agreement: PropTypes.bool,
+    step: PropTypes.number,
   };
-  constructor(props, state) {
-    super(props, state);
-    this.state = {
-      step: 0,
-    };
-    if (localStorage.getItem('thor-terms-agreement')) {
-      this.state = { ...this.state, step: 1 };
+
+  state = {
+    ready: false,
+    contractor: null,
+    agreement: false,
+  };
+
+  async componentDidMount() {
+    const { checkInvitation, getAgreement, match } = this.props;
+    const invitation = await checkInvitation(match.params.invitationId);
+    if (invitation.status === 200) {
+      await getAgreement();
+    } else {
+      console.log('error');
     }
   }
-  acceptTerms = () => {
-    this.setState({ step: 1 });
-  };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let localState = {};
+    if (nextProps.contractor !== prevState.contractor) {
+      localState['contractor'] = nextProps.contractor;
+    }
+    if (nextProps.agreement !== prevState.agreement) {
+      localState['agreement'] = nextProps.agreement;
+    }
+    return Object.keys(localState).length ? localState : null;
+  }
+
   render() {
-    const { step } = this.state;
-    const { match } = this.props;
+    const { step } = this.props;
     const steps = [
       {
         title: 'Terms',
         icon: 'solution',
-        content: () => <Terms handleSignUp={this.acceptTerms} id={match.params.invitationId} />,
+        content: () => <Terms />,
       },
       {
         title: 'Sign Up',
         icon: 'user',
-        content: () => <Terms handleSignUp={this.acceptTerms} id={match.params.invitationId} />,
+        content: () => <SignUp />,
       },
       {
         title: 'Funding Source',
         icon: 'dollar',
-        content: () => <Terms handleSignUp={this.acceptTerms} id={match.params.invitationId} />,
+        content: () => <Terms />,
       },
       {
         title: 'Done',
         icon: 'smile-o',
-        content: () => <Terms handleSignUp={this.acceptTerms} id={match.params.invitationId} />,
+        content: () => <Terms />,
       },
     ];
     return (
@@ -74,4 +94,16 @@ export class OnBoarding extends React.Component {
     );
   }
 }
-export default OnBoarding;
+const mapStateToProps = state => ({
+  contractor: state.onBoarding.contractor,
+  step: state.onBoarding.step,
+  agreement: state.onBoarding.agreement,
+  isLoading: state.loading.effects.onBoarding.checkInvitation,
+});
+
+const mapDispatchToProps = dispatch => ({
+  checkInvitation: dispatch.onBoarding.checkInvitation,
+  getAgreement: dispatch.onBoarding.getAgreement,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(OnBoarding);

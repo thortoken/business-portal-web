@@ -10,6 +10,7 @@ import users from './users';
 import tenants from './tenants';
 import payments from './payments';
 import invitations from './invitations';
+import onBoarding from './onBoarding';
 
 export const history = createHistory();
 const middleware = routerMiddleware(history);
@@ -25,6 +26,7 @@ const store = init({
     tenants,
     payments,
     invitations,
+    onBoarding,
   },
   plugins: [loading],
   redux: {
