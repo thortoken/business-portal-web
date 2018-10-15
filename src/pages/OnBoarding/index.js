@@ -2,49 +2,58 @@ import React from 'react';
 
 import { Steps, Icon } from 'antd';
 
-import { Terms } from './Terms';
+import PropTypes from 'prop-types';
+import Terms from './Terms';
 
 import './OnBoarding.css';
 
 const Step = Steps.Step;
 
 export class OnBoarding extends React.Component {
-  state = {
-    step: 0,
+  static propTypes = {
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        invitationId: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
   };
   constructor(props, state) {
     super(props, state);
+    this.state = {
+      step: 0,
+    };
     if (localStorage.getItem('thor-terms-agreement')) {
-      this.state = { ...state, step: 1 };
+      this.state = { ...this.state, step: 1 };
     }
   }
   acceptTerms = () => {
     this.setState({ step: 1 });
   };
   render() {
+    const { step } = this.state;
+    const { match } = this.props;
     const steps = [
       {
         title: 'Terms',
         icon: 'solution',
-        content: () => <Terms handleSignUp={this.acceptTerms} />,
+        content: () => <Terms handleSignUp={this.acceptTerms} id={match.params.invitationId} />,
       },
       {
         title: 'Sign Up',
         icon: 'user',
-        content: () => <Terms handleSignUp={this.acceptTerms} />,
+        content: () => <Terms handleSignUp={this.acceptTerms} id={match.params.invitationId} />,
       },
       {
         title: 'Funding Source',
         icon: 'dollar',
-        content: () => <Terms handleSignUp={this.acceptTerms} />,
+        content: () => <Terms handleSignUp={this.acceptTerms} id={match.params.invitationId} />,
       },
       {
         title: 'Done',
         icon: 'smile-o',
-        content: () => <Terms handleSignUp={this.acceptTerms} />,
+        content: () => <Terms handleSignUp={this.acceptTerms} id={match.params.invitationId} />,
       },
     ];
-    const { step } = this.state;
     return (
       <div className="OnBoarding">
         <div className="OnBoarding__container">

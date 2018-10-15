@@ -29,6 +29,14 @@ const invitations = {
         throw err;
       }
     },
+    async checkInvitation({ id }) {
+      try {
+        const response = await Http.get(`/contractorsInvitations/${id}`);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
   },
   reducers: {
     setInvitations(state, payload) {

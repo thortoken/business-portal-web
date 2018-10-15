@@ -12,7 +12,7 @@ import './AuthorizedRoutes.css';
 import { RouteGuard } from '../RouteGuard';
 
 const Admin = RouteGuard(['admin']);
-const Contractor = RouteGuard(['admin', 'contractor']);
+// const Contractor = RouteGuard(['admin', 'contractor']);
 
 export class AuthorizedRoutes extends React.Component {
   render() {
