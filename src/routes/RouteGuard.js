@@ -13,7 +13,7 @@ export const RouteGuard = allowedRoles => WrappedComponent => {
       const { history } = this.props;
       const { roles } = this.state;
       if (!allowedRoles.includes(roles) && roles.includes('contractor')) {
-        history.push('/contractor-profile');
+        history.push('/contractor');
       }
     }
 
