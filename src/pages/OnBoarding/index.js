@@ -8,6 +8,7 @@ import Terms from './Terms';
 
 import './OnBoarding.css';
 import SignUp from './SignUp';
+import NotificationService from '~services/notification';
 
 const Step = Steps.Step;
 
@@ -30,12 +31,17 @@ export class OnBoarding extends React.Component {
   };
 
   async componentDidMount() {
-    const { checkInvitation, getAgreement, match } = this.props;
+    const { checkInvitation, getAgreement, match, history } = this.props;
     const invitation = await checkInvitation(match.params.invitationId);
     if (invitation.status === 200) {
       await getAgreement();
-    } else {
-      console.log('error');
+    } else if (invitation.status === 406) {
+      history.push('/sign-in');
+      NotificationService.open({
+        type: 'warning',
+        message: 'Warning',
+        description: `${invitation.data.error}. Sign in with your credentials.`,
+      });
     }
   }
 
@@ -51,7 +57,7 @@ export class OnBoarding extends React.Component {
   }
 
   render() {
-    const { step } = this.props;
+    const { step, match } = this.props;
     const steps = [
       {
         title: 'Terms',
@@ -61,7 +67,7 @@ export class OnBoarding extends React.Component {
       {
         title: 'Sign Up',
         icon: 'user',
-        content: () => <SignUp />,
+        content: () => <SignUp invToken={match.params.invitationId} />,
       },
       {
         title: 'Funding Source',

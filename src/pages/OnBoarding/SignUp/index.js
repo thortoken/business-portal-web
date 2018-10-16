@@ -15,6 +15,7 @@ import { handleFormHttpResponse } from '~utils/forms/errors';
 export class SignUp extends React.Component {
   static propTypes = {
     contractor: PropTypes.object,
+    invToken: PropTypes.string,
   };
 
   state = {
@@ -77,6 +78,7 @@ export class SignUp extends React.Component {
   };
 
   handleSubmit = async (data, form) => {
+    const { invToken } = this.props;
     const normalizedData = validationSchema.cast(data);
     normalizedData['country'] = 'USA';
     const { ...profile } = normalizedData;
@@ -86,6 +88,7 @@ export class SignUp extends React.Component {
         ...normalizedData,
       },
       tenant: Config.tenantId,
+      invitationToken: invToken,
       password: profile.password,
     };
 

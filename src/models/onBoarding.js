@@ -8,7 +8,7 @@ const onBoarding = {
         this.setContractor(response.data);
         return response;
       } catch (err) {
-        throw err;
+        return err.response;
       }
     },
     async getAgreement() {

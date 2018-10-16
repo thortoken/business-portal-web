@@ -4,6 +4,7 @@ import { Layout } from 'antd';
 
 import PaymentsPage from '~pages/Payments';
 import ContractorsPage from '~pages/Contractors';
+import ContractorPage from '~pages/Contractor';
 
 import Topbar from './components/Topbar';
 
@@ -12,7 +13,7 @@ import './AuthorizedRoutes.css';
 import { RouteGuard } from '../RouteGuard';
 
 const Admin = RouteGuard(['admin']);
-// const Contractor = RouteGuard(['admin', 'contractor']);
+const Contractor = RouteGuard(['admin', 'contractor']);
 
 export class AuthorizedRoutes extends React.Component {
   render() {
@@ -23,6 +24,7 @@ export class AuthorizedRoutes extends React.Component {
           <Switch>
             <Route path="/payments" component={Admin(PaymentsPage)} />
             <Route path="/contractors" component={Admin(ContractorsPage)} />
+            <Route exact path="/contractor" component={Contractor(ContractorPage)} />
             <Redirect from="*" to="/payments" />
           </Switch>
         </Layout.Content>
