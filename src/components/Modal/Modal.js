@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
 
-import './Modal.css';
+import './Modal.scss';
 
 export class Modal extends React.Component {
   static propTypes = {

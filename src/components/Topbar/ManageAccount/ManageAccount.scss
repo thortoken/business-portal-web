@@ -1,0 +1,21 @@
+@import "../../../styles/var";
+
+.ManageAccount {
+  border-bottom: 1px solid $color-grey-lighter;
+  padding-right: 1.25rem;
+  height: $Topbar-height;
+
+  ul&-menu > li&-list-item {
+    padding: 1rem 1.25rem 1.25rem 1.25rem;
+    font-size: 1.25rem;
+  }
+
+  li&-logout {
+    margin-top: 3.75rem;
+  }
+
+  &-btn > button > i.ManageAccount-icon {
+    float: initial;
+    margin-top: initial;
+  }
+}

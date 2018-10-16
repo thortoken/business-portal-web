@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import Menu from './Menu/index';
 
-import './Topbar.css';
+import './Topbar.scss';
 
 export class Topbar extends React.Component {
   static propTypes = {

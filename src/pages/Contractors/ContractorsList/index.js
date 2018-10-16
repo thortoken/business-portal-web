@@ -7,7 +7,7 @@ import Box from '../../../components/Box/index';
 import makeDefaultPagination from '~utils/pagination';
 import { getCurrentTwoWeeksPeriod } from '~utils/time';
 
-import './ContractorsList.css';
+import './ContractorsList.scss';
 
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';

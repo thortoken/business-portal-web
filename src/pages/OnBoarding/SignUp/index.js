@@ -8,7 +8,7 @@ import FormField from '~components/FormField';
 import Config from '~services/config';
 
 import { initialValues, formFields, transformDateToMoment, validationSchema } from './formSchema';
-import './SignUp.css';
+import './SignUp.scss';
 
 import { handleFormHttpResponse } from '~utils/forms/errors';
 

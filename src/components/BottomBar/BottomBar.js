@@ -5,7 +5,7 @@ import { Button } from 'antd';
 
 import { formatUsd } from '~utils/number';
 
-import './BottomBar.css';
+import './BottomBar.scss';
 
 export class BottomBar extends Component {
   render() {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Progress as AntProgress } from 'antd';
 
-import './Progress.css';
+import './Progress.scss';
 
 export class Progress extends React.Component {
   static propTypes = {

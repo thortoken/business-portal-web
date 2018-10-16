@@ -6,7 +6,7 @@ import moment from 'moment';
 import DateSwitcher from '~components/DateSwitcher';
 import Dropdown from '~components/Dropdown';
 
-import './Filters.css';
+import './Filters.scss';
 
 export default class Filters extends React.Component {
   static propTypes = {

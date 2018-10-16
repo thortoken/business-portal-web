@@ -1,0 +1,50 @@
+@import "../../../../../styles/var";
+
+.Profile {
+  &-box-informations {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+  }
+
+  &-name {
+    font-size: 1.725rem;
+    color: black;
+  }
+
+  &-address,
+  &-phone {
+    display: flex;
+
+    .Profile-label {
+      font-style: italic;
+      margin-right: 1rem;
+    }
+
+    .Profile-value {
+      font-weight: 500;
+      color: black;
+    }
+  }
+
+  &-filters {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &-period {
+    font-size: 1.25rem;
+  }
+
+  &-icon{
+    margin-left: 1rem;
+  }
+
+  &-warning{
+    color: $color-error;
+  }
+}

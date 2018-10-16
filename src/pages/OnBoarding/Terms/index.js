@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button, Checkbox } from 'antd';
 
-import './Terms.css';
+import './Terms.scss';
 import connect from 'react-redux/es/connect/connect';
 
 export class Terms extends React.Component {

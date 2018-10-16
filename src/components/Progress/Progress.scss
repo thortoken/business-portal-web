@@ -1,0 +1,16 @@
+@import "../../styles/var";
+
+.Progress {
+  position: relative;
+
+  &-text {
+    position: absolute;
+    bottom: calc(100% - 5px);
+    transform: translateX(-50%);
+    color: $progress-default-color;
+  }
+
+  &--success &-text {
+    color: $success-color;
+  }
+}

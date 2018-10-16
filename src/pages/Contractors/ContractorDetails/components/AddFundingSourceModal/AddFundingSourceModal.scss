@@ -1,0 +1,18 @@
+@import "../../../../../styles/var";
+
+.AddFundingSource {
+  &_fullWidth {
+    width: 100%;
+  }
+
+  &_button {
+    width: 100%;
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  &_error-message {
+    text-align: center;
+    color: $color-error;
+  }
+}

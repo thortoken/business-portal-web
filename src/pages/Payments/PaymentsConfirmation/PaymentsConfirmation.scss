@@ -1,0 +1,122 @@
+@import "../../../styles/var";
+
+.Payments-confirmation {
+  &__loader {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    text-align: center;
+  }
+  &__success {
+    color: $success-color;
+    font-size: 3.5rem;
+    font-weight: bold;
+  }
+  &__card {
+    width: 100%;
+    padding: 0.625rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+  }
+  &__methods {
+    width: 100%;
+    padding: 0 0.625rem;
+    text-align: right;
+    font-size: 1.1rem;
+    &--text {
+      padding-right: 1rem;
+      vertical-align: top;
+      line-height: 2.8125rem;
+    }
+    &--select {
+      width: 180px;
+    }
+    .ant-select-selection {
+      background-color: #aeadae;
+      color: #fff;
+      border-radius: 0.6rem;
+    }
+    .ant-select-selection-selected-value {
+      float: none;
+      width: 100%;
+      display: inline-block;
+      text-align: center;
+    }
+    .ant-select-arrow {
+      color: #fff;
+    }
+  }
+  &__summary {
+    width: 100%;
+    padding: 0 0.625rem;
+    text-align: right;
+    font-size: 1.1rem;
+    &--text {
+      line-height: 2.5rem;
+      vertical-align: middle;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 1rem;
+      padding-right: 1rem;
+    }
+    &--amount {
+      line-height: 2rem;
+      vertical-align: middle;
+      color: $success-color;
+      font-size: 2.4rem;
+      padding-right: 1.625rem;
+    }
+    &__submit {
+      line-height: 2.5rem;
+      width: 220px;
+      display: inline-block;
+    }
+    &--button > button {
+      color: #fff;
+      font-weight: 500;
+      width: 220px;
+      background-color: $color-green-neon;
+      border-color: $color-green-neon;
+
+      &:hover {
+        background-color: $color-green;
+        border-color: $color-green;
+        color: #fff;
+      }
+
+      &:active,
+      &:focus {
+        background-color: $color-green-neon;
+        border-color: $color-green-neon;
+        color: #fff;
+      }
+    }
+    &--back-button > button {
+      margin-top: 1rem;
+      color: #fff;
+      font-weight: 500;
+      width: 220px;
+      background-color: $color-yoshi-blue;
+      border-color: $color-yoshi-blue;
+
+      &:hover {
+        background-color: $color-blue;
+        border-color: $color-blue;
+        color: #fff;
+      }
+
+      &:active,
+      &:focus {
+        background-color: $color-yoshi-blue;
+        border-color: $color-yoshi-blue;
+        color: #fff;
+      }
+    }
+    &--contractors {
+      width: 100%;
+      text-align: center;
+      color: #ccc;
+      font-size: 0.8rem;
+    }
+  }
+}

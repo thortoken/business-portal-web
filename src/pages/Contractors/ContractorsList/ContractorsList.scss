@@ -1,0 +1,39 @@
+@import "../../../styles/var";
+
+.ContractorsList {
+  &__table {
+    table {
+      thead > tr > th,
+      .ant-table-thead > tr > th.ant-table-column-sort {
+        background: $color-darker-blue;
+        background: linear-gradient($color-darker-blue, $color-blue);
+        color: $color-white;
+      }
+      .ant-table-column-sorter-up.on .anticon-caret-up,
+      .ant-table-column-sorter-down.on .anticon-caret-up,
+      .ant-table-column-sorter-up.on .anticon-caret-down,
+      .ant-table-column-sorter-down.on .anticon-caret-down {
+        color: #fff;
+      }
+      td.ContractorsList__activity {
+        padding: 0;
+        .ContractorsList--active,
+        .ContractorsList--resting,
+        .ContractorsList--inactive {
+          padding: 16px;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  &--active {
+    background: $color-active;
+  }
+  &--resting {
+    background: $color-resting;
+  }
+  &--inactive {
+    background: $color-inactive;
+  }
+}

@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import Box from '../../../components/Box/index';
 import makeDefaultPagination from '~utils/pagination';
 
-import './InvitationsList.css';
+import './InvitationsList.scss';
 
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';

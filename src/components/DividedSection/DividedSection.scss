@@ -1,0 +1,31 @@
+@import "../../styles/var";
+
+.DividedSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+
+  &--horizontal {
+    flex-direction: row;
+
+    .DividedSection-cell + .DividedSection-cell {
+      border-left: 1px solid $color-grey;
+    }
+  }
+
+  &--vertical {
+    flex-direction: column;
+
+    .DividedSection-cell + .DividedSection-cell {
+      border-top: 1px solid $color-grey;
+    }
+  }
+
+  &-cell {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}

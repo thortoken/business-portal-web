@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 
 import FormField from '~components/FormField';
-import './AddTransaction.css';
+import './AddTransaction.scss';
 
 import { initialValues, formFields, validationSchema } from './formSchema';
 import NotificationService from "../../../../services/notification";

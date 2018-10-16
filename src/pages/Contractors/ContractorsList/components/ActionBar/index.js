@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Button } from 'antd';
 
-import './ActionBar.css';
+import './ActionBar.scss';
 import RefreshButton from '~components/RefreshButton';
 
 class ActionBar extends React.Component {

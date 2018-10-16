@@ -11,7 +11,7 @@ import {
   movePeriod,
 } from '~utils/time';
 
-import './Filters.css';
+import './Filters.scss';
 
 const readablePeriods = {
   [PERIODS.ONE_WEEK]: 'ONE WEEK',

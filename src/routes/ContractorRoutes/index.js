@@ -7,7 +7,7 @@ import Topbar from '~components/Topbar';
 
 import { Contractor } from '../RouteGuard';
 
-import './ContractorRoutes.css';
+import './ContractorRoutes.scss';
 
 export class ContractorRoutes extends React.Component {
   render() {

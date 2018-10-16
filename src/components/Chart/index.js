@@ -14,7 +14,7 @@ import AxisTop from './AxisTop';
 import AxisLeft from './AxisLeft';
 import genMockData from './genMockData';
 
-import './Chart.css';
+import './Chart.scss';
 
 const formatDayShort = timeFormat('%a');
 const formatDateShort = timeFormat('%m/%d');
