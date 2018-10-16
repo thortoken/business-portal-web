@@ -29,6 +29,7 @@ export const generateMenuItems = list => {
 export class Menu extends React.Component {
   static propTypes = {
     pathname: PropTypes.string,
+    type: PropTypes.string,
   };
 
   constructor(props) {
@@ -38,7 +39,7 @@ export class Menu extends React.Component {
   }
 
   render() {
-    const { pathname } = this.props;
+    const { pathname, type } = this.props;
 
     const selectedKeys = [getSelectedKeyFromPath(pathname)];
 
@@ -56,7 +57,7 @@ export class Menu extends React.Component {
               </Logo>
             </Link>
           </MenuAnt.Item>
-          {this.generateMenuItems(menuItems)}
+          {type === 'admin' && this.generateMenuItems(menuItems)}
         </MenuAnt>
       </div>
     );

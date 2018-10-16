@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { Button } from 'antd';
 import FormField from '~components/FormField';
+import Config from '~services/config';
 
 import './Login.css';
 
@@ -60,8 +61,8 @@ export class Login extends React.Component {
   }
 
   checkLogin = async data => {
-    const { login, location } = this.props;
-    const tenant = new window.URLSearchParams(location.search).get('tenant');
+    const { login } = this.props;
+    const tenant = Config.tenantId;
     const { email, password } = data;
     await login({ email, password, tenant });
   };

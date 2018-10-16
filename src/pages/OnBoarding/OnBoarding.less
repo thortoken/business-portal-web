@@ -1,16 +1,20 @@
-@import "../../styles/variables.less";
+@import "../../styles/variables";
 
-.AuthorizedRoutes {
+.OnBoarding {
+  background-color: #fff;
+  display: flex;
   height: 100vh;
+  overflow-x: hidden;
 
-  &-nav {
-    margin-bottom: 1.5rem;
+  &__steps {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
   }
 
-  &-content {
-    width: @screen-xl;
-    padding: 2rem 3rem;
+  &__container {
+    width: 900px;
     margin: 0 auto;
+    height: 100%;
 
     @media (min-width: @screen-xs-min) {
       width: @screen-xs;
@@ -26,7 +30,7 @@
       width: @screen-lg;
     }
     @media (min-width: @screen-xl-min) {
-      width: @screen-xl;
+      width: 900px;
     }
   }
 }

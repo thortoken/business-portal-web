@@ -15,10 +15,28 @@ const auth = {
       this.setToken(token);
     },
 
+    async pickRoles() {
+      let roles = JSON.parse(localStorage.getItem('thor-roles')) || [];
+      this.setRoles(roles);
+    },
+
+    async saveRole(roles) {
+      let mappedRoles = roles.map(value => {
+        return value.name;
+      });
+      localStorage.setItem('thor-roles', JSON.stringify(mappedRoles));
+      this.setRoles(mappedRoles);
+    },
+
     async removeToken() {
       localStorage.removeItem('thor-token');
       removeAuthHeader();
       this.setToken(null);
+    },
+
+    async removeRoles() {
+      localStorage.removeItem('thor-roles');
+      this.setRoles([]);
     },
 
     async login(data) {
@@ -28,9 +46,11 @@ const auth = {
           password: data.password,
           tenant: data.tenant || Config.tenantId,
         });
-        const { token, name, phone, email } = response.data;
 
+        const { token, name, phone, email } = response.data;
+        const { roles } = response.data.tenantProfile;
         this.setUser({ name, phone, email });
+        this.saveRole(roles);
         this.saveToken(token);
 
         return { token, name, phone, email };
@@ -41,6 +61,7 @@ const auth = {
 
     async logout() {
       this.removeToken();
+      this.removeRoles();
     },
   },
   reducers: {
@@ -48,6 +69,12 @@ const auth = {
       return {
         ...state,
         token: action,
+      };
+    },
+    setRoles(state, action) {
+      return {
+        ...state,
+        roles: action,
       };
     },
     setUser(state, action) {
@@ -60,6 +87,7 @@ const auth = {
   state: {
     user: null,
     token: null,
+    roles: [],
   },
 };
 
