@@ -9,14 +9,6 @@ export const RouteGuard = allowedRoles => WrappedComponent => {
       };
     }
 
-    UNSAFE_componentWillMount() {
-      const { history } = this.props;
-      const { roles } = this.state;
-      if (!allowedRoles.includes(roles) && roles.includes('contractor')) {
-        history.push('/contractor');
-      }
-    }
-
     render() {
       const { roles } = this.state;
       if (allowedRoles.includes(roles)) {
@@ -27,3 +19,6 @@ export const RouteGuard = allowedRoles => WrappedComponent => {
     }
   };
 };
+
+export const Admin = RouteGuard(['admin']);
+export const Contractor = RouteGuard(['admin', 'contractor']);

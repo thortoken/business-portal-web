@@ -1,0 +1,32 @@
+@import "../../styles/variables.less";
+
+.AdminRoutes {
+  height: 100vh;
+
+  &-nav {
+    margin-bottom: 1.5rem;
+  }
+
+  &-content {
+    width: @screen-xl;
+    padding: 2rem 3rem;
+    margin: 0 auto;
+
+    @media (min-width: @screen-xs-min) {
+      width: @screen-xs;
+    }
+    @media (min-width: @screen-sm-min) {
+      padding: 1rem 3rem;
+      width: @screen-sm;
+    }
+    @media (min-width: @screen-md-min) {
+      width: @screen-md;
+    }
+    @media (min-width: @screen-lg-min) {
+      width: @screen-lg;
+    }
+    @media (min-width: @screen-xl-min) {
+      width: @screen-xl;
+    }
+  }
+}
