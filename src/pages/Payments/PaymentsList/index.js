@@ -17,7 +17,7 @@ import makeDefaultPagination from '~utils/pagination';
 
 import RefreshButton from '~components/RefreshButton';
 
-import './PaymentsList.css';
+import './PaymentsList.scss';
 
 const { Column } = Table;
 

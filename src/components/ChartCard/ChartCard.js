@@ -5,7 +5,7 @@ import { Icon } from 'antd';
 import Chart from '~components/Chart';
 import withTheme from '~components/Chart/withTheme';
 
-import './ChartCard.css';
+import './ChartCard.scss';
 
 export class ChartCard extends React.Component {
   static propTypes = {

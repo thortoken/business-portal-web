@@ -4,7 +4,7 @@ import { Modal, Button } from 'antd';
 import { Formik } from 'formik';
 
 import FormField from '~components/FormField';
-import './AddFundingSourceModal.css';
+import './AddFundingSourceModal.scss';
 
 import { initialValues, formFields, validationSchema } from './formSchema';
 

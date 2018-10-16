@@ -1,0 +1,57 @@
+@import "../../../styles/var";
+
+.Terms {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+
+  &__accept {
+    width: 400px;
+    text-align: justify;
+  }
+  &__msg {
+    font-size: 3rem;
+    text-align: center;
+  }
+
+  &__btn {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  &__submsg {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  &__terms {
+    padding: 5px 10px;
+    height: 120px;
+    overflow-y: scroll;
+    width: 600px;
+    border: 1px solid black;
+  }
+  &__boldmsg {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  &__termscheckbox {
+    margin-top: 1rem;
+    &--text {
+      color: $color-blue;
+      font-weight: 600;
+    }
+  }
+
+  img {
+    height: 120px;
+  }
+
+  .img__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+}

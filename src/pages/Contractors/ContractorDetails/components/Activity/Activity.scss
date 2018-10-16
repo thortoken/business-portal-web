@@ -1,0 +1,27 @@
+@import "../../../../../styles/var";
+
+.Activity {
+  display: inline-block;
+  &--active,
+  &--resting,
+  &--inactive {
+    padding: 0.6rem 2rem;
+    border-radius: 0.25rem;
+    font-weight: 100;
+  }
+
+  &--active {
+    color: white;
+    background-color: $color-active;
+  }
+
+  &--resting {
+    color: black;
+    background-color: $color-resting;
+  }
+
+  &--inactive {
+    color: white;
+    background-color: $color-inactive;
+  }
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { formatUsd } from '~utils/number';
 
-import './ContractorSummary.css';
+import './ContractorSummary.scss';
 
 const ContractorSummary = ({ rank, nJobs, prev, current, ytd }) => {
   return (

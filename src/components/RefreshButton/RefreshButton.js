@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Button } from 'antd';
 
-import './RefreshButton.css';
+import './RefreshButton.scss';
 
 export class RefreshButton extends React.Component {
   static propTypes = {

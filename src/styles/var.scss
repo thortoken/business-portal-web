@@ -1,0 +1,75 @@
+// Media queries breakpoints
+// Extra small screen / phone
+$screen-xs              : 480px;
+$screen-xs-min          : $screen-xs;
+
+// Small screen / tablet
+$screen-sm              : 576px;
+$screen-sm-min          : $screen-sm;
+
+// Medium screen / desktop
+$screen-md              : 768px;
+$screen-md-min          : $screen-md;
+
+// Large screen / wide desktop
+$screen-lg              : 992px;
+$screen-lg-min          : $screen-lg;
+
+// Extra large screen / full hd
+$screen-xl              : 1200px;
+$screen-xl-min          : $screen-xl;
+
+// Extra extra large screen / large descktop
+$screen-xxl              : 1600px;
+$screen-xxl-min          : $screen-xxl;
+
+// provide a maximum
+$screen-xs-max          : ($screen-sm-min - 1px);
+$screen-sm-max          : ($screen-md-min - 1px);
+$screen-md-max          : ($screen-lg-min - 1px);
+$screen-lg-max          : ($screen-xl-min - 1px);
+$screen-xl-max          : ($screen-xxl-min - 1px);
+
+
+$color-black: #000000;
+$color-blue: #0187ed;
+$color-primary: $color-blue;
+$primary-color: $color-blue;
+$success-color: #52c41a;
+$error-color: #f5222d;
+$color-darker-blue: #2172e7;
+$color-yoshi-blue: #2C68F6;
+$color-green: #aadc74;
+$color-green-neon: #80d134;
+$color-grey: #aeadae;
+$color-grey-light: #f4f4f4;
+$color-grey-lighter: #e8e8e8;
+$color-grey-medium: #9b9b9b;
+$color-grey-dark: #2a292a;
+$color-grey-active-link: #444444;
+$color-grey-disabled: #d8d8d8;
+$color-pink: #e56fb3;
+$color-white: #ffffff;
+$color-error: #fa5c5c;
+$color-warning: #f8e71c;
+
+$color-active: #7ed322;
+$color-resting: #f8e71c;
+$color-inactive: #fa5c5c;
+
+$gradient-blue: linear-gradient($color-darker-blue, $color-blue);
+
+$body-background: $color-grey-light;
+
+$menu-accent: $color-pink;
+$menu-background: $color-white;
+
+$box-shadow: 0 2px 7px 3px rgba(0, 0, 0, 0.06);
+
+$border-radius: 0.9rem;
+
+$active-menu-item-color: $color-blue;
+
+$screen-mac-pro: 1440px;
+
+$Topbar-height: 4.875rem;

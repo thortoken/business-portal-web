@@ -14,7 +14,7 @@ import { formatUsd } from '~utils/number';
 import { movePeriod, renderShortDate } from '~utils/time';
 import makeDefaultPagination from '~utils/pagination';
 
-import './ContractorDetails.css';
+import './ContractorDetails.scss';
 import { AddFundingSourceModal } from './components/AddFundingSourceModal';
 
 const { Column } = Table;

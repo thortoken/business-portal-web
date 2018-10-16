@@ -1,0 +1,77 @@
+@import "../../styles/var";
+
+.Topbar {
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: space-between;
+  background-color: $color-white;
+  padding: 0;
+  height: $Topbar-height;
+  line-height: $Topbar-height;
+  box-shadow: -1px 5px 10px 0px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid $color-grey-lighter;
+
+  &-center,
+  &-right {
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  @media (min-width: $screen-xs-min) {
+    &-right {
+      min-width: auto;
+    }
+  }
+
+  &-right {
+    min-width: 15.625rem;
+    margin-right: 2rem;
+    justify-content: flex-end;
+  }
+
+  &-center {
+    @media (min-width: $screen-xs-min) {
+      width: $screen-xs;
+    }
+    @media (min-width: $screen-sm-min) {
+      padding: 1rem 3rem;
+      width: $screen-sm;
+      padding-left: 0px;
+    }
+    @media (min-width: $screen-md-min) {
+      width: $screen-md;
+    }
+    @media (min-width: $screen-lg-min) {
+      width: $screen-lg;
+    }
+    @media (min-width: $screen-xl-min) {
+      width: $screen-xl;
+    }
+  }
+
+  &-logo {
+    height: $Topbar-height;
+    border-bottom: 1px solid $color-grey-lighter;
+    &-svg{
+      height: 2.5rem;
+      &:hover + img{
+        opacity: 0;
+      }
+    }
+    &-image{
+      margin-left: 1.5rem;
+      width: 2.5rem;
+      opacity: 1;
+      transition: opacity 0.2s ease-in-out;
+    }
+  }
+
+  button > i.Topbar-icon {
+    float: initial;
+    margin-top: initial;
+  }
+}

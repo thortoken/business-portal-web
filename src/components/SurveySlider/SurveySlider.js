@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Slider } from 'antd';
 
-import './SurveySlider.css';
+import './SurveySlider.scss';
 
 export class SurveySlider extends React.Component {
   static propTypes = {

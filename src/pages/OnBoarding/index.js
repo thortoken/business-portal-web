@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 import Terms from './Terms';
 
-import './OnBoarding.css';
+import './OnBoarding.scss';
 import SignUp from './SignUp';
 import NotificationService from '~services/notification';
 

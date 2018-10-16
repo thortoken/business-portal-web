@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import classnames from 'classnames';
 
-import './PayNow.css';
+import './PayNow.scss';
 import { Icon, Progress, Popover } from 'antd';
 
 const generateErrorItems = list => {

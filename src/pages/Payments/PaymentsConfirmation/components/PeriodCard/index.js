@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { formatUsd } from '~utils/number';
 
-import './PeriodCard.css';
+import './PeriodCard.scss';
 
 export class PeriodCard extends React.Component {
   static propTypes = {

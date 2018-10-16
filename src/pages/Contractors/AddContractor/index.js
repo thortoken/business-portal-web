@@ -7,7 +7,7 @@ import { Formik } from 'formik';
 import FormField from '~components/FormField';
 
 import { initialValues, formFields, transformDateToMoment, validationSchema } from './formSchema';
-import './AddContractor.css';
+import './AddContractor.scss';
 import NotificationService from '../../../services/notification';
 
 import { handleFormHttpResponse } from '~utils/forms/errors';

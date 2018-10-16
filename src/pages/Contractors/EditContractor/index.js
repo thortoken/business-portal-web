@@ -14,7 +14,7 @@ import {
   transformDateToMoment,
   validationSchema,
 } from './formSchema';
-import './EditContractor.css';
+import './EditContractor.scss';
 
 export class EditContractor extends React.Component {
   static propTypes = {

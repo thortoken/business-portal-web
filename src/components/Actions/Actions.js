@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import './Actions.css';
+import './Actions.scss';
 
 const Left = ({ children }) => <div className="Actions-left">{children}</div>;
 const Right = ({ children }) => <div className="Actions-right">{children}</div>;

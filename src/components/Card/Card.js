@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Box from '~components/Box';
 
-import './Card.css';
+import './Card.scss';
 
 export class Card extends React.Component {
   static propTypes = {

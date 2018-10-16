@@ -6,7 +6,7 @@ import { Button } from 'antd';
 import FormField from '~components/FormField';
 import Config from '~services/config';
 
-import './Login.css';
+import './Login.scss';
 
 import { formFields, validationSchema, initialValues } from './formSchema';
 import NotificationService from '../../services/notification';

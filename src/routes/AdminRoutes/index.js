@@ -8,7 +8,7 @@ import Topbar from '~components/Topbar';
 
 import { Admin } from '../RouteGuard';
 
-import './AdminRoutes.css';
+import './AdminRoutes.scss';
 
 export class AdminRoutes extends React.Component {
   render() {

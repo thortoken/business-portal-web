@@ -6,7 +6,7 @@ import { Icon, Button } from 'antd';
 
 import Dropdown from '~components/Dropdown';
 
-import './ManageAccount.css';
+import './ManageAccount.scss';
 
 export const generateMenuItems = list => {
   return list.map(element => {

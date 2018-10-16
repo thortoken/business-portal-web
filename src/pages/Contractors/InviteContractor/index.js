@@ -7,7 +7,7 @@ import { Formik } from 'formik';
 import FormField from '~components/FormField';
 
 import { initialValues, formFields, validationSchema } from './formSchema';
-import './InviteContractor.css';
+import './InviteContractor.scss';
 import NotificationService from '../../../services/notification';
 
 export class InviteContractor extends React.Component {

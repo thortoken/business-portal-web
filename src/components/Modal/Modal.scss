@@ -1,0 +1,58 @@
+@import "../../styles/var";
+
+.Modal {
+  background-color: #fff;
+  z-index: 999;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-x: hidden;
+  &--hidden {
+    display: none;
+  }
+  &__body {
+    height: auto;
+    background-color: #fff;
+  }
+  &__container {
+    width: 900px;
+    margin: 0 auto;
+    height: 100%;
+
+    @media (min-width: $screen-xs-min) {
+      width: $screen-xs;
+    }
+    @media (min-width: $screen-sm-min) {
+      padding: 1rem 3rem;
+      width: $screen-sm;
+    }
+    @media (min-width: $screen-md-min) {
+      width: $screen-md;
+    }
+    @media (min-width: $screen-lg-min) {
+      width: $screen-lg;
+    }
+    @media (min-width: $screen-xl-min) {
+      width: 900px;
+    }
+  }
+  &__header {
+    margin-top: 3rem;
+    &--title {
+      display: inline-block;
+      font-size: 1.5rem;
+      font-weight: 600;
+      padding-left: 2rem;
+      vertical-align: middle;
+    }
+    &--close-button {
+      display: inline-block;
+      margin-left: 0.5rem;
+    }
+  }
+  &__content {
+    padding: 3rem 0;
+  }
+}

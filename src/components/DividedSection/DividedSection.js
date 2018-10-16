@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import './DividedSection.css';
+import './DividedSection.scss';
 
 const Cell = ({ children }) => <div className="DividedSection-cell">{children}</div>;
 

@@ -3,7 +3,7 @@ import { Progress } from 'antd';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
-import './StatsRow.css';
+import './StatsRow.scss';
 
 class StatsRow extends React.Component {
   static propTypes = {

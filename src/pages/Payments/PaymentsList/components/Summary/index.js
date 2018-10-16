@@ -4,7 +4,7 @@ import moment from 'moment';
 import classnames from 'classnames';
 import { formatUsd } from '~utils/number';
 
-import './Summary.css';
+import './Summary.scss';
 
 const monthAndDayTimeFormatter = time =>
   time && moment(new Date(time).toISOString()).format('MMMM D');

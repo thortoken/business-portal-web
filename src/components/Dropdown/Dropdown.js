@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Dropdown as AntDropdown, Menu } from 'antd';
 
-import './Dropdown.css';
+import './Dropdown.scss';
 
 export class Dropdown extends React.Component {
   static propTypes = {

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import Box from '~components/Box';
 
-import './Stats.css';
+import './Stats.scss';
 import { connect } from 'react-redux';
 import StatsRow from './components/StatsRow';
 

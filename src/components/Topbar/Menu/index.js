@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import { getSelectedKeyFromPath } from '../helper';
 
-import './Menu.css';
+import './Menu.scss';
 
 const menuItems = [
   { route: '/payments', label: 'Payments' },

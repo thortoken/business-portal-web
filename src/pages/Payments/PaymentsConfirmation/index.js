@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button, Select } from 'antd';
 
-import './PaymentsConfirmation.css';
+import './PaymentsConfirmation.scss';
 import { PeriodCard } from './components/PeriodCard';
 
 import { getCurrentTwoWeeksPeriod } from '~utils/time';

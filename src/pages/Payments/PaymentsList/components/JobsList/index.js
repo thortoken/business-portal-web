@@ -6,7 +6,7 @@ import { Table, Button } from 'antd';
 
 import { AddTransactionModal } from '~pages/Payments/components/AddTransactionModal';
 
-import './JobsList.css';
+import './JobsList.scss';
 
 const { Column } = Table;
 

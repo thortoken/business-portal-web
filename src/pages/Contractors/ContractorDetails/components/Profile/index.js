@@ -7,7 +7,7 @@ import Activity from '../Activity';
 import { renderDate } from '~utils/time';
 import { formatPhone } from '~utils/number';
 
-import './Profile.css';
+import './Profile.scss';
 import RefreshButton from '~components/RefreshButton';
 
 export default class Profile extends React.PureComponent {
@@ -85,7 +85,7 @@ export default class Profile extends React.PureComponent {
         key: 'Funding Source',
         content: (
           <p className="Profile-warning">
-            1. Add funding source for this user <a onClick={openAddFundingSourceModal}>here</a>.
+            1. Add funding source for this user <span onClick={openAddFundingSourceModal}>here</span>.
           </p>
         ),
       });
