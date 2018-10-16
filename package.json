@@ -52,7 +52,6 @@
   },
   "scripts": {
     "build-antd-css": "less-watch-compiler theme/antd src/css antd.less --run-once --enable-js",
-    "watch-css": "less-watch-compiler src src --enable-js",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
