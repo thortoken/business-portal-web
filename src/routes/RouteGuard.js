@@ -5,13 +5,13 @@ export const RouteGuard = allowedRoles => WrappedComponent => {
     constructor(props, state) {
       super(props, state);
       this.state = {
-        roles: localStorage.getItem('thor-roles') || [],
+        roles: JSON.parse(localStorage.getItem('thor-roles')) || [],
       };
     }
 
     render() {
       const { roles } = this.state;
-      if (allowedRoles.includes(roles)) {
+      if (allowedRoles.includes(roles.toString())) {
         return <WrappedComponent {...this.props} />;
       } else {
         return <h1>No page for you!</h1>;

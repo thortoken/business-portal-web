@@ -16,7 +16,7 @@ const auth = {
     },
 
     async pickRoles() {
-      let roles = localStorage.getItem('thor-roles') || [];
+      let roles = JSON.parse(localStorage.getItem('thor-roles')) || [];
       this.setRoles(roles);
     },
 
@@ -24,14 +24,19 @@ const auth = {
       let mappedRoles = roles.map(value => {
         return value.name;
       });
-      localStorage.setItem('thor-roles', mappedRoles);
-      this.setRoles(roles);
+      localStorage.setItem('thor-roles', JSON.stringify(mappedRoles));
+      this.setRoles(mappedRoles);
     },
 
     async removeToken() {
       localStorage.removeItem('thor-token');
       removeAuthHeader();
       this.setToken(null);
+    },
+
+    async removeRoles() {
+      localStorage.removeItem('thor-roles');
+      this.setRoles([]);
     },
 
     async login(data) {
@@ -45,8 +50,8 @@ const auth = {
         const { token, name, phone, email } = response.data;
         const { roles } = response.data.tenantProfile;
         this.setUser({ name, phone, email });
-        this.saveToken(token);
         this.saveRole(roles);
+        this.saveToken(token);
 
         return { token, name, phone, email };
       } catch (err) {
@@ -56,6 +61,7 @@ const auth = {
 
     async logout() {
       this.removeToken();
+      this.removeRoles();
     },
   },
   reducers: {

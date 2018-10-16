@@ -37,7 +37,7 @@ const store = init({
   },
 });
 
-store.dispatch.auth.pickToken();
 store.dispatch.auth.pickRoles();
+store.dispatch.auth.pickToken();
 
 export default store;

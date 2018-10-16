@@ -3,13 +3,21 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import AdminRoutes from './AdminRoutes';
+import ContractorRoutes from './ContractorRoutes';
 import GuestRoutes from './GuestRoutes';
 
 export class RouteFactory extends Component {
   render() {
     const { token, roles } = this.props;
-
-    return token && roles ? <AdminRoutes /> : <GuestRoutes />;
+    if (token) {
+      if (roles.includes('admin')) {
+        return <AdminRoutes />;
+      } else if (roles.includes('contractor')) {
+        return <ContractorRoutes />;
+      }
+    } else {
+      return <GuestRoutes />;
+    }
   }
 }
 
