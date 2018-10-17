@@ -31,24 +31,14 @@ export class OnBoarding extends React.Component {
   };
 
   async componentDidMount() {
-    const { checkInvitation, getAgreement, match, history } = this.props;
+    const { checkInvitation, getAgreement, match } = this.props;
     const invitation = await checkInvitation(match.params.invitationId);
     if (invitation.status === 200) {
       await getAgreement();
     } else if (invitation.status === 406) {
-      history.push('/sign-in');
-      NotificationService.open({
-        type: 'warning',
-        message: 'Warning',
-        description: `${invitation.data.error}. Sign in with your credentials.`,
-      });
+      this.sendWarning(`${invitation.data.error}. Sign in with your credentials.`);
     } else if (invitation.status === 404) {
-      history.push('/sign-in');
-      NotificationService.open({
-        type: 'warning',
-        message: 'Warning',
-        description: `Wrong invitation id.`,
-      });
+      this.sendWarning('Wrong invitation token.');
     }
   }
 
@@ -62,6 +52,16 @@ export class OnBoarding extends React.Component {
     }
     return Object.keys(localState).length ? localState : null;
   }
+
+  sendWarning = warning => {
+    const { history } = this.props;
+    history.push('/sign-in');
+    NotificationService.open({
+      type: 'warning',
+      message: 'Warning',
+      description: warning,
+    });
+  };
 
   render() {
     const { step, match } = this.props;
