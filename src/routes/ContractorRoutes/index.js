@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { Layout } from 'antd';
 
 import ContractorPage from '~pages/Contractor';
+import OnBoarding from '~pages/OnBoarding';
 import Topbar from '~components/Topbar';
 
 import { Contractor } from '../RouteGuard';
@@ -17,6 +18,7 @@ export class ContractorRoutes extends React.Component {
         <Layout.Content className="ContractorRoutes-content">
           <Switch>
             <Route exact path="/contractor" component={Contractor(ContractorPage)} />
+            <Route exact path="/on-boarding/:invitationId" component={OnBoarding} />
             <Redirect from="*" to="/contractor" />
           </Switch>
         </Layout.Content>

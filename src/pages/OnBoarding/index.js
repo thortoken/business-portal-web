@@ -1,14 +1,16 @@
 import React from 'react';
 
-import { Steps, Icon } from 'antd';
+import { Steps, Icon, Spin } from 'antd';
 
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
+
+import SignUp from './SignUp';
+import Bank from './Bank';
 import Terms from './Terms';
+import NotificationService from '~services/notification';
 
 import './OnBoarding.scss';
-import SignUp from './SignUp';
-import NotificationService from '~services/notification';
 
 const Step = Steps.Step;
 
@@ -31,14 +33,18 @@ export class OnBoarding extends React.Component {
   };
 
   async componentDidMount() {
-    const { checkInvitation, getAgreement, match } = this.props;
-    const invitation = await checkInvitation(match.params.invitationId);
-    if (invitation.status === 200) {
-      await getAgreement();
-    } else if (invitation.status === 406) {
-      this.sendWarning(`${invitation.data.error}. Sign in with your credentials.`);
-    } else if (invitation.status === 404) {
-      this.sendWarning('Wrong invitation token.');
+    const { checkInvitation, getAgreement, changeStep, match, token } = this.props;
+    if (match.params.invitationId === 'bank' && token) {
+      changeStep(2);
+    } else {
+      const invitation = await checkInvitation(match.params.invitationId);
+      if (invitation.status === 200) {
+        await getAgreement();
+      } else if (invitation.status === 406) {
+        this.sendWarning(`${invitation.data.error}. Sign in with your credentials.`);
+      } else if (invitation.status === 404) {
+        this.sendWarning('Wrong invitation token.');
+      }
     }
   }
 
@@ -46,6 +52,7 @@ export class OnBoarding extends React.Component {
     let localState = {};
     if (nextProps.contractor !== prevState.contractor) {
       localState['contractor'] = nextProps.contractor;
+      localState['ready'] = true;
     }
     if (nextProps.agreement !== prevState.agreement) {
       localState['agreement'] = nextProps.agreement;
@@ -65,6 +72,10 @@ export class OnBoarding extends React.Component {
 
   render() {
     const { step, match } = this.props;
+    const { ready } = this.state;
+    if (step === 2 && !ready) {
+      this.setState({ ready: true });
+    }
     const steps = [
       {
         title: 'Terms',
@@ -77,9 +88,9 @@ export class OnBoarding extends React.Component {
         content: () => <SignUp invToken={match.params.invitationId} />,
       },
       {
-        title: 'Funding Source',
+        title: 'Bank Account',
         icon: 'dollar',
-        content: () => <Terms />,
+        content: () => <Bank />,
       },
       {
         title: 'Done',
@@ -101,7 +112,11 @@ export class OnBoarding extends React.Component {
               ))}
             </Steps>
           </div>
-          <div className="OnBoarding__steps--content">{steps[step].content()}</div>
+
+          <div className="OnBoarding__steps--content">
+            {!ready && <Spin size="large" className="OnBoarding__steps--spin" />}
+            {ready && steps[step].content()}
+          </div>
         </div>
       </div>
     );
@@ -112,11 +127,13 @@ const mapStateToProps = state => ({
   step: state.onBoarding.step,
   agreement: state.onBoarding.agreement,
   isLoading: state.loading.effects.onBoarding.checkInvitation,
+  token: state.auth.token,
 });
 
 const mapDispatchToProps = dispatch => ({
   checkInvitation: dispatch.onBoarding.checkInvitation,
   getAgreement: dispatch.onBoarding.getAgreement,
+  changeStep: dispatch.onBoarding.changeStep,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OnBoarding);

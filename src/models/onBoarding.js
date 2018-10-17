@@ -1,7 +1,10 @@
-import Http from '~services/http';
+import Http, { setAuthHeader } from '~services/http';
 
 const onBoarding = {
   effects: {
+    changeStep(step) {
+      this.setStep(step);
+    },
     async checkInvitation(id) {
       try {
         const response = await Http.get(`/contractorsInvitations/${id}`);
@@ -29,6 +32,25 @@ const onBoarding = {
     async create(data) {
       try {
         const response = await Http.post('/contractors', data);
+        this.setContractor(response.data);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async checkFundingSource() {
+      try {
+        const response = await Http.get('/contractors/fundingSources/default');
+
+        return response.data;
+      } catch (err) {
+        return err.response;
+      }
+    },
+    async createFundingSource(data, token) {
+      setAuthHeader(token);
+      try {
+        const response = await Http.post('/contractors/fundingSources/', data);
         return response.data;
       } catch (err) {
         throw err;
@@ -41,6 +63,9 @@ const onBoarding = {
     },
     setAgreement(state, payload) {
       return { ...state, agreement: payload.agreement, step: payload.step };
+    },
+    setStep(state, payload) {
+      return { ...state, step: payload };
     },
   },
   state: {
