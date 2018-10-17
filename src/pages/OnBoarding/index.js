@@ -42,6 +42,13 @@ export class OnBoarding extends React.Component {
         message: 'Warning',
         description: `${invitation.data.error}. Sign in with your credentials.`,
       });
+    } else if (invitation.status === 404) {
+      history.push('/sign-in');
+      NotificationService.open({
+        type: 'warning',
+        message: 'Warning',
+        description: `Wrong invitation id.`,
+      });
     }
   }
 
