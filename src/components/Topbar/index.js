@@ -15,8 +15,15 @@ export class Topbar extends React.Component {
     type: PropTypes.string,
   };
 
+  // handleLogout = async () => {
+  //   const { logout, history } = this.props;
+  //   console.log(this.props);
+  //   await logout();
+  //   history.push('/sign-in');
+  // };
+
   render() {
-    const { className, logout, type } = this.props;
+    const { className, type, logout } = this.props;
 
     return (
       <div className={classNames('Topbar', className)}>

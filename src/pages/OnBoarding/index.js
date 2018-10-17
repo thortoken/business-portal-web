@@ -24,27 +24,24 @@ export class OnBoarding extends React.Component {
     contractor: PropTypes.object,
     agreement: PropTypes.bool,
     step: PropTypes.number,
+    ready: PropTypes.bool,
   };
 
   state = {
-    ready: false,
     contractor: null,
     agreement: false,
   };
 
   async componentDidMount() {
-    const { checkInvitation, getAgreement, changeStep, match, token } = this.props;
-    if (match.params.invitationId === 'bank' && token) {
-      changeStep(2);
+    const { checkStep, match, history } = this.props;
+    let redirect = false;
+    if (match.params.invitationId === 'bank') {
+      redirect = await checkStep({ invitationToken: '' });
     } else {
-      const invitation = await checkInvitation(match.params.invitationId);
-      if (invitation.status === 200) {
-        await getAgreement();
-      } else if (invitation.status === 406) {
-        this.sendWarning(`${invitation.data.error}. Sign in with your credentials.`);
-      } else if (invitation.status === 404) {
-        this.sendWarning('Wrong invitation token.');
-      }
+      redirect = await checkStep({ invitationToken: match.params.invitationId });
+    }
+    if (redirect) {
+      history.push('/sign-in');
     }
   }
 
@@ -52,30 +49,19 @@ export class OnBoarding extends React.Component {
     let localState = {};
     if (nextProps.contractor !== prevState.contractor) {
       localState['contractor'] = nextProps.contractor;
-      localState['ready'] = true;
     }
     if (nextProps.agreement !== prevState.agreement) {
       localState['agreement'] = nextProps.agreement;
     }
+    if (nextProps.ready !== prevState.ready) {
+      localState['ready'] = nextProps.ready;
+    }
     return Object.keys(localState).length ? localState : null;
   }
 
-  sendWarning = warning => {
-    const { history } = this.props;
-    history.push('/sign-in');
-    NotificationService.open({
-      type: 'warning',
-      message: 'Warning',
-      description: warning,
-    });
-  };
-
   render() {
-    const { step, match } = this.props;
-    const { ready } = this.state;
-    if (step === 2 && !ready) {
-      this.setState({ ready: true });
-    }
+    const { step, match, ready } = this.props;
+
     const steps = [
       {
         title: 'Terms',
@@ -126,6 +112,7 @@ const mapStateToProps = state => ({
   contractor: state.onBoarding.contractor,
   step: state.onBoarding.step,
   agreement: state.onBoarding.agreement,
+  ready: state.onBoarding.ready,
   isLoading: state.loading.effects.onBoarding.checkInvitation,
   token: state.auth.token,
 });
@@ -134,6 +121,7 @@ const mapDispatchToProps = dispatch => ({
   checkInvitation: dispatch.onBoarding.checkInvitation,
   getAgreement: dispatch.onBoarding.getAgreement,
   changeStep: dispatch.onBoarding.changeStep,
+  checkStep: dispatch.onBoarding.checkStep,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OnBoarding);

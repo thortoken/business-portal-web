@@ -1,7 +1,43 @@
 import Http, { setAuthHeader } from '~services/http';
+import NotificationService from '~services/notification';
 
 const onBoarding = {
   effects: {
+    async checkStep({ invitationToken }, models) {
+      let redirect = false;
+      let setup = {
+        step: 0,
+        agreement: false,
+        contractor: null,
+        ready: false,
+      };
+
+      if (models.auth.token === null) {
+        const invitationResponse = await this.checkInvitation(invitationToken);
+        if (localStorage.getItem('thor-terms-agreement') && invitationResponse.status === 200) {
+          setup.agreement = true;
+          setup.step = 1;
+          setup.contractor = invitationResponse.data;
+        } else {
+          setup.agreement = false;
+          if (invitationResponse.status === 406) {
+            redirect = true;
+            NotificationService.open({
+              type: 'warning',
+              message: 'Warning',
+              description: `${invitationResponse.data.error}. Sign in with your credentials.`,
+            });
+          } else if (invitationResponse.status === 404) {
+            redirect = true;
+          }
+        }
+      } else {
+        setup.step = 2;
+      }
+      setup.ready = true;
+      this.setupOnBoarding(setup);
+      return redirect;
+    },
     changeStep(step) {
       this.setStep(step);
     },
@@ -12,21 +48,6 @@ const onBoarding = {
         return response;
       } catch (err) {
         return err.response;
-      }
-    },
-    async getAgreement() {
-      const agreement = localStorage.getItem('thor-terms-agreement');
-      if (agreement) {
-        this.setAgreement({ agreement: true, step: 1 });
-      } else {
-        this.setAgreement({ agreement: false, step: 0 });
-      }
-    },
-    async saveAgreement(value) {
-      if (value) {
-        localStorage.setItem('thor-terms-agreement', 'true');
-      } else {
-        localStorage.removeItem('thor-terms-agreement');
       }
     },
     async create(data) {
@@ -61,17 +82,18 @@ const onBoarding = {
     setContractor(state, payload) {
       return { ...state, contractor: payload };
     },
-    setAgreement(state, payload) {
-      return { ...state, agreement: payload.agreement, step: payload.step };
-    },
     setStep(state, payload) {
       return { ...state, step: payload };
+    },
+    setupOnBoarding(state, payload) {
+      return { ...state, ...payload };
     },
   },
   state: {
     contractor: null,
     agreement: false,
     step: 0,
+    ready: false,
   },
 };
 
