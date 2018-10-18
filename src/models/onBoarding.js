@@ -88,10 +88,10 @@ const onBoarding = {
         return err.response;
       }
     },
-    async createFundingSource(data, token) {
-      setAuthHeader(token);
+    async createFundingSource(data) {
+      setAuthHeader(data.token);
       try {
-        const response = await Http.post('/contractors/fundingSources/', data);
+        const response = await Http.post('/contractors/fundingSources/', data.bank);
         return response.data;
       } catch (err) {
         throw err;

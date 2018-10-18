@@ -15,18 +15,10 @@ export class Bank extends React.Component {
     createFundingSource: PropTypes.func.isRequired,
   };
 
-  state = {
-    error: null,
-  };
-
   render() {
-    const { error } = this.state;
-
     return (
-      <div className="Contractor">
-        <div className="Contractor__form">
-          <div className="Contractor__title">Add Funding Source</div>
-          <div className="Contractor__errors">{error}</div>
+      <div className="Bank">
+        <div className="Bank__form">
           <Formik
             initialValues={initialValues}
             onSubmit={this.handleSubmit}
@@ -52,34 +44,30 @@ export class Bank extends React.Component {
           loading={isSubmitting}
           htmlType="submit"
           className="Add-contractor__button-container--button">
-          Connect Funding Source
+          Connect Bank Account
         </Button>
       </div>
     </form>
   );
 
-  createFundingSource = async ({ accountNumber, routingNumber }) => {
+  createFundingSource = async ({ account, routing }) => {
     const { createFundingSource, contractor, token } = this.props;
     let authToken = token;
     if (contractor) {
       authToken = contractor.token;
     }
-
-    await createFundingSource(
-      {
-        accountNumber,
-        routingNumber,
-      },
-      authToken
-    );
+    await createFundingSource({
+      bank: { account, routing },
+      token: authToken,
+    });
   };
 
   handleSubmit = async (data, form) => {
     const normalizedData = validationSchema.cast(data);
-    const { routingNumber, accountNumber } = normalizedData;
+    const { routing, account } = normalizedData;
 
     try {
-      await this.createFundingSource({ accountNumber, routingNumber });
+      await this.createFundingSource({ account, routing });
 
       this.handleSubmitSuccess();
     } catch (err) {
@@ -88,20 +76,15 @@ export class Bank extends React.Component {
   };
 
   handleSubmitSuccess = () => {
-    this.setState({ error: null });
-
-    const { onSubmit } = this.props;
-    if (typeof onSubmit === 'function') {
-      const { lastCreatedContractor } = this.props;
-      onSubmit(lastCreatedContractor);
-    }
+    const { changeStep } = this.props;
+    changeStep(3);
   };
 }
 
 const mapStateToProps = state => ({
   contractor: state.onBoarding.contractor,
   token: state.auth.token,
-  isLoading: state.loading.effects.onBoarding.create,
+  isLoading: state.loading.effects.onBoarding.createFundingSource,
 });
 
 const mapDispatchToProps = dispatch => ({

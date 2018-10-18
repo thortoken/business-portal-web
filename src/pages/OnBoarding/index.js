@@ -8,7 +8,7 @@ import connect from 'react-redux/es/connect/connect';
 import SignUp from './SignUp';
 import Bank from './Bank';
 import Terms from './Terms';
-import NotificationService from '~services/notification';
+import Done from './Done';
 
 import './OnBoarding.scss';
 
@@ -81,7 +81,7 @@ export class OnBoarding extends React.Component {
       {
         title: 'Done',
         icon: 'smile-o',
-        content: () => <Terms />,
+        content: () => <Done />,
       },
     ];
     return (

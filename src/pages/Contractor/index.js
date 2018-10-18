@@ -11,7 +11,6 @@ export class ContractorPage extends React.Component {
   async componentDidMount() {
     const { checkFundingSource, history } = this.props;
     const response = await checkFundingSource();
-    console.log(response);
     if (response.status === 404) {
       history.push('/on-boarding/bank');
     }
