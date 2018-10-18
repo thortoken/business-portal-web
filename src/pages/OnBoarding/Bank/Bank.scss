@@ -1,6 +1,5 @@
-.SignUp {
+.Bank {
   display: flex;
-  //align-items: center;
   justify-content: center;
   height: 100vh;
   margin-top: 50px;
@@ -16,6 +15,7 @@
   }
 
   &__form {
+    width: 100%;
     .InputGroup {
       width: 50%;
 

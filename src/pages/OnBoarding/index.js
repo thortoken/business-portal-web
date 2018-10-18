@@ -1,14 +1,16 @@
 import React from 'react';
 
-import { Steps, Icon } from 'antd';
+import { Steps, Icon, Spin } from 'antd';
 
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
+
+import SignUp from './SignUp';
+import Bank from './Bank';
 import Terms from './Terms';
+import Done from './Done';
 
 import './OnBoarding.scss';
-import SignUp from './SignUp';
-import NotificationService from '~services/notification';
 
 const Step = Steps.Step;
 
@@ -22,23 +24,24 @@ export class OnBoarding extends React.Component {
     contractor: PropTypes.object,
     agreement: PropTypes.bool,
     step: PropTypes.number,
+    ready: PropTypes.bool,
   };
 
   state = {
-    ready: false,
     contractor: null,
     agreement: false,
   };
 
   async componentDidMount() {
-    const { checkInvitation, getAgreement, match } = this.props;
-    const invitation = await checkInvitation(match.params.invitationId);
-    if (invitation.status === 200) {
-      await getAgreement();
-    } else if (invitation.status === 406) {
-      this.sendWarning(`${invitation.data.error}. Sign in with your credentials.`);
-    } else if (invitation.status === 404) {
-      this.sendWarning('Wrong invitation token.');
+    const { checkStep, match, history } = this.props;
+    let redirect = false;
+    if (match.params.invitationId === 'bank') {
+      redirect = await checkStep({ invitationToken: '' });
+    } else {
+      redirect = await checkStep({ invitationToken: match.params.invitationId });
+    }
+    if (redirect) {
+      history.push('/sign-in');
     }
   }
 
@@ -50,21 +53,15 @@ export class OnBoarding extends React.Component {
     if (nextProps.agreement !== prevState.agreement) {
       localState['agreement'] = nextProps.agreement;
     }
+    if (nextProps.ready !== prevState.ready) {
+      localState['ready'] = nextProps.ready;
+    }
     return Object.keys(localState).length ? localState : null;
   }
 
-  sendWarning = warning => {
-    const { history } = this.props;
-    history.push('/sign-in');
-    NotificationService.open({
-      type: 'warning',
-      message: 'Warning',
-      description: warning,
-    });
-  };
-
   render() {
-    const { step, match } = this.props;
+    const { step, match, ready } = this.props;
+
     const steps = [
       {
         title: 'Terms',
@@ -77,14 +74,14 @@ export class OnBoarding extends React.Component {
         content: () => <SignUp invToken={match.params.invitationId} />,
       },
       {
-        title: 'Funding Source',
+        title: 'Bank Account',
         icon: 'dollar',
-        content: () => <Terms />,
+        content: () => <Bank />,
       },
       {
         title: 'Done',
         icon: 'smile-o',
-        content: () => <Terms />,
+        content: () => <Done />,
       },
     ];
     return (
@@ -101,7 +98,11 @@ export class OnBoarding extends React.Component {
               ))}
             </Steps>
           </div>
-          <div className="OnBoarding__steps--content">{steps[step].content()}</div>
+
+          <div className="OnBoarding__steps--content">
+            {!ready && <Spin size="large" className="OnBoarding__steps--spin" />}
+            {ready && steps[step].content()}
+          </div>
         </div>
       </div>
     );
@@ -111,12 +112,16 @@ const mapStateToProps = state => ({
   contractor: state.onBoarding.contractor,
   step: state.onBoarding.step,
   agreement: state.onBoarding.agreement,
+  ready: state.onBoarding.ready,
   isLoading: state.loading.effects.onBoarding.checkInvitation,
+  token: state.auth.token,
 });
 
 const mapDispatchToProps = dispatch => ({
   checkInvitation: dispatch.onBoarding.checkInvitation,
   getAgreement: dispatch.onBoarding.getAgreement,
+  changeStep: dispatch.onBoarding.changeStep,
+  checkStep: dispatch.onBoarding.checkStep,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OnBoarding);

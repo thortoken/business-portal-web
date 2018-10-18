@@ -6,18 +6,18 @@ const auth = {
     async pickToken() {
       const token = localStorage.getItem('thor-token') || null;
       setAuthHeader(token);
-      this.setToken(token);
+      this.setToken({ token, loggedOut: false });
     },
 
     async saveToken(token) {
       localStorage.setItem('thor-token', token);
       setAuthHeader(token);
-      this.setToken(token);
+      this.setToken({ token, loggedOut: false });
     },
 
     async pickRoles() {
       let roles = JSON.parse(localStorage.getItem('thor-roles')) || [];
-      this.setRoles(roles);
+      this.setRoles({ roles, loggedOut: false });
     },
 
     async saveRole(roles) {
@@ -25,18 +25,18 @@ const auth = {
         return value.name;
       });
       localStorage.setItem('thor-roles', JSON.stringify(mappedRoles));
-      this.setRoles(mappedRoles);
+      this.setRoles({ roles: mappedRoles, loggedOut: false });
     },
 
     async removeToken() {
       localStorage.removeItem('thor-token');
       removeAuthHeader();
-      this.setToken(null);
+      this.setToken({ token: null, loggedOut: true });
     },
 
     async removeRoles() {
       localStorage.removeItem('thor-roles');
-      this.setRoles([]);
+      this.setRoles({ roles: [], loggedOut: true });
     },
 
     async login(data) {
@@ -50,8 +50,8 @@ const auth = {
         const { token, name, phone, email } = response.data;
         const { roles } = response.data.tenantProfile;
         this.setUser({ name, phone, email });
-        this.saveRole(roles);
-        this.saveToken(token);
+        this.saveRole(roles, true);
+        this.saveToken(token, true);
 
         return { token, name, phone, email };
       } catch (err) {
@@ -65,16 +65,18 @@ const auth = {
     },
   },
   reducers: {
-    setToken(state, action) {
+    setToken(state, payload) {
       return {
         ...state,
-        token: action,
+        token: payload.token,
+        loggedOut: payload.loggedOut,
       };
     },
-    setRoles(state, action) {
+    setRoles(state, payload) {
       return {
         ...state,
-        roles: action,
+        roles: payload.roles,
+        loggedOut: payload.loggedOut,
       };
     },
     setUser(state, action) {
@@ -88,6 +90,7 @@ const auth = {
     user: null,
     token: null,
     roles: [],
+    loggedOut: false,
   },
 };
 

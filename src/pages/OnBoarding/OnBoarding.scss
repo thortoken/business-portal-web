@@ -9,6 +9,10 @@
   &__steps {
     margin-top: 3rem;
     margin-bottom: 3rem;
+    &--spin {
+      display: block !important;
+      margin: 0 auto !important;
+    }
   }
 
   &__container {

@@ -5,32 +5,20 @@ import { Button } from 'antd';
 import { Formik } from 'formik';
 
 import FormField from '~components/FormField';
-import Config from '~services/config';
-
-import { initialValues, formFields, transformDateToMoment, validationSchema } from './formSchema';
-import './SignUp.scss';
-
 import { handleFormHttpResponse } from '~utils/forms/errors';
 
-export class SignUp extends React.Component {
-  static propTypes = {
-    contractor: PropTypes.object,
-    invToken: PropTypes.string,
-  };
+import { initialValues, formFields, validationSchema } from './formSchema';
+import './Bank.scss';
 
-  state = {
-    createdContractor: null,
-    error: null,
+export class Bank extends React.Component {
+  static propTypes = {
+    createFundingSource: PropTypes.func.isRequired,
   };
 
   render() {
-    const { error } = this.state;
-    const { contractor } = this.props;
-    initialValues.email = contractor.email;
     return (
-      <div className="SignUp">
-        <div className="SignUp__form">
-          <div className="SignUp__errors">{error}</div>
+      <div className="Bank">
+        <div className="Bank__form">
           <Formik
             initialValues={initialValues}
             onSubmit={this.handleSubmit}
@@ -56,37 +44,30 @@ export class SignUp extends React.Component {
           loading={isSubmitting}
           htmlType="submit"
           className="Add-contractor__button-container--button">
-          Sign Up
+          Connect Bank Account
         </Button>
       </div>
     </form>
   );
 
-  create = async data => {
-    const { createContractor } = this.props;
-
-    data.profile.postalCode = String(data.profile.postalCode);
-    data.profile.dateOfBirth = transformDateToMoment(data.profile.dateOfBirth).format('YYYY-MM-DD');
-    await createContractor(data);
+  createFundingSource = async ({ account, routing }) => {
+    const { createFundingSource, contractor, token } = this.props;
+    let authToken = token;
+    if (contractor) {
+      authToken = contractor.token;
+    }
+    await createFundingSource({
+      bank: { account, routing },
+      token: authToken,
+    });
   };
 
   handleSubmit = async (data, form) => {
-    const { invToken } = this.props;
     const normalizedData = validationSchema.cast(data);
-    normalizedData['country'] = 'USA';
-    const { ...profile } = normalizedData;
-
-    const contractor = {
-      profile: {
-        ...normalizedData,
-      },
-      tenant: Config.tenantId,
-      invitationToken: invToken,
-      password: profile.password,
-    };
+    const { routing, account } = normalizedData;
 
     try {
-      await this.create(contractor);
+      await this.createFundingSource({ account, routing });
 
       this.handleSubmitSuccess();
     } catch (err) {
@@ -96,18 +77,19 @@ export class SignUp extends React.Component {
 
   handleSubmitSuccess = () => {
     const { changeStep } = this.props;
-    changeStep(2);
+    changeStep(3);
   };
 }
 
 const mapStateToProps = state => ({
   contractor: state.onBoarding.contractor,
-  isLoading: state.loading.effects.onBoarding.create,
+  token: state.auth.token,
+  isLoading: state.loading.effects.onBoarding.createFundingSource,
 });
 
 const mapDispatchToProps = dispatch => ({
-  createContractor: dispatch.onBoarding.create,
+  createFundingSource: dispatch.onBoarding.createFundingSource,
   changeStep: dispatch.onBoarding.changeStep,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default connect(mapStateToProps, mapDispatchToProps)(Bank);
