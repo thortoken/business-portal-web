@@ -16,6 +16,7 @@ const formFields = {
       .min(9),
     input: {
       maxLength: 9,
+      parser: formUtils.parsers.digitsOnly,
     },
   },
   account: {
@@ -24,6 +25,9 @@ const formFields = {
       .ensure()
       .required()
       .min(4),
+    input: {
+      parser: formUtils.parsers.digitsOnly,
+    },
   },
 };
 
