@@ -1,6 +1,13 @@
 @import "../../../../../styles/var";
 
 .Profile {
+  &-link {
+    color: $primary-color;
+    text-decoration: underline;
+    &:hover{
+      cursor: pointer;
+    }
+  }
   &-box-informations {
     display: flex;
     justify-content: space-between;

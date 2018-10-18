@@ -4,6 +4,8 @@ import { Modal, Button } from 'antd';
 import { Formik } from 'formik';
 
 import FormField from '~components/FormField';
+import { handleFormHttpResponse } from '~utils/forms/errors';
+
 import './AddFundingSourceModal.scss';
 
 import { initialValues, formFields, validationSchema } from './formSchema';
@@ -28,10 +30,7 @@ export class AddFundingSourceModal extends Component {
       await createFundingSource(data);
       onChangeVisibility(false, true);
     } catch (err) {
-      if (err.response) {
-        this.setState({ errorMsg: err.response.data.error });
-      }
-      form.setSubmitting(false);
+      handleFormHttpResponse(form, err.response.data.error, err.response);
     }
   };
 

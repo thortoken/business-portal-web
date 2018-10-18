@@ -85,7 +85,10 @@ export default class Profile extends React.PureComponent {
         key: 'Funding Source',
         content: (
           <p className="Profile-warning">
-            1. Add funding source for this user <span onClick={openAddFundingSourceModal}>here</span>.
+            1. Add funding source for this user{' '}
+            <span className="Profile-link" onClick={openAddFundingSourceModal}>
+              here
+            </span>.
           </p>
         ),
       });

@@ -1,10 +1,11 @@
 /* eslint-disable no-template-curly-in-string */
 import * as Yup from 'yup';
+import formUtils from '~utils/forms';
 
 import { makeValidationSchema, makeEmptyInitialValues } from '~utils/forms/formik';
 
 const formFields = {
-  routingNumber: {
+  routing: {
     label: 'Bank routing number',
     validator: Yup.string()
       .ensure()
@@ -13,9 +14,10 @@ const formFields = {
       .min(9, 'Bank routing number must have 9 digits'),
     input: {
       maxLength: 9,
+      parser: formUtils.parsers.digitsOnly,
     },
   },
-  accountNumber: {
+  account: {
     label: 'Bank account number',
     validator: Yup.string()
       .ensure()
@@ -24,6 +26,7 @@ const formFields = {
       .max(17, 'Bank account number must have maximum 17 digits'),
     input: {
       maxLength: 17,
+      parser: formUtils.parsers.digitsOnly,
     },
   },
 };
