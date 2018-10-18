@@ -12,12 +12,12 @@ const onBoarding = {
         ready: false,
       };
 
-      if (models.auth.token === null) {
+      if (models.auth.token === null && !models.auth.loggedOut) {
         const invitationResponse = await this.checkInvitation(invitationToken);
+        setup.contractor = invitationResponse.data;
         if (localStorage.getItem('thor-terms-agreement') && invitationResponse.status === 200) {
           setup.agreement = true;
           setup.step = 1;
-          setup.contractor = invitationResponse.data;
         } else {
           setup.agreement = false;
           if (invitationResponse.status === 406) {
@@ -29,6 +29,11 @@ const onBoarding = {
             });
           } else if (invitationResponse.status === 404) {
             redirect = true;
+            NotificationService.open({
+              type: 'warning',
+              message: 'Warning',
+              description: 'Wrong invitation token.',
+            });
           }
         }
       } else {
@@ -48,6 +53,21 @@ const onBoarding = {
         return response;
       } catch (err) {
         return err.response;
+      }
+    },
+    async getAgreement() {
+      const agreement = localStorage.getItem('thor-terms-agreement');
+      if (agreement) {
+        this.setAgreement({ agreement: true, step: 1 });
+      } else {
+        this.setAgreement({ agreement: false, step: 0 });
+      }
+    },
+    async saveAgreement(value) {
+      if (value) {
+        localStorage.setItem('thor-terms-agreement', 'true');
+      } else {
+        localStorage.removeItem('thor-terms-agreement');
       }
     },
     async create(data) {
@@ -81,6 +101,9 @@ const onBoarding = {
   reducers: {
     setContractor(state, payload) {
       return { ...state, contractor: payload };
+    },
+    setAgreement(state, payload) {
+      return { ...state, agreement: payload.agreement, step: payload.step };
     },
     setStep(state, payload) {
       return { ...state, step: payload };
