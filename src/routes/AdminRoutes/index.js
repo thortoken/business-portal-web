@@ -4,6 +4,7 @@ import { Layout } from 'antd';
 
 import PaymentsPage from '~pages/Payments';
 import ContractorsPage from '~pages/Contractors';
+import RootManagementPage from '~pages/Management';
 import Topbar from '~components/Topbar';
 
 import { Admin } from '../RouteGuard';
@@ -19,6 +20,7 @@ export class AdminRoutes extends React.Component {
           <Switch>
             <Route path="/payments" component={Admin(PaymentsPage)} />
             <Route path="/contractors" component={Admin(ContractorsPage)} />
+            <Route path="/management" component={Admin(RootManagementPage)} />
             <Redirect from="*" to="/payments" />
           </Switch>
         </Layout.Content>

@@ -19,6 +19,13 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    i {
+      font-size: 1.6rem;
+      &:hover {
+        cursor: pointer;
+        color: $primary-color;
+      }
+    }
   }
 
   @media (min-width: $screen-xs-min) {
