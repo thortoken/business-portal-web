@@ -1,0 +1,38 @@
+.ManagementMenu {
+  width: 250px;
+  float: left;
+  height: 100vh;
+  ul {
+    background: none;
+    border: 0;
+    li {
+      width: 100%;
+    }
+  }
+  li {
+      width: 100%;
+    }
+  .ant-menu-item {
+    width: 100% !important;
+  }
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: transparent;
+  }
+  ul.ant-menu li.ant-menu-item-selected {
+    border: 0;
+    span {
+      border-bottom: 2px solid #0187ed;
+    }
+  }
+  ul.ant-menu li.ant-menu-item {
+    height: 3rem;
+    line-height: 2rem;
+  }
+  &__link {
+    width: 100%;
+    padding:  0 0.8rem 1.5rem 0.8rem;
+    font-size: 1rem;
+    color: #000;
+    display: block;
+  }
+}
