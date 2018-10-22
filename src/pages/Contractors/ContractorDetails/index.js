@@ -66,9 +66,15 @@ class ContractorDetails extends React.Component {
   }
 
   componentDidMount() {
-    const { match, getUser } = this.props;
+    const { match, getUser, checkFundingSource } = this.props;
 
     getUser(match.params.id);
+    checkFundingSource(match.params.id);
+  }
+
+  componentWillUnmount() {
+    const { changeFundingSourceStatus } = this.props;
+    changeFundingSourceStatus(false);
   }
 
   handleRefresh = () => {
@@ -102,6 +108,10 @@ class ContractorDetails extends React.Component {
       localState['pagination'] = { ...pag, total: nextProps.transactionsListPagination.total };
     }
 
+    if (nextProps.hasFundingSource !== prevState.hasFundingSource) {
+      localState['hasFundingSource'] = nextProps.hasFundingSource;
+    }
+
     return Object.keys(localState).length ? localState : null;
   }
 
@@ -117,13 +127,10 @@ class ContractorDetails extends React.Component {
       createTransaction,
       createFundingSource,
       history,
+      hasFundingSource,
     } = this.props;
     const { pagination } = this.state;
-    const hasFundingSource =
-      currentUser &&
-      currentUser.tenantProfile &&
-      currentUser.tenantProfile.accountNumber &&
-      currentUser.tenantProfile.accountRouting;
+
     const localTransactions = contractorTransactions.items.map((item, key) => {
       return { ...item, key };
     });
@@ -175,6 +182,7 @@ class ContractorDetails extends React.Component {
               <Profile
                 handleRefresh={this.handleRefresh}
                 isLoading={loadingTransactions}
+                hasFundingSource={hasFundingSource}
                 {...currentUser.tenantProfile}
                 createdAt={currentUser.createdAt}
                 openAddFundingSourceModal={this.openAddFundingSourceModal}
@@ -361,6 +369,7 @@ const mapStateToProps = state => ({
   contractorTransactions: state.transactions.contractorTransactions,
   transactionsListPagination: state.transactions.transactionsListPagination,
   loadingTransactions: state.loading.effects.transactions.getTransactionsForContractor,
+  hasFundingSource: state.users.hasFundingSource,
 });
 
 const mapDispatchToProps = ({
@@ -371,6 +380,8 @@ const mapDispatchToProps = ({
     getCurrentUserStatistics,
     createFundingSource,
     deleteFundingSource,
+    checkFundingSource,
+    changeFundingSourceStatus,
   },
 }) => ({
   createTransaction,
@@ -380,6 +391,8 @@ const mapDispatchToProps = ({
   getCurrentUserStatistics,
   createFundingSource,
   deleteFundingSource,
+  checkFundingSource,
+  changeFundingSourceStatus,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContractorDetails);

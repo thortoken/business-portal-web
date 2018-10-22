@@ -14,6 +14,7 @@ export default class Profile extends React.PureComponent {
   static propTypes = {
     handleRefresh: PropTypes.func,
     isLoading: PropTypes.bool,
+    hasFundingSource: PropTypes.bool,
     openAddFundingSourceModal: PropTypes.func,
   };
 
@@ -77,9 +78,9 @@ export default class Profile extends React.PureComponent {
   }
 
   verifyUserProfile = () => {
-    const { accountNumber, accountRouting } = this.props;
+    const { hasFundingSource } = this.props;
     const warnings = [];
-    if (!(accountNumber && accountRouting)) {
+    if (!hasFundingSource) {
       const { openAddFundingSourceModal } = this.props;
       warnings.push({
         key: 'Funding Source',

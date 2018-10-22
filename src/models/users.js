@@ -35,6 +35,19 @@ const users = {
         throw err;
       }
     },
+    async checkFundingSource(id) {
+      try {
+        const response = await Http.get(`/users/${id}/fundingSources/default`);
+        this.setHasFundingSource(true);
+        return response.data;
+      } catch (err) {
+        this.setHasFundingSource(false);
+        throw err;
+      }
+    },
+    async changeFundingSourceStatus(status) {
+      this.setHasFundingSource(status);
+    },
     async getUser(id) {
       try {
         const response = await Http.get(`/users/${id}`);
@@ -176,6 +189,9 @@ const users = {
         },
       };
     },
+    setHasFundingSource(state, payload) {
+      return { ...state, hasFundingSource: payload };
+    },
   },
   state: {
     usersList: [],
@@ -192,6 +208,7 @@ const users = {
     usersPendingTransactions: null,
     usersPaidTransactions: null,
     usersJobs: null,
+    hasFundingSource: true,
   },
 };
 
