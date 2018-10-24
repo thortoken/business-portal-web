@@ -11,6 +11,7 @@ import tenants from './tenants';
 import payments from './payments';
 import invitations from './invitations';
 import onBoarding from './onBoarding';
+import tenantCompany from './tenantCompany';
 
 export const history = createHistory();
 const middleware = routerMiddleware(history);
@@ -27,6 +28,7 @@ const store = init({
     payments,
     invitations,
     onBoarding,
+    tenantCompany,
   },
   plugins: [loading],
   redux: {
@@ -37,6 +39,7 @@ const store = init({
   },
 });
 
+// change to one call
 store.dispatch.auth.pickRoles();
 store.dispatch.auth.pickToken();
 
