@@ -8,6 +8,7 @@ import EditCompanyDetails from './EditCompanyDetails';
 import AddCompanyDetails from './AddCompanyDetails';
 
 import './CompanyDetails.scss';
+import { Spin } from 'antd';
 
 export class CompanyDetails extends React.Component {
   static propTypes = {
@@ -54,7 +55,9 @@ export class CompanyDetails extends React.Component {
       <Box>
         <div className="CompanyDetails">
           {company && <EditCompanyDetails formValues={company} />}
-          {!company && <AddCompanyDetails categories={categories} />}
+          <Spin size="large" spinning={!company && categories.length === 0}>
+            {!company && <AddCompanyDetails categories={categories} />}
+          </Spin>
         </div>
       </Box>
     );

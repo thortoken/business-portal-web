@@ -25,7 +25,7 @@ const tenantCompany = {
       try {
         const response = await Http.get(`/tenants/company/businessCategories`);
         console.log(response.data);
-        this.setCategories(response.data);
+        this.setCategories(response.data.businessClassifications);
       } catch (err) {
         console.log(err);
         throw err;

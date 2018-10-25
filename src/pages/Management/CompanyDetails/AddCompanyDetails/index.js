@@ -1,21 +1,39 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button, Divider } from 'antd';
+import { Button, Divider, AutoComplete } from 'antd';
 import { Formik } from 'formik';
 
 import FormField from '~components/FormField';
 
 import { formFields, validationSchema, initialValues, transformDateToMoment } from './formSchema';
 import './AddCompanyDetails.scss';
-import NotificationService from '../../../../services/notification';
+import NotificationService from '~services/notification';
+import AutoCompleteField from '~components/AutoCompleteField';
 
 import { handleFormHttpResponse } from '~utils/forms/errors';
 import { traverseRecursively } from '~utils/iterators';
 
+const Option = AutoComplete.Option;
+
+const generateOptions = list => {
+  let mapped = [];
+  list.map((item, index) => {
+    let tempMapped = item.category.industryClassifications.map((item, index) => {
+      return (
+        <Option key={item.id} value={item.id}>
+          {item.name}
+        </Option>
+      );
+    });
+    mapped.push(...tempMapped);
+  });
+  return mapped;
+};
+
 export class AddCompanyDetails extends React.Component {
   static propTypes = {
-    categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+    categories: PropTypes.arrayOf(PropTypes.object),
     addTenantCompany: PropTypes.func.isRequired,
   };
 
@@ -34,6 +52,7 @@ export class AddCompanyDetails extends React.Component {
   }
 
   prepareForm(fields) {
+    const { categories } = this.props;
     let formObject = {
       company: [
         <Divider orientation="left" key="company">
@@ -48,17 +67,34 @@ export class AddCompanyDetails extends React.Component {
     };
     traverseRecursively(fields, {
       childKey: 'fields',
-      nodeCallback: ({ key, value, newSubtree, path }) => console.log(),
+      nodeCallback: () => console.log(),
       leafCallback: ({ key, value, path }) => {
         let push = path.length > 1 ? 'owner' : 'company';
-        formObject[push].push(
-          <FormField
-            key={path.join('.')}
-            name={path.join('.')}
-            label={value.label}
-            {...value.input}
-          />
-        );
+        if (key === 'businessClassification') {
+          formObject[push].push(
+            <FormField
+              key={path.join('.')}
+              name={path.join('.')}
+              component={AutoCompleteField}
+              dataSource={generateOptions(categories)}
+              className="AddCompanyDetails_half"
+              filterOption={(inputValue, option) =>
+                option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+              }
+              label={value.label}
+              {...value.input}
+            />
+          );
+        } else {
+          formObject[push].push(
+            <FormField
+              key={path.join('.')}
+              name={path.join('.')}
+              label={value.label}
+              {...value.input}
+            />
+          );
+        }
       },
     });
     return [...formObject.company, ...formObject.owner];
@@ -86,12 +122,12 @@ export class AddCompanyDetails extends React.Component {
     const { addTenantCompany } = this.props;
     const normalizedData = validationSchema.cast(data);
     console.log(normalizedData);
-    // try {
-    //   await addTenantCompany(normalizedData);
-    //   this.handleSubmitSuccess();
-    // } catch (err) {
-    //   handleFormHttpResponse(form, err.response.data.error, err.response);
-    // }
+    try {
+      await addTenantCompany(normalizedData);
+      this.handleSubmitSuccess();
+    } catch (err) {
+      handleFormHttpResponse(form, err.response.data.error, err.response);
+    }
   };
 
   handleSubmitSuccess = () => {
