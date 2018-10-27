@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
 import Box from '~components/Box';
+import { Spin } from 'antd';
 import EditCompanyDetails from './EditCompanyDetails';
 import AddCompanyDetails from './AddCompanyDetails';
 
 import './CompanyDetails.scss';
-import { Spin } from 'antd';
 
 export class CompanyDetails extends React.Component {
   static propTypes = {
@@ -39,14 +39,12 @@ export class CompanyDetails extends React.Component {
   }
 
   async componentDidMount() {
-    const { getCompany, getOwner, getCategories } = this.props;
+    const { getCompany, getCategories } = this.props;
     try {
       await getCompany();
     } catch (err) {
       await getCategories();
     }
-
-    // await getOwner();
   }
 
   render() {
@@ -71,7 +69,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getCompany: dispatch.tenantCompany.getCompany,
-  getOwner: dispatch.tenantCompany.getOwner,
   getCategories: dispatch.tenantCompany.getCategories,
 });
 

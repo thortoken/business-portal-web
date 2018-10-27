@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Field } from 'formik';
+import { Field, getIn } from 'formik';
 
 import { Input } from 'antd';
 
@@ -45,8 +45,7 @@ export class FormField extends Component {
         return field.onChange(evt);
       };
     }
-
-    const errors = form.touched[name] && form.errors[name];
+    const errors = getIn(form.touched, name) && getIn(form.errors, name);
 
     return (
       <InputGroup className={className} errors={errors} label={label}>

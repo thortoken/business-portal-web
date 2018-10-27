@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 
 import FormField from '~components/FormField';
 
-import { formFields, validationSchema, initialValues, transformDateToMoment } from './formSchema';
+import { formFields, validationSchema, initialValues } from './formSchema';
 import './AddCompanyDetails.scss';
 import NotificationService from '~services/notification';
 import AutoCompleteField from '~components/AutoCompleteField';
@@ -68,7 +68,8 @@ export class AddCompanyDetails extends React.Component {
     traverseRecursively(fields, {
       childKey: 'fields',
       nodeCallback: () => console.log(),
-      leafCallback: ({ key, value, path }) => {
+      leafCallback: (data) => {
+        const { key, value, path } = data;
         let push = path.length > 1 ? 'owner' : 'company';
         if (key === 'businessClassification') {
           formObject[push].push(

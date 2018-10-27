@@ -3,7 +3,6 @@ import * as Yup from 'yup';
 import moment from 'moment';
 
 import formUtils from '~utils/forms';
-import { dateAsMoment } from '~utils/time';
 
 import DatePickerField from '~components/DatePickerField';
 
@@ -221,6 +220,4 @@ const formFields = {
 const validationSchema = formUtils.formik.makeValidationSchema(formFields);
 const initialValues = formUtils.formik.makeEmptyInitialValues(formFields);
 
-const transformDateToMoment = dateAsMoment(dateFormat);
-
-export { formFields, validationSchema, initialValues, transformDateToMoment };
+export { formFields, validationSchema, initialValues };
