@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -42,15 +41,14 @@ export class Menu extends React.Component {
     const { pathname, type } = this.props;
 
     const selectedKeys = [getSelectedKeyFromPath(pathname)];
-
     return (
       <div className="Topbar-center">
         <MenuAnt theme="light" mode="horizontal" selectedKeys={selectedKeys} className="Menu">
           <MenuAnt.Item
-            key={'/dashboard'}
+            key={'/management'}
             id="Menu__dashboard"
             className="Menu__item  Menu__dashboard">
-            <Link to={'/dashboard'} className="Menu__link">
+            <Link to={'/management/company-details'} className="Menu__link">
               <Logo>
                 <img className="Topbar-logo-svg" src="images/logo.svg" alt="" />
                 <img className="Topbar-logo-image" src="images/logoText.png" alt="" />

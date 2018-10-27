@@ -54,7 +54,7 @@ export class Topbar extends React.Component {
       {
         route: '/management/beneficial-owners',
         label: 'Beneficial Owners',
-        icon: 'crown',
+        icon: 'info',
         function: () => {},
       },
       {
