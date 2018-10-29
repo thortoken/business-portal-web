@@ -18354,3 +18354,18 @@ ul.ant-menu li.ant-menu-item-selected {
 .ant-select-auto-complete.ant-select .ant-input:focus, .ant-select-auto-complete.ant-select .ant-input:hover {
   border-right-width: 0 !important;
 }
+
+.ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active {
+  border-right-width: 0 !important;
+}
+
+.ant-select-selection:hover {
+  border-right-width: 0 !important;
+}
+.ant-select-selection__rendered {
+  margin-left: 0 !important;
+}
+
+.ant-layout {
+  background: none !important;
+}

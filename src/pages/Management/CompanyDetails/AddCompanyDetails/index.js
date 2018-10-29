@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button, Divider, AutoComplete } from 'antd';
+import { Button, Divider, Select } from 'antd';
 import { Formik } from 'formik';
 
 import FormField from '~components/FormField';
@@ -9,26 +9,45 @@ import FormField from '~components/FormField';
 import { prepareFormFieldsAndValidation } from './formSchema';
 import './AddCompanyDetails.scss';
 import NotificationService from '~services/notification';
-import AutoCompleteField from '~components/AutoCompleteField';
+import SelectField from '~components/SelectField';
 
 import { handleFormHttpResponse } from '~utils/forms/errors';
 import { traverseRecursively } from '~utils/iterators';
 
-const Option = AutoComplete.Option;
+const { Option, OptGroup } = Select;
 
-const generateOptions = list => {
+const businessTypes = [
+  { name: 'Sole', id: 'soleProprietorship' },
+  { name: 'Corporation', id: 'corporation' },
+  { name: 'Llc', id: 'llc' },
+  { name: 'Partnership', id: 'partnership' },
+];
+
+const generateClassificationOptions = list => {
   let mapped = [];
-  list.map((item, index) => {
-    let tempMapped = item.category.industryClassifications.map((item, index) => {
-      return (
-        <Option key={item.id} value={item.id}>
-          {item.name}
-        </Option>
-      );
-    });
-    mapped.push(...tempMapped);
+  list.map(item => {
+    let newMap = (
+      <OptGroup label={item.name} key={item.id}>
+        {item.category.industryClassifications.map(item => {
+          return (
+            <Option key={item.id} value={item.id}>
+              {item.name}
+            </Option>
+          );
+        })}
+      </OptGroup>
+    );
+    mapped.push(newMap);
   });
   return mapped;
+};
+
+const generateBusinessOptions = list => {
+  return list.map(item => (
+    <Option key={item.id} value={item.id}>
+      {item.name}
+    </Option>
+  ));
 };
 
 export class AddCompanyDetails extends React.Component {
@@ -91,13 +110,26 @@ export class AddCompanyDetails extends React.Component {
             <FormField
               key={path.join('.')}
               name={path.join('.')}
-              component={AutoCompleteField}
-              dataSource={generateOptions(categories)}
-              // onSelect={this.handleChange}
+              component={SelectField}
+              dataSource={generateClassificationOptions(categories)}
+              showSearch
               className="AddCompanyDetails_half"
               filterOption={(inputValue, option) =>
                 option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
               }
+              label={value.label}
+              {...value.input}
+            />
+          );
+        } else if (key === 'businessType') {
+          formObject[push].push(
+            <FormField
+              key={path.join('.')}
+              name={path.join('.')}
+              component={SelectField}
+              dataSource={generateBusinessOptions(businessTypes)}
+              onSelect={this.handleChange}
+              className="AddCompanyDetails_half"
               label={value.label}
               {...value.input}
             />
@@ -114,6 +146,9 @@ export class AddCompanyDetails extends React.Component {
         }
       },
     });
+    if (formObject.owner.length === 1) {
+      formObject.owner.length = 0;
+    }
     return [...formObject.company, ...formObject.owner];
   }
 
@@ -139,13 +174,13 @@ export class AddCompanyDetails extends React.Component {
     const { addTenantCompany } = this.props;
     const { formData } = this.state;
     const normalizedData = formData.validationSchema.cast(data);
-    if(normalizedData.businessType === 'soleProprietorship' && normalizedData.controller){
+    if (normalizedData.businessType === 'soleProprietorship' && normalizedData.controller) {
       delete normalizedData.controller;
+    } else {
+      normalizedData.controller.address.country.toUpperCase();
     }
-    console.log(normalizedData);
     try {
-      // await addTenantCompany(normalizedData);
-      form.setSubmitting(false)
+      await addTenantCompany(normalizedData);
       this.handleSubmitSuccess();
     } catch (err) {
       handleFormHttpResponse(form, err.response.data.error, err.response);

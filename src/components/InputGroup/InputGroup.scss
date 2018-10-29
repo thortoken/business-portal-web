@@ -18,7 +18,7 @@
     color: red;
   }
 
-  .ant-input, .ant-select-auto-complete.ant-select .ant-input {
+  .ant-input, .ant-select-auto-complete.ant-select .ant-input, .ant-select-selection__rendered, .ant-select-selection--single {
     color: $color-blue;
     border-color: $color-grey-medium;
     border-width: 0 0 1px 0;
@@ -41,10 +41,10 @@
     margin-top: 0;
     transform: translateY(-50%);
   }
-  .ant-select-auto-complete.ant-select .ant-select-selection__placeholder{
+  .ant-select-auto-complete.ant-select .ant-select-selection__placeholder, .ant-select-selection-selected-value, .ant-select-search{
     margin: -10px 0 0 0;
   }
-   .ant-select-auto-complete.ant-select .ant-select-selection__rendered {
+   .ant-select-auto-complete.ant-select .ant-select-selection__rendered, .ant-select-search {
     line-height: 34px;
   }
 }

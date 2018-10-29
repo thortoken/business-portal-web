@@ -58,6 +58,7 @@ export class EditCompanyDetails extends React.Component {
     try {
       await editTenantCompany(normalizedData);
       this.handleSubmitSuccess();
+      form.setSubmitting(false);
     } catch (err) {
       handleFormHttpResponse(form, err.response.data.error, err.response);
     }

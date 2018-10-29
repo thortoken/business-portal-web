@@ -9,14 +9,14 @@ import DatePickerField from '~components/DatePickerField';
 const dateFormat = 'MM/DD/YY';
 
 const companyFormFields = {
-  businessClassification: {
-    label: 'Business Classification',
+  businessType: {
+    label: 'Business Type',
     validator: Yup.string()
       .ensure()
       .required(),
   },
-  businessType: {
-    label: 'Business Type',
+  businessClassification: {
+    label: 'Business Classification',
     validator: Yup.string()
       .ensure()
       .required(),
@@ -135,7 +135,9 @@ const companyFormFields = {
   },
   ein: {
     label: 'E.I.N.',
-    validator: Yup.string().ensure(),
+    validator: Yup.string()
+      .ensure()
+      .required(),
   },
   website: {
     label: 'Website',
