@@ -8,7 +8,7 @@ import DatePickerField from '~components/DatePickerField';
 
 const dateFormat = 'MM/DD/YY';
 
-const formFields = {
+const companyFormFields = {
   businessClassification: {
     label: 'Business Classification',
     validator: Yup.string()
@@ -141,6 +141,9 @@ const formFields = {
     label: 'Website',
     validator: Yup.string().ensure(),
   },
+};
+
+const ownerFormFields = {
   controller: {
     fields: {
       firstName: {
@@ -237,7 +240,21 @@ const formFields = {
   },
 };
 
-const validationSchema = formUtils.formik.makeValidationSchema(formFields);
-const initialValues = formUtils.formik.makeEmptyInitialValues(formFields);
+const prepareFormFieldsAndValidation = (type, values) => {
+  let validationSchema, initialValues, formFields;
+  if (type === 'soleProprietorship') {
+    formFields = { ...companyFormFields };
+  } else {
+    formFields = { ...companyFormFields, ...ownerFormFields };
+  }
+  validationSchema = formUtils.formik.makeValidationSchema(formFields);
+  initialValues = formUtils.formik.makeEmptyInitialValues(formFields);
+  initialValues = { ...initialValues, ...values };
+  return {
+    validationSchema,
+    initialValues,
+    formFields,
+  };
+};
 
-export { formFields, validationSchema, initialValues };
+export { prepareFormFieldsAndValidation };

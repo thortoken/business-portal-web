@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 
 import FormField from '~components/FormField';
 
-import { formFields, validationSchema, initialValues } from './formSchema';
+import { prepareFormFieldsAndValidation } from './formSchema';
 import './AddCompanyDetails.scss';
 import NotificationService from '~services/notification';
 import AutoCompleteField from '~components/AutoCompleteField';
@@ -37,19 +37,34 @@ export class AddCompanyDetails extends React.Component {
     addTenantCompany: PropTypes.func.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      formData: prepareFormFieldsAndValidation(),
+    };
+  }
+
   render() {
-    // this.prepareForm(formFields);
+    const { formData } = this.state;
     return (
       <div className="AddCompanyDetails">
         <Formik
-          initialValues={initialValues}
+          initialValues={formData.initialValues}
           onSubmit={this.handleSubmit}
-          validationSchema={validationSchema}>
+          validationSchema={formData.validationSchema}>
           {this.renderForm}
         </Formik>
       </div>
     );
   }
+
+  handleChange = event => {
+    if (event.value) {
+      this.setState({
+        formData: prepareFormFieldsAndValidation(event.value),
+      });
+    }
+  };
 
   prepareForm(fields) {
     const { categories } = this.props;
@@ -68,7 +83,7 @@ export class AddCompanyDetails extends React.Component {
     traverseRecursively(fields, {
       childKey: 'fields',
       nodeCallback: () => console.log(),
-      leafCallback: (data) => {
+      leafCallback: data => {
         const { key, value, path } = data;
         let push = path.length > 1 ? 'owner' : 'company';
         if (key === 'businessClassification') {
@@ -78,6 +93,7 @@ export class AddCompanyDetails extends React.Component {
               name={path.join('.')}
               component={AutoCompleteField}
               dataSource={generateOptions(categories)}
+              // onSelect={this.handleChange}
               className="AddCompanyDetails_half"
               filterOption={(inputValue, option) =>
                 option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
@@ -103,7 +119,7 @@ export class AddCompanyDetails extends React.Component {
 
   renderForm = ({ handleSubmit, isSubmitting, values, dirty }) => (
     <form onSubmit={handleSubmit}>
-      {this.prepareForm(formFields)}
+      {this.prepareForm(this.state.formData.formFields)}
 
       <div className="AddCompanyDetails__button-container">
         <Button
@@ -121,10 +137,15 @@ export class AddCompanyDetails extends React.Component {
 
   handleSubmit = async (data, form) => {
     const { addTenantCompany } = this.props;
-    const normalizedData = validationSchema.cast(data);
+    const { formData } = this.state;
+    const normalizedData = formData.validationSchema.cast(data);
+    if(normalizedData.businessType === 'soleProprietorship' && normalizedData.controller){
+      delete normalizedData.controller;
+    }
     console.log(normalizedData);
     try {
-      await addTenantCompany(normalizedData);
+      // await addTenantCompany(normalizedData);
+      form.setSubmitting(false)
       this.handleSubmitSuccess();
     } catch (err) {
       handleFormHttpResponse(form, err.response.data.error, err.response);

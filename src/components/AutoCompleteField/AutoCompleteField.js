@@ -6,15 +6,20 @@ class AutoCompleteField extends React.Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
+    onSelect: PropTypes.func,
   };
   handleChange = value => {
-    const { name, onChange } = this.props;
+    const { name, onChange, onSelect } = this.props;
     onChange(name)(value);
+    if (onSelect) {
+      onSelect({ value, name });
+    }
   };
   handleBlur = value => {
     const { onBlur } = this.props;
     onBlur(value);
   };
+
   render() {
     const { name, value } = this.props;
     return (

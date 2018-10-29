@@ -38,6 +38,7 @@ export class FormField extends Component {
     }
 
     let { onChange } = field;
+    // console.log(inputProps);
     // Parse back the formatted value just before sending it to Formik.
     if (typeof parser === 'function') {
       onChange = evt => {
