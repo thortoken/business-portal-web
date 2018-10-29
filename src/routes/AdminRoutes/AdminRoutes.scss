@@ -9,14 +9,14 @@
 
   &-content {
     width: $screen-xl;
-    padding: 2rem 3rem;
+    padding: 3rem 2rem 3rem 2rem;
     margin: 0 auto;
 
     @media (min-width: $screen-xs-min) {
       width: $screen-xs;
     }
     @media (min-width: $screen-sm-min) {
-      padding: 1rem 3rem;
+      padding: 3rem 1rem 3rem 1rem;
       width: $screen-sm;
     }
     @media (min-width: $screen-md-min) {
@@ -27,6 +27,37 @@
     }
     @media (min-width: $screen-xl-min) {
       width: $screen-xl;
+    }
+  }
+}
+
+.SidebarRoutes {
+  height: 100vh;
+
+  &-nav {
+    margin-bottom: 1.5rem;
+  }
+
+  &-content {
+    width: auto;
+    padding: 1rem 1rem 3rem 0;
+    margin: 0 0 0 20px;
+
+    @media (min-width: $screen-xs-min) {
+      width: auto;
+    }
+    @media (min-width: $screen-sm-min) {
+      padding: 1rem 2rem 3rem 0;
+      width: auto;
+    }
+    @media (min-width: $screen-md-min) {
+      width: auto;
+    }
+    @media (min-width: $screen-lg-min) {
+      width: auto;
+    }
+    @media (min-width: $screen-xl-min) {
+      width: auto;
     }
   }
 }

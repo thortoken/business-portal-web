@@ -13,10 +13,14 @@ import './AdminRoutes.scss';
 
 export class AdminRoutes extends React.Component {
   render() {
+    const path = window.location.pathname;
+    const routeClass = path.includes('/management/')
+      ? 'SidebarRoutes-content'
+      : 'AdminRoutes-content';
     return (
       <Layout className="AdminRoutes">
         <Topbar className="AdminRoutes-nav" type="admin" />
-        <Layout.Content className="AdminRoutes-content">
+        <Layout.Content className={routeClass}>
           <Switch>
             <Route path="/payments" component={Admin(PaymentsPage)} />
             <Route path="/contractors" component={Admin(ContractorsPage)} />
