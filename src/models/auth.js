@@ -50,8 +50,8 @@ const auth = {
         const { token, name, phone, email } = response.data;
         const { roles } = response.data.tenantProfile;
         this.setUser({ name, phone, email });
-        this.saveRole(roles, true);
-        this.saveToken(token, true);
+        await this.saveRole(roles, true);
+        await this.saveToken(token, true);
 
         return { token, name, phone, email };
       } catch (err) {

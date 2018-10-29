@@ -1,6 +1,6 @@
-@import "../../../styles/var";
+@import "../../../../styles/var";
 
-.CompanyDetails {
+.AddCompanyDetails {
   padding: 1rem;
   width: 100%;
   background-color: #fff;
@@ -22,9 +22,5 @@
 
   .ant-calendar-picker {
     width: 100%;
-  }
-  &__spinner {
-    display: block !important;
-    margin: 0 auto !important;
   }
 }
