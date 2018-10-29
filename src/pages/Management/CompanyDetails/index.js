@@ -14,6 +14,8 @@ export class CompanyDetails extends React.Component {
   static propTypes = {
     getCompany: PropTypes.func,
     company: PropTypes.object,
+    isLoadingCompany: PropTypes.bool,
+    isLoadingCategories: PropTypes.bool,
   };
 
   constructor(props, state) {
@@ -48,13 +50,19 @@ export class CompanyDetails extends React.Component {
   }
 
   render() {
+    const { isLoadingCompany, isLoadingCategories } = this.props;
     const { company, categories } = this.state;
     return (
       <Box>
         <div className="CompanyDetails">
           {company && <EditCompanyDetails formValues={company} />}
-          <Spin size="large" spinning={!company && categories.length === 0}>
-            {!company && <AddCompanyDetails categories={categories} />}
+          <Spin
+            size="large"
+            className="CompanyDetails__spinner"
+            spinning={!company && categories.length === 0}>
+            {!company &&
+              !isLoadingCompany &&
+              !isLoadingCategories && <AddCompanyDetails categories={categories} />}
           </Spin>
         </div>
       </Box>
@@ -65,6 +73,8 @@ export class CompanyDetails extends React.Component {
 const mapStateToProps = state => ({
   company: state.tenantCompany.company,
   categories: state.tenantCompany.categories,
+  isLoadingCompany: state.loading.effects.tenantCompany.getCompany,
+  isLoadingCategories: state.loading.effects.tenantCompany.getCategories,
 });
 
 const mapDispatchToProps = dispatch => ({

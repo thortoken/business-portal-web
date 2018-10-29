@@ -4,7 +4,10 @@
     width: 8.75rem !important;
   }
   &__link {
-    text-align: left !important;
+    text-align: center;
+    &--logo {
+      text-align: left;
+    }
   }
 }
 

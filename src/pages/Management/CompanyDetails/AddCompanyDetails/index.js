@@ -38,7 +38,7 @@ export class AddCompanyDetails extends React.Component {
   };
 
   render() {
-    this.prepareForm(formFields);
+    // this.prepareForm(formFields);
     return (
       <div className="AddCompanyDetails">
         <Formik

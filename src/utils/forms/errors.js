@@ -1,22 +1,22 @@
 import _ from 'lodash';
 import NotificationService from '../../services/notification';
 
-export const setFormErrors = (form, errors) => {
-  if (Array.isArray(errors)) {
-    _.forIn(errors, (value, inputName) => {
+export const setFormErrors = (form, err, path = []) => {
+  if (typeof err === 'string') {
+    return err;
+  } else {
+    _.forIn(err, (value, inputName) => {
+      let newPath = [...path, inputName];
+      if (newPath.length > 0) {
+        inputName = newPath.join('.');
+      }
       if (Array.isArray(value)) {
         let error = prepareError(value, inputName);
         form.setFieldError(inputName, error);
       } else {
-        _.forIn(value, (val, name) => {
-          let err = prepareError(val, name);
-          form.setFieldError(name, err);
-        });
+        setFormErrors(form, value, newPath);
       }
     });
-    return null;
-  } else {
-    return errors;
   }
 };
 

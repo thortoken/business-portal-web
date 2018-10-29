@@ -3,26 +3,8 @@ import * as Yup from 'yup';
 import formUtils from '~utils/forms';
 
 const formFields = {
-  businessName: {
-    label: 'Business Name',
-    validator: Yup.string()
-      .ensure()
-      .required(),
-  },
   doingBusinessAs: {
     label: 'Doing Business As',
-    validator: Yup.string()
-      .ensure()
-      .required(),
-  },
-  firstName: {
-    label: 'First name',
-    validator: Yup.string()
-      .ensure()
-      .required(),
-  },
-  lastName: {
-    label: 'Last name',
     validator: Yup.string()
       .ensure()
       .required(),

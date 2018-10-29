@@ -161,6 +161,26 @@ const formFields = {
           .ensure()
           .required(),
       },
+      ssn: {
+        label: 'Last 4 digits of SSN',
+        validator: Yup.string()
+          .ensure()
+          .matches(/\d{4}/, 'Please input last 4 digits of your SSN'),
+        input: {
+          maxLength: 4,
+        },
+      },
+      dateOfBirth: {
+        label: 'Date of Birth',
+        validator: Yup.date()
+          .max(moment().subtract(18, 'years'), 'Contractor must be at least 18 years old')
+          .transform(formUtils.yup.dateTransformer(dateFormat)),
+        input: {
+          allowClear: false,
+          component: DatePickerField,
+          format: dateFormat,
+        },
+      },
       address: {
         fields: {
           address1: {
