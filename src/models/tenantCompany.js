@@ -8,7 +8,6 @@ const tenantCompany = {
         const response = await Http.get(`/tenants/${Config.tenantId}/company`);
         this.setCompany(response.data);
       } catch (err) {
-        console.log(err);
         throw err;
       }
     },
@@ -17,17 +16,14 @@ const tenantCompany = {
         const response = await Http.get(`/tenants/${Config.tenantId}/company/owner`);
         this.setOwner(response.data);
       } catch (err) {
-        console.log(err);
         throw err;
       }
     },
     async getCategories() {
       try {
         const response = await Http.get(`/tenants/company/businessCategories`);
-        console.log(response.data);
         this.setCategories(response.data.businessClassifications);
       } catch (err) {
-        console.log(err);
         throw err;
       }
     },

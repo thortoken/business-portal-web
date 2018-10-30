@@ -7,9 +7,11 @@ import { CompanyTeam } from './CompanyTeam';
 import { LinkedAccounts } from './LinkedAccounts';
 import { Integrations } from './Integrations';
 import { Settings } from './Settings';
+import { withRouteModal } from '~components/Modal';
 import ManagementMenu from './_components/ManagementMenu';
 
 import './Management.scss';
+import AddCompanyDetails from './CompanyDetails/AddCompanyDetails';
 
 export class RootManagementPage extends React.Component {
   render() {
@@ -25,11 +27,14 @@ export class RootManagementPage extends React.Component {
             <Route exact path={`/management/integrations`} component={Integrations} />
             <Route exact path={`/management/settings`} component={Settings} />
 
-            {/*<Route*/}
-            {/*exact*/}
-            {/*path={`${match.path}/add`}*/}
-            {/*component={withRouteModal({ component: AddContractor, title: 'Add Contractor' })}*/}
-            {/*/>*/}
+            <Route
+              exact
+              path={`/management/company-details/add`}
+              component={withRouteModal({
+                component: AddCompanyDetails,
+                title: 'Add Company Details',
+              })}
+            />
             <Route path={`/management`} component={CompanyDetails} />
           </Switch>
         </div>
