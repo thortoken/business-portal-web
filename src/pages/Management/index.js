@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
 import CompanyDetails from './CompanyDetails';
-import { BeneficialOwners } from './BeneficialOwners';
+import BeneficialOwners from './BeneficialOwners';
 import { CompanyTeam } from './CompanyTeam';
 import { LinkedAccounts } from './LinkedAccounts';
 import { Integrations } from './Integrations';

@@ -25,6 +25,7 @@ const formFields = {
   },
   phone: {
     label: 'Phone',
+    // eslint-disable-next-line
     validator: Yup.string().matches(/\d{10}/, '${label} must have 10 digits'),
     input: {
       maxLength: 12,
@@ -78,6 +79,7 @@ const formFields = {
     label: 'Postal Code',
     validator: Yup.string()
       .required()
+      // eslint-disable-next-line
       .max(99999, '${label} must be a valid zip code'),
     input: {
       maxLength: 5,

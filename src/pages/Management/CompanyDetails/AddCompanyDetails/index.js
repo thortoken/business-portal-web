@@ -13,7 +13,6 @@ import SelectField from '~components/SelectField';
 
 import { handleFormHttpResponse } from '~utils/forms/errors';
 import { traverseRecursively } from '~utils/iterators';
-import { transformData } from '../../../Contractors/EditContractor/formSchema';
 
 const { Option, OptGroup } = Select;
 
@@ -26,6 +25,7 @@ const businessTypes = [
 
 const generateClassificationOptions = list => {
   let mapped = [];
+  // eslint-disable-next-line
   list.map(item => {
     let newMap = (
       <OptGroup label={item.name} key={item.id}>
