@@ -5,13 +5,8 @@ const beneficialOwners = {
     async getBeneficialOwners(data) {
       try {
         const response = await Http.get(`/tenants/company/beneficialOwners`, data);
-        this.setBeneficialPagination({
-          limit: 10,
-          page: 1,
-          pages: 1,
-          total: 0,
-        });
-        this.setBeneficialList([]);
+        this.setBeneficialPagination(response.data.pagination);
+        this.setBeneficialList(response.data.items);
       } catch (err) {
         throw err;
       }

@@ -4,7 +4,6 @@ import * as Yup from 'yup';
 import moment from 'moment';
 
 import formUtils from '~utils/forms';
-import { dateAsMoment } from '~utils/time';
 
 import DatePickerField from '~components/DatePickerField';
 
@@ -36,13 +35,13 @@ const formFields = {
     },
   },
   ssn: {
-    label: 'Last 4 digits of SSN',
+    label: 'SSN',
     validator: Yup.string()
       .ensure()
       .required()
-      .matches(/\d{4}/, 'Please input last 4 digits of your SSN'),
+      .matches(/\d{9}/, 'Please input your SSN'),
     input: {
-      maxLength: 4,
+      maxLength: 9,
     },
   },
   address: {

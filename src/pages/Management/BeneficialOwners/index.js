@@ -55,7 +55,7 @@ export class BeneficialOwners extends React.Component {
     });
   };
 
-    handleAdd = () => {
+  handleAdd = () => {
     const { isLoading } = this.props;
     if (isLoading) {
     } else {
@@ -63,21 +63,29 @@ export class BeneficialOwners extends React.Component {
     }
   };
 
+  handleEdit = row => {
+    console.log('edit', row);
+  };
+
+  handleDelete = row => {
+    console.log('delete', row);
+  };
+
   render() {
     const { isLoading } = this.props;
     const { pagination, beneficialList } = this.state;
     return (
-      <div className="CompanyDetails">
+      <div className="BeneficialOwners">
         <Header title="Beneficial Owners List" size="medium">
           <Button type="primary" onClick={this.handleAdd}>
-                  <Icon type="plus" theme="outlined" />
-              </Button>
+            <Icon type="plus" theme="outlined" />
+          </Button>
           <RefreshButton handleRefresh={this.handleRefresh} isLoading={isLoading} />
         </Header>
         <Box>
           <Table
             dataSource={beneficialList}
-            className="ContractorsList__table"
+            className="BeneficialOwners__table"
             rowKey="id"
             onChange={this.handleTableChange}
             pagination={pagination}
@@ -85,14 +93,14 @@ export class BeneficialOwners extends React.Component {
             <Column align="center" dataIndex="firstName" title="First Name" />
             <Column align="center" dataIndex="lastName" title="Last Name" />
             <Column align="center" dataIndex="address.city" title="City" />
-            <Column align="center" dataIndex="address.state" title="State" />
-            <Column align="center" dataIndex="approved" title="Approved" />
+            <Column align="center" dataIndex="address.stateProvinceRegion" title="State" />
+            {/*<Column align="center" dataIndex="approved" title="Approved" />*/}
             <Column
               align="center"
               title="Actions"
               render={(text, record) => {
                 return (
-                  <span>
+                  <span className="BeneficialOwners__table__buttons">
                     <Button onClick={() => this.handleEdit(record)}>
                       <Icon type="form" theme="outlined" />
                     </Button>

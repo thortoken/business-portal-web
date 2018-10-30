@@ -3,6 +3,37 @@
 .BeneficialOwners {
   padding: 1rem;
   width: 100%;
+  &__table {
+    &__buttons {
+      Button {
+        margin-right: 0.5rem;
+      }
+    }
+    table {
+      thead > tr > th,
+      .ant-table-thead > tr > th.ant-table-column-sort {
+        background: $color-darker-blue;
+        background: linear-gradient($color-darker-blue, $color-blue);
+        color: $color-white;
+      }
+      .ant-table-column-sorter-up.on .anticon-caret-up,
+      .ant-table-column-sorter-down.on .anticon-caret-up,
+      .ant-table-column-sorter-up.on .anticon-caret-down,
+      .ant-table-column-sorter-down.on .anticon-caret-down {
+        color: #fff;
+      }
+      td.ContractorsList__activity {
+        padding: 0;
+        .ContractorsList--active,
+        .ContractorsList--resting,
+        .ContractorsList--inactive {
+          padding: 16px;
+          color: #fff;
+        }
+      }
+    }
+  }
+
   &__button-container {
     width: 100%;
     text-align: center;
