@@ -12,6 +12,7 @@ import ManagementMenu from './_components/ManagementMenu';
 
 import './Management.scss';
 import AddCompanyDetails from './CompanyDetails/AddCompanyDetails';
+import EditCompanyDetails from './CompanyDetails/EditCompanyDetails';
 
 export class RootManagementPage extends React.Component {
   render() {
@@ -33,6 +34,14 @@ export class RootManagementPage extends React.Component {
               component={withRouteModal({
                 component: AddCompanyDetails,
                 title: 'Add Company Details',
+              })}
+            />
+            <Route
+              exact
+              path={`/management/company-details/edit`}
+              component={withRouteModal({
+                component: EditCompanyDetails,
+                title: 'Edit Company Details',
               })}
             />
             <Route path={`/management`} component={CompanyDetails} />

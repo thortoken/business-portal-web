@@ -15,17 +15,17 @@ import { handleFormHttpResponse } from '~utils/forms/errors';
 
 export class EditCompanyDetails extends React.Component {
   static propTypes = {
-    formValues: PropTypes.object,
+    company: PropTypes.object,
     editTenantCompany: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
   };
 
   render() {
-    const { formValues } = this.props;
+    const { company } = this.props;
     return (
       <div className="EditCompanyDetails">
         <Formik
-          initialValues={formValues}
+          initialValues={company}
           onSubmit={this.handleSubmit}
           validationSchema={validationSchema}>
           {this.renderForm}
@@ -79,16 +79,22 @@ export class EditCompanyDetails extends React.Component {
   };
 
   handleSubmitSuccess = () => {
+    const { history } = this.props;
     NotificationService.open({
       type: 'success',
       message: 'Success',
       description: 'Company Details successfully edited.',
     });
+    history.push(`/management/company-details`);
   };
 }
+
+const mapStateToProps = state => ({
+  company: state.tenantCompany.company,
+});
 
 const mapDispatchToProps = dispatch => ({
   editTenantCompany: dispatch.tenantCompany.editTenantCompany,
 });
 
-export default connect(null, mapDispatchToProps)(EditCompanyDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(EditCompanyDetails);

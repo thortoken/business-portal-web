@@ -54,7 +54,7 @@ export class CompanyDetails extends React.Component {
   };
 
   handleEdit = () => {
-    this.props.history.push(`/contractors/invitationsList`);
+    this.props.history.push(`/management/company-details/edit`);
   };
 
   render() {
@@ -80,7 +80,7 @@ export class CompanyDetails extends React.Component {
                 )}
             </Header>
             {!isLoadingCompany &&
-              !isLoadingCategories && <EditCompanyDetails formValues={company} disabled />}
+              !isLoadingCategories && <EditCompanyDetails disabled />}
           </Spin>
         </div>
       </Box>
