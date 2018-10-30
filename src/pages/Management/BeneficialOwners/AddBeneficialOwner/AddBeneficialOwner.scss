@@ -1,8 +1,9 @@
-@import "../../../styles/var";
+@import "../../../../styles/var";
 
-.CompanyDetails {
+.AddBeneficialOwner {
   padding: 1rem;
   width: 100%;
+  //background-color: #fff;
   &__button-container {
     width: 100%;
     text-align: center;
@@ -21,12 +22,5 @@
 
   .ant-calendar-picker {
     width: 100%;
-  }
-  &__spinner {
-    display: block !important;
-    margin: 0 auto !important;
-  }
-  .Box {
-    border-radius: 0.9rem 0.9rem 0 0;
   }
 }

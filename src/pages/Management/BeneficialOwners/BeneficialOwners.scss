@@ -1,8 +1,63 @@
+@import "../../../styles/var";
+
 .BeneficialOwners {
   padding: 1rem;
   width: 100%;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  text-align: center;
+  &__table {
+    &__buttons {
+      Button {
+        margin-right: 0.5rem;
+      }
+    }
+    table {
+      thead > tr > th,
+      .ant-table-thead > tr > th.ant-table-column-sort {
+        background: $color-darker-blue;
+        background: linear-gradient($color-darker-blue, $color-blue);
+        color: $color-white;
+      }
+      .ant-table-column-sorter-up.on .anticon-caret-up,
+      .ant-table-column-sorter-down.on .anticon-caret-up,
+      .ant-table-column-sorter-up.on .anticon-caret-down,
+      .ant-table-column-sorter-down.on .anticon-caret-down {
+        color: #fff;
+      }
+      td.ContractorsList__activity {
+        padding: 0;
+        .ContractorsList--active,
+        .ContractorsList--resting,
+        .ContractorsList--inactive {
+          padding: 16px;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  &__button-container {
+    width: 100%;
+    text-align: center;
+    margin-top: 4rem;
+  &--button {
+      padding: 1rem 3rem;
+    }
+  }
+  &__errors {
+    color: $color-inactive;
+  }
+
+  .InputGroup {
+    width: 50%;
+  }
+
+  .ant-calendar-picker {
+    width: 100%;
+  }
+  &__spinner {
+    display: block !important;
+    margin: 0 auto !important;
+  }
+  .Box {
+    border-radius: 0.9rem 0.9rem 0 0;
+  }
 }

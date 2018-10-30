@@ -50,40 +50,45 @@ export class CompanyDetails extends React.Component {
   }
 
   handleAdd = () => {
-    this.props.history.push(`/management/company-details/add`);
+    const { isLoadingCompany, isLoadingCategories } = this.props;
+    if (isLoadingCategories || isLoadingCompany) {
+    } else {
+      this.props.history.push(`/management/company-details/add`);
+    }
   };
 
   handleEdit = () => {
-    this.props.history.push(`/management/company-details/edit`);
+    const { isLoadingCompany, isLoadingCategories } = this.props;
+    if (isLoadingCategories || isLoadingCompany) {
+    } else {
+      this.props.history.push(`/management/company-details/edit`);
+    }
   };
 
   render() {
     const { isLoadingCompany, isLoadingCategories } = this.props;
     const { company } = this.state;
     return (
-      <Box>
-        <div className="CompanyDetails">
-          <Spin
-            size="large"
-            className="CompanyDetails__spinner"
-            spinning={isLoadingCompany || isLoadingCategories}>
-            <Header title="Company Details" size="medium">
-              {!isLoadingCompany &&
-                !isLoadingCategories && (
-                  <Button type="primary" onClick={company ? this.handleEdit : this.handleAdd}>
-                    {company ? (
-                      <Icon type="form" theme="outlined" />
-                    ) : (
-                      <Icon type="plus" theme="outlined" />
-                    )}
-                  </Button>
+      <div className="CompanyDetails">
+        <Header title="Company Details" size="medium">
+          {!isLoadingCompany &&
+            !isLoadingCategories && (
+              <Button type="primary" onClick={company ? this.handleEdit : this.handleAdd}>
+                {company ? (
+                  <Icon type="form" theme="outlined" />
+                ) : (
+                  <Icon type="plus" theme="outlined" />
                 )}
-            </Header>
-            {!isLoadingCompany &&
-              !isLoadingCategories && <EditCompanyDetails disabled />}
-          </Spin>
-        </div>
-      </Box>
+              </Button>
+            )}
+        </Header>
+        <Spin
+          size="large"
+          className="CompanyDetails__spinner"
+          spinning={isLoadingCompany || isLoadingCategories}>
+          <Box>{!isLoadingCompany && !isLoadingCategories && <EditCompanyDetails disabled />}</Box>
+        </Spin>
+      </div>
     );
   }
 }

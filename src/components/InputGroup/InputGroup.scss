@@ -47,4 +47,7 @@
    .ant-select-auto-complete.ant-select .ant-select-selection__rendered, .ant-select-search {
     line-height: 34px;
   }
+  .ant-select-selection__rendered {
+    margin-left: 0 !important;
+  }
 }
