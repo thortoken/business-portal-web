@@ -8,6 +8,9 @@ const formFields = {
     validator: Yup.string()
       .ensure()
       .required(),
+    input: {
+      placeholder: '',
+    },
   },
   email: {
     label: 'E-mail',
@@ -16,6 +19,9 @@ const formFields = {
       .email()
       .required()
       .min(5),
+    input: {
+      placeholder: '',
+    },
   },
   phone: {
     label: 'Phone',
@@ -33,18 +39,27 @@ const formFields = {
       .ensure()
       .required()
       .max(50),
+    input: {
+      placeholder: '',
+    },
   },
   address2: {
     label: 'Address 2',
     validator: Yup.string()
       .max(50)
       .nullable(),
+    input: {
+      placeholder: '',
+    },
   },
   city: {
     label: 'City',
     validator: Yup.string()
       .ensure()
       .required(),
+    input: {
+      placeholder: '',
+    },
   },
   state: {
     label: 'State',
@@ -74,10 +89,16 @@ const formFields = {
     validator: Yup.string()
       .ensure()
       .required(),
+    input: {
+      placeholder: '',
+    },
   },
   website: {
     label: 'Website',
     validator: Yup.string().ensure(),
+    input: {
+      placeholder: '',
+    },
   },
 };
 

@@ -13,6 +13,7 @@ import SelectField from '~components/SelectField';
 
 import { handleFormHttpResponse } from '~utils/forms/errors';
 import { traverseRecursively } from '~utils/iterators';
+import { transformData } from '../../../Contractors/EditContractor/formSchema';
 
 const { Option, OptGroup } = Select;
 
@@ -188,16 +189,22 @@ export class AddCompanyDetails extends React.Component {
   };
 
   handleSubmitSuccess = () => {
+    const { history } = this.props;
     NotificationService.open({
       type: 'success',
       message: 'Success',
       description: 'Company Details successfully added.',
     });
+    history.push(`/management/company-details`);
   };
 }
+
+const mapStateToProps = state => ({
+  categories: state.tenantCompany.categories,
+});
 
 const mapDispatchToProps = dispatch => ({
   addTenantCompany: dispatch.tenantCompany.addTenantCompany,
 });
 
-export default connect(null, mapDispatchToProps)(AddCompanyDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(AddCompanyDetails);

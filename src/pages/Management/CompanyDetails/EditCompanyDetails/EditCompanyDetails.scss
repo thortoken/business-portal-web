@@ -15,6 +15,16 @@
   &__errors {
     color: $color-inactive;
   }
+  &__input{
+    &--disabled {
+      .ant-input-disabled {
+          cursor: default !important;
+      }
+      .ant-input {
+        border: 0 !important;
+      }
+    }
+  }
 
   .InputGroup {
     width: 50%;

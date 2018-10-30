@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
 import Box from '~components/Box';
-import { Spin } from 'antd';
+import { Button, Spin, Icon } from 'antd';
 import EditCompanyDetails from './EditCompanyDetails';
-import AddCompanyDetails from './AddCompanyDetails';
+import Header from '~components/Header';
 
 import './CompanyDetails.scss';
 
@@ -49,20 +49,38 @@ export class CompanyDetails extends React.Component {
     }
   }
 
+  handleAdd = () => {
+    this.props.history.push(`/management/company-details/add`);
+  };
+
+  handleEdit = () => {
+    this.props.history.push(`/management/company-details/edit`);
+  };
+
   render() {
     const { isLoadingCompany, isLoadingCategories } = this.props;
-    const { company, categories } = this.state;
+    const { company } = this.state;
     return (
       <Box>
         <div className="CompanyDetails">
-          {company && <EditCompanyDetails formValues={company} />}
           <Spin
             size="large"
             className="CompanyDetails__spinner"
-            spinning={!company && categories.length === 0}>
-            {!company &&
-              !isLoadingCompany &&
-              !isLoadingCategories && <AddCompanyDetails categories={categories} />}
+            spinning={isLoadingCompany || isLoadingCategories}>
+            <Header title="Company Details" size="medium">
+              {!isLoadingCompany &&
+                !isLoadingCategories && (
+                  <Button type="primary" onClick={company ? this.handleEdit : this.handleAdd}>
+                    {company ? (
+                      <Icon type="form" theme="outlined" />
+                    ) : (
+                      <Icon type="plus" theme="outlined" />
+                    )}
+                  </Button>
+                )}
+            </Header>
+            {!isLoadingCompany &&
+              !isLoadingCategories && <EditCompanyDetails disabled />}
           </Spin>
         </div>
       </Box>
