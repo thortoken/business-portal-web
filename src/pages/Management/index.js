@@ -13,6 +13,7 @@ import ManagementMenu from './_components/ManagementMenu';
 import './Management.scss';
 import AddCompanyDetails from './CompanyDetails/AddCompanyDetails';
 import EditCompanyDetails from './CompanyDetails/EditCompanyDetails';
+import AddBeneficialOwner from './BeneficialOwners/AddBeneficialOwner';
 
 export class RootManagementPage extends React.Component {
   render() {
@@ -42,6 +43,14 @@ export class RootManagementPage extends React.Component {
               component={withRouteModal({
                 component: EditCompanyDetails,
                 title: 'Edit Company Details',
+              })}
+            />
+            <Route
+              exact
+              path={`/management/beneficial-owners/add`}
+              component={withRouteModal({
+                component: AddBeneficialOwner,
+                title: 'Add Beneficial Owner',
               })}
             />
             <Route path={`/management`} component={CompanyDetails} />

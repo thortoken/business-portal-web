@@ -55,12 +55,23 @@ export class BeneficialOwners extends React.Component {
     });
   };
 
+    handleAdd = () => {
+    const { isLoading } = this.props;
+    if (isLoading) {
+    } else {
+      this.props.history.push(`/management/beneficial-owners/add`);
+    }
+  };
+
   render() {
     const { isLoading } = this.props;
     const { pagination, beneficialList } = this.state;
     return (
       <div className="CompanyDetails">
         <Header title="Beneficial Owners List" size="medium">
+          <Button type="primary" onClick={this.handleAdd}>
+                  <Icon type="plus" theme="outlined" />
+              </Button>
           <RefreshButton handleRefresh={this.handleRefresh} isLoading={isLoading} />
         </Header>
         <Box>
