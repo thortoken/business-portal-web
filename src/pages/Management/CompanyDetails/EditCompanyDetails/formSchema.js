@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 import * as Yup from 'yup';
 
 import formUtils from '~utils/forms';

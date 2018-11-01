@@ -29,4 +29,8 @@
   .Box {
     border-radius: 0.9rem 0.9rem 0 0;
   }
+  &__box {
+    padding: 1rem;
+    min-height: 140px;
+  }
 }
