@@ -221,9 +221,10 @@ const ownerFormFields = {
             label: 'Postal Code',
             validator: Yup.string()
               .required()
-              .max(99999, '${label} must be a valid zip code'),
+              .max(99999 - 9999, '${label} must be a valid zip code'),
             input: {
-              maxLength: 5,
+              maxLength: 9,
+              minLength: 5,
               placeholder: '12345',
             },
           },

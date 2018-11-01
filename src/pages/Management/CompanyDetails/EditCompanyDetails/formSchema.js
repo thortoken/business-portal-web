@@ -79,10 +79,9 @@ const formFields = {
     label: 'Postal Code',
     validator: Yup.string()
       .required()
-      // eslint-disable-next-line
-      .max(99999, '${label} must be a valid zip code'),
+      .max(10, '${label} must be a valid zip code')
+      .min(5, '${label} must be a valid zip code'),
     input: {
-      maxLength: 5,
       placeholder: '12345',
     },
   },
@@ -93,6 +92,7 @@ const formFields = {
       .required(),
     input: {
       placeholder: '',
+      disabled: true,
     },
   },
   website: {
