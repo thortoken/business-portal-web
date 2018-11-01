@@ -87,10 +87,8 @@ export class EditContractor extends React.Component {
   };
 
   handleSubmit = async (data, form) => {
-    const normalizedData = validationSchema.cast(data);
-
     try {
-      await this.updateContractor(normalizedData);
+      await this.updateContractor(data);
 
       this.handleSubmitSuccess();
     } catch (err) {

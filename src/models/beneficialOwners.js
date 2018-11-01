@@ -14,7 +14,16 @@ const beneficialOwners = {
     async createBeneficialOwner(data) {
       try {
         const response = await Http.post(`/tenants/company/beneficialOwners`, data);
-        console.log(response.data);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async deleteBeneficialOwner(id) {
+      try {
+        const response = await Http.delete(`/tenants/company/beneficialOwners/${id}`);
+        console.log(response);
+        return response;
       } catch (err) {
         console.log(err.response);
         throw err;

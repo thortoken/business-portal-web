@@ -68,9 +68,8 @@ export class EditCompanyDetails extends React.Component {
 
   handleSubmit = async (data, form) => {
     const { editTenantCompany } = this.props;
-    const normalizedData = validationSchema.cast(data);
     try {
-      await editTenantCompany(normalizedData);
+      await editTenantCompany(data);
       this.handleSubmitSuccess();
       form.setSubmitting(false);
     } catch (err) {

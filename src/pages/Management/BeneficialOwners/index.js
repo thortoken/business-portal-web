@@ -6,11 +6,13 @@ import connect from 'react-redux/es/connect/connect';
 import Box from '~components/Box';
 
 import './BeneficialOwners.scss';
-import { Button, Icon, Table } from 'antd';
+import { Button, Icon, Modal, Table } from 'antd';
 
 import RefreshButton from '~components/RefreshButton';
 import Header from '~components/Header';
 import makeDefaultPagination from '~utils/pagination';
+
+import NotificationService from '~services/notification';
 
 const { Column } = Table;
 
@@ -67,8 +69,26 @@ export class BeneficialOwners extends React.Component {
     console.log('edit', row);
   };
 
-  handleDelete = row => {
-    console.log('delete', row);
+  handleDelete = async row => {
+    const { deleteBeneficialOwner, handleRefresh } = this.props;
+    const { id, firstName, lastName } = row;
+    Modal.confirm({
+      title: `Are you sure you want to delete ${firstName} ${lastName}?`,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk: async () => {
+        const response = deleteBeneficialOwner(id);
+        if (response.status === 204) {
+          NotificationService.open({
+            type: 'success',
+            message: 'Success',
+            description: 'Beneficial Owner successfully deleted.',
+          });
+        }
+        return handleRefresh();
+      },
+    });
   };
 
   render() {
@@ -94,7 +114,7 @@ export class BeneficialOwners extends React.Component {
             <Column align="center" dataIndex="lastName" title="Last Name" />
             <Column align="center" dataIndex="address.city" title="City" />
             <Column align="center" dataIndex="address.stateProvinceRegion" title="State" />
-            {/*<Column align="center" dataIndex="approved" title="Approved" />*/}
+            <Column align="center" dataIndex="verificationStatus" title="Status" />
             <Column
               align="center"
               title="Actions"
@@ -126,6 +146,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getBeneficialOwners: dispatch.beneficialOwners.getBeneficialOwners,
+  deleteBeneficialOwner: dispatch.beneficialOwners.deleteBeneficialOwner,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BeneficialOwners);
