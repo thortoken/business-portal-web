@@ -105,12 +105,6 @@ const companyFormFields = {
       placeholder: '12345',
     },
   },
-  country: {
-    label: 'Country',
-    validator: Yup.string()
-      .ensure()
-      .required(),
-  },
   dateOfBirth: {
     label: 'Date of Birth',
     validator: Yup.date()
@@ -137,7 +131,10 @@ const companyFormFields = {
     label: 'E.I.N.',
     validator: Yup.string()
       .ensure()
-      .required(),
+      .when('businessType', {
+        is: val => val !== 'soleProprietorship',
+        then: Yup.string().required(),
+      }),
   },
   website: {
     label: 'Website',
@@ -224,17 +221,12 @@ const ownerFormFields = {
             label: 'Postal Code',
             validator: Yup.string()
               .required()
-              .max(99999, '${label} must be a valid zip code'),
+              .max(99999 - 9999, '${label} must be a valid zip code'),
             input: {
-              maxLength: 5,
+              maxLength: 9,
+              minLength: 5,
               placeholder: '12345',
             },
-          },
-          country: {
-            label: 'Country',
-            validator: Yup.string()
-              .ensure()
-              .required(),
           },
         },
       },

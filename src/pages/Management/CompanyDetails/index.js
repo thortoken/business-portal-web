@@ -4,16 +4,18 @@ import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
 import Box from '~components/Box';
-import { Button, Spin, Icon } from 'antd';
+import { Button, Spin, Icon, Divider } from 'antd';
 import EditCompanyDetails from './EditCompanyDetails';
 import Header from '~components/Header';
 
 import './CompanyDetails.scss';
+import EditCompanyOwner from './EditCompanyOwner';
 
 export class CompanyDetails extends React.Component {
   static propTypes = {
     getCompany: PropTypes.func,
     company: PropTypes.object,
+    owner: PropTypes.object,
     isLoadingCompany: PropTypes.bool,
     isLoadingCategories: PropTypes.bool,
   };
@@ -22,6 +24,7 @@ export class CompanyDetails extends React.Component {
     super(props, state);
     this.state = {
       company: null,
+      owner: null,
       categories: [],
     };
   }
@@ -37,13 +40,18 @@ export class CompanyDetails extends React.Component {
         categories: nextProps.categories,
       };
     }
+    if (nextProps.owner !== prevState.owner) {
+      return {
+        owner: nextProps.owner,
+      };
+    }
     return null;
   }
 
   async componentDidMount() {
-    const { getCompany, getCategories } = this.props;
+    const { getCategories, getCompanyDetails } = this.props;
     try {
-      await getCompany();
+      await getCompanyDetails();
     } catch (err) {
       await getCategories();
     }
@@ -66,12 +74,12 @@ export class CompanyDetails extends React.Component {
   };
 
   render() {
-    const { isLoadingCompany, isLoadingCategories } = this.props;
-    const { company } = this.state;
+    const { isLoadingCompanyDetails, isLoadingCategories } = this.props;
+    const { company, owner } = this.state;
     return (
       <div className="CompanyDetails">
         <Header title="Company Details" size="medium">
-          {!isLoadingCompany &&
+          {!isLoadingCompanyDetails &&
             !isLoadingCategories && (
               <Button type="primary" onClick={company ? this.handleEdit : this.handleAdd}>
                 {company ? (
@@ -83,10 +91,26 @@ export class CompanyDetails extends React.Component {
             )}
         </Header>
         <Spin
-          size="large"
+          size="small"
           className="CompanyDetails__spinner"
-          spinning={isLoadingCompany || isLoadingCategories}>
-          <Box>{!isLoadingCompany && !isLoadingCategories && <EditCompanyDetails disabled />}</Box>
+          spinning={isLoadingCompanyDetails || isLoadingCategories}>
+          <Box className="CompanyDetails__box">
+            {!isLoadingCompanyDetails &&
+              !isLoadingCategories && (
+                <div>
+                  <Divider orientation="left">Company</Divider>
+                  <EditCompanyDetails disabled />
+                </div>
+              )}
+            {!isLoadingCompanyDetails &&
+              !isLoadingCategories &&
+              owner && (
+                <div>
+                  <Divider orientation="left">Owner</Divider>
+                  <EditCompanyOwner disabled />
+                </div>
+              )}
+          </Box>
         </Spin>
       </div>
     );
@@ -96,13 +120,17 @@ export class CompanyDetails extends React.Component {
 const mapStateToProps = state => ({
   company: state.tenantCompany.company,
   categories: state.tenantCompany.categories,
+  owner: state.tenantCompany.owner,
   isLoadingCompany: state.loading.effects.tenantCompany.getCompany,
+  isLoadingCompanyDetails: state.loading.effects.tenantCompany.getCompanyDetails,
   isLoadingCategories: state.loading.effects.tenantCompany.getCategories,
 });
 
 const mapDispatchToProps = dispatch => ({
   getCompany: dispatch.tenantCompany.getCompany,
+  getOwner: dispatch.tenantCompany.getOwner,
   getCategories: dispatch.tenantCompany.getCategories,
+  getCompanyDetails: dispatch.tenantCompany.getCompanyDetails,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CompanyDetails);

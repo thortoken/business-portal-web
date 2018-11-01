@@ -32,7 +32,6 @@ const tenantCompany = {
         await this.getCompany();
         await this.getOwner();
       } catch (err) {
-        console.log(err);
         throw err;
       }
     },
@@ -43,6 +42,15 @@ const tenantCompany = {
       } catch (err) {
         throw err;
       }
+    },
+    async editCompanyOwner(data) {
+      console.log('edit', data);
+      // try {
+      //   const response = await Http.patch('/tenants/company', data);
+      //   this.setCompany(response.data);
+      // } catch (err) {
+      //   throw err;
+      // }
     },
     async addTenantCompany(data) {
       try {
