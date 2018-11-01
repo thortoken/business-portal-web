@@ -175,10 +175,11 @@ export class AddCompanyDetails extends React.Component {
     const { addTenantCompany } = this.props;
     const { formData } = this.state;
     const normalizedData = formData.validationSchema.cast(data);
+    normalizedData.country = 'USA';
     if (normalizedData.businessType === 'soleProprietorship' && normalizedData.controller) {
       delete normalizedData.controller;
     } else {
-      normalizedData.controller.address.country.toUpperCase();
+      normalizedData.controller.address.country = 'US';
     }
     try {
       await addTenantCompany(normalizedData);

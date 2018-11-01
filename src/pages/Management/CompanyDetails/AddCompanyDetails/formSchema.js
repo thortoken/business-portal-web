@@ -105,12 +105,6 @@ const companyFormFields = {
       placeholder: '12345',
     },
   },
-  country: {
-    label: 'Country',
-    validator: Yup.string()
-      .ensure()
-      .required(),
-  },
   dateOfBirth: {
     label: 'Date of Birth',
     validator: Yup.date()
@@ -137,7 +131,10 @@ const companyFormFields = {
     label: 'E.I.N.',
     validator: Yup.string()
       .ensure()
-      .required(),
+      .when('businessType', {
+        is: val => val !== 'soleProprietorship',
+        then: Yup.string().required(),
+      }),
   },
   website: {
     label: 'Website',
@@ -229,12 +226,6 @@ const ownerFormFields = {
               maxLength: 5,
               placeholder: '12345',
             },
-          },
-          country: {
-            label: 'Country',
-            validator: Yup.string()
-              .ensure()
-              .required(),
           },
         },
       },
