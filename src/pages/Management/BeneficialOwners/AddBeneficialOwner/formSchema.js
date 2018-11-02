@@ -88,12 +88,6 @@ const formFields = {
           placeholder: '12345',
         },
       },
-      country: {
-        label: 'Country',
-        validator: Yup.string()
-          .ensure()
-          .required(),
-      },
     },
   },
 };
