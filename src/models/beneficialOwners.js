@@ -22,7 +22,6 @@ const beneficialOwners = {
     async deleteBeneficialOwner(id) {
       try {
         const response = await Http.delete(`/tenants/company/beneficialOwners/${id}`);
-        console.log(response);
         return response;
       } catch (err) {
         console.log(err.response);
