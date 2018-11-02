@@ -18,7 +18,8 @@ const SummaryBox = ({ title, summary, period }) => {
           className={classnames('Summary-value', {
             [`Summary-${period}`]: true,
           })}>
-          {summary.total ? formatUsd(summary.total) : ''}
+          {/*{summary.total ? formatUsd(summary.total) : ''}*/}
+          {formatUsd(summary.total)}
         </div>
         <span>{summary.users} Contractors</span>
         <span>
@@ -42,8 +43,8 @@ const Summary = ({ previous, current }) => {
 SummaryBox.propTypes = {
   title: PropTypes.string.isRequired,
   summary: PropTypes.shape({
-    total: PropTypes.string.isRequired,
-    users: PropTypes.string.isRequired,
+    total: PropTypes.number.isRequired,
+    users: PropTypes.number.isRequired,
     startDate: PropTypes.string.isRequired,
     endDate: PropTypes.string.isRequired,
   }),
@@ -52,14 +53,14 @@ SummaryBox.propTypes = {
 
 Summary.propTypes = {
   previous: PropTypes.shape({
-    total: PropTypes.string.isRequired,
-    users: PropTypes.string.isRequired,
+    total: PropTypes.number.isRequired,
+    users: PropTypes.number.isRequired,
     startDate: PropTypes.string.isRequired,
     endDate: PropTypes.string.isRequired,
   }).isRequired,
   current: PropTypes.shape({
-    total: PropTypes.string.isRequired,
-    users: PropTypes.string.isRequired,
+    total: PropTypes.number.isRequired,
+    users: PropTypes.number.isRequired,
     startDate: PropTypes.string.isRequired,
     endDate: PropTypes.string.isRequired,
   }).isRequired,

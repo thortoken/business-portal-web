@@ -174,14 +174,15 @@ export class AddCompanyDetails extends React.Component {
   handleSubmit = async (data, form) => {
     const { addTenantCompany } = this.props;
     const { formData } = this.state;
-    formData.country = 'USA';
-    if (formData.businessType === 'soleProprietorship' && formData.controller) {
-      delete formData.controller;
+    const normalizedData = formData.validationSchema.cast(data);
+    normalizedData.country = 'USA';
+    if (normalizedData.businessType === 'soleProprietorship' && normalizedData.controller) {
+      delete normalizedData.controller;
     } else {
-      formData.controller.address.country = 'US';
+      normalizedData.controller.address.country = 'US';
     }
     try {
-      await addTenantCompany(formData);
+      await addTenantCompany(normalizedData);
       this.handleSubmitSuccess();
     } catch (err) {
       handleFormHttpResponse(form, err.response.data.error, err.response);

@@ -70,7 +70,7 @@ export class BeneficialOwners extends React.Component {
   };
 
   handleDelete = async row => {
-    const { deleteBeneficialOwner, handleRefresh } = this.props;
+    const { deleteBeneficialOwner } = this.props;
     const { id, firstName, lastName } = row;
     Modal.confirm({
       title: `Are you sure you want to delete ${firstName} ${lastName}?`,
@@ -78,15 +78,8 @@ export class BeneficialOwners extends React.Component {
       okType: 'danger',
       cancelText: 'No',
       onOk: async () => {
-        const response = deleteBeneficialOwner(id);
-        if (response.status === 204) {
-          NotificationService.open({
-            type: 'success',
-            message: 'Success',
-            description: 'Beneficial Owner successfully deleted.',
-          });
-        }
-        return handleRefresh();
+        await deleteBeneficialOwner(id);
+        return this.handleRefresh();
       },
     });
   };
