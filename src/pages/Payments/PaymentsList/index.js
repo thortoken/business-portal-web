@@ -35,14 +35,14 @@ class Payments extends React.Component {
   state = {
     checked: false,
     previous: {
-      total: '',
-      users: '',
+      total: 0,
+      users: 0,
       startDate: '',
       endDate: '',
     },
     current: {
-      total: '',
-      users: '',
+      total: 0,
+      users: 0,
       startDate: '',
       endDate: '',
     },

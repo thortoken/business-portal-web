@@ -88,8 +88,7 @@ export class AddContractor extends React.Component {
   };
 
   handleSubmit = async (data, form) => {
-    const normalizedData = validationSchema.cast(data);
-    const { routingNumber, accountNumber, ...profile } = normalizedData;
+    const { routingNumber, accountNumber, ...profile } = data;
 
     try {
       await this.createContractor(profile);

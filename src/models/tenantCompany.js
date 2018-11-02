@@ -1,11 +1,10 @@
 import Http from '~services/http';
-import Config from '~services/config';
 
 const tenantCompany = {
   effects: {
     async getCompany() {
       try {
-        const response = await Http.get(`/tenants/${Config.tenantId}/company`);
+        const response = await Http.get(`/tenants/company`);
         this.setCompany(response.data);
       } catch (err) {
         throw err;
@@ -13,7 +12,7 @@ const tenantCompany = {
     },
     async getOwner() {
       try {
-        const response = await Http.get(`/tenants/${Config.tenantId}/company/owner`);
+        const response = await Http.get(`/tenants/company/owner`);
         this.setOwner(response.data);
       } catch (err) {
         throw err;

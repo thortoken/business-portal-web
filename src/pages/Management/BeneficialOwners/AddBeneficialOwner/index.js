@@ -71,10 +71,9 @@ export class AddBeneficialOwner extends React.Component {
 
   handleSubmit = async (data, form) => {
     const { createBeneficialOwner } = this.props;
-    const normalizedData = validationSchema.cast(data);
-    normalizedData.address.country.toUpperCase();
+    data.address.country.toUpperCase();
     try {
-      await createBeneficialOwner(normalizedData);
+      await createBeneficialOwner(data);
       this.handleSubmitSuccess();
     } catch (err) {
       handleFormHttpResponse(form, err.response.data.error, err.response);
