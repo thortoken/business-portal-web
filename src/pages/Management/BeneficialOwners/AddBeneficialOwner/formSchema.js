@@ -41,7 +41,10 @@ const formFields = {
       .required()
       .matches(/\d{9}/, 'Please input your SSN'),
     input: {
-      maxLength: 9,
+      maxLength: 11,
+      placeholder: '000-00-0000',
+      formatter: formUtils.formatters.ssn,
+      parser: formUtils.parsers.digitsOnly,
     },
   },
   address: {
