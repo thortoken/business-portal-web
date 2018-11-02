@@ -12,8 +12,6 @@ import RefreshButton from '~components/RefreshButton';
 import Header from '~components/Header';
 import makeDefaultPagination from '~utils/pagination';
 
-import NotificationService from '~services/notification';
-
 const { Column } = Table;
 
 export class BeneficialOwners extends React.Component {
