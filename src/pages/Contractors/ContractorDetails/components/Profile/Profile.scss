@@ -1,6 +1,9 @@
 @import "../../../../../styles/var";
 
 .Profile {
+  &--button {
+    margin-right: 0.6rem;
+  }
   &-link {
     color: $primary-color;
     text-decoration: underline;

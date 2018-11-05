@@ -151,6 +151,25 @@ const users = {
         throw err;
       }
     },
+    async getUserFundingSources({ id, page, limit }) {
+      try {
+        const response = await Http.get(`/users/${id}/fundingSources`, {
+          params: {
+            page,
+            limit,
+          },
+        });
+        this.setUserFundingSources(response.data.items);
+        this.setFundingSourcesPagination(response.data.pagination);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async unmountUserFundingSources() {
+      this.setUserFundingSources([]);
+      this.setFundingSourcesPagination(null);
+    },
   },
   reducers: {
     setUsersPaidTransactions(state, payload) {
@@ -189,8 +208,14 @@ const users = {
         },
       };
     },
+    setFundingSourcesPagination(state, payload) {
+      return { ...state, userFundingSourcesPagination: payload };
+    },
     setHasFundingSource(state, payload) {
       return { ...state, hasFundingSource: payload };
+    },
+    setUserFundingSources(state, payload) {
+      return { ...state, userFundingSources: payload };
     },
   },
   state: {
@@ -209,6 +234,8 @@ const users = {
     usersPaidTransactions: null,
     usersJobs: null,
     hasFundingSource: true,
+    userFundingSources: [],
+    userFundingSourcesPagination: null,
   },
 };
 

@@ -110,7 +110,7 @@ const formFields = {
       maxLength: 4,
     },
   },
-  routingNumber: {
+  routing: {
     label: 'Bank routing number',
     validator: Yup.string()
       .ensure()
@@ -121,7 +121,7 @@ const formFields = {
       maxLength: 9,
     },
   },
-  accountNumber: {
+  account: {
     label: 'Bank account number',
     validator: Yup.string()
       .ensure()

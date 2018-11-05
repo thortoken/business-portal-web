@@ -2,12 +2,8 @@
 
 .BackBtn {
   font-size: 1.2rem;
-
-  a {
-    color: $color-grey-dark;
-
     &:hover {
       color: $color-grey-medium;
+      cursor: pointer;
     }
-  }
 }

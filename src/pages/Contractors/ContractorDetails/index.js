@@ -186,7 +186,8 @@ class ContractorDetails extends React.Component {
                 {...currentUser.tenantProfile}
                 createdAt={currentUser.createdAt}
                 openAddFundingSourceModal={this.openAddFundingSourceModal}
-                updatedAt={currentUser.updatedAt}>
+                updatedAt={currentUser.updatedAt}
+                handleGoToFundingSources={this.handleGoToFundingSources}>
                 <Dropdown
                   className="ContractorDetails-options-btn"
                   options={this.generateMenuItems(menuList, match.params.id)}
@@ -252,6 +253,11 @@ class ContractorDetails extends React.Component {
       </div>
     );
   }
+
+  handleGoToFundingSources = () => {
+    const { history, match } = this.props;
+    history.push(`/contractors/${match.params.id}/fundingSources`);
+  };
 
   renderJobName = job => {
     return job && job.name;

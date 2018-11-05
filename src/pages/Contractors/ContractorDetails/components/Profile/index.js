@@ -1,7 +1,7 @@
 import React from 'react';
 
 import PropTypes from 'prop-types';
-import { Icon, Popover } from 'antd';
+import { Button, Icon, Popover } from 'antd';
 import Activity from '../Activity';
 
 import { renderDate } from '~utils/time';
@@ -16,6 +16,7 @@ export default class Profile extends React.PureComponent {
     isLoading: PropTypes.bool,
     hasFundingSource: PropTypes.bool,
     openAddFundingSourceModal: PropTypes.func,
+    handleGoToFundingSources: PropTypes.func,
   };
 
   render() {
@@ -33,6 +34,7 @@ export default class Profile extends React.PureComponent {
       children,
       handleRefresh,
       isLoading,
+      handleGoToFundingSources,
     } = this.props;
     const warningsList = this.verifyUserProfile();
     return (
@@ -50,6 +52,13 @@ export default class Profile extends React.PureComponent {
             <div className="Profile-since">Contractor since {renderDate(createdAt)}</div>
           </div>
           <div className="Profile-activity">
+            <Button
+              type="primary"
+              ghost
+              className="Profile--button"
+              onClick={handleGoToFundingSources}>
+              Funding Sources
+            </Button>
             <Activity lastActivityDate={updatedAt} />
             <RefreshButton handleRefresh={handleRefresh} isLoading={isLoading} />
           </div>
