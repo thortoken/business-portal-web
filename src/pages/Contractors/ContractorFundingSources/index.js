@@ -103,7 +103,18 @@ class ContractorFundingSources extends React.Component {
   };
 
   handleDefault = async row => {
-    console.log(row);
+    const { setDefaultFundingSource, match } = this.props;
+    const { id, name } = row;
+    Modal.confirm({
+      title: `Are you sure you want to set "${name}" as default funding source?`,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk: async () => {
+        await setDefaultFundingSource({ userId: match.params.id, fundingId: id });
+        return this.handleRefresh();
+      },
+    });
   };
 
   render() {
@@ -182,6 +193,7 @@ const mapDispatchToProps = dispatch => ({
   getUserFundingSources: dispatch.users.getUserFundingSources,
   unmountUserFundingSources: dispatch.users.unmountUserFundingSources,
   deleteFundingSource: dispatch.users.deleteFundingSource,
+  setDefaultFundingSource: dispatch.users.setDefaultFundingSource,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContractorFundingSources);

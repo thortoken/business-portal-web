@@ -19,6 +19,14 @@ const users = {
         throw err;
       }
     },
+    async setDefaultFundingSource({ userId, fundingId }) {
+      try {
+        const response = await Http.post(`/users/${userId}/fundingSources/${fundingId}/default`);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
     async deleteFundingSource({ userId, fundingId }) {
       try {
         const response = await Http.delete(`/users/${userId}/fundingSources/${fundingId}`);
