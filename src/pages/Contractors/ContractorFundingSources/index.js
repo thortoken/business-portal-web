@@ -73,7 +73,7 @@ class ContractorFundingSources extends React.Component {
   };
 
   handleAdd = () => {
-    const { history, match} = this.props;
+    const { history, match } = this.props;
     history.push(`/contractors/${match.params.id}/fundingSources/add`);
   };
 
@@ -88,19 +88,18 @@ class ContractorFundingSources extends React.Component {
   };
 
   handleDelete = async row => {
-    console.log(row);
-    // const { deleteBeneficialOwner } = this.props;
-    // const { id } = row;
-    // Modal.confirm({
-    //   title: `Are you sure you want to delete "${name}" funding source?`,
-    //   okText: 'Yes',
-    //   okType: 'danger',
-    //   cancelText: 'No',
-    //   onOk: async () => {
-    //     await deleteBeneficialOwner(id);
-    //     return this.handleRefresh();
-    //   },
-    // });
+    const { deleteFundingSource, match } = this.props;
+    const { id, name } = row;
+    Modal.confirm({
+      title: `Are you sure you want to delete "${name}" funding source?`,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk: async () => {
+        await deleteFundingSource({ userId: match.params.id, fundingId: id });
+        return this.handleRefresh();
+      },
+    });
   };
 
   handleDefault = async row => {
@@ -182,6 +181,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getUserFundingSources: dispatch.users.getUserFundingSources,
   unmountUserFundingSources: dispatch.users.unmountUserFundingSources,
+  deleteFundingSource: dispatch.users.deleteFundingSource,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContractorFundingSources);

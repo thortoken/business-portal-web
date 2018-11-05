@@ -1,5 +1,5 @@
 import Http from '~services/http';
-import _ from "lodash";
+import _ from 'lodash';
 
 const users = {
   effects: {
@@ -19,9 +19,9 @@ const users = {
         throw err;
       }
     },
-    async deleteFundingSource(id) {
+    async deleteFundingSource({ userId, fundingId }) {
       try {
-        const response = await Http.delete(`/users/${id}/fundingSource`);
+        const response = await Http.delete(`/users/${userId}/fundingSources/${fundingId}`);
         return response.data;
       } catch (err) {
         throw err;
