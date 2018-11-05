@@ -74,25 +74,25 @@ export class AddContractor extends React.Component {
     }
   };
 
-  createFundingSource = async ({ accountNumber, routingNumber }) => {
+  createFundingSource = async ({ account, routing }) => {
     const { createFundingSource } = this.props;
     const { createdContractor } = this.state;
 
     await createFundingSource({
       id: createdContractor.id,
       data: {
-        accountNumber,
-        routingNumber,
+        account,
+        routing,
       },
     });
   };
 
   handleSubmit = async (data, form) => {
-    const { routingNumber, accountNumber, ...profile } = data;
+    const { routing, account, ...profile } = data;
 
     try {
       await this.createContractor(profile);
-      await this.createFundingSource({ accountNumber, routingNumber });
+      await this.createFundingSource({ account, routing });
 
       this.handleSubmitSuccess();
     } catch (err) {

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import PropTypes from 'prop-types';
-import { Icon, Popover } from 'antd';
+import { Button, Icon, Popover } from 'antd';
 import Activity from '../Activity';
 
 import { renderDate } from '~utils/time';
@@ -15,7 +15,9 @@ export default class Profile extends React.PureComponent {
     handleRefresh: PropTypes.func,
     isLoading: PropTypes.bool,
     hasFundingSource: PropTypes.bool,
-    openAddFundingSourceModal: PropTypes.func,
+    handleDelete: PropTypes.func,
+    handleEdit: PropTypes.func,
+    handleGoToFundingSources: PropTypes.func,
   };
 
   render() {
@@ -33,6 +35,8 @@ export default class Profile extends React.PureComponent {
       children,
       handleRefresh,
       isLoading,
+      handleDelete,
+      handleEdit,
     } = this.props;
     const warningsList = this.verifyUserProfile();
     return (
@@ -51,6 +55,12 @@ export default class Profile extends React.PureComponent {
           </div>
           <div className="Profile-activity">
             <Activity lastActivityDate={updatedAt} />
+            <Button className="Profile--button" onClick={handleEdit}>
+              <Icon type="form" theme="outlined" />
+            </Button>
+            <Button className="Profile--button" onClick={handleDelete}>
+              <Icon type="delete" theme="outlined" />
+            </Button>
             <RefreshButton handleRefresh={handleRefresh} isLoading={isLoading} />
           </div>
         </div>
@@ -78,16 +88,15 @@ export default class Profile extends React.PureComponent {
   }
 
   verifyUserProfile = () => {
-    const { hasFundingSource } = this.props;
+    const { hasFundingSource, handleGoToFundingSources } = this.props;
     const warnings = [];
     if (!hasFundingSource) {
-      const { openAddFundingSourceModal } = this.props;
       warnings.push({
         key: 'Funding Source',
         content: (
           <p className="Profile-warning">
             1. Add funding source for this user{' '}
-            <span className="Profile-link" onClick={openAddFundingSourceModal}>
+            <span className="Profile-link" onClick={handleGoToFundingSources}>
               here
             </span>.
           </p>
