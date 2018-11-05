@@ -13,6 +13,10 @@ import './AdminRoutes.scss';
 
 export class AdminRoutes extends React.Component {
   render() {
+    let redirect = this.props.redirect;
+    if (redirect === '/sign-in' || redirect === '/') {
+      redirect = '/payments';
+    }
     const path = window.location.pathname;
     const routeClass = path.includes('/management/')
       ? 'SidebarRoutes-content'
@@ -25,7 +29,7 @@ export class AdminRoutes extends React.Component {
             <Route path="/payments" component={Admin(PaymentsPage)} />
             <Route path="/contractors" component={Admin(ContractorsPage)} />
             <Route path="/management" component={Admin(RootManagementPage)} />
-            <Redirect from="*" to="/payments" />
+            <Redirect from="*" to={redirect} />
           </Switch>
         </Layout.Content>
       </Layout>

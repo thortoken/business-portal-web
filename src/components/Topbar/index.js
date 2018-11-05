@@ -76,7 +76,7 @@ export class Topbar extends React.Component {
         function: () => {},
       },
       { route: '/management/settings', label: 'Settings', icon: 'setting', function: () => {} },
-      { route: '/', label: 'Logout', icon: 'logout', function: this.handleLogout },
+      { route: '/sign-in', label: 'Logout', icon: 'logout', function: this.handleLogout },
     ];
     return (
       <div className={classNames('Topbar', className)}>

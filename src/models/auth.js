@@ -3,6 +3,12 @@ import Config from '~services/config';
 
 const auth = {
   effects: {
+    async init() {
+      const token = localStorage.getItem('thor-token') || null;
+      let roles = JSON.parse(localStorage.getItem('thor-roles')) || [];
+      setAuthHeader(token);
+      this.setInit({ token, roles, loggedOut: false });
+    },
     async pickToken() {
       const token = localStorage.getItem('thor-token') || null;
       setAuthHeader(token);
@@ -62,6 +68,7 @@ const auth = {
     async logout() {
       this.removeToken();
       this.removeRoles();
+      Config.savedRoot = '/payments';
     },
   },
   reducers: {
@@ -76,6 +83,14 @@ const auth = {
       return {
         ...state,
         roles: payload.roles,
+        loggedOut: payload.loggedOut,
+      };
+    },
+    setInit(state, payload) {
+      return {
+        ...state,
+        roles: payload.roles,
+        token: payload.token,
         loggedOut: payload.loggedOut,
       };
     },
