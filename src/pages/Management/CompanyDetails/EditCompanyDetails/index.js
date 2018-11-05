@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import { Formik } from 'formik';
 import classnames from 'classnames';
+import _ from 'lodash';
 
 import FormField from '~components/FormField';
 
@@ -22,6 +23,11 @@ export class EditCompanyDetails extends React.Component {
 
   render() {
     const { company } = this.props;
+    _.forIn(company, (value, key) => {
+      if (value === '' || !value) {
+        company[key] = '-';
+      }
+    });
     return (
       <div className="EditCompanyDetails">
         <Formik
