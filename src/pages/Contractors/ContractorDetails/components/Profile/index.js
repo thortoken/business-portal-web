@@ -15,7 +15,8 @@ export default class Profile extends React.PureComponent {
     handleRefresh: PropTypes.func,
     isLoading: PropTypes.bool,
     hasFundingSource: PropTypes.bool,
-    openAddFundingSourceModal: PropTypes.func,
+    handleDelete: PropTypes.func,
+    handleEdit: PropTypes.func,
     handleGoToFundingSources: PropTypes.func,
   };
 
@@ -34,7 +35,8 @@ export default class Profile extends React.PureComponent {
       children,
       handleRefresh,
       isLoading,
-      handleGoToFundingSources,
+      handleDelete,
+      handleEdit,
     } = this.props;
     const warningsList = this.verifyUserProfile();
     return (
@@ -52,14 +54,13 @@ export default class Profile extends React.PureComponent {
             <div className="Profile-since">Contractor since {renderDate(createdAt)}</div>
           </div>
           <div className="Profile-activity">
-            <Button
-              type="primary"
-              ghost
-              className="Profile--button"
-              onClick={handleGoToFundingSources}>
-              Funding Sources
-            </Button>
             <Activity lastActivityDate={updatedAt} />
+            <Button className="Profile--button" onClick={handleEdit}>
+              <Icon type="form" theme="outlined" />
+            </Button>
+            <Button className="Profile--button" onClick={handleDelete}>
+              <Icon type="delete" theme="outlined" />
+            </Button>
             <RefreshButton handleRefresh={handleRefresh} isLoading={isLoading} />
           </div>
         </div>
@@ -87,16 +88,15 @@ export default class Profile extends React.PureComponent {
   }
 
   verifyUserProfile = () => {
-    const { hasFundingSource } = this.props;
+    const { hasFundingSource, handleGoToFundingSources } = this.props;
     const warnings = [];
     if (!hasFundingSource) {
-      const { openAddFundingSourceModal } = this.props;
       warnings.push({
         key: 'Funding Source',
         content: (
           <p className="Profile-warning">
             1. Add funding source for this user{' '}
-            <span className="Profile-link" onClick={openAddFundingSourceModal}>
+            <span className="Profile-link" onClick={handleGoToFundingSources}>
               here
             </span>.
           </p>

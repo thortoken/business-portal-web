@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Table, Button } from 'antd';
+import { Table, Button, Icon } from 'antd';
 import moment from 'moment';
 import Box from '../../../components/Box/index';
 import makeDefaultPagination from '~utils/pagination';
@@ -130,7 +130,11 @@ class ContractorsList extends React.Component {
               align="center"
               title="Actions"
               render={(text, record) => {
-                return <Button onClick={() => this.handleButtonClick(record)}>View Details</Button>;
+                return (
+                  <Button onClick={() => this.handleButtonClick(record)}>
+                    <Icon type="info-circle" theme="outlined" />
+                  </Button>
+                );
               }}
             />
           </Table>

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Table, Button, Spin, Modal } from 'antd';
 import { connect } from 'react-redux';
 
-import Dropdown from '~components/Dropdown';
 import BackBtn from '~components/BackBtn';
 import ContractorSummary from './components/ContractorSummary';
 import Filters from './components/Filters';
@@ -15,7 +14,6 @@ import { movePeriod, renderShortDate } from '~utils/time';
 import makeDefaultPagination from '~utils/pagination';
 
 import './ContractorDetails.scss';
-import { AddFundingSourceModal } from './components/AddFundingSourceModal';
 
 const { Column } = Table;
 
@@ -125,7 +123,6 @@ class ContractorDetails extends React.Component {
       contractorTransactions,
       loadingTransactions,
       createTransaction,
-      createFundingSource,
       history,
       hasFundingSource,
     } = this.props;
@@ -135,31 +132,6 @@ class ContractorDetails extends React.Component {
       return { ...item, key };
     });
 
-    const menuList = [
-      {
-        key: 'edit',
-        action: this.handleEdit,
-        label: 'Edit Details',
-      },
-      {
-        key: 'delete',
-        action: this.handleDelete,
-        label: 'Delete Contractor',
-      },
-      {
-        isHidden: hasFundingSource,
-        key: 'addFundingSource',
-        action: this.openAddFundingSourceModal,
-        label: 'Add funding source',
-      },
-      {
-        isHidden: !hasFundingSource,
-        key: 'deleteFundingSource',
-        action: this.handleDeleteFundingSource,
-        label: 'Delete funding source',
-      },
-    ];
-
     return (
       <div>
         <AddTransactionModal
@@ -167,12 +139,6 @@ class ContractorDetails extends React.Component {
           createTransaction={createTransaction}
           isModalVisible={this.state.isAddTransactionModalVisible}
           onChangeVisibility={this.onChangeVisibilityTransactionModal}
-        />
-        <AddFundingSourceModal
-          createFundingSource={createFundingSource}
-          userId={match.params.id}
-          isModalVisible={this.state.isAddFundingSourcelVisible}
-          onChangeVisibility={this.onChangeVisibilityFundingSourceModal}
         />
         <Spin size="large" spinning={loadingContractor}>
           <div className="ContractorDetails">
@@ -185,17 +151,13 @@ class ContractorDetails extends React.Component {
                 hasFundingSource={hasFundingSource}
                 {...currentUser.tenantProfile}
                 createdAt={currentUser.createdAt}
-                openAddFundingSourceModal={this.openAddFundingSourceModal}
+                handleEdit={this.handleEdit}
+                handleDelete={this.handleDelete}
                 updatedAt={currentUser.updatedAt}
                 handleGoToFundingSources={this.handleGoToFundingSources}>
-                <Dropdown
-                  className="ContractorDetails-options-btn"
-                  options={this.generateMenuItems(menuList, match.params.id)}
-                  onClick={this.handleTransactionsPeriodChange}>
-                  <Button type="primary" ghost>
-                    Options
-                  </Button>
-                </Dropdown>
+                <Button type="primary" ghost onClick={this.handleGoToFundingSources}>
+                  Funding Sources
+                </Button>
               </Profile>
             )}
             <Spin size="large" spinning={loadingUserStatistics}>
