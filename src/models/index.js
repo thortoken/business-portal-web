@@ -41,8 +41,6 @@ const store = init({
   },
 });
 
-// change to one call
-store.dispatch.auth.pickRoles();
-store.dispatch.auth.pickToken();
+store.dispatch.auth.init();
 
 export default store;

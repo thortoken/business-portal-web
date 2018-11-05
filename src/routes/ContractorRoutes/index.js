@@ -12,6 +12,10 @@ import './ContractorRoutes.scss';
 
 export class ContractorRoutes extends React.Component {
   render() {
+    let redirect = this.props.redirect;
+    if (redirect === '/sign-in' || redirect === '/') {
+      redirect = '/contractor';
+    }
     return (
       <Layout className="ContractorRoutes">
         <Topbar className="ContractorRoutes-nav" type="contractor" />
@@ -19,7 +23,7 @@ export class ContractorRoutes extends React.Component {
           <Switch>
             <Route exact path="/contractor" component={Contractor(ContractorPage)} />
             <Route exact path="/on-boarding/:invitationId" component={OnBoarding} />
-            <Redirect from="*" to="/contractor" />
+            <Redirect from="*" to={redirect} />
           </Switch>
         </Layout.Content>
       </Layout>
