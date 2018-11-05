@@ -6,7 +6,7 @@ import Box from '../../../components/Box/index';
 import makeDefaultPagination from '~utils/pagination';
 import BackBtn from '~components/BackBtn';
 
-import './contractorFundingSources.scss';
+import './ContractorFundingSources.scss';
 
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
@@ -72,8 +72,9 @@ class ContractorFundingSources extends React.Component {
     });
   };
 
-  handleGoContractor = () => {
-    this.props.history.push(`/contractors`);
+  handleAdd = () => {
+    const { history, match} = this.props;
+    history.push(`/contractors/${match.params.id}/fundingSources/add`);
   };
 
   handleRefresh = () => {
@@ -106,10 +107,6 @@ class ContractorFundingSources extends React.Component {
     console.log(row);
   };
 
-  handleAdd = () => {
-    console.log('add');
-  };
-
   render() {
     const { userFundingSources, pagination } = this.state;
     const { isLoading, history } = this.props;
@@ -132,6 +129,7 @@ class ContractorFundingSources extends React.Component {
             onChange={this.handleTableChange}
             pagination={pagination}
             loading={isLoading}>
+            <Column align="left" dataIndex="name" title="Name" />
             <Column align="center" dataIndex="routing" title="Routing" />
             <Column align="center" dataIndex="account" title="Account" />
             <Column

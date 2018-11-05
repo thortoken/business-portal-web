@@ -1,4 +1,5 @@
 import Http from '~services/http';
+import _ from "lodash";
 
 const users = {
   effects: {
@@ -159,7 +160,7 @@ const users = {
             limit,
           },
         });
-        this.setUserFundingSources(response.data.items);
+        this.setUserFundingSources(_.orderBy(response.data.items, ['isDefault'], ['asc']));
         this.setFundingSourcesPagination(response.data.pagination);
         return response.data;
       } catch (err) {
