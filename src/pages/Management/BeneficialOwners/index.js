@@ -63,6 +63,20 @@ export class BeneficialOwners extends React.Component {
     }
   };
 
+  handleTableChange = pag => {
+    const { getBeneficialOwners } = this.props;
+    const { pagination } = this.state;
+    let curr = pag.current;
+    if (pagination.pageSize !== pag.pageSize) {
+      curr = 1;
+    }
+    this.setState({ pagination: { ...pag, current: curr } });
+    getBeneficialOwners({
+      page: curr,
+      limit: pag.pageSize,
+    });
+  };
+
   handleEdit = row => {
     console.log('edit', row);
   };
