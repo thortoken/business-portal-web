@@ -4,7 +4,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import CompanyDetails from './CompanyDetails';
 import BeneficialOwners from './BeneficialOwners';
 import { CompanyTeam } from './CompanyTeam';
-import { LinkedAccounts } from './LinkedAccounts';
+import LinkedAccounts from './LinkedAccounts';
 import { Integrations } from './Integrations';
 import { Settings } from './Settings';
 import { withRouteModal } from '~components/Modal';
@@ -14,6 +14,7 @@ import './Management.scss';
 import AddCompanyDetails from './CompanyDetails/AddCompanyDetails';
 import EditCompanyDetails from './CompanyDetails/EditCompanyDetails';
 import AddBeneficialOwner from './BeneficialOwners/AddBeneficialOwner';
+import AddLinkedAccount from './LinkedAccounts/AddLinkedAccount';
 
 export class RootManagementPage extends React.Component {
   render() {
@@ -29,6 +30,14 @@ export class RootManagementPage extends React.Component {
             <Route exact path={`/management/integrations`} component={Integrations} />
             <Route exact path={`/management/settings`} component={Settings} />
 
+            <Route
+              exact
+              path={`/management/linked-accounts/add`}
+              component={withRouteModal({
+                component: AddLinkedAccount,
+                title: 'Add Linked Account',
+              })}
+            />
             <Route
               exact
               path={`/management/company-details/add`}
