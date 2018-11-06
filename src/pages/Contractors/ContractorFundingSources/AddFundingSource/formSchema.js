@@ -27,7 +27,7 @@ const formFields = {
     validator: Yup.string()
       .ensure()
       .required()
-      .min(3, 'Bank account number must have minimum 3 digits')
+      .min(4, 'Bank account number must have minimum 4 digits')
       .max(17, 'Bank account number must have maximum 17 digits'),
     input: {
       maxLength: 17,
