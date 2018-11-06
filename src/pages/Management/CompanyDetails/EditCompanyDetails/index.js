@@ -8,9 +8,9 @@ import _ from 'lodash';
 
 import FormField from '~components/FormField';
 
-import { formFields, validationSchema } from './formSchema';
+import { formFields, validationSchema, initialValues } from './formSchema';
 import './EditCompanyDetails.scss';
-import NotificationService from '../../../../services/notification';
+import NotificationService from '~services/notification';
 
 import { handleFormHttpResponse } from '~utils/forms/errors';
 
@@ -23,15 +23,19 @@ export class EditCompanyDetails extends React.Component {
 
   render() {
     const { company } = this.props;
-    _.forIn(company, (value, key) => {
+    let formFields = company;
+    if (formFields === null) {
+      formFields = initialValues;
+    }
+    _.forIn(formFields, (value, key) => {
       if (value === '' || !value) {
-        company[key] = '-';
+        formFields[key] = '-';
       }
     });
     return (
       <div className="EditCompanyDetails">
         <Formik
-          initialValues={company}
+          initialValues={formFields}
           onSubmit={this.handleSubmit}
           validationSchema={validationSchema}>
           {this.renderForm}

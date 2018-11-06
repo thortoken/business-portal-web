@@ -106,5 +106,6 @@ const formFields = {
 };
 
 const validationSchema = formUtils.formik.makeValidationSchema(formFields);
+const initialValues = formUtils.formik.makeEmptyInitialValues(formFields);
 
-export { formFields, validationSchema };
+export { formFields, validationSchema, initialValues };
