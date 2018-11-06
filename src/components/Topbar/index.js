@@ -57,25 +57,25 @@ export class Topbar extends React.Component {
         icon: 'info',
         function: () => {},
       },
-      {
-        route: '/management/company-team',
-        label: 'Company & Team',
-        icon: 'user',
-        function: () => {},
-      },
+      // {
+      //   route: '/management/company-team',
+      //   label: 'Company & Team',
+      //   icon: 'user',
+      //   function: () => {},
+      // },
       {
         route: '/management/linked-accounts',
         label: 'Linked Accounts',
         icon: 'bank',
         function: () => {},
       },
-      {
-        route: '/management/integrations',
-        label: 'Integrations',
-        icon: 'shrink',
-        function: () => {},
-      },
-      { route: '/management/settings', label: 'Settings', icon: 'setting', function: () => {} },
+      // {
+      //   route: '/management/integrations',
+      //   label: 'Integrations',
+      //   icon: 'shrink',
+      //   function: () => {},
+      // },
+      // { route: '/management/settings', label: 'Settings', icon: 'setting', function: () => {} },
       { route: '/sign-in', label: 'Logout', icon: 'logout', function: this.handleLogout },
     ];
     return (

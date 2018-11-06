@@ -9,10 +9,10 @@ import connect from 'react-redux/es/connect/connect';
 const menuItems = [
   { route: '/management/company-details', label: 'Company Details', icon: 'home' },
   { route: '/management/beneficial-owners', label: 'Beneficial Owners', icon: 'crown' },
-  { route: '/management/company-team', label: 'Company & Team', icon: 'user' },
+  // { route: '/management/company-team', label: 'Company & Team', icon: 'user' },
   { route: '/management/linked-accounts', label: 'Linked Accounts', icon: 'bank' },
-  { route: '/management/integrations', label: 'Integrations', icon: 'shrink' },
-  { route: '/management/settings', label: 'Settings', icon: 'setting' },
+  // { route: '/management/integrations', label: 'Integrations', icon: 'shrink' },
+  // { route: '/management/settings', label: 'Settings', icon: 'setting' },
 ];
 
 export const generateMenuItems = list => {
