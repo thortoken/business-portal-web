@@ -13,6 +13,7 @@ import invitations from './invitations';
 import onBoarding from './onBoarding';
 import tenantCompany from './tenantCompany';
 import beneficialOwners from './beneficialOwners';
+import linkedAccounts from './linkedAccounts';
 
 export const history = createHistory();
 const middleware = routerMiddleware(history);
@@ -31,6 +32,7 @@ const store = init({
     onBoarding,
     tenantCompany,
     beneficialOwners,
+    linkedAccounts,
   },
   plugins: [loading],
   redux: {
