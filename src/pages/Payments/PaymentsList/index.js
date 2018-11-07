@@ -311,11 +311,11 @@ class Payments extends React.Component {
 
   onSelectAll = e => {
     const { usersJobs, updatePaymentsList } = this.props;
-
     let data = {
       selectedTransactionsSummaryValue: 0,
       selectedTransactionsIds: new Set(),
       selectedContractorsIds: new Set(),
+      selectedTransactionGroups: [],
     };
 
     if (e.target.checked) {
@@ -323,8 +323,12 @@ class Payments extends React.Component {
         data.selectedContractorsIds.add(user.id);
         data.selectedTransactionsSummaryValue += user.total;
 
-        user.transactions.forEach(transaction => {
+        user.transactionsIds.forEach(transaction => {
           data.selectedTransactionsIds.add(transaction);
+        });
+        data.selectedTransactionGroups.push({
+          userId: user.id,
+          transactionsIds: user.transactionsIds,
         });
       });
     }
