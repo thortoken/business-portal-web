@@ -34,6 +34,7 @@ const payments = {
       });
       await Promise.all(requests).then(res => {
         this.setTransactionErrorList(errorList);
+        this.setResetTransactionsFlag(true);
       });
     },
     async updatePaymentsList(data) {
@@ -50,6 +51,7 @@ const payments = {
       this.setTransactionError(0);
       this.setTransactionDone(0);
       this.setTransactionGroups([]);
+      this.setResetTransactionsFlag(false);
     },
   },
   reducers: {
@@ -74,6 +76,9 @@ const payments = {
     setTransactionErrorList(state, payload) {
       return { ...state, transactionErrorList: new Set([...payload]) };
     },
+    setResetTransactionsFlag(state, payload) {
+      return { ...state, resetTransactions: payload };
+    },
   },
   state: {
     selectedTransactionsIds: new Set(),
@@ -83,6 +88,7 @@ const payments = {
     transactionErrorList: new Set(),
     transactionsError: 0,
     transactionsDone: 0,
+    resetTransactions: false,
   },
 };
 

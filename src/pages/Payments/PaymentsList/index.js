@@ -31,6 +31,7 @@ class Payments extends React.Component {
     selectedTransactionsSummaryValue: PropTypes.number,
     selectedTransactionsIds: PropTypes.object,
     selectedContractorsIds: PropTypes.object,
+    resetTransactions: PropTypes.bool,
   };
 
   state = {
@@ -54,11 +55,12 @@ class Payments extends React.Component {
     pagination: makeDefaultPagination(),
     paymentsListPagination: null,
     selectedTransactionGroups: [],
+    resetTransactions: false,
   };
 
   componentDidMount() {
-    const { pagination } = this.state;
-    const { getTransactionsSummary, getUsersJobs } = this.props;
+    const { pagination, resetTransactions } = this.state;
+    const { getTransactionsSummary, getUsersJobs, reset } = this.props;
     getTransactionsSummary({
       status: 'new',
       ...getCurrentTwoWeeksPeriod(),
@@ -69,6 +71,9 @@ class Payments extends React.Component {
       page: pagination.current,
       limit: pagination.pageSize,
     });
+    if (resetTransactions) {
+      reset();
+    }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -85,6 +90,10 @@ class Payments extends React.Component {
 
     if (nextProps.usersJobs !== prevState.usersJobs) {
       localState['usersJobs'] = nextProps.usersJobs;
+    }
+
+    if (nextProps.resetTransactions !== prevState.resetTransactions) {
+      localState['resetTransactions'] = nextProps.resetTransactions;
     }
 
     if (nextProps.selectedContractorsIds.size !== prevState.selectedContractorsIds.size) {
@@ -353,6 +362,7 @@ const mapStateToProps = state => ({
   selectedTransactionsIds: state.payments.selectedTransactionsIds,
   selectedContractorsIds: state.payments.selectedContractorsIds,
   selectedTransactionGroups: state.payments.selectedTransactionGroups,
+  resetTransactions: state.payments.resetTransactions,
   selectedTransactionsSummaryValue: state.payments.selectedTransactionsSummaryValue,
   isSummaryLoading: state.loading.effects.transactions.getTransactionsSummary,
   isJobsLoading: state.loading.effects.users.getUsersJobs,
@@ -363,6 +373,7 @@ const mapDispatchToProps = dispatch => ({
   updatePaymentsList: dispatch.payments.updatePaymentsList,
   getTransactionsSummary: dispatch.transactions.getTransactionsSummary,
   createTransaction: dispatch.transactions.createTransaction,
+  reset: dispatch.payments.reset,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Payments);
