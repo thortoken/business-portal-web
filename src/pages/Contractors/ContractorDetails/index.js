@@ -192,7 +192,7 @@ class ContractorDetails extends React.Component {
                   width="30%"
                   title="Service"
                 />
-                <Column align="center" dataIndex="location" title="Location" width="20%" />
+                {/*<Column align="center" dataIndex="location" title="Location" width="20%" />*/}
                 <Column
                   align="center"
                   dataIndex="value"

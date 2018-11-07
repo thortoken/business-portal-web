@@ -5,7 +5,6 @@ import { Button } from 'antd';
 import { Formik } from 'formik';
 
 import FormField from '~components/FormField';
-import Config from '~services/config';
 
 import { initialValues, formFields, transformDateToMoment, validationSchema } from './formSchema';
 import './SignUp.scss';
@@ -80,7 +79,6 @@ export class SignUp extends React.Component {
       profile: {
         ...normalizedData,
       },
-      tenant: Config.tenantId,
       invitationToken: invToken,
       password: profile.password,
     };
