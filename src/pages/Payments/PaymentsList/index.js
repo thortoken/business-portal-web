@@ -27,6 +27,7 @@ class Payments extends React.Component {
     isJobsLoading: PropTypes.bool,
     paymentsListPagination: PropTypes.object,
     usersJobs: PropTypes.array,
+    selectedTransactionGroups: PropTypes.array,
     selectedTransactionsSummaryValue: PropTypes.number,
     selectedTransactionsIds: PropTypes.object,
     selectedContractorsIds: PropTypes.object,
@@ -52,6 +53,7 @@ class Payments extends React.Component {
     selectedTransactionsSummaryValue: 0,
     pagination: makeDefaultPagination(),
     paymentsListPagination: null,
+    selectedTransactionGroups: [],
   };
 
   componentDidMount() {
@@ -91,6 +93,10 @@ class Payments extends React.Component {
 
     if (nextProps.selectedTransactionsIds.size !== prevState.selectedTransactionsIds.size) {
       localState['selectedTransactionsIds'] = nextProps.selectedTransactionsIds;
+    }
+
+    if (nextProps.selectedTransactionGroups.length !== prevState.selectedTransactionGroups.length) {
+      localState['selectedTransactionGroups'] = nextProps.selectedTransactionGroups;
     }
 
     if (nextProps.selectedTransactionsSummaryValue !== prevState.selectedTransactionsSummaryValue) {
@@ -238,7 +244,12 @@ class Payments extends React.Component {
   };
 
   handleSelectTransaction = user => {
-    const { selectedTransactionsIds, selectedContractorsIds, usersJobs } = this.state;
+    const {
+      selectedTransactionsIds,
+      selectedContractorsIds,
+      selectedTransactionGroups,
+      usersJobs,
+    } = this.state;
 
     const { updatePaymentsList } = this.props;
 
@@ -248,9 +259,16 @@ class Payments extends React.Component {
     if (selectedContractorsIds.has(contractorId)) {
       selectedContractorsIds.delete(contractorId);
       selectedTransactionsSummaryValue -= user.total;
+      for (let i = 0; i < selectedTransactionGroups.length; i++) {
+        if (selectedTransactionGroups[i].userId === user.id) {
+          selectedTransactionGroups.splice(i, 1);
+          break;
+        }
+      }
     } else {
       selectedContractorsIds.add(contractorId);
       selectedTransactionsSummaryValue += user.total;
+      selectedTransactionGroups.push({ userId: user.id, transactionsIds: user.transactionsIds });
     }
 
     user.transactionsIds.forEach(transaction => {
@@ -269,6 +287,7 @@ class Payments extends React.Component {
       selectedContractorsIds,
       selectedTransactionsIds,
       selectedTransactionsSummaryValue,
+      selectedTransactionGroups,
     });
   };
 
@@ -333,6 +352,7 @@ const mapStateToProps = state => ({
   usersJobs: state.users.usersJobs,
   selectedTransactionsIds: state.payments.selectedTransactionsIds,
   selectedContractorsIds: state.payments.selectedContractorsIds,
+  selectedTransactionGroups: state.payments.selectedTransactionGroups,
   selectedTransactionsSummaryValue: state.payments.selectedTransactionsSummaryValue,
   isSummaryLoading: state.loading.effects.transactions.getTransactionsSummary,
   isJobsLoading: state.loading.effects.users.getUsersJobs,
