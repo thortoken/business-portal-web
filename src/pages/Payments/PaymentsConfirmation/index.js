@@ -21,6 +21,7 @@ export class PaymentsConfirmation extends React.Component {
     selectedTransactionsSummaryValue: PropTypes.number,
     selectedTransactionsIds: PropTypes.object,
     selectedContractorsIds: PropTypes.object,
+    selectedTransactionGroups: PropTypes.array,
     transactionErrorList: PropTypes.object,
     transactionsDone: PropTypes.number,
     transactionsError: PropTypes.number,
@@ -53,10 +54,10 @@ export class PaymentsConfirmation extends React.Component {
   }
 
   handleSubmit = async () => {
-    const { selectedTransactionsIds, payNow } = this.props;
+    const { selectedTransactionGroups, payNow } = this.props;
     this.setState({ submitted: true });
     try {
-      await payNow(selectedTransactionsIds);
+      await payNow(selectedTransactionGroups);
     } catch (err) {
       if (err.response) {
         console.log(err.response);
@@ -172,6 +173,7 @@ const mapStateToProps = state => ({
   transactionsDone: state.payments.transactionsDone,
   transactionsError: state.payments.transactionsError,
   selectedContractorsIds: state.payments.selectedContractorsIds,
+  selectedTransactionGroups: state.payments.selectedTransactionGroups,
   selectedTransactionsSummaryValue: state.payments.selectedTransactionsSummaryValue,
   isLoading: state.loading.effects.payments.payNow,
 });

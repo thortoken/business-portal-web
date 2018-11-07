@@ -7,10 +7,12 @@ const payments = {
       let error = 0;
       let done = 0;
 
-      let requests = [...data].map(id => {
-        return Http.post(`/transactions/${id}/transfers`)
+      let requests = [...data].map(group => {
+        return Http.post(`/transactions/transfers/user/${group.userId}`, {
+          transactionsIds: group.transactionsIds,
+        })
           .then(res => {
-            done++;
+            done += group.transactionsIds.length;
             this.setTransactionDone(done);
           })
           .catch(err => {
@@ -26,18 +28,20 @@ const payments = {
             } else {
               errorList.add(err.response.data.error);
             }
-            error++;
+            error += group.transactionsIds.length;
             this.setTransactionError(error);
           });
       });
       await Promise.all(requests).then(res => {
         this.setTransactionErrorList(errorList);
+        this.setResetTransactionsFlag(true);
       });
     },
     async updatePaymentsList(data) {
       this.setTransactionsIds(data.selectedTransactionsIds);
       this.setContractorsIds(data.selectedContractorsIds);
       this.setTransactionsSummaryValues(data.selectedTransactionsSummaryValue);
+      this.setTransactionGroups(data.selectedTransactionGroups);
     },
     async reset() {
       this.setTransactionsIds(new Set());
@@ -46,6 +50,8 @@ const payments = {
       this.setTransactionsSummaryValues(0);
       this.setTransactionError(0);
       this.setTransactionDone(0);
+      this.setTransactionGroups([]);
+      this.setResetTransactionsFlag(false);
     },
   },
   reducers: {
@@ -54,6 +60,9 @@ const payments = {
     },
     setContractorsIds(state, payload) {
       return { ...state, selectedContractorsIds: payload };
+    },
+    setTransactionGroups(state, payload) {
+      return { ...state, selectedTransactionGroups: payload };
     },
     setTransactionsSummaryValues(state, payload) {
       return { ...state, selectedTransactionsSummaryValue: payload };
@@ -67,14 +76,19 @@ const payments = {
     setTransactionErrorList(state, payload) {
       return { ...state, transactionErrorList: new Set([...payload]) };
     },
+    setResetTransactionsFlag(state, payload) {
+      return { ...state, resetTransactions: payload };
+    },
   },
   state: {
     selectedTransactionsIds: new Set(),
     selectedContractorsIds: new Set(),
+    selectedTransactionGroups: [],
     selectedTransactionsSummaryValue: 0,
     transactionErrorList: new Set(),
     transactionsError: 0,
     transactionsDone: 0,
+    resetTransactions: false,
   },
 };
 
