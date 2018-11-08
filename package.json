@@ -57,7 +57,8 @@
     "test": "react-app-rewired test --env=jsdom",
     "coverage": "yarn test --coverage",
     "eject": "react-scripts eject",
-    "deploy-dev": "firebase deploy --only hosting:dev"
+    "deploy-dev": "firebase deploy --only hosting:dev",
+    "deploy-prod": "firebase deploy --only hosting:prod"
   },
   "devDependencies": {
     "babel-plugin-import": "^1.7.0",

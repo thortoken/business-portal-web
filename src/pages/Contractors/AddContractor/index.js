@@ -12,6 +12,8 @@ import NotificationService from '../../../services/notification';
 
 import { handleFormHttpResponse } from '~utils/forms/errors';
 
+import { traverseRecursively } from '~utils/iterators';
+
 export class AddContractor extends React.Component {
   static propTypes = {
     createFundingSource: PropTypes.func.isRequired,
@@ -22,6 +24,26 @@ export class AddContractor extends React.Component {
     createdContractor: null,
     error: null,
   };
+
+  prepareForm(fields) {
+    let formArray = [];
+    traverseRecursively(fields, {
+      childKey: 'fields',
+      nodeCallback: () => console.log(),
+      leafCallback: data => {
+        const { value, path } = data;
+        formArray.push(
+          <FormField
+            key={path.join('.')}
+            name={path.join('.')}
+            label={value.label}
+            {...value.input}
+          />
+        );
+      },
+    });
+    return [...formArray];
+  }
 
   render() {
     const { error } = this.state;
@@ -41,9 +63,7 @@ export class AddContractor extends React.Component {
 
   renderForm = ({ handleSubmit, isSubmitting, values, dirty }) => (
     <form onSubmit={handleSubmit}>
-      {Object.entries(formFields).map(([name, options]) => (
-        <FormField key={name} name={name} label={options.label} {...options.input} />
-      ))}
+      {this.prepareForm(formFields)}
 
       <div className="Add-contractor__button-container">
         <Button
@@ -62,7 +82,6 @@ export class AddContractor extends React.Component {
   createContractor = async profile => {
     const { createUser } = this.props;
     let { createdContractor } = this.state;
-
     if (!createdContractor) {
       const data = {
         ...profile,
@@ -88,8 +107,7 @@ export class AddContractor extends React.Component {
   };
 
   handleSubmit = async (data, form) => {
-    const { routing, account, ...profile } = data;
-
+    const { routing, account, profile } = data;
     try {
       await this.createContractor(profile);
       await this.createFundingSource({ account, routing });
