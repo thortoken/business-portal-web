@@ -1,9 +1,13 @@
 import React from 'react';
 import { Icon } from 'antd';
+import PropTypes from 'prop-types';
 
 import './BackBtn.scss';
 
 export class BackBtn extends React.Component {
+  static propTypes = {
+    goBack: PropTypes.func,
+  };
   render() {
     return (
       <div className="BackBtn">
@@ -20,7 +24,11 @@ export class BackBtn extends React.Component {
   }
 
   handleBackBtn = () => {
-    this.back();
+    if (this.props.goBack) {
+      this.props.goBack();
+    } else {
+      this.back();
+    }
   };
 }
 

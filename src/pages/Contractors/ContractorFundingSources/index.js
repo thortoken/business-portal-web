@@ -77,6 +77,11 @@ class ContractorFundingSources extends React.Component {
     history.push(`/contractors/${match.params.id}/fundingSources/add`);
   };
 
+  handleGoBack = () => {
+    const { history, match } = this.props;
+    history.push(`/contractors/${match.params.id}`);
+  };
+
   handleRefresh = () => {
     const { getUserFundingSources, match } = this.props;
     const { pagination } = this.state;
@@ -123,7 +128,7 @@ class ContractorFundingSources extends React.Component {
     return (
       <div className="ContractorFundingSources">
         <div className="ContractorFundingSources__back">
-          <BackBtn history={history} />
+          <BackBtn history={history} goBack={this.handleGoBack} />
         </div>
         <Header title="Funding Sources List" size="medium">
           <Button type="primary" onClick={this.handleAdd}>
