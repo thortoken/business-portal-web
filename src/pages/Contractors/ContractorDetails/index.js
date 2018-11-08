@@ -218,7 +218,7 @@ class ContractorDetails extends React.Component {
   }
 
   handleGoBack = () => {
-    const { history, match } = this.props;
+    const { history } = this.props;
     history.push(`/contractors`);
   };
 
