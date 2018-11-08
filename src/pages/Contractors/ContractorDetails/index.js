@@ -143,7 +143,7 @@ class ContractorDetails extends React.Component {
         />
         <Spin size="large" spinning={loadingContractor}>
           <div className="ContractorDetails">
-            <BackBtn history={history} />
+            <BackBtn history={history} goBack={this.handleGoBack} />
 
             {currentUser && (
               <Profile
@@ -216,6 +216,11 @@ class ContractorDetails extends React.Component {
       </div>
     );
   }
+
+  handleGoBack = () => {
+    const { history, match } = this.props;
+    history.push(`/contractors`);
+  };
 
   handleGoToFundingSources = () => {
     const { history, match } = this.props;
