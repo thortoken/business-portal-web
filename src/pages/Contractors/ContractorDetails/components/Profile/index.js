@@ -18,6 +18,7 @@ export default class Profile extends React.PureComponent {
     handleDelete: PropTypes.func,
     handleEdit: PropTypes.func,
     handleGoToFundingSources: PropTypes.func,
+    handleRetryContractor: PropTypes.func,
   };
 
   render() {
@@ -88,15 +89,28 @@ export default class Profile extends React.PureComponent {
   }
 
   verifyUserProfile = () => {
-    const { hasFundingSource, handleGoToFundingSources } = this.props;
+    const { hasFundingSource, handleGoToFundingSources, handleRetryContractor, externalStatus } = this.props;
     const warnings = [];
     if (!hasFundingSource) {
       warnings.push({
         key: 'Funding Source',
         content: (
           <p className="Profile-warning">
-            1. Add funding source for this user{' '}
+            {warnings.length + 1}. Add funding source for this user{' '}
             <span className="Profile-link" onClick={handleGoToFundingSources}>
+              here
+            </span>.
+          </p>
+        ),
+      });
+    }
+    if (externalStatus === 'retry') {
+      warnings.push({
+        key: 'Dwolla error',
+        content: (
+          <p className="Profile-warning">
+            {warnings.length + 1}. Resend your data{' '}
+            <span className="Profile-link" onClick={handleRetryContractor}>
               here
             </span>.
           </p>
