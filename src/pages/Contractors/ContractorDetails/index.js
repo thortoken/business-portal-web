@@ -14,6 +14,7 @@ import { movePeriod, renderShortDate } from '~utils/time';
 import makeDefaultPagination from '~utils/pagination';
 
 import './ContractorDetails.scss';
+import NotificationService from '~services/notification';
 
 const { Column } = Table;
 
@@ -233,9 +234,24 @@ class ContractorDetails extends React.Component {
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
-      onOk() {
-        deleteUser(currentUser.id);
-        history.goBack();
+      onOk: async () => {
+        try {
+          await deleteUser(currentUser.id);
+          NotificationService.open({
+            type: 'success',
+            message: 'Success',
+            description: 'User successfully deleted.',
+          });
+          history.goBack();
+        } catch (err) {
+          if (err.response.status === 409) {
+            NotificationService.open({
+              type: 'warning',
+              message: 'Warning',
+              description: err.response.data.error,
+            });
+          }
+        }
       },
     });
   };
