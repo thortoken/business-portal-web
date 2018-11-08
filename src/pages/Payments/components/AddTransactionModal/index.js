@@ -36,11 +36,11 @@ export class AddTransactionModal extends Component {
       handleRefresh();
     } catch (err) {
       if (err.response) {
-        this.setState({ errorMsg: err.response.data.error.message || '' });
+        this.setState({ errorMsg: err.response.data.error || '' });
         NotificationService.open({
           type: 'warning',
           message: 'Warning',
-          description: err.response.data.error.message || '',
+          description: err.response.data.error || '',
         });
       }
       form.setSubmitting(false);
