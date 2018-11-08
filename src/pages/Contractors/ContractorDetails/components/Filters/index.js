@@ -59,8 +59,8 @@ export default class Filters extends React.Component {
     return (
       <div className="Filters">
         <div className="Filters-selector">
-          <Dropdown options={periodOptions} onClick={this.handlePeriodChange}>
-            <Button type="primary" ghost>
+          <Dropdown options={periodOptions} onClick={this.handlePeriodChange} disabled>
+            <Button type="primary" ghost disabled>
               {readablePeriods[period]} <Icon type="down" />
             </Button>
           </Dropdown>
