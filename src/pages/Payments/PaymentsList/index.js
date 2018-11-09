@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Table, Checkbox, Spin } from 'antd';
+import { Icon, Table, Checkbox, Spin, Button, Tooltip } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
@@ -115,7 +115,10 @@ class Payments extends React.Component {
     if (nextProps.paymentsListPagination !== prevState.paymentsListPagination) {
       let pag = prevState.pagination;
       localState['paymentsListPagination'] = nextProps.paymentsListPagination;
-      localState['pagination'] = { ...pag, total: nextProps.paymentsListPagination.total };
+      localState['pagination'] = {
+        ...pag,
+        total: nextProps.paymentsListPagination.total,
+      };
     }
     return Object.keys(localState).length ? localState : null;
   }
@@ -183,6 +186,7 @@ class Payments extends React.Component {
           <Checkbox onChange={this.onSelectAll} checked={checked} /> Select All
         </div>
 
+
         <Box>
           <Table
             dataSource={usersJobs}
@@ -211,7 +215,7 @@ class Payments extends React.Component {
               align="center"
               dataIndex="jobsCount"
               title="Num Jobs"
-              width="15%"
+              width="10%"
               className="PaymentsList-numOfJobs-selector"
             />
             <Column
@@ -223,13 +227,29 @@ class Payments extends React.Component {
               title="Current"
             />
             <Column
-              className="PaymentsList-table-approve PaymentsList-approve-selector"
-              title="Approval"
               align="center"
-              width="25%"
+              title="Actions"
+              width="15%"
+              render={(text, record) => {
+                return (
+                  <Tooltip placement="top" title={'Add a payment'}>
+                    <Button onClick={() => this.handleButtonClick(record)}>
+                      <Icon type="plus" theme="outlined" />
+                    </Button>
+                  </Tooltip>
+                );
+              }}
+            />
+            <Column
+              className="PaymentsList-table-approve PaymentsList-approve-selector"
+              title="Approve"
+              align="center"
+              width="15%"
               render={(text, record) => (
                 <button
-                  className={classnames(null, { active: this.isActive(record) })}
+                  className={classnames(null, {
+                    active: this.isActive(record),
+                  })}
                   onClick={() => this.handleSelectTransaction(record)}>
                   <Icon type="check" />
                 </button>
@@ -277,7 +297,10 @@ class Payments extends React.Component {
     } else {
       selectedContractorsIds.add(contractorId);
       selectedTransactionsSummaryValue += user.total;
-      selectedTransactionGroups.push({ userId: user.id, transactionsIds: user.transactionsIds });
+      selectedTransactionGroups.push({
+        userId: user.id,
+        transactionsIds: user.transactionsIds,
+      });
     }
 
     user.transactionsIds.forEach(transaction => {
@@ -380,4 +403,7 @@ const mapDispatchToProps = dispatch => ({
   reset: dispatch.payments.reset,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Payments);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Payments);
