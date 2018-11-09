@@ -17,6 +17,8 @@ import makeDefaultPagination from '~utils/pagination';
 
 import RefreshButton from '~components/RefreshButton';
 
+import { AddTransactionModal } from '~pages/Payments/components/AddTransactionModal';
+
 import './PaymentsList.scss';
 
 const { Column } = Table;
@@ -56,6 +58,8 @@ class Payments extends React.Component {
     paymentsListPagination: null,
     selectedTransactionGroups: [],
     resetTransactions: false,
+    isAddPaymentModalVisible: false,
+    selectedUserId: '',
   };
 
   componentDidMount() {
@@ -186,6 +190,13 @@ class Payments extends React.Component {
           <Checkbox onChange={this.onSelectAll} checked={checked} /> Select All
         </div>
 
+        <AddTransactionModal
+          userId={this.state.selectedUserId}
+          createTransaction={this.props.createTransaction}
+          isModalVisible={this.state.isAddPaymentModalVisible}
+          onChangeVisibility={this.onChangeVisibility}
+          handleRefresh={this.handleRefresh}
+        />
 
         <Box>
           <Table
@@ -233,7 +244,7 @@ class Payments extends React.Component {
               render={(text, record) => {
                 return (
                   <Tooltip placement="top" title={'Add a payment'}>
-                    <Button onClick={() => this.handleButtonClick(record)}>
+                    <Button onClick={() => this.handleAddPaymentClick(record)}>
                       <Icon type="plus" theme="outlined" />
                     </Button>
                   </Tooltip>
@@ -321,6 +332,14 @@ class Payments extends React.Component {
       selectedTransactionsSummaryValue,
       selectedTransactionGroups,
     });
+  };
+
+  handleAddPaymentClick = record => {
+    this.setState({ selectedUserId: record.id, isAddPaymentModalVisible: true });
+  };
+
+  onChangeVisibility = (isAddPaymentModalVisible, refreshData = false) => {
+    this.setState({ isAddPaymentModalVisible });
   };
 
   renderAmount = amount => formatUsd(amount);
