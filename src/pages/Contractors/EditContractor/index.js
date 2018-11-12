@@ -88,7 +88,10 @@ export class EditContractor extends React.Component {
 
   handleSubmit = async (data, form) => {
     try {
-      await this.updateContractor(data);
+      let dataProfile = JSON.parse(JSON.stringify(data));
+      dataProfile.dateOfBirth = transformDateToMoment(dataProfile.dateOfBirth).format('YYYY-MM-DD');
+
+      await this.updateContractor(dataProfile);
 
       this.handleSubmitSuccess();
     } catch (err) {

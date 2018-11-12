@@ -109,7 +109,10 @@ export class AddContractor extends React.Component {
   handleSubmit = async (data, form) => {
     const { routing, account, profile } = data;
     try {
-      await this.createContractor(profile);
+      let dataProfile = JSON.parse(JSON.stringify(profile));
+      dataProfile.dateOfBirth = transformDateToMoment(dataProfile.dateOfBirth).format('YYYY-MM-DD');
+
+      await this.createContractor(dataProfile);
       await this.createFundingSource({ account, routing });
 
       this.handleSubmitSuccess();

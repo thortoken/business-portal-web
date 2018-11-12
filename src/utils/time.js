@@ -106,7 +106,7 @@ export const renderShortDate = date => moment(date).format('MM/DD');
 
 export const dateAsMoment = defaultFormat => (date, format = defaultFormat) => {
   if (typeof date === 'string') {
-    const tryDate = moment(date, format);
+    const tryDate = moment.utc(date, format);
     if (tryDate.isValid()) {
       return tryDate;
     }

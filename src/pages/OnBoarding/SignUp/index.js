@@ -63,10 +63,13 @@ export class SignUp extends React.Component {
 
   create = async data => {
     const { createContractor } = this.props;
+    let dataProfile = JSON.parse(JSON.stringify(data));
+    dataProfile.profile.dateOfBirth = transformDateToMoment(dataProfile.profile.dateOfBirth).format(
+      'YYYY-MM-DD'
+    );
+    dataProfile.profile.postalCode = String(dataProfile.profile.postalCode);
 
-    data.profile.postalCode = String(data.profile.postalCode);
-    data.profile.dateOfBirth = transformDateToMoment(data.profile.dateOfBirth).format('YYYY-MM-DD');
-    await createContractor(data);
+    await createContractor(dataProfile);
   };
 
   handleSubmit = async (data, form) => {

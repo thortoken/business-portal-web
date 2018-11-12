@@ -6,6 +6,6 @@ export const dateTransformer = format =>
       return currentValue;
     }
 
-    const date = moment(originalValue, format);
+    const date = moment.utc(originalValue, format);
     return date.isValid() ? date.toDate() : new Date();
   };

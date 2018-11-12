@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 
 import FormField from '~components/FormField';
 
-import { initialValues, formFields, validationSchema } from './formSchema';
+import { initialValues, formFields, transformDateToMoment, validationSchema } from './formSchema';
 import './RetryContractor.scss';
 import NotificationService from '~services/notification';
 
@@ -126,6 +126,7 @@ export class RetryContractor extends React.Component {
       let dataProfile = JSON.parse(JSON.stringify(profile));
 
       dataProfile.postalCode = String(dataProfile.postalCode);
+      dataProfile.dateOfBirth = transformDateToMoment(dataProfile.dateOfBirth).format('YYYY-MM-DD');
       await retryContractor({ id: match.params.id, data: dataProfile });
       this.handleSubmitSuccess();
     } catch (err) {
