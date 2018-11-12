@@ -155,6 +155,7 @@ class ContractorDetails extends React.Component {
                 handleEdit={this.handleEdit}
                 handleDelete={this.handleDelete}
                 updatedAt={currentUser.updatedAt}
+                handleRetryContractor={this.handleRetryContractor}
                 handleGoToFundingSources={this.handleGoToFundingSources}>
                 <Button type="primary" ghost onClick={this.handleGoToFundingSources}>
                   Funding Sources
@@ -225,6 +226,11 @@ class ContractorDetails extends React.Component {
   handleGoToFundingSources = () => {
     const { history, match } = this.props;
     history.push(`/contractors/${match.params.id}/fundingSources`);
+  };
+
+  handleRetryContractor = () => {
+    const { history, match } = this.props;
+    history.push(`/contractors/${match.params.id}/retry`);
   };
 
   renderJobName = job => {

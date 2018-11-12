@@ -44,6 +44,14 @@ const users = {
         throw err;
       }
     },
+    async retryContractor({ id, data }) {
+      try {
+        const response = await Http.put(`/users/${id}`, data);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
     async checkFundingSource(id) {
       try {
         const response = await Http.get(`/users/${id}/fundingSources/default`);
