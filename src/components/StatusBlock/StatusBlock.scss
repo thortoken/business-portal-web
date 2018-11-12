@@ -1,0 +1,32 @@
+@import "../../styles/var";
+
+.StatusBlock {
+  display: inline-block;
+  &--retry,
+  &--document,
+  &--suspended,
+  &--deactivated,
+  &--verified {
+    padding: 0.2rem 1rem;
+    border-radius: 0.4rem;
+    height: 44px;
+    font-weight: 100;
+    font-size: 1rem;
+    margin-right: 0.6rem;
+  }
+
+  &--verified {
+    color: white;
+    background-color: $color-active;
+  }
+
+  &--retry, &--document {
+    color: black;
+    background-color: $color-resting;
+  }
+
+  &--suspended, &--deactivated {
+    color: white;
+    background-color: $color-inactive;
+  }
+}
