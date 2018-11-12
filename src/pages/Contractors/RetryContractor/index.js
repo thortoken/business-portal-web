@@ -127,7 +127,7 @@ export class RetryContractor extends React.Component {
 
       dataProfile.postalCode = String(dataProfile.postalCode);
       dataProfile.dateOfBirth = transformDateToMoment(dataProfile.dateOfBirth).format('YYYY-MM-DD');
-      await retryContractor({ id: match.params.id, data: dataProfile });
+      await retryContractor({ id: match.params.id, data: { profile: dataProfile } });
       this.handleSubmitSuccess();
     } catch (err) {
       handleFormHttpResponse(form, err.response.data.error, err.response);
