@@ -12,6 +12,7 @@ import './ContractorsList.scss';
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
 import AddContractorMenu from '../AddContractorMenu';
+import StatusBlock from '../../../components/StatusBlock';
 
 const { Column } = Table;
 
@@ -124,6 +125,18 @@ class ContractorsList extends React.Component {
               className="ContractorsList__activity"
               render={(text, record) => {
                 return <div>{record.lastActivityLabel}</div>;
+              }}
+            />
+            <Column
+              align="center"
+              title="Status"
+              dataIndex="tenantProfile.externalStatus"
+              render={text => {
+                return (
+                  <div>
+                    <StatusBlock status={text} />
+                  </div>
+                );
               }}
             />
             <Column
