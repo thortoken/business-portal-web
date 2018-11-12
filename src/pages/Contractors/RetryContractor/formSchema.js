@@ -103,13 +103,16 @@ const formFields = {
         },
       },
       ssn: {
-        label: 'Last 4 digits of SSN',
+        label: 'SSN',
         validator: Yup.string()
           .ensure()
           .required()
-          .matches(/\d{4}/, 'Please input last 4 digits of your SSN'),
+          .matches(/\d{9}/, 'Please input your SSN'),
         input: {
-          maxLength: 4,
+          maxLength: 11,
+          placeholder: '000-00-0000',
+          formatter: formUtils.formatters.ssn,
+          parser: formUtils.parsers.digitsOnly,
         },
       },
     },
