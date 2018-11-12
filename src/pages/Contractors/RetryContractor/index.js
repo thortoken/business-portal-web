@@ -85,7 +85,6 @@ export class RetryContractor extends React.Component {
   render() {
     const { formData } = this.state;
     const { isLoading } = this.props;
-    console.log(initialValues({ profile: formData }));
 
     return (
       <Spin spinning={isLoading}>
@@ -124,9 +123,11 @@ export class RetryContractor extends React.Component {
     const { profile } = data;
     const { retryContractor, match } = this.props;
     try {
-      profile.postalCode = String(profile.postalCode);
-      profile.dateOfBirth = transformDateToMoment(profile.dateOfBirth).format('YYYY-MM-DD');
-      await retryContractor({ id: match.params.id, data: profile });
+      let dataProfile = profile;
+
+      dataProfile.postalCode = String(dataProfile.postalCode);
+      dataProfile.dateOfBirth = transformDateToMoment(dataProfile.dateOfBirth).format('YYYY-MM-DD');
+      await retryContractor({ id: match.params.id, data: dataProfile });
       this.handleSubmitSuccess();
     } catch (err) {
       handleFormHttpResponse(form, err.response.data.error, err.response);

@@ -10,6 +10,7 @@ import Header from '~components/Header';
 
 import './CompanyDetails.scss';
 import EditCompanyOwner from './EditCompanyOwner';
+import StatusBlock from '../../../components/StatusBlock';
 
 export class CompanyDetails extends React.Component {
   static propTypes = {
@@ -79,6 +80,7 @@ export class CompanyDetails extends React.Component {
     return (
       <div className="CompanyDetails">
         <Header title="Company Details" size="medium">
+          {company && company.status && <StatusBlock status={company.status} />}
           {!isLoadingCompanyDetails &&
             !isLoadingCategories && (
               <Button type="primary" onClick={company ? this.handleEdit : this.handleAdd}>
