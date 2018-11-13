@@ -19,6 +19,7 @@ export default class Profile extends React.PureComponent {
     handleEdit: PropTypes.func,
     handleGoToFundingSources: PropTypes.func,
     handleRetryContractor: PropTypes.func,
+    handleGoToDocuments: PropTypes.func,
   };
 
   render() {
@@ -89,7 +90,13 @@ export default class Profile extends React.PureComponent {
   }
 
   verifyUserProfile = () => {
-    const { hasFundingSource, handleGoToFundingSources, handleRetryContractor, externalStatus } = this.props;
+    const {
+      hasFundingSource,
+      handleGoToFundingSources,
+      handleRetryContractor,
+      externalStatus,
+      handleGoToDocuments,
+    } = this.props;
     const warnings = [];
     if (!hasFundingSource) {
       warnings.push({
@@ -111,6 +118,19 @@ export default class Profile extends React.PureComponent {
           <p className="Profile-warning">
             {warnings.length + 1}. Resend your data{' '}
             <span className="Profile-link" onClick={handleRetryContractor}>
+              here
+            </span>.
+          </p>
+        ),
+      });
+    }
+    if (externalStatus === 'document') {
+      warnings.push({
+        key: 'Document error',
+        content: (
+          <p className="Profile-warning">
+            {warnings.length + 1}. Resend your documents{' '}
+            <span className="Profile-link" onClick={handleGoToDocuments}>
               here
             </span>.
           </p>
