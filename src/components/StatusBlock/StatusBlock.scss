@@ -2,11 +2,7 @@
 
 .StatusBlock {
   display: inline-block;
-  &--retry,
-  &--document,
-  &--suspended,
-  &--deactivated,
-  &--verified {
+  &--block {
     padding: 0.2rem 1rem;
     border-radius: 0.4rem;
     height: 44px;
@@ -22,7 +18,7 @@
     background-color: $color-active;
   }
 
-  &--retry, &--document {
+  &--retry, &--document, &--pending {
     color: black;
     background-color: $color-resting;
   }
