@@ -22,7 +22,7 @@ export class StatusBlock extends React.Component {
     return (
       <div className="StatusBlock">
         <div
-          className={classnames('', {
+          className={classnames('StatusBlock--block', {
             [`StatusBlock--${status.toLowerCase()}`]: true,
           })}>
           {status.toUpperCase()}

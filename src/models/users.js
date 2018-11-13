@@ -195,7 +195,7 @@ const users = {
             limit,
           },
         });
-        this.setUserDocuments(response.data.items);
+        this.setUserDocuments(response.data);
         this.setUserDocumentsPagination({
           limit: 10,
           page: 1,

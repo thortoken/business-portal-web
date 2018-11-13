@@ -4,6 +4,9 @@
   &__back {
     margin-bottom: 2rem;
   }
+  &__type {
+      text-transform: uppercase;
+  }
   &__table {
     &__buttons {
       Button {

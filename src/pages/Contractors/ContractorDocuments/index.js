@@ -10,6 +10,9 @@ import './ContractorDocuments.scss';
 
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
+import StatusBlock from '../../../components/StatusBlock';
+
+import { renderRegularDate } from '~utils/time';
 
 const { Column } = Table;
 
@@ -110,13 +113,31 @@ class ContractorDocuments extends React.Component {
           <Table
             dataSource={userDocuments}
             className="ContractorDocuments__table"
-            rowKey="id"
+            rowKey="created"
             onChange={this.handleTableChange}
             pagination={pagination}
             loading={isLoading}>
-            <Column align="left" dataIndex="type" title="Type" />
-            <Column align="center" dataIndex="status" title="Status" />
-            <Column align="center" dataIndex="created" title="Created" />
+            <Column
+              align="left"
+              dataIndex="type"
+              title="Type"
+              render={text => {
+                return <div className="ContractorDocuments__type">{text}</div>;
+              }}
+            />
+            <Column align="center" dataIndex="created" title="Added" render={renderRegularDate} />
+            <Column
+              align="center"
+              dataIndex="status"
+              title="Status"
+              render={text => {
+                return (
+                  <div>
+                    <StatusBlock status={text} />
+                  </div>
+                );
+              }}
+            />
           </Table>
         </Box>
       </div>

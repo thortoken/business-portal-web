@@ -9,6 +9,7 @@ import InvitationsList from './InvitationsList';
 import InviteContractor from './InviteContractor';
 import ContractorFundingSources from './ContractorFundingSources';
 import ContractorDocuments from './ContractorDocuments';
+import AddContractorDocument from './AddContractorDocument';
 
 import { withRouteModal } from '~components/Modal';
 import AddFundingSource from './ContractorFundingSources/AddFundingSource';
@@ -31,6 +32,11 @@ export class RootContractorsPage extends React.Component {
           exact
           path={`/contractors/:id/fundingSources/add`}
           component={withRouteModal({ component: AddFundingSource, title: 'Add Funding Source' })}
+        />
+        <Route
+          exact
+          path={`/contractors/:id/documents/add`}
+          component={withRouteModal({ component: AddContractorDocument, title: 'Add Document' })}
         />
         <Route
           exact
