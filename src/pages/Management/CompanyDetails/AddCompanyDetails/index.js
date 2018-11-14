@@ -13,6 +13,7 @@ import SelectField from '~components/SelectField';
 
 import { handleFormHttpResponse } from '~utils/forms/errors';
 import { traverseRecursively } from '~utils/iterators';
+import { transformDateToMoment } from '../../../Contractors/AddContractor/formSchema';
 
 const { Option, OptGroup } = Select;
 
@@ -173,16 +174,17 @@ export class AddCompanyDetails extends React.Component {
 
   handleSubmit = async (data, form) => {
     const { addTenantCompany } = this.props;
-    const { formData } = this.state;
-    const normalizedData = formData.validationSchema.cast(data);
-    normalizedData.country = 'USA';
-    if (normalizedData.businessType === 'soleProprietorship' && normalizedData.controller) {
-      delete normalizedData.controller;
+    let dataProfile = JSON.parse(JSON.stringify(data));
+    dataProfile.dateOfBirth = transformDateToMoment(dataProfile.dateOfBirth).format('YYYY-MM-DD');
+
+    dataProfile.country = 'USA';
+    if (dataProfile.businessType === 'soleProprietorship' && dataProfile.controller) {
+      delete dataProfile.controller;
     } else {
-      normalizedData.controller.address.country = 'US';
+      dataProfile.controller.address.country = 'US';
     }
     try {
-      await addTenantCompany(normalizedData);
+      await addTenantCompany(dataProfile);
       this.handleSubmitSuccess();
     } catch (err) {
       handleFormHttpResponse(form, err.response.data.error, err.response);

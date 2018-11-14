@@ -7,21 +7,20 @@ import { Formik } from 'formik';
 import FormField from '~components/FormField';
 
 import { formFields, validationSchema, initialValues } from './formSchema';
-import './AddBeneficialOwner.scss';
+import './VerifyLinkedAccounts.scss';
 import NotificationService from '~services/notification';
 
 import { handleFormHttpResponse } from '~utils/forms/errors';
 import { traverseRecursively } from '~utils/iterators';
-import { transformDateToMoment } from '../../../Contractors/AddContractor/formSchema';
 
-export class AddBeneficialOwner extends React.Component {
+export class VerifyLinkedAccounts extends React.Component {
   static propTypes = {
-    createBeneficialOwner: PropTypes.func,
+    verifyFundingSourceAmount: PropTypes.func,
   };
 
   render() {
     return (
-      <div className="AddBeneficialOwner">
+      <div className="VerifyLinkedAccounts">
         <Formik
           initialValues={initialValues}
           onSubmit={this.handleSubmit}
@@ -56,31 +55,24 @@ export class AddBeneficialOwner extends React.Component {
     <form onSubmit={handleSubmit}>
       {this.prepareForm(formFields)}
 
-      <div className="AddBeneficialOwner__button-container">
+      <div className="VerifyLinkedAccounts__button-container">
         <Button
           disabled={!dirty || isSubmitting}
           size="large"
           type="primary"
           loading={isSubmitting}
           htmlType="submit"
-          className="AddBeneficialOwner__button-container--button">
-          Add {values.firstName}
+          className="VerifyLinkedAccounts__button-container--button">
+          Verify
         </Button>
       </div>
     </form>
   );
 
   handleSubmit = async (data, form) => {
-    const { createBeneficialOwner } = this.props;
-    data.address.country = 'US';
-    let dataProfile = JSON.parse(JSON.stringify(data));
-    dataProfile.dateOfBirth = transformDateToMoment(dataProfile.dateOfBirth).format('YYYY-MM-DD');
-    dataProfile.controller.dateOfBirth = transformDateToMoment(
-      dataProfile.controller.dateOfBirth
-    ).format('YYYY-MM-DD');
-
+    const { verifyFundingSourceAmount } = this.props;
     try {
-      await createBeneficialOwner(dataProfile);
+      await verifyFundingSourceAmount(data);
       this.handleSubmitSuccess();
     } catch (err) {
       handleFormHttpResponse(form, err.response.data.error, err.response);
@@ -92,14 +84,14 @@ export class AddBeneficialOwner extends React.Component {
     NotificationService.open({
       type: 'success',
       message: 'Success',
-      description: 'Beneficial Owner successfully added.',
+      description: 'Linked Account successfully verified.',
     });
-    history.push(`/management/beneficial-owners`);
+    history.push(`/management/linked-accounts`);
   };
 }
 
 const mapDispatchToProps = dispatch => ({
-  createBeneficialOwner: dispatch.beneficialOwners.createBeneficialOwner,
+  verifyFundingSourceAmount: dispatch.linkedAccounts.verifyFundingSourceAmount,
 });
 
-export default connect(null, mapDispatchToProps)(AddBeneficialOwner);
+export default connect(null, mapDispatchToProps)(VerifyLinkedAccounts);
