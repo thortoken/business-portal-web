@@ -37,6 +37,22 @@ const linkedAccounts = {
         throw err;
       }
     },
+    async verifyFundingSource() {
+      try {
+        const response = await Http.post('/tenants/company/fundingSources/verify');
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async verifyFundingSourceAmount(data) {
+      try {
+        const response = await Http.patch('/tenants/company/fundingSources/verify', data);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
   },
   reducers: {
     setFundingSource(state, payload) {

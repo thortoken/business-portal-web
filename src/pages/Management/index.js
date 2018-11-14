@@ -15,6 +15,7 @@ import AddCompanyDetails from './CompanyDetails/AddCompanyDetails';
 import EditCompanyDetails from './CompanyDetails/EditCompanyDetails';
 import AddBeneficialOwner from './BeneficialOwners/AddBeneficialOwner';
 import AddLinkedAccount from './LinkedAccounts/AddLinkedAccount';
+import VerifyLinkedAccounts from './LinkedAccounts/VerifyLinkedAccounts';
 
 export class RootManagementPage extends React.Component {
   render() {
@@ -29,7 +30,14 @@ export class RootManagementPage extends React.Component {
             <Route exact path={`/management/linked-accounts`} component={LinkedAccounts} />
             <Route exact path={`/management/integrations`} component={Integrations} />
             <Route exact path={`/management/settings`} component={Settings} />
-
+            <Route
+              exact
+              path={`/management/linked-accounts/verify`}
+              component={withRouteModal({
+                component: VerifyLinkedAccounts,
+                title: 'Verify Linked Account',
+              })}
+            />
             <Route
               exact
               path={`/management/linked-accounts/add`}

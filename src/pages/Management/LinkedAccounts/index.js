@@ -6,17 +6,19 @@ import connect from 'react-redux/es/connect/connect';
 import Box from '~components/Box';
 
 import './LinkedAccounts.scss';
-import { Button, Icon, Modal, Table } from 'antd';
+import { Button, Icon, Modal, Table, Tooltip } from 'antd';
 
 import RefreshButton from '~components/RefreshButton';
 import Header from '~components/Header';
 import makeDefaultPagination from '~utils/pagination';
+import NotificationService from '~services/notification';
 
 const { Column } = Table;
 
 export class LinkedAccounts extends React.Component {
   static propTypes = {
     isLoading: PropTypes.bool,
+    isLoadingVerify: PropTypes.bool,
     fundingSources: PropTypes.arrayOf(PropTypes.object),
     fundingSourcesPagination: PropTypes.object,
   };
@@ -85,9 +87,28 @@ export class LinkedAccounts extends React.Component {
     });
   };
 
+  handleOpenVerifyAmount() {
+    const { history } = this.props;
+    history.push(`/management/linked-accounts/verify`);
+  }
+
+  handleVerify = async row => {
+    const { verifyFundingSource } = this.props;
+    this.handleOpenVerifyAmount();
+    try {
+      await verifyFundingSource();
+    } catch (err) {
+      NotificationService.open({
+        type: 'error',
+        message: 'Error',
+        description: `Can not verify funding source: ${row.name}`,
+      });
+    }
+  };
+
   render() {
     const { isLoading } = this.props;
-    const { pagination, fundingSources } = this.state;
+    const { pagination, fundingSources, isLoadingVerify } = this.state;
     return (
       <div className="LinkedAccounts">
         <Header title="Linked Accounts List" size="medium">
@@ -105,7 +126,7 @@ export class LinkedAccounts extends React.Component {
             rowKey="account"
             onChange={this.handleTableChange}
             pagination={pagination}
-            loading={isLoading}>
+            loading={isLoading || isLoadingVerify}>
             <Column align="left" dataIndex="name" title="Name" />
             <Column align="center" dataIndex="account" title="Account" />
             <Column align="center" dataIndex="routing" title="Routing" />
@@ -115,9 +136,26 @@ export class LinkedAccounts extends React.Component {
               render={(text, record) => {
                 return (
                   <span className="LinkedAccounts__table__buttons">
-                    <Button onClick={() => this.handleDelete(record)}>
-                      <Icon type="delete" theme="outlined" />
-                    </Button>
+                    <Tooltip title="Delete funding source.">
+                      <Button onClick={() => this.handleDelete(record)}>
+                        <Icon type="delete" theme="outlined" />
+                      </Button>
+                    </Tooltip>
+                    {!record.verificationStatus && (
+                      <Tooltip title="Verify funding source.">
+                        <Button onClick={() => this.handleVerify()}>
+                          <Icon type="setting" theme="outlined" />
+                        </Button>
+                      </Tooltip>
+                    )}
+
+                    {record.verificationStatus === 'initiated' && (
+                      <Tooltip title="Verify funding source.">
+                        <Button onClick={() => this.handleOpenVerifyAmount()}>
+                          <Icon type="dollar" theme="outlined" />
+                        </Button>
+                      </Tooltip>
+                    )}
                   </span>
                 );
               }}
@@ -133,11 +171,13 @@ const mapStateToProps = state => ({
   fundingSources: state.linkedAccounts.fundingSources,
   fundingSourcesPagination: state.linkedAccounts.fundingSourcesPagination,
   isLoading: state.loading.effects.linkedAccounts.getFundingSource,
+  isLoadingVerify: state.loading.effects.linkedAccounts.verifyFundingSource,
 });
 
 const mapDispatchToProps = dispatch => ({
   getFundingSource: dispatch.linkedAccounts.getFundingSource,
   deleteFundingSource: dispatch.linkedAccounts.deleteFundingSource,
+  verifyFundingSource: dispatch.linkedAccounts.verifyFundingSource,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LinkedAccounts);
