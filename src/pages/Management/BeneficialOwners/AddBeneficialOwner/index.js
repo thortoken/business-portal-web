@@ -75,9 +75,6 @@ export class AddBeneficialOwner extends React.Component {
     data.address.country = 'US';
     let dataProfile = JSON.parse(JSON.stringify(data));
     dataProfile.dateOfBirth = transformDateToMoment(dataProfile.dateOfBirth).format('YYYY-MM-DD');
-    dataProfile.controller.dateOfBirth = transformDateToMoment(
-      dataProfile.controller.dateOfBirth
-    ).format('YYYY-MM-DD');
 
     try {
       await createBeneficialOwner(dataProfile);

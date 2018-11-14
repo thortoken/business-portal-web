@@ -59,6 +59,14 @@ const tenantCompany = {
         throw err;
       }
     },
+    async retryTenantCompany(data) {
+      try {
+        const response = await Http.put('/tenants/company', data);
+        this.setCompany(response.data);
+      } catch (err) {
+        throw err;
+      }
+    },
   },
   reducers: {
     setCompany(state, payload) {

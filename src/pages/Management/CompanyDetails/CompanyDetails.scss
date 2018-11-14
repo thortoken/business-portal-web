@@ -33,4 +33,17 @@
     padding: 1rem;
     min-height: 140px;
   }
+  &--icon{
+    margin-left: 0.2rem;
+  }
+  &--warning{
+    color: $color-error;
+  }
+  &--link {
+    color: $primary-color;
+    text-decoration: underline;
+    &:hover{
+      cursor: pointer;
+    }
+  }
 }
