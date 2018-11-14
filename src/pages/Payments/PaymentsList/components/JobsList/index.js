@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { Table, Button } from 'antd';
+import { Table, Button, Icon, Tooltip } from 'antd';
 
 import { AddTransactionModal } from '~pages/Payments/components/AddTransactionModal';
 
@@ -36,37 +36,34 @@ export class JobsList extends Component {
   }
 
   render() {
-    const { jobsList, renderAmount, userId, createTransaction, handleRefresh } = this.props;
+    const { jobsList, renderAmount } = this.props;
 
     return (
       <div>
-        <AddTransactionModal
-          userId={userId}
-          createTransaction={createTransaction}
-          isModalVisible={this.state.isModalVisible}
-          onChangeVisibility={this.onChangeVisibility}
-          handleRefresh={handleRefresh}
-        />
         <Table
           className="JobsList JobsList--hidden-empty-state"
           showHeader={false}
           dataSource={prepareList(jobsList)}
           pagination={false}>
-          <Column align="center" dataIndex="name" title="Name" width="54%" />
-          <Column align="center" dataIndex="jobs" title="Num Jobs" width="18%" />
+          <Column align="center" dataIndex={null} title="Name" width="10%" />
+          <Column align="center" dataIndex="name" title="Name" width="35%" />
+          <Column align="center" dataIndex="jobs" title="Jobs" width="10%" />
           <Column
             align="center"
             dataIndex="total"
             render={renderAmount}
-            width="18%"
+            width="15%"
             title="Current"
           />
+          <Column
+            align="center"
+            dataIndex="status"
+            title="Actions"
+            render={this.renderActions}
+            width="15%"
+          />
+          <Column align="center" dataIndex="status" title="Status" width="15%" />
         </Table>
-        <div className="JobsList-button">
-          <Button ghost onClick={this.handleCustom}>
-            + Add Custom
-          </Button>
-        </div>
       </div>
     );
   }
@@ -74,9 +71,21 @@ export class JobsList extends Component {
   onChangeVisibility = (isModalVisible, refreshData = false) => {
     this.setState({ isModalVisible });
   };
-
-  handleCustom = () => {
-    this.setState({ isModalVisible: true });
+  renderActions = record => {
+    return (
+      <div className="paymentslist-subrow-buttons">
+        <Tooltip placement="top" title={'Edit'}>
+          <Button disabled={record !== 'new'}>
+            <Icon type="edit" theme="outlined" />
+          </Button>
+        </Tooltip>
+        <Tooltip placement="top" title={'Delete'}>
+          <Button disabled={record !== 'new'}>
+            <Icon type="delete" theme="outlined" />
+          </Button>
+        </Tooltip>
+      </div>
+    );
   };
 }
 
@@ -88,4 +97,7 @@ const mapDispatchToProps = dispatch => ({
   createTransaction: dispatch.transactions.createTransaction,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(JobsList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(JobsList);

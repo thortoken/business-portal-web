@@ -24,6 +24,7 @@ export class BackBtn extends React.Component {
   }
 
   handleBackBtn = () => {
+    debugger;
     if (this.props.goBack) {
       this.props.goBack();
     } else {

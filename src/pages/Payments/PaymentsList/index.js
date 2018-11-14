@@ -70,7 +70,6 @@ class Payments extends React.Component {
       ...getCurrentTwoWeeksPeriod(),
     });
     getUsersJobs({
-      status: 'new',
       ...getCurrentTwoWeeksPeriod(),
       page: pagination.current,
       limit: pagination.pageSize,
@@ -135,7 +134,6 @@ class Payments extends React.Component {
       ...getCurrentTwoWeeksPeriod(),
     });
     getUsersJobs({
-      status: 'new',
       ...getCurrentTwoWeeksPeriod(),
       page: pagination.current,
       limit: pagination.pageSize,
@@ -155,7 +153,6 @@ class Payments extends React.Component {
       ...getCurrentTwoWeeksPeriod(),
     });
     getUsersJobs({
-      status: 'new',
       ...getCurrentTwoWeeksPeriod(),
       page: curr,
       limit: pag.pageSize,
@@ -187,7 +184,7 @@ class Payments extends React.Component {
         </Spin>
 
         <div className="PaymentsList-selector">
-          <Checkbox onChange={this.onSelectAll} checked={checked} /> Select All
+          <Checkbox onChange={this.onSelectAll} checked={checked} /> Approve all
         </div>
 
         <AddTransactionModal
@@ -225,7 +222,7 @@ class Payments extends React.Component {
             <Column
               align="center"
               dataIndex="jobsCount"
-              title="Num Jobs"
+              title="Jobs"
               width="10%"
               className="PaymentsList-numOfJobs-selector"
             />
@@ -256,15 +253,7 @@ class Payments extends React.Component {
               title="Approve"
               align="center"
               width="15%"
-              render={(text, record) => (
-                <button
-                  className={classnames(null, {
-                    active: this.isActive(record),
-                  })}
-                  onClick={() => this.handleSelectTransaction(record)}>
-                  <Icon type="check" />
-                </button>
-              )}
+              render={(text, record) => this.renderStatusColumn(record)}
             />
           </Table>
         </Box>
@@ -290,15 +279,20 @@ class Payments extends React.Component {
       selectedTransactionGroups,
       usersJobs,
     } = this.state;
-
     const { updatePaymentsList } = this.props;
 
     let { selectedTransactionsSummaryValue } = this.state;
     const contractorId = user.id;
+    let transactionIds = [];
 
     if (selectedContractorsIds.has(contractorId)) {
       selectedContractorsIds.delete(contractorId);
-      selectedTransactionsSummaryValue -= user.total;
+      user.jobs.forEach(job => {
+        if (job.status === 'new') {
+          transactionIds.push(job.id);
+          selectedTransactionsSummaryValue -= parseFloat(job.total);
+        }
+      });
       for (let i = 0; i < selectedTransactionGroups.length; i++) {
         if (selectedTransactionGroups[i].userId === user.id) {
           selectedTransactionGroups.splice(i, 1);
@@ -307,14 +301,19 @@ class Payments extends React.Component {
       }
     } else {
       selectedContractorsIds.add(contractorId);
-      selectedTransactionsSummaryValue += user.total;
+      user.jobs.forEach(job => {
+        if (job.status === 'new') {
+          transactionIds.push(job.id);
+          selectedTransactionsSummaryValue += parseFloat(job.total);
+        }
+      });
       selectedTransactionGroups.push({
         userId: user.id,
-        transactionsIds: user.transactionsIds,
+        transactionsIds: transactionIds,
       });
     }
 
-    user.transactionsIds.forEach(transaction => {
+    transactionIds.forEach(transaction => {
       if (selectedTransactionsIds.has(transaction)) {
         selectedTransactionsIds.delete(transaction);
       } else {
@@ -335,7 +334,27 @@ class Payments extends React.Component {
   };
 
   handleAddPaymentClick = record => {
-    this.setState({ selectedUserId: record.id, isAddPaymentModalVisible: true });
+    this.setState({
+      selectedUserId: record.id,
+      isAddPaymentModalVisible: true,
+    });
+  };
+
+  renderStatusColumn = record => {
+    let newTransactions = record.jobs.filter(entry => {
+      return entry.status === 'new';
+    });
+    if (newTransactions.length > 0) {
+      return (
+        <button
+          className={classnames(null, {
+            active: this.isActive(record),
+          })}
+          onClick={() => this.handleSelectTransaction(record)}>
+          <Icon type="check" />
+        </button>
+      );
+    }
   };
 
   onChangeVisibility = (isAddPaymentModalVisible, refreshData = false) => {
@@ -362,16 +381,21 @@ class Payments extends React.Component {
 
     if (e.target.checked) {
       usersJobs.forEach(user => {
-        data.selectedContractorsIds.add(user.id);
-        data.selectedTransactionsSummaryValue += user.total;
-
-        user.transactionsIds.forEach(transaction => {
-          data.selectedTransactionsIds.add(transaction);
+        let selected = false;
+        user.jobs.forEach(job => {
+          if (job.status === 'new') {
+            data.selectedTransactionsIds.add(job.id);
+            data.selectedTransactionsSummaryValue += parseFloat(job.total);
+            selected = true;
+          }
         });
-        data.selectedTransactionGroups.push({
-          userId: user.id,
-          transactionsIds: user.transactionsIds,
-        });
+        if (selected) {
+          data.selectedContractorsIds.add(user.id);
+          data.selectedTransactionGroups.push({
+            userId: user.id,
+            transactionsIds: user.transactionsIds,
+          });
+        }
       });
     }
 
