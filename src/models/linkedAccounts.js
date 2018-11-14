@@ -4,7 +4,7 @@ const linkedAccounts = {
   effects: {
     async getFundingSource() {
       try {
-        const response = await Http.get('/tenants/company/fundingSources/fundingSource');
+        const response = await Http.get('/tenants/company/fundingSources/');
         let fundingSources = [];
         this.setFundingSourcePagination({
           limit: 10,
@@ -23,7 +23,7 @@ const linkedAccounts = {
     },
     async addFundingSource(data) {
       try {
-        const response = await Http.post('/tenants/company/fundingSources/fundingSource', data);
+        const response = await Http.post('/tenants/company/fundingSources/', data);
         return response.data;
       } catch (err) {
         throw err;
@@ -31,7 +31,7 @@ const linkedAccounts = {
     },
     async deleteFundingSource() {
       try {
-        const response = await Http.delete('/tenants/company/fundingSources/fundingSource');
+        const response = await Http.delete('/tenants/company/fundingSources/');
         return response.data;
       } catch (err) {
         throw err;
