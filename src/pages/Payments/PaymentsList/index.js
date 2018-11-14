@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Table, Checkbox, Spin } from 'antd';
+import { Icon, Table, Checkbox, Spin, Button, Tooltip, Radio } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
@@ -17,9 +17,12 @@ import makeDefaultPagination from '~utils/pagination';
 
 import RefreshButton from '~components/RefreshButton';
 
+import { AddTransactionModal } from '~pages/Payments/components/AddTransactionModal';
+
 import './PaymentsList.scss';
 
 const { Column } = Table;
+const CheckboxGroup = Radio.Group;
 
 class Payments extends React.Component {
   static propTypes = {
@@ -56,6 +59,9 @@ class Payments extends React.Component {
     paymentsListPagination: null,
     selectedTransactionGroups: [],
     resetTransactions: false,
+    isAddPaymentModalVisible: false,
+    selectedUserId: '',
+    selectedStatusFilters: [],
   };
 
   componentDidMount() {
@@ -66,7 +72,6 @@ class Payments extends React.Component {
       ...getCurrentTwoWeeksPeriod(),
     });
     getUsersJobs({
-      status: 'new',
       ...getCurrentTwoWeeksPeriod(),
       page: pagination.current,
       limit: pagination.pageSize,
@@ -115,7 +120,10 @@ class Payments extends React.Component {
     if (nextProps.paymentsListPagination !== prevState.paymentsListPagination) {
       let pag = prevState.pagination;
       localState['paymentsListPagination'] = nextProps.paymentsListPagination;
-      localState['pagination'] = { ...pag, total: nextProps.paymentsListPagination.total };
+      localState['pagination'] = {
+        ...pag,
+        total: nextProps.paymentsListPagination.total,
+      };
     }
     return Object.keys(localState).length ? localState : null;
   }
@@ -128,14 +136,13 @@ class Payments extends React.Component {
       ...getCurrentTwoWeeksPeriod(),
     });
     getUsersJobs({
-      status: 'new',
       ...getCurrentTwoWeeksPeriod(),
       page: pagination.current,
       limit: pagination.pageSize,
     });
   };
 
-  handleTableChange = pag => {
+  handleTableChange = (pag) => {
     const { getUsersJobs, getTransactionsSummary } = this.props;
     const { pagination } = this.state;
     let curr = pag.current;
@@ -148,7 +155,6 @@ class Payments extends React.Component {
       ...getCurrentTwoWeeksPeriod(),
     });
     getUsersJobs({
-      status: 'new',
       ...getCurrentTwoWeeksPeriod(),
       page: curr,
       limit: pag.pageSize,
@@ -169,6 +175,12 @@ class Payments extends React.Component {
 
     const { isSummaryLoading, isJobsLoading } = this.props;
 
+    const options = [
+      { label: 'New', value: 'new' },
+      { label: 'Processed', value: 'processed' },
+      { label: 'Failed', value: 'failed' },
+    ];
+
     return (
       <div>
         <Header title="Payments List" size="medium">
@@ -180,8 +192,16 @@ class Payments extends React.Component {
         </Spin>
 
         <div className="PaymentsList-selector">
-          <Checkbox onChange={this.onSelectAll} checked={checked} /> Select All
+          <Checkbox onChange={this.onSelectAll} checked={checked} /> Approve all
         </div>
+
+        <AddTransactionModal
+          userId={this.state.selectedUserId}
+          createTransaction={this.props.createTransaction}
+          isModalVisible={this.state.isAddPaymentModalVisible}
+          onChangeVisibility={this.onChangeVisibility}
+          handleRefresh={this.handleRefresh}
+        />
 
         <Box>
           <Table
@@ -210,8 +230,8 @@ class Payments extends React.Component {
             <Column
               align="center"
               dataIndex="jobsCount"
-              title="Num Jobs"
-              width="15%"
+              title="Jobs"
+              width="10%"
               className="PaymentsList-numOfJobs-selector"
             />
             <Column
@@ -223,17 +243,48 @@ class Payments extends React.Component {
               title="Current"
             />
             <Column
-              className="PaymentsList-table-approve PaymentsList-approve-selector"
-              title="Approval"
               align="center"
-              width="25%"
-              render={(text, record) => (
-                <button
-                  className={classnames(null, { active: this.isActive(record) })}
-                  onClick={() => this.handleSelectTransaction(record)}>
-                  <Icon type="check" />
-                </button>
+              title="Actions"
+              width="15%"
+              render={(text, record) => {
+                return (
+                  <Tooltip placement="top" title={'Add a payment'}>
+                    <Button onClick={() => this.handleAddPaymentClick(record)}>
+                      <Icon type="plus" theme="outlined" />
+                    </Button>
+                  </Tooltip>
+                );
+              }}
+            />
+            <Column
+              className="PaymentsList-table-approve PaymentsList-approve-selector"
+              title="Approve"
+              align="center"
+              width="15%"
+              filterDropdown={({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+                <div className={'ant-table-filter-dropdown'}>
+                  <CheckboxGroup
+                    options={options}
+                    filterMultiple={false}
+                    onChange={this.onFilterChanged}
+                    value={this.state.selectedStatusFilters}
+                    className={'payment-status-box'}
+                  />
+                  <div className="ant-table-filter-dropdown-btns">
+                    <a
+                      className="ant-table-filter-dropdown-link confirm"
+                      onClick={e => this.handleFilterApply(e, confirm)}>
+                      OK
+                    </a>
+                    <a
+                      className="ant-table-filter-dropdown-link clear"
+                      onClick={e => this.handleFilterApply(e, clearFilters)}>
+                      Reset
+                    </a>
+                  </div>
+                </div>
               )}
+              render={(text, record) => this.renderStatusColumn(record)}
             />
           </Table>
         </Box>
@@ -247,6 +298,39 @@ class Payments extends React.Component {
     );
   }
 
+  onFilterChanged = e => {
+    this.setState({ selectedStatusFilters: e.target.value });
+  };
+
+  handleFilterApply = (e, confirm) => {
+    const { getUsersJobs, getTransactionsSummary } = this.props;
+    const { pagination } = this.state;
+    if (e.currentTarget.text === 'OK') {
+      getTransactionsSummary({
+        status: this.state.selectedStatusFilters,
+        ...getCurrentTwoWeeksPeriod(),
+      });
+      getUsersJobs({
+        ...getCurrentTwoWeeksPeriod(),
+        page: pagination.current,
+        limit: pagination.pageSize,
+        status: this.state.selectedStatusFilters,
+      });
+      confirm();
+    } else {
+      this.setState({ selectedStatusFilters: [] });
+      getTransactionsSummary({
+        ...getCurrentTwoWeeksPeriod(),
+      });
+      getUsersJobs({
+        ...getCurrentTwoWeeksPeriod(),
+        page: pagination.current,
+        limit: pagination.pageSize,
+      });
+      confirm();
+    }
+  };
+
   isActive = record => {
     const { selectedContractorsIds } = this.state;
     return selectedContractorsIds.has(record.id);
@@ -259,15 +343,20 @@ class Payments extends React.Component {
       selectedTransactionGroups,
       usersJobs,
     } = this.state;
-
     const { updatePaymentsList } = this.props;
 
     let { selectedTransactionsSummaryValue } = this.state;
     const contractorId = user.id;
+    let transactionIds = [];
 
     if (selectedContractorsIds.has(contractorId)) {
       selectedContractorsIds.delete(contractorId);
-      selectedTransactionsSummaryValue -= user.total;
+      user.jobs.forEach(job => {
+        if (job.status === 'new') {
+          transactionIds.push(job.id);
+          selectedTransactionsSummaryValue -= parseFloat(job.total);
+        }
+      });
       for (let i = 0; i < selectedTransactionGroups.length; i++) {
         if (selectedTransactionGroups[i].userId === user.id) {
           selectedTransactionGroups.splice(i, 1);
@@ -276,11 +365,19 @@ class Payments extends React.Component {
       }
     } else {
       selectedContractorsIds.add(contractorId);
-      selectedTransactionsSummaryValue += user.total;
-      selectedTransactionGroups.push({ userId: user.id, transactionsIds: user.transactionsIds });
+      user.jobs.forEach(job => {
+        if (job.status === 'new') {
+          transactionIds.push(job.id);
+          selectedTransactionsSummaryValue += parseFloat(job.total);
+        }
+      });
+      selectedTransactionGroups.push({
+        userId: user.id,
+        transactionsIds: transactionIds,
+      });
     }
 
-    user.transactionsIds.forEach(transaction => {
+    transactionIds.forEach(transaction => {
       if (selectedTransactionsIds.has(transaction)) {
         selectedTransactionsIds.delete(transaction);
       } else {
@@ -298,6 +395,34 @@ class Payments extends React.Component {
       selectedTransactionsSummaryValue,
       selectedTransactionGroups,
     });
+  };
+
+  handleAddPaymentClick = record => {
+    this.setState({
+      selectedUserId: record.id,
+      isAddPaymentModalVisible: true,
+    });
+  };
+
+  renderStatusColumn = record => {
+    let newTransactions = record.jobs.filter(entry => {
+      return entry.status === 'new';
+    });
+    if (newTransactions.length > 0) {
+      return (
+        <button
+          className={classnames(null, {
+            active: this.isActive(record),
+          })}
+          onClick={() => this.handleSelectTransaction(record)}>
+          <Icon type="check" />
+        </button>
+      );
+    }
+  };
+
+  onChangeVisibility = (isAddPaymentModalVisible, refreshData = false) => {
+    this.setState({ isAddPaymentModalVisible });
   };
 
   renderAmount = amount => formatUsd(amount);
@@ -320,16 +445,21 @@ class Payments extends React.Component {
 
     if (e.target.checked) {
       usersJobs.forEach(user => {
-        data.selectedContractorsIds.add(user.id);
-        data.selectedTransactionsSummaryValue += user.total;
-
-        user.transactionsIds.forEach(transaction => {
-          data.selectedTransactionsIds.add(transaction);
+        let selected = false;
+        user.jobs.forEach(job => {
+          if (job.status === 'new') {
+            data.selectedTransactionsIds.add(job.id);
+            data.selectedTransactionsSummaryValue += parseFloat(job.total);
+            selected = true;
+          }
         });
-        data.selectedTransactionGroups.push({
-          userId: user.id,
-          transactionsIds: user.transactionsIds,
-        });
+        if (selected) {
+          data.selectedContractorsIds.add(user.id);
+          data.selectedTransactionGroups.push({
+            userId: user.id,
+            transactionsIds: user.transactionsIds,
+          });
+        }
       });
     }
 
@@ -380,4 +510,7 @@ const mapDispatchToProps = dispatch => ({
   reset: dispatch.payments.reset,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Payments);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Payments);

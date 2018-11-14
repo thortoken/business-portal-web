@@ -1,5 +1,4 @@
 .JobsList {
-  margin-right: 25%;
 
   .ant-table .ant-table-content table {
     border: none;
@@ -14,6 +13,21 @@
       padding: 1rem;
       border-bottom: 0;
       border-right: 0;
+    }
+
+    .paymentslist-subrow-buttons button {
+      height: 40px;
+      width: 40px;
+      font-size: 1rem;
+      background: transparent;
+      transition: font-size 0.5s;
+      border: none;
+      padding: 0px;
+
+      &:focus {
+        outline: none;
+        font-size: 1.2rem;
+      }
     }
   }
 
