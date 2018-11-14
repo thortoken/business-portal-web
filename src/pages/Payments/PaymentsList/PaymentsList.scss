@@ -81,6 +81,13 @@
         }
       }
     }
+    .payment-status-box {
+      width: 150px;
+      padding: 10px;
+      label {
+        font-weight: normal;
+      }
+    }
   }
 
   &-selector {

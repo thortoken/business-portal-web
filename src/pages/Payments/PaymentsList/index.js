@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Table, Checkbox, Spin, Button, Tooltip } from 'antd';
+import { Icon, Table, Checkbox, Spin, Button, Tooltip, Radio } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
@@ -22,6 +22,7 @@ import { AddTransactionModal } from '~pages/Payments/components/AddTransactionMo
 import './PaymentsList.scss';
 
 const { Column } = Table;
+const CheckboxGroup = Radio.Group;
 
 class Payments extends React.Component {
   static propTypes = {
@@ -60,6 +61,7 @@ class Payments extends React.Component {
     resetTransactions: false,
     isAddPaymentModalVisible: false,
     selectedUserId: '',
+    selectedStatusFilters: [],
   };
 
   componentDidMount() {
@@ -140,7 +142,7 @@ class Payments extends React.Component {
     });
   };
 
-  handleTableChange = pag => {
+  handleTableChange = (pag) => {
     const { getUsersJobs, getTransactionsSummary } = this.props;
     const { pagination } = this.state;
     let curr = pag.current;
@@ -172,6 +174,12 @@ class Payments extends React.Component {
     } = this.state;
 
     const { isSummaryLoading, isJobsLoading } = this.props;
+
+    const options = [
+      { label: 'New', value: 'new' },
+      { label: 'Processed', value: 'processed' },
+      { label: 'Failed', value: 'failed' },
+    ];
 
     return (
       <div>
@@ -253,6 +261,29 @@ class Payments extends React.Component {
               title="Approve"
               align="center"
               width="15%"
+              filterDropdown={({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+                <div className={'ant-table-filter-dropdown'}>
+                  <CheckboxGroup
+                    options={options}
+                    filterMultiple={false}
+                    onChange={this.onFilterChanged}
+                    value={this.state.selectedStatusFilters}
+                    className={'payment-status-box'}
+                  />
+                  <div className="ant-table-filter-dropdown-btns">
+                    <a
+                      className="ant-table-filter-dropdown-link confirm"
+                      onClick={e => this.handleFilterApply(e, confirm)}>
+                      OK
+                    </a>
+                    <a
+                      className="ant-table-filter-dropdown-link clear"
+                      onClick={e => this.handleFilterApply(e, clearFilters)}>
+                      Reset
+                    </a>
+                  </div>
+                </div>
+              )}
               render={(text, record) => this.renderStatusColumn(record)}
             />
           </Table>
@@ -266,6 +297,40 @@ class Payments extends React.Component {
       </div>
     );
   }
+
+  onFilterChanged = e => {
+    this.setState({ selectedStatusFilters: e.target.value });
+  };
+
+  handleFilterApply = (e, confirm) => {
+    const { getUsersJobs, getTransactionsSummary } = this.props;
+    const { pagination } = this.state;
+    if (e.currentTarget.text === 'OK') {
+      getTransactionsSummary({
+        status: this.state.selectedStatusFilters,
+        ...getCurrentTwoWeeksPeriod(),
+      });
+      getUsersJobs({
+        ...getCurrentTwoWeeksPeriod(),
+        page: pagination.current,
+        limit: pagination.pageSize,
+        status: this.state.selectedStatusFilters,
+      });
+      confirm();
+    } else {
+      this.setState({ selectedStatusFilters: [] });
+      getTransactionsSummary({
+        status: this.state.selectedStatusFilters,
+        ...getCurrentTwoWeeksPeriod(),
+      });
+      getUsersJobs({
+        ...getCurrentTwoWeeksPeriod(),
+        page: pagination.current,
+        limit: pagination.pageSize,
+        status: this.state.selectedStatusFilters,
+      });
+    }
+  };
 
   isActive = record => {
     const { selectedContractorsIds } = this.state;
