@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
 import Box from '~components/Box';
-import { Button, Spin, Icon, Divider } from 'antd';
+import { Button, Spin, Icon, Divider, Popover } from 'antd';
 import EditCompanyDetails from './EditCompanyDetails';
 import Header from '~components/Header';
 
@@ -53,6 +53,7 @@ export class CompanyDetails extends React.Component {
     const { getCategories, getCompanyDetails } = this.props;
     try {
       await getCompanyDetails();
+      await getCategories();
     } catch (err) {
       await getCategories();
     }
@@ -63,6 +64,14 @@ export class CompanyDetails extends React.Component {
     if (isLoadingCategories || isLoadingCompany) {
     } else {
       this.props.history.push(`/management/company-details/add`);
+    }
+  };
+
+  handleRetry = () => {
+    const { isLoadingCompany, isLoadingCategories } = this.props;
+    if (isLoadingCategories || isLoadingCompany) {
+    } else {
+      this.props.history.push(`/management/company-details/retry`);
     }
   };
 
@@ -77,10 +86,17 @@ export class CompanyDetails extends React.Component {
   render() {
     const { isLoadingCompanyDetails, isLoadingCategories } = this.props;
     const { company, owner } = this.state;
+    let warningsList = [];
+    if (company) {
+      warningsList = this.verifyStatus();
+    }
     return (
       <div className="CompanyDetails">
-        <Header title="Company Details" size="medium">
-          {company && company.status && <StatusBlock status={company.status} />}
+        <Header title="Company Details" size="medium" warning={this.renderWarning(warningsList)}>
+          {!isLoadingCompanyDetails &&
+            !isLoadingCategories &&
+            company &&
+            company.status && <StatusBlock status={company.status} />}
           {!isLoadingCompanyDetails &&
             !isLoadingCategories && (
               <Button type="primary" onClick={company ? this.handleEdit : this.handleAdd}>
@@ -117,6 +133,55 @@ export class CompanyDetails extends React.Component {
       </div>
     );
   }
+
+  verifyStatus = () => {
+    const { company } = this.props;
+    const warnings = [];
+    if (company.status === 'retry') {
+      warnings.push({
+        key: 'Dwolla error',
+        content: (
+          <p className="CompanyDetails--warning">
+            {warnings.length + 1}. Resend your company data{' '}
+            <span className="CompanyDetails--link" onClick={this.handleRetry}>
+              here
+            </span>.
+          </p>
+        ),
+      });
+    }
+    if (company.status === 'document') {
+      warnings.push({
+        key: 'Document error',
+        content: (
+          <p className="CompanyDetails--warning">
+            {warnings.length + 1}. Resend your documents{' '}
+            {/*<span className="CompanyDetails--link" onClick={handleGoToDocuments}>*/}
+            {/*here*/}
+            {/*</span>.*/}
+          </p>
+        ),
+      });
+    }
+    return warnings;
+  };
+
+  renderPopOver = warnings => {
+    return <div>{warnings.map(warning => <div key={warning.key}>{warning.content}</div>)}</div>;
+  };
+
+  renderWarning = warningsList => {
+    const { isLoadingCompanyDetails, isLoadingCategories } = this.props;
+    return (
+      !isLoadingCompanyDetails &&
+      !isLoadingCategories &&
+      warningsList.length > 0 && (
+        <Popover content={this.renderPopOver(warningsList)} title="Warning">
+          <Icon type="exclamation-circle" theme="twoTone" className="CompanyDetails--icon" />
+        </Popover>
+      )
+    );
+  };
 }
 
 const mapStateToProps = state => ({

@@ -7,7 +7,7 @@ import { Formik } from 'formik';
 import FormField from '~components/FormField';
 
 import { prepareFormFieldsAndValidation } from './formSchema';
-import './AddCompanyDetails.scss';
+import './RetryCompanyDetails.scss';
 import NotificationService from '~services/notification';
 import SelectField from '~components/SelectField';
 
@@ -52,23 +52,28 @@ const generateBusinessOptions = list => {
   ));
 };
 
-export class AddCompanyDetails extends React.Component {
+export class RetryCompanyDetails extends React.Component {
   static propTypes = {
     categories: PropTypes.arrayOf(PropTypes.object),
-    addTenantCompany: PropTypes.func.isRequired,
+    retryTenantCompany: PropTypes.func.isRequired,
+    company: PropTypes.object,
+    owner: PropTypes.object,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      formData: prepareFormFieldsAndValidation(),
+      formData: prepareFormFieldsAndValidation(false, {
+        ...props.company,
+        controller: { ...props.owner },
+      }),
     };
   }
 
   render() {
     const { formData } = this.state;
     return (
-      <div className="AddCompanyDetails">
+      <div className="RetryCompanyDetails">
         <Formik
           initialValues={formData.initialValues}
           onSubmit={this.handleSubmit}
@@ -115,7 +120,7 @@ export class AddCompanyDetails extends React.Component {
               component={SelectField}
               dataSource={generateClassificationOptions(categories)}
               showSearch
-              className="AddCompanyDetails_half"
+              className="RetryCompanyDetails_half"
               filterOption={(inputValue, option) =>
                 option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
               }
@@ -131,7 +136,7 @@ export class AddCompanyDetails extends React.Component {
               component={SelectField}
               dataSource={generateBusinessOptions(businessTypes)}
               onSelect={this.handleChange}
-              className="AddCompanyDetails_half"
+              className="RetryCompanyDetails_half"
               label={value.label}
               {...value.input}
             />
@@ -158,22 +163,22 @@ export class AddCompanyDetails extends React.Component {
     <form onSubmit={handleSubmit}>
       {this.prepareForm(this.state.formData.formFields)}
 
-      <div className="AddCompanyDetails__button-container">
+      <div className="RetryCompanyDetails__button-container">
         <Button
           disabled={!dirty || isSubmitting}
           size="large"
           type="primary"
           loading={isSubmitting}
           htmlType="submit"
-          className="AddCompanyDetails__button-container--button">
-          Save
+          className="RetryCompanyDetails__button-container--button">
+          Send
         </Button>
       </div>
     </form>
   );
 
   handleSubmit = async (data, form) => {
-    const { addTenantCompany } = this.props;
+    const { retryTenantCompany } = this.props;
     let dataProfile = JSON.parse(JSON.stringify(data));
     dataProfile.dateOfBirth = transformDateToMoment(dataProfile.dateOfBirth).format('YYYY-MM-DD');
 
@@ -187,7 +192,7 @@ export class AddCompanyDetails extends React.Component {
       ).format('YYYY-MM-DD');
     }
     try {
-      await addTenantCompany(dataProfile);
+      await retryTenantCompany(dataProfile);
       this.handleSubmitSuccess();
     } catch (err) {
       handleFormHttpResponse(form, err.response.data.error, err.response);
@@ -199,18 +204,20 @@ export class AddCompanyDetails extends React.Component {
     NotificationService.open({
       type: 'success',
       message: 'Success',
-      description: 'Company Details successfully added.',
+      description: 'Company Details successfully send.',
     });
     history.push(`/management/company-details`);
   };
 }
 
 const mapStateToProps = state => ({
+  company: state.tenantCompany.company,
+  owner: state.tenantCompany.owner,
   categories: state.tenantCompany.categories,
 });
 
 const mapDispatchToProps = dispatch => ({
-  addTenantCompany: dispatch.tenantCompany.addTenantCompany,
+  retryTenantCompany: dispatch.tenantCompany.retryTenantCompany,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddCompanyDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(RetryCompanyDetails);

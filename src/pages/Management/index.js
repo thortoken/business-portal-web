@@ -16,6 +16,7 @@ import EditCompanyDetails from './CompanyDetails/EditCompanyDetails';
 import AddBeneficialOwner from './BeneficialOwners/AddBeneficialOwner';
 import AddLinkedAccount from './LinkedAccounts/AddLinkedAccount';
 import VerifyLinkedAccounts from './LinkedAccounts/VerifyLinkedAccounts';
+import RetryCompanyDetails from './CompanyDetails/RetryCompanyDetails';
 
 export class RootManagementPage extends React.Component {
   render() {
@@ -52,6 +53,14 @@ export class RootManagementPage extends React.Component {
               component={withRouteModal({
                 component: AddCompanyDetails,
                 title: 'Add Company Details',
+              })}
+            />
+            <Route
+              exact
+              path={`/management/company-details/retry`}
+              component={withRouteModal({
+                component: RetryCompanyDetails,
+                title: 'Resend Company Details',
               })}
             />
             <Route

@@ -9,6 +9,7 @@ export class Header extends React.Component {
     description: PropTypes.string,
     size: PropTypes.oneOf(['small', 'medium', 'large']),
     title: PropTypes.string,
+    warning: PropTypes.any,
   };
 
   static defaultProps = {
@@ -22,13 +23,13 @@ export class Header extends React.Component {
   };
 
   render() {
-    const { description, size, title, children } = this.props;
+    const { description, size, title, children, warning } = this.props;
     const HeaderComponent = Header.headerSizes[size];
 
     return (
       <header className="Header">
         <HeaderComponent className="Header-title">
-          {title}
+          {title} {warning}
           <div className="Header-title__right">{children}</div>
         </HeaderComponent>
         {description && <p className="Header-description">{description}</p>}
