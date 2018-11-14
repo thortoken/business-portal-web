@@ -320,15 +320,14 @@ class Payments extends React.Component {
     } else {
       this.setState({ selectedStatusFilters: [] });
       getTransactionsSummary({
-        status: this.state.selectedStatusFilters,
         ...getCurrentTwoWeeksPeriod(),
       });
       getUsersJobs({
         ...getCurrentTwoWeeksPeriod(),
         page: pagination.current,
         limit: pagination.pageSize,
-        status: this.state.selectedStatusFilters,
       });
+      confirm();
     }
   };
 
