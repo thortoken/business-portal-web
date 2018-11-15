@@ -2,12 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { FilePond } from 'react-filepond';
+import { FilePond, registerPlugin } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
+
+import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 
 import './AddContractorDocument.scss';
 import Config from '~services/config';
 import { Button, Select } from 'antd';
+
+registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
 export class AddContractorDocument extends React.Component {
   static propTypes = {
@@ -48,6 +53,13 @@ export class AddContractorDocument extends React.Component {
         </div>
         <div className="AddContractorDocument__block">
           <FilePond
+            allowFileSizeValidation
+            maxFileSize="10MB"
+            allowFileTypeValidation
+            acceptedFileTypes={['application/pdf', 'image/jpg', 'image/jpeg', 'image/png']}
+            labelTapToCancel="Click to cancel."
+            labelTapToRetry="Click to retry."
+            labelTapToUndo="Click to undo."
             server={{
               url: `${Config.apiUrl}users/${match.params.id}/documents?type=${docType}`,
               process: {

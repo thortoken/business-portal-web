@@ -4137,6 +4137,14 @@ filename-regex@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/filename-regex/-/filename-regex-2.0.1.tgz#c1c4b9bee3e09725ddb106b75c1e301fe2f18b26"
 
+filepond-plugin-file-validate-size@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/filepond-plugin-file-validate-size/-/filepond-plugin-file-validate-size-2.0.0.tgz#bf515e425441da85ac71c8e3f004137718504e34"
+
+filepond-plugin-file-validate-type@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/filepond-plugin-file-validate-type/-/filepond-plugin-file-validate-type-1.2.0.tgz#5ab8d25cb21c8d632a10b4c1a008fb5c0b1ff73a"
+
 filepond@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/filepond/-/filepond-3.3.0.tgz#bf689138d9e6ea997c3ad0183361e8e981621a2c"
