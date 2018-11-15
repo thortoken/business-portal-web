@@ -18,6 +18,7 @@ import AddLinkedAccount from './LinkedAccounts/AddLinkedAccount';
 import VerifyLinkedAccounts from './LinkedAccounts/VerifyLinkedAccounts';
 import RetryCompanyDetails from './CompanyDetails/RetryCompanyDetails';
 import CompanyDocuments from './CompanyDetails/CompanyDocuments';
+import AddCompanyDocument from './CompanyDetails/AddCompanyDocument';
 
 export class RootManagementPage extends React.Component {
   render() {
@@ -39,6 +40,14 @@ export class RootManagementPage extends React.Component {
               component={withRouteModal({
                 component: VerifyLinkedAccounts,
                 title: 'Verify Linked Account',
+              })}
+            />
+            <Route
+              exact
+              path={`/management/company-details/documents/add`}
+              component={withRouteModal({
+                component: AddCompanyDocument,
+                title: 'Add Document',
               })}
             />
             <Route
