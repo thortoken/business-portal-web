@@ -28,7 +28,7 @@
     },
     {
       "target": "dev",
-      "public": "build",
+      "public": "build-dev",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "predeploy": ["yarn build"],
       "rewrites": [
