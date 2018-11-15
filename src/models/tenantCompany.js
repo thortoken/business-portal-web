@@ -67,6 +67,30 @@ const tenantCompany = {
         throw err;
       }
     },
+    async getCompanyDocuments({ id, page, limit }) {
+      try {
+        const response = await Http.get(`/tenants/company/documents`, {
+          params: {
+            page,
+            limit,
+          },
+        });
+        this.setCompanyDocuments(response.data);
+        this.setCompanyDocumentsPagination({
+          limit: 10,
+          page: 1,
+          pages: 1,
+          total: 1,
+        });
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async unmountCompanyDocuments() {
+      this.setCompanyDocuments([]);
+      this.setCompanyDocumentsPagination(null);
+    },
   },
   reducers: {
     setCompany(state, payload) {
@@ -87,11 +111,19 @@ const tenantCompany = {
         categories: payload,
       };
     },
+    setCompanyDocuments(state, payload) {
+      return { ...state, companyDocuments: payload };
+    },
+    setCompanyDocumentsPagination(state, payload) {
+      return { ...state, companyDocumentsPagination: payload };
+    },
   },
   state: {
     company: null,
     owner: null,
     categories: [],
+    companyDocuments: [],
+    companyDocumentsPagination: null,
   },
 };
 

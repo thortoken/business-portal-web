@@ -68,20 +68,27 @@ export class CompanyDetails extends React.Component {
   };
 
   handleRetry = () => {
-    const { isLoadingCompany, isLoadingCategories } = this.props;
-    if (isLoadingCategories || isLoadingCompany) {
-    } else {
+    if (!this.checkLoading()) {
       this.props.history.push(`/management/company-details/retry`);
     }
   };
 
+  handleDocuments = () => {
+    if (!this.checkLoading()) {
+      this.props.history.push(`/management/company-details/documents`);
+    }
+  };
+
   handleEdit = () => {
-    const { isLoadingCompany, isLoadingCategories } = this.props;
-    if (isLoadingCategories || isLoadingCompany) {
-    } else {
+    if (!this.checkLoading()) {
       this.props.history.push(`/management/company-details/edit`);
     }
   };
+
+  checkLoading() {
+    const { isLoadingCompany, isLoadingCategories } = this.props;
+    return isLoadingCategories || isLoadingCompany;
+  }
 
   render() {
     const { isLoadingCompanyDetails, isLoadingCategories } = this.props;
@@ -156,9 +163,9 @@ export class CompanyDetails extends React.Component {
         content: (
           <p className="CompanyDetails--warning">
             {warnings.length + 1}. Resend your documents{' '}
-            {/*<span className="CompanyDetails--link" onClick={handleGoToDocuments}>*/}
-            {/*here*/}
-            {/*</span>.*/}
+            <span className="CompanyDetails--link" onClick={this.handleDocuments}>
+              here
+            </span>.
           </p>
         ),
       });
