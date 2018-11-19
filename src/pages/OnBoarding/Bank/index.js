@@ -1,77 +1,64 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button } from 'antd';
-import { Formik } from 'formik';
 
-import FormField from '~components/FormField';
-import { handleFormHttpResponse } from '~utils/forms/errors';
-
-import { initialValues, formFields, validationSchema } from './formSchema';
 import './Bank.scss';
+import NotificationService from '../../../services/notification';
 
 export class Bank extends React.Component {
   static propTypes = {
     createFundingSource: PropTypes.func.isRequired,
   };
 
+  componentDidMount() {
+    this.getDwollaFrame();
+  }
+
   render() {
     return (
       <div className="Bank">
         <div className="Bank__form">
-          <Formik
-            initialValues={initialValues}
-            onSubmit={this.handleSubmit}
-            validationSchema={validationSchema}>
-            {this.renderForm}
-          </Formik>
+          <div dangerouslySetInnerHTML={this.createHTML()} />
         </div>
       </div>
     );
   }
 
-  renderForm = ({ handleSubmit, isSubmitting, values, dirty }) => (
-    <form onSubmit={handleSubmit}>
-      {Object.entries(formFields).map(([name, options]) => (
-        <FormField key={name} name={name} label={options.label} {...options.input} />
-      ))}
-
-      <div className="Add-contractor__button-container">
-        <Button
-          disabled={!dirty || isSubmitting}
-          size="large"
-          type="primary"
-          loading={isSubmitting}
-          htmlType="submit"
-          className="Add-contractor__button-container--button">
-          Connect Bank Account
-        </Button>
-      </div>
-    </form>
-  );
-
-  createFundingSource = async ({ account, routing }) => {
-    const { createFundingSource, contractor, token } = this.props;
-    let authToken = token;
-    if (contractor) {
-      authToken = contractor.token;
-    }
-    await createFundingSource({
-      bank: { account, routing },
-      token: authToken,
-    });
+  createHTML = () => {
+    return { __html: '<div id="iavContainer" />' };
   };
 
-  handleSubmit = async (data, form) => {
-    const normalizedData = validationSchema.cast(data);
-    const { routing, account } = normalizedData;
+  getDwollaFrame = async () => {
+    const { contractor, token } = this.props;
+    let authtoken = token;
+    if (contractor) {
+      authtoken = contractor.token;
+    }
+    const tokenKey = await this.props.getIavToken(authtoken);
+    if (window.location.href.indexOf('localhost') > 0) {
+      window.dwolla.configure('sandbox');
+    }
+    window.dwolla.iav.start(
+      tokenKey,
+      {
+        container: 'iavContainer',
+        microDeposits: false,
+        fallbackToMicroDeposits: false,
+      },
+      this.dwollaCallback
+    );
+  };
 
-    try {
-      await this.createFundingSource({ account, routing });
-
+  dwollaCallback = async (err, res) => {
+    if (!err) {
+      await this.props.setUserFundingSource(res._links['funding-source'].href);
       this.handleSubmitSuccess();
-    } catch (err) {
-      handleFormHttpResponse(form, err.response.data.error, err.response);
+    } else {
+      NotificationService.open({
+        type: 'failure',
+        message: 'Failed',
+        description: err.response,
+      });
     }
   };
 
@@ -88,8 +75,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  createFundingSource: dispatch.onBoarding.createFundingSource,
+  getIavToken: dispatch.onBoarding.getIavToken,
   changeStep: dispatch.onBoarding.changeStep,
+  setUserFundingSource: dispatch.onBoarding.setUserFundingSource,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Bank);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Bank);

@@ -305,7 +305,7 @@ class Payments extends React.Component {
   handleFilterApply = (e, confirm) => {
     const { getUsersJobs, getTransactionsSummary } = this.props;
     const { pagination } = this.state;
-    if (e.currentTarget.text === 'OK') {
+    if (e.currentTarget.innerText === 'OK') {
       getTransactionsSummary({
         status: this.state.selectedStatusFilters,
         ...getCurrentTwoWeeksPeriod(),

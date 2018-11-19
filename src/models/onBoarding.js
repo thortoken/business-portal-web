@@ -97,6 +97,26 @@ const onBoarding = {
         throw err;
       }
     },
+    async setUserFundingSource(source) {
+      try {
+        const response = await Http.post('/contractors/fundingSources/', {
+          fundingSource: source,
+        });
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async getIavToken(token) {
+      setAuthHeader(token);
+      debugger;
+      try {
+        const response = await Http.post('/contractors/fundingSources/iavToken');
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
   },
   reducers: {
     setContractor(state, payload) {
