@@ -94,9 +94,14 @@ export class LinkedAccounts extends React.Component {
 
   handleVerify = async row => {
     const { verifyFundingSource } = this.props;
-    this.handleOpenVerifyAmount();
     try {
       await verifyFundingSource();
+      this.handleRefresh();
+      NotificationService.open({
+        type: 'success',
+        message: 'Success',
+        description: `Micro deposit will be sent to your bank account, proceed to next step when you receive it.`,
+      });
     } catch (err) {
       NotificationService.open({
         type: 'error',

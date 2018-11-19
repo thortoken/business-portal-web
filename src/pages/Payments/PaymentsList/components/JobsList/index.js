@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 
 import { Table, Button, Icon, Tooltip } from 'antd';
 
-import { AddTransactionModal } from '~pages/Payments/components/AddTransactionModal';
-
 import './JobsList.scss';
 
 const { Column } = Table;

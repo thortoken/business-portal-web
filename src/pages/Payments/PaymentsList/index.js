@@ -271,16 +271,16 @@ class Payments extends React.Component {
                     className={'payment-status-box'}
                   />
                   <div className="ant-table-filter-dropdown-btns">
-                    <a
-                      className="ant-table-filter-dropdown-link confirm"
+                    <span
+                      className="ant-table-filter-dropdown-link confirm PaymentsList--link"
                       onClick={e => this.handleFilterApply(e, confirm)}>
                       OK
-                    </a>
-                    <a
-                      className="ant-table-filter-dropdown-link clear"
+                    </span>
+                    <span
+                      className="ant-table-filter-dropdown-link clear PaymentsList--link"
                       onClick={e => this.handleFilterApply(e, clearFilters)}>
                       Reset
-                    </a>
+                    </span>
                   </div>
                 </div>
               )}
