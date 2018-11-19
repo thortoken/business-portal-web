@@ -18,7 +18,6 @@ const { Column } = Table;
 export class LinkedAccounts extends React.Component {
   static propTypes = {
     isLoading: PropTypes.bool,
-    isLoadingVerify: PropTypes.bool,
     fundingSources: PropTypes.arrayOf(PropTypes.object),
     fundingSourcesPagination: PropTypes.object,
   };
@@ -112,8 +111,8 @@ export class LinkedAccounts extends React.Component {
   };
 
   render() {
-    const { isLoading } = this.props;
-    const { pagination, fundingSources, isLoadingVerify } = this.state;
+    const { isLoading, isLoadingVerify } = this.props;
+    const { pagination, fundingSources } = this.state;
     return (
       <div className="LinkedAccounts">
         <Header title="Linked Accounts List" size="medium">
@@ -131,7 +130,7 @@ export class LinkedAccounts extends React.Component {
             rowKey="account"
             onChange={this.handleTableChange}
             pagination={pagination}
-            loading={isLoading || isLoadingVerify}>
+            loading={isLoading}>
             <Column align="left" dataIndex="name" title="Name" />
             <Column align="center" dataIndex="account" title="Account" />
             <Column align="center" dataIndex="routing" title="Routing" />
@@ -148,7 +147,7 @@ export class LinkedAccounts extends React.Component {
                     </Tooltip>
                     {!record.verificationStatus && (
                       <Tooltip title="Verify funding source.">
-                        <Button onClick={() => this.handleVerify()}>
+                        <Button loading={isLoadingVerify} onClick={() => this.handleVerify(record)}>
                           <Icon type="setting" theme="outlined" />
                         </Button>
                       </Tooltip>

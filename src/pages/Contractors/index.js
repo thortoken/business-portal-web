@@ -14,6 +14,7 @@ import AddContractorDocument from './AddContractorDocument';
 import { withRouteModal } from '~components/Modal';
 import AddFundingSource from './ContractorFundingSources/AddFundingSource';
 import RetryContractor from './RetryContractor';
+import VerifyFundingSource from './ContractorFundingSources/VerifyFundingSource';
 
 export class RootContractorsPage extends React.Component {
   render() {
@@ -28,6 +29,14 @@ export class RootContractorsPage extends React.Component {
           component={ContractorFundingSources}
         />
         <Route exact path={`${match.path}/:id/documents`} component={ContractorDocuments} />
+        <Route
+          exact
+          path={`/contractors/:id/fundingSources/verify/:fsId`}
+          component={withRouteModal({
+            component: VerifyFundingSource,
+            title: 'Verify Funding Source',
+          })}
+        />
         <Route
           exact
           path={`/contractors/:id/fundingSources/add`}

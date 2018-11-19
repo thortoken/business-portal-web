@@ -211,6 +211,22 @@ const users = {
       this.setUserDocuments([]);
       this.setUserDocumentsPagination(null);
     },
+    async verifyFundingSource(id) {
+      try {
+        const response = await Http.post(`/fundingSources/${id}/verify`);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async verifyFundingSourceAmount({ data, id }) {
+      try {
+        const response = await Http.patch(`/fundingSources/${id}/verify`, data);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
   },
   reducers: {
     setUsersPaidTransactions(state, payload) {
