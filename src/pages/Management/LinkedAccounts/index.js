@@ -18,7 +18,6 @@ const { Column } = Table;
 export class LinkedAccounts extends React.Component {
   static propTypes = {
     isLoading: PropTypes.bool,
-    isLoadingVerify: PropTypes.bool,
     fundingSources: PropTypes.arrayOf(PropTypes.object),
     fundingSourcesPagination: PropTypes.object,
   };
@@ -94,9 +93,14 @@ export class LinkedAccounts extends React.Component {
 
   handleVerify = async row => {
     const { verifyFundingSource } = this.props;
-    this.handleOpenVerifyAmount();
     try {
       await verifyFundingSource();
+      this.handleRefresh();
+      NotificationService.open({
+        type: 'success',
+        message: 'Success',
+        description: `Micro deposit will be sent to your bank account, proceed to next step when you receive it.`,
+      });
     } catch (err) {
       NotificationService.open({
         type: 'error',
@@ -107,8 +111,8 @@ export class LinkedAccounts extends React.Component {
   };
 
   render() {
-    const { isLoading } = this.props;
-    const { pagination, fundingSources, isLoadingVerify } = this.state;
+    const { isLoading, isLoadingVerify } = this.props;
+    const { pagination, fundingSources } = this.state;
     return (
       <div className="LinkedAccounts">
         <Header title="Linked Accounts List" size="medium">
@@ -126,7 +130,7 @@ export class LinkedAccounts extends React.Component {
             rowKey="account"
             onChange={this.handleTableChange}
             pagination={pagination}
-            loading={isLoading || isLoadingVerify}>
+            loading={isLoading}>
             <Column align="left" dataIndex="name" title="Name" />
             <Column align="center" dataIndex="account" title="Account" />
             <Column align="center" dataIndex="routing" title="Routing" />
@@ -143,7 +147,7 @@ export class LinkedAccounts extends React.Component {
                     </Tooltip>
                     {!record.verificationStatus && (
                       <Tooltip title="Verify funding source.">
-                        <Button onClick={() => this.handleVerify()}>
+                        <Button loading={isLoadingVerify} onClick={() => this.handleVerify(record)}>
                           <Icon type="setting" theme="outlined" />
                         </Button>
                       </Tooltip>

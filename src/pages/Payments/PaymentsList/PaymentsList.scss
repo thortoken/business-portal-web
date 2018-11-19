@@ -1,6 +1,12 @@
 @import "../../../styles/var";
 
 .PaymentsList {
+  &--link {
+    &:hover {
+      cursor: pointer;
+      color: $primary-color;
+    }
+  }
   &-table {
     &-service {
       .ant-tag {
