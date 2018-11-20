@@ -18,6 +18,7 @@ import makeDefaultPagination from '~utils/pagination';
 import RefreshButton from '~components/RefreshButton';
 
 import { AddTransactionModal } from '~pages/Payments/components/AddTransactionModal';
+import { DeleteTransactionModal } from '~pages/Payments/components/DeleteTransactionModal';
 
 import './PaymentsList.scss';
 
@@ -54,6 +55,7 @@ class Payments extends React.Component {
     usersJobs: [],
     selectedTransactionsIds: new Set(),
     selectedContractorsIds: new Set(),
+    selectedTransactionId: null,
     selectedTransactionsSummaryValue: 0,
     pagination: makeDefaultPagination(),
     paymentsListPagination: null,
@@ -68,13 +70,14 @@ class Payments extends React.Component {
     const { pagination, resetTransactions } = this.state;
     const { getTransactionsSummary, getUsersJobs, reset } = this.props;
     getTransactionsSummary({
-      status: 'new',
+      status: this.state.selectedStatusFilters,
       ...getCurrentTwoWeeksPeriod(),
     });
     getUsersJobs({
       ...getCurrentTwoWeeksPeriod(),
       page: pagination.current,
       limit: pagination.pageSize,
+      status: this.state.selectedStatusFilters,
     });
     if (resetTransactions) {
       reset();
@@ -132,13 +135,14 @@ class Payments extends React.Component {
     const { getUsersJobs, getTransactionsSummary } = this.props;
     const { pagination } = this.state;
     getTransactionsSummary({
-      status: 'new',
+      status: this.state.selectedStatusFilters,
       ...getCurrentTwoWeeksPeriod(),
     });
     getUsersJobs({
       ...getCurrentTwoWeeksPeriod(),
       page: pagination.current,
       limit: pagination.pageSize,
+      status: this.state.selectedStatusFilters,
     });
   };
 
@@ -305,7 +309,7 @@ class Payments extends React.Component {
   handleFilterApply = (e, confirm) => {
     const { getUsersJobs, getTransactionsSummary } = this.props;
     const { pagination } = this.state;
-    if (e.currentTarget.text === 'OK') {
+    if (e.currentTarget.innerText === 'OK') {
       getTransactionsSummary({
         status: this.state.selectedStatusFilters,
         ...getCurrentTwoWeeksPeriod(),
@@ -484,6 +488,7 @@ class Payments extends React.Component {
         renderAmount={this.renderAmount}
         handleRefresh={this.handleRefresh}
         createTransaction={this.props.createTransaction}
+        deleteTransaction={this.props.deleteTransaction}
       />
     );
   };
@@ -507,6 +512,7 @@ const mapDispatchToProps = dispatch => ({
   updatePaymentsList: dispatch.payments.updatePaymentsList,
   getTransactionsSummary: dispatch.transactions.getTransactionsSummary,
   createTransaction: dispatch.transactions.createTransaction,
+  deleteTransaction: dispatch.transactions.deleteTransaction,
   reset: dispatch.payments.reset,
 });
 

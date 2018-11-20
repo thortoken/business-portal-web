@@ -19,6 +19,13 @@ const transactions = {
         throw err;
       }
     },
+    async deleteTransaction({ transactionID }) {
+      try {
+        await Http.delete(`/transactions/${transactionID}`);
+      } catch (err) {
+        throw err;
+      }
+    },
     async getTransactionsForContractor({ userId, startDate, endDate, status, page, limit }) {
       try {
         const response = await Http.get(`/users/${userId}/transactions`, {

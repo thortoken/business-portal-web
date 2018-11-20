@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { Table, Button, Icon, Tooltip } from 'antd';
+import { DeleteTransactionModal } from '~pages/Payments/components/DeleteTransactionModal';
 
 import './JobsList.scss';
 
@@ -22,7 +23,7 @@ export class JobsList extends Component {
     jobsList: PropTypes.array,
     renderAmount: PropTypes.func,
     userId: PropTypes.string,
-    createTransaction: PropTypes.func,
+    transactionId: PropTypes.string,
     handleRefresh: PropTypes.func,
   };
   constructor(props) {
@@ -30,14 +31,22 @@ export class JobsList extends Component {
 
     this.state = {
       isModalVisible: false,
+      isDeletePaymentModalVisible: false,
+      selectedTransaction: {},
     };
   }
 
   render() {
-    const { jobsList, renderAmount } = this.props;
-
+    const { jobsList, renderAmount, handleRefresh, deleteTransaction } = this.props;
     return (
       <div>
+        <DeleteTransactionModal
+          selectedTransaction={this.state.selectedTransaction}
+          isModalVisible={this.state.isDeletePaymentModalVisible}
+          onChangeVisibility={this.onChangeVisibility}
+          deleteTransaction={deleteTransaction}
+          handleRefresh={handleRefresh}
+        />
         <Table
           className="JobsList JobsList--hidden-empty-state"
           showHeader={false}
@@ -57,7 +66,7 @@ export class JobsList extends Component {
             align="center"
             dataIndex="status"
             title="Actions"
-            render={this.renderActions}
+            render={(text, record) => this.renderActions(text, record)}
             width="15%"
           />
           <Column align="center" dataIndex="status" title="Status" width="15%" />
@@ -67,35 +76,33 @@ export class JobsList extends Component {
   }
 
   onChangeVisibility = (isModalVisible, refreshData = false) => {
-    this.setState({ isModalVisible });
+    this.setState({ isDeletePaymentModalVisible: isModalVisible });
   };
-  renderActions = record => {
+  renderActions = (text, record) => {
     return (
       <div className="paymentslist-subrow-buttons">
-        <Tooltip placement="top" title={'Edit'}>
+        {/* <Tooltip placement="top" title={'Edit'}>
           <Button disabled={record !== 'new'}>
             <Icon type="edit" theme="outlined" />
           </Button>
-        </Tooltip>
+        </Tooltip> */}
         <Tooltip placement="top" title={'Delete'}>
-          <Button disabled={record !== 'new'}>
+          <Button onClick={() => this.handleDeletePayment(record)} disabled={text !== 'new'}>
             <Icon type="delete" theme="outlined" />
           </Button>
         </Tooltip>
       </div>
     );
   };
+  handleDeletePayment = record => {
+    this.setState({ isDeletePaymentModalVisible: true, selectedTransaction: record });
+  };
 }
 
 const mapStateToProps = state => ({
   user: state.auth.user,
 });
-
-const mapDispatchToProps = dispatch => ({
-  createTransaction: dispatch.transactions.createTransaction,
-});
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  {}
 )(JobsList);
