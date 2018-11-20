@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Table, Checkbox, Spin, Button, Tooltip, Input } from 'antd';
+import { Icon, Table, Spin, Button, Tooltip, Input, Switch } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
@@ -203,7 +203,6 @@ class Payments extends React.Component {
       selectedTransactionsSummaryValue,
       pagination,
       searchText,
-      selectedFilters,
     } = this.state;
 
     const { isSummaryLoading, isJobsLoading } = this.props;
@@ -243,7 +242,12 @@ class Payments extends React.Component {
             />
           </div>
           <div className="PaymentsList__additional-box--right PaymentsList__additional-box--box">
-            <Checkbox onChange={this.onSelectAll} checked={checked} /> Approve all
+            <Switch
+              onChange={this.onSelectAll}
+              checkedChildren="Reject all"
+              unCheckedChildren="Approve all"
+              checked={checked}
+            />
           </div>
         </div>
         <Box>
@@ -252,7 +256,6 @@ class Payments extends React.Component {
             className="PaymentsList-table"
             loading={isJobsLoading}
             pagination={pagination}
-            filters={selectedFilters}
             onChange={this.handleTableChange}
             rowKey={record => record.id}
             expandedRowRender={record => <div>{this.renderJobsList(record)}</div>}>
@@ -271,6 +274,7 @@ class Payments extends React.Component {
               title="Contractor"
               render={this.showContractorName}
               className="PaymentsList-contractor-selector"
+              sorter
             />
             <Column
               align="center"
@@ -278,6 +282,7 @@ class Payments extends React.Component {
               title="Jobs"
               width="10%"
               className="PaymentsList-numOfJobs-selector"
+              sorter
             />
             <Column
               align="center"
@@ -286,6 +291,7 @@ class Payments extends React.Component {
               render={this.renderAmount}
               width="15%"
               title="Current"
+              sorter
             />
             <Column
               align="center"
@@ -440,6 +446,7 @@ class Payments extends React.Component {
   };
 
   onSelectAll = e => {
+    console.log(e);
     const { usersJobs, updatePaymentsList } = this.props;
     let data = {
       selectedTransactionsSummaryValue: 0,
@@ -448,7 +455,7 @@ class Payments extends React.Component {
       selectedTransactionGroups: [],
     };
 
-    if (e.target.checked) {
+    if (e) {
       usersJobs.forEach(user => {
         let selected = false;
         user.jobs.forEach(job => {
@@ -468,7 +475,7 @@ class Payments extends React.Component {
       });
     }
 
-    this.setState({ checked: e.target.checked });
+    this.setState({ checked: e });
 
     updatePaymentsList({ ...data });
   };
