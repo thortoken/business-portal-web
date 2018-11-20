@@ -53,6 +53,13 @@ const transactions = {
         throw err;
       }
     },
+    async deleteTransaction(id) {
+      try {
+        await Http.delete(`/transactions/${id}`);
+      } catch (err) {
+        throw err;
+      }
+    },
   },
   reducers: {
     setTransactionsForContractor(state, payload) {

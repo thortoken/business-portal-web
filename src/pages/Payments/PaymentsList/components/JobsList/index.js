@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { Table, Button, Icon, Tooltip } from 'antd';
+import { Table, Button, Icon, Tooltip, Modal } from 'antd';
+
+import NotificationService from '~services/notification';
 
 import './JobsList.scss';
 
@@ -23,15 +25,37 @@ export class JobsList extends Component {
     renderAmount: PropTypes.func,
     userId: PropTypes.string,
     createTransaction: PropTypes.func,
+    deleteTransaction: PropTypes.func,
     handleRefresh: PropTypes.func,
   };
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      isModalVisible: false,
-    };
-  }
+  handleDelete = async row => {
+    const { deleteTransaction, handleRefresh } = this.props;
+    const { name, id } = row;
+    Modal.confirm({
+      title: `Are you sure you want to delete "${name}" transaction?`,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk: async () => {
+        try {
+          await deleteTransaction(id);
+          NotificationService.open({
+            type: 'success',
+            message: 'Success',
+            description: 'Transaction successfully deleted.',
+          });
+        } catch (err) {
+          NotificationService.open({
+            type: 'error',
+            message: 'Error',
+            description: `Can not delete transaction: ${name}`,
+          });
+        }
+        return handleRefresh();
+      },
+    });
+  };
 
   render() {
     const { jobsList, renderAmount } = this.props;
@@ -55,9 +79,8 @@ export class JobsList extends Component {
           />
           <Column
             align="center"
-            dataIndex="status"
             title="Actions"
-            render={this.renderActions}
+            render={record => this.renderActions(record)}
             width="15%"
           />
           <Column align="center" dataIndex="status" title="Status" width="15%" />
@@ -66,19 +89,16 @@ export class JobsList extends Component {
     );
   }
 
-  onChangeVisibility = (isModalVisible, refreshData = false) => {
-    this.setState({ isModalVisible });
-  };
   renderActions = record => {
     return (
       <div className="paymentslist-subrow-buttons">
         <Tooltip placement="top" title={'Edit'}>
-          <Button disabled={record !== 'new'}>
+          <Button disabled={record.status !== 'new'}>
             <Icon type="edit" theme="outlined" />
           </Button>
         </Tooltip>
         <Tooltip placement="top" title={'Delete'}>
-          <Button disabled={record !== 'new'}>
+          <Button disabled={record.status !== 'new'} onClick={() => this.handleDelete(record)}>
             <Icon type="delete" theme="outlined" />
           </Button>
         </Tooltip>
@@ -87,15 +107,4 @@ export class JobsList extends Component {
   };
 }
 
-const mapStateToProps = state => ({
-  user: state.auth.user,
-});
-
-const mapDispatchToProps = dispatch => ({
-  createTransaction: dispatch.transactions.createTransaction,
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(JobsList);
+export default connect(null, null)(JobsList);
