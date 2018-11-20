@@ -274,7 +274,6 @@ class Payments extends React.Component {
               title="Contractor"
               render={this.showContractorName}
               className="PaymentsList-contractor-selector"
-              sorter
             />
             <Column
               align="center"
@@ -282,7 +281,6 @@ class Payments extends React.Component {
               title="Jobs"
               width="10%"
               className="PaymentsList-numOfJobs-selector"
-              sorter
             />
             <Column
               align="center"
@@ -489,13 +487,15 @@ class Payments extends React.Component {
   };
 
   renderJobsList = record => {
+    const { createTransaction, deleteTransaction } = this.props;
     return (
       <JobsList
         jobsList={record.jobs}
         userId={record.id}
         renderAmount={this.renderAmount}
         handleRefresh={this.handleRefresh}
-        createTransaction={this.props.createTransaction}
+        createTransaction={createTransaction}
+        deleteTransaction={deleteTransaction}
       />
     );
   };
@@ -519,6 +519,7 @@ const mapDispatchToProps = dispatch => ({
   updatePaymentsList: dispatch.payments.updatePaymentsList,
   getTransactionsSummary: dispatch.transactions.getTransactionsSummary,
   createTransaction: dispatch.transactions.createTransaction,
+  deleteTransaction: dispatch.transactions.deleteTransaction,
   reset: dispatch.payments.reset,
 });
 
