@@ -121,7 +121,7 @@ const users = {
         throw err;
       }
     },
-    async getUsersJobs({ startDate, endDate, status, page, limit }) {
+    async getUsersJobs({ startDate, endDate, status, page, limit, orderBy, order, contractor }) {
       try {
         const response = await Http.get(`/users/rating/jobs`, {
           params: {
@@ -130,6 +130,9 @@ const users = {
             startDate: startDate.format('YYYY-MM-DD'),
             endDate: endDate.format('YYYY-MM-DD'),
             status,
+            orderBy,
+            order,
+            contractor,
           },
         });
         const res = response.data.items.map(userJob => {

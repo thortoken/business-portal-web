@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Table, Checkbox, Spin, Button, Tooltip, Radio } from 'antd';
+import { Icon, Table, Checkbox, Spin, Button, Tooltip, Input } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
@@ -22,7 +22,7 @@ import { AddTransactionModal } from '~pages/Payments/components/AddTransactionMo
 import './PaymentsList.scss';
 
 const { Column } = Table;
-const CheckboxGroup = Radio.Group;
+const Search = Input.Search;
 
 class Payments extends React.Component {
   static propTypes = {
@@ -61,19 +61,16 @@ class Payments extends React.Component {
     resetTransactions: false,
     isAddPaymentModalVisible: false,
     selectedUserId: '',
-    selectedStatusFilters: [],
+    filters: {},
+    sorters: {},
+    searchText: null,
   };
 
   componentDidMount() {
-    const { pagination, resetTransactions } = this.state;
-    const { getTransactionsSummary, getUsersJobs, reset } = this.props;
-    getTransactionsSummary({
-      status: 'new',
-      ...getCurrentTwoWeeksPeriod(),
-    });
-    getUsersJobs({
-      ...getCurrentTwoWeeksPeriod(),
-      page: pagination.current,
+    const { resetTransactions, pagination } = this.state;
+    const { reset } = this.props;
+    this.updateTable({
+      current: pagination.current,
       limit: pagination.pageSize,
     });
     if (resetTransactions) {
@@ -129,36 +126,70 @@ class Payments extends React.Component {
   }
 
   handleRefresh = () => {
-    const { getUsersJobs, getTransactionsSummary } = this.props;
     const { pagination } = this.state;
-    getTransactionsSummary({
-      status: 'new',
-      ...getCurrentTwoWeeksPeriod(),
-    });
-    getUsersJobs({
-      ...getCurrentTwoWeeksPeriod(),
-      page: pagination.current,
+    this.updateTable({
+      current: pagination.current,
       limit: pagination.pageSize,
     });
   };
 
-  handleTableChange = (pag) => {
+  updateTable(config) {
     const { getUsersJobs, getTransactionsSummary } = this.props;
-    const { pagination } = this.state;
-    let curr = pag.current;
-    if (pagination.pageSize !== pag.pageSize) {
-      curr = 1;
-    }
-    this.setState({ pagination: { ...pag, current: curr } });
     getTransactionsSummary({
-      status: 'new',
+      status: config.status || 'new',
       ...getCurrentTwoWeeksPeriod(),
     });
     getUsersJobs({
       ...getCurrentTwoWeeksPeriod(),
-      page: curr,
-      limit: pag.pageSize,
+      page: config.current,
+      limit: config.pageSize,
+      status: config.status || undefined,
+      orderBy: config.orderBy || undefined,
+      order: config.order || undefined,
+      contractor: config.searchText || undefined,
     });
+  }
+
+  handleTableChange = (pag, filters, sorters) => {
+    const { pagination, searchText } = this.state;
+    let curr = pag.current;
+    if (pagination.pageSize !== pag.pageSize) {
+      curr = 1;
+    }
+    this.setState({ pagination: { ...pag, current: curr }, filters, sorters });
+
+    this.updateTable({
+      current: curr,
+      limit: pag.pageSize,
+      status: filters && filters.jobs ? filters.jobs[0] : undefined,
+      orderBy: sorters.columnKey || undefined,
+      order: sorters.order || undefined,
+      searchText: searchText || undefined,
+    });
+  };
+
+  handleSearch = text => {
+    const { pagination, filters, sorters } = this.state;
+
+    this.setState({ pagination: { ...pagination, current: 1 } });
+
+    this.updateTable({
+      current: 1,
+      limit: pagination.pageSize,
+      status: filters && filters.jobs ? filters.jobs[0] : undefined,
+      orderBy: sorters.columnKey || undefined,
+      order: sorters.order || undefined,
+      searchText: text || undefined,
+    });
+  };
+
+  onSearch = e => {
+    this.setState({ searchText: e.target.value });
+  };
+
+  clearSearch = () => {
+    this.setState({ searchText: null });
+    this.handleSearch(null);
   };
 
   render() {
@@ -171,15 +202,15 @@ class Payments extends React.Component {
       selectedContractorsIds,
       selectedTransactionsSummaryValue,
       pagination,
+      searchText,
+      selectedFilters,
     } = this.state;
 
     const { isSummaryLoading, isJobsLoading } = this.props;
 
-    const options = [
-      { label: 'New', value: 'new' },
-      { label: 'Processed', value: 'processed' },
-      { label: 'Failed', value: 'failed' },
-    ];
+    const prefix = searchText ? (
+      <Icon type="close-circle" key={'searchText'} onClick={this.clearSearch} />
+    ) : null;
 
     return (
       <div>
@@ -191,10 +222,6 @@ class Payments extends React.Component {
           <Summary previous={previous} current={current} />
         </Spin>
 
-        <div className="PaymentsList-selector">
-          <Checkbox onChange={this.onSelectAll} checked={checked} /> Approve all
-        </div>
-
         <AddTransactionModal
           userId={this.state.selectedUserId}
           createTransaction={this.props.createTransaction}
@@ -203,12 +230,29 @@ class Payments extends React.Component {
           handleRefresh={this.handleRefresh}
         />
 
+        <div className="PaymentsList__additional-box">
+          <div className="PaymentsList__additional-box--left PaymentsList__additional-box--box">
+            <Search
+              prefix={prefix}
+              className="PaymentsList__additional-box--search"
+              placeholder="Find Contractor"
+              onChange={this.onSearch}
+              value={this.state.searchText}
+              onSearch={value => this.handleSearch(value)}
+              enterButton
+            />
+          </div>
+          <div className="PaymentsList__additional-box--right PaymentsList__additional-box--box">
+            <Checkbox onChange={this.onSelectAll} checked={checked} /> Approve all
+          </div>
+        </div>
         <Box>
           <Table
             dataSource={usersJobs}
             className="PaymentsList-table"
             loading={isJobsLoading}
             pagination={pagination}
+            filters={selectedFilters}
             onChange={this.handleTableChange}
             rowKey={record => record.id}
             expandedRowRender={record => <div>{this.renderJobsList(record)}</div>}>
@@ -218,6 +262,7 @@ class Payments extends React.Component {
               title="Rank"
               width="10%"
               className="PaymentsList-rank-selector"
+              sorter
             />
             <Column
               align="center"
@@ -259,31 +304,24 @@ class Payments extends React.Component {
             <Column
               className="PaymentsList-table-approve PaymentsList-approve-selector"
               title="Approve"
+              dataIndex="jobs"
               align="center"
               width="15%"
-              filterDropdown={({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-                <div className={'ant-table-filter-dropdown'}>
-                  <CheckboxGroup
-                    options={options}
-                    filterMultiple={false}
-                    onChange={this.onFilterChanged}
-                    value={this.state.selectedStatusFilters}
-                    className={'payment-status-box'}
-                  />
-                  <div className="ant-table-filter-dropdown-btns">
-                    <span
-                      className="ant-table-filter-dropdown-link confirm PaymentsList--link"
-                      onClick={e => this.handleFilterApply(e, confirm)}>
-                      OK
-                    </span>
-                    <span
-                      className="ant-table-filter-dropdown-link clear PaymentsList--link"
-                      onClick={e => this.handleFilterApply(e, clearFilters)}>
-                      Reset
-                    </span>
-                  </div>
-                </div>
-              )}
+              filters={[
+                {
+                  text: 'New',
+                  value: 'new',
+                },
+                {
+                  text: 'Processed',
+                  value: 'processed',
+                },
+                {
+                  text: 'Failed',
+                  value: 'failed',
+                },
+              ]}
+              filterMultiple={false}
               render={(text, record) => this.renderStatusColumn(record)}
             />
           </Table>
@@ -297,39 +335,6 @@ class Payments extends React.Component {
       </div>
     );
   }
-
-  onFilterChanged = e => {
-    this.setState({ selectedStatusFilters: e.target.value });
-  };
-
-  handleFilterApply = (e, confirm) => {
-    const { getUsersJobs, getTransactionsSummary } = this.props;
-    const { pagination } = this.state;
-    if (e.currentTarget.text === 'OK') {
-      getTransactionsSummary({
-        status: this.state.selectedStatusFilters,
-        ...getCurrentTwoWeeksPeriod(),
-      });
-      getUsersJobs({
-        ...getCurrentTwoWeeksPeriod(),
-        page: pagination.current,
-        limit: pagination.pageSize,
-        status: this.state.selectedStatusFilters,
-      });
-      confirm();
-    } else {
-      this.setState({ selectedStatusFilters: [] });
-      getTransactionsSummary({
-        ...getCurrentTwoWeeksPeriod(),
-      });
-      getUsersJobs({
-        ...getCurrentTwoWeeksPeriod(),
-        page: pagination.current,
-        limit: pagination.pageSize,
-      });
-      confirm();
-    }
-  };
 
   isActive = record => {
     const { selectedContractorsIds } = this.state;
@@ -510,7 +515,4 @@ const mapDispatchToProps = dispatch => ({
   reset: dispatch.payments.reset,
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Payments);
+export default connect(mapStateToProps, mapDispatchToProps)(Payments);
