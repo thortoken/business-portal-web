@@ -35,7 +35,6 @@ class ContractorFundingSources extends React.Component {
   componentDidMount() {
     const { pagination } = this.state;
     const { getUserFundingSources, match } = this.props;
-    debugger;
     getUserFundingSources({
       page: pagination.current,
       limit: pagination.pageSize,

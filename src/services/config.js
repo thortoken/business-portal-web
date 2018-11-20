@@ -1,6 +1,6 @@
 export class Config {
   constructor() {
-    this.apiUrl = 'http://localhost:8081';
+    this.apiUrl = 'https://odin-api.dev.gothor.com/';
     this.tenantId = this.getTenantIdFromUrl() || '7bc0447a-ea99-4ba2-93bb-c84f5b325c50';
     this.savedRoot = '';
   }
