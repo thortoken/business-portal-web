@@ -15,6 +15,7 @@ import { withRouteModal } from '~components/Modal';
 import AddFundingSource from './ContractorFundingSources/AddFundingSource';
 import RetryContractor from './RetryContractor';
 import VerifyFundingSource from './ContractorFundingSources/VerifyFundingSource';
+import { UploadInviteContractor } from './UploadInviteContractor';
 
 export class RootContractorsPage extends React.Component {
   render() {
@@ -35,6 +36,14 @@ export class RootContractorsPage extends React.Component {
           component={withRouteModal({
             component: VerifyFundingSource,
             title: 'Verify Funding Source',
+          })}
+        />
+        <Route
+          exact
+          path={`/contractors/invite/upload`}
+          component={withRouteModal({
+            component: UploadInviteContractor,
+            title: 'Upload Invite CSV',
           })}
         />
         <Route

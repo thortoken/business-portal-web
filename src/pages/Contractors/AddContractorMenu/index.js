@@ -34,6 +34,11 @@ class AddContractorMenu extends React.Component {
     history.push(`/contractors/invite`);
   };
 
+  handleUpload = () => {
+    const { history } = this.props;
+    history.push(`/contractors/invite/upload`);
+  };
+
   render() {
     const menuList = [
       {
@@ -45,6 +50,11 @@ class AddContractorMenu extends React.Component {
         key: 'invite',
         action: this.handleInvite,
         label: 'Invite Contractor',
+      },
+      {
+        key: 'upload',
+        action: this.handleUpload,
+        label: 'Upload invite CSV',
       },
     ];
     const { match } = this.props;
