@@ -142,7 +142,7 @@ class Payments extends React.Component {
     getUsersJobs({
       ...getCurrentTwoWeeksPeriod(),
       page: config.current,
-      limit: config.pageSize,
+      limit: config.limit,
       status: config.status || undefined,
       orderBy: config.orderBy || undefined,
       order: config.order || undefined,
