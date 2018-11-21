@@ -82,7 +82,7 @@ const users = {
         throw err;
       }
     },
-    async getUsers({ page, limit, startDate, endDate }) {
+    async getUsers({ startDate, endDate, status, page, limit, orderBy, order, contractor }) {
       try {
         const response = await Http.get(`/users`, {
           params: {
@@ -90,6 +90,9 @@ const users = {
             limit,
             startDate: startDate.format('YYYY-MM-DD'),
             endDate: endDate.format('YYYY-MM-DD'),
+            orderBy,
+            order,
+            contractor,
           },
         });
         this.setUsers(response.data.items);
