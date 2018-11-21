@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Table, Button, Icon } from 'antd';
+import { Table, Button, Icon, Input } from 'antd';
 import moment from 'moment';
 import Box from '../../../components/Box/index';
 import makeDefaultPagination from '~utils/pagination';
@@ -15,6 +15,7 @@ import AddContractorMenu from '../AddContractorMenu';
 import StatusBlock from '../../../components/StatusBlock';
 
 const { Column } = Table;
+const Search = Input.Search;
 
 export const prepareActivity = list => {
   return list.map(item => {
@@ -34,14 +35,15 @@ class ContractorsList extends React.Component {
     usersList: [],
     pagination: makeDefaultPagination(),
     userListPagination: null,
+    searchText: null,
+    sorters: {},
   };
 
   componentDidMount() {
     const { pagination } = this.state;
-    this.props.getUsers({
-      page: pagination.current,
+    this.updateTable({
+      current: pagination.current,
       limit: pagination.pageSize,
-      ...getCurrentTwoWeeksPeriod(),
     });
   }
 
@@ -62,19 +64,61 @@ class ContractorsList extends React.Component {
     return null;
   }
 
-  handleTableChange = pag => {
-    const { getUsers } = this.props;
-    const { pagination } = this.state;
+  handleTableChange = (pag, filters, sorters) => {
+    const { pagination, searchText } = this.state;
     let curr = pag.current;
+
     if (pagination.pageSize !== pag.pageSize) {
       curr = 1;
     }
-    this.setState({ pagination: { ...pag, current: curr } });
-    getUsers({
-      page: curr,
+    this.setState({ pagination: { ...pag, current: curr }, filters, sorters });
+
+    this.updateTable({
+      current: curr,
       limit: pag.pageSize,
-      ...getCurrentTwoWeeksPeriod(),
+      orderBy: sorters.columnKey || undefined,
+      order: sorters.order || undefined,
+      searchText: searchText || undefined,
     });
+  };
+
+  updateTable(config) {
+    const { getUsers } = this.props;
+    let column = null;
+    if (config.orderBy) {
+      column = config.orderBy.split('.')[1];
+    }
+    getUsers({
+      ...getCurrentTwoWeeksPeriod(),
+      page: config.current,
+      limit: config.limit,
+      orderBy: column || undefined,
+      order: config.order || undefined,
+      contractor: config.searchText || undefined,
+    });
+  }
+
+  handleSearch = text => {
+    const { pagination, sorters } = this.state;
+
+    this.setState({ pagination: { ...pagination, current: 1 } });
+
+    this.updateTable({
+      current: 1,
+      limit: pagination.pageSize,
+      orderBy: sorters.columnKey || undefined,
+      order: sorters.order || undefined,
+      searchText: text || undefined,
+    });
+  };
+
+  onSearch = e => {
+    this.setState({ searchText: e.target.value });
+  };
+
+  clearSearch = () => {
+    this.setState({ searchText: null });
+    this.handleSearch(null);
   };
 
   handleButtonClick = user => {
@@ -86,18 +130,20 @@ class ContractorsList extends React.Component {
   };
 
   handleRefresh = () => {
-    const { getUsers } = this.props;
     const { pagination } = this.state;
-    getUsers({
-      page: pagination.current,
+    this.updateTable({
+      current: pagination.current,
       limit: pagination.pageSize,
-      ...getCurrentTwoWeeksPeriod(),
     });
   };
 
   render() {
-    const { contractorsData, pagination } = this.state;
+    const { contractorsData, pagination, searchText } = this.state;
     const { isLoading } = this.props;
+    const prefix = searchText ? (
+      <Icon type="close-circle" key={'searchText'} onClick={this.clearSearch} />
+    ) : null;
+
     return (
       <div className="ContractorsList">
         <Header title="Contractors List" size="medium">
@@ -107,6 +153,19 @@ class ContractorsList extends React.Component {
           <AddContractorMenu />
           <RefreshButton handleRefresh={this.handleRefresh} isLoading={isLoading} />
         </Header>
+        <div className="ContractorsList__additional-box">
+          <div className="ContractorsList__additional-box--left PContractorsList__additional-box--box">
+            <Search
+              prefix={prefix}
+              className="ContractorsList__additional-box--search"
+              placeholder="Find Contractor"
+              onChange={this.onSearch}
+              value={this.state.searchText}
+              onSearch={value => this.handleSearch(value)}
+              enterButton
+            />
+          </div>
+        </div>
         <Box>
           <Table
             dataSource={contractorsData}
@@ -115,8 +174,8 @@ class ContractorsList extends React.Component {
             onChange={this.handleTableChange}
             pagination={pagination}
             loading={isLoading}>
-            <Column align="center" dataIndex="tenantProfile.firstName" title="First Name" />
-            <Column align="center" dataIndex="tenantProfile.lastName" title="Last Name" />
+            <Column align="center" dataIndex="tenantProfile.firstName" title="First Name" sorter />
+            <Column align="center" dataIndex="tenantProfile.lastName" title="Last Name" sorter />
             <Column align="center" dataIndex="tenantProfile.city" title="City" />
             <Column align="center" dataIndex="tenantProfile.state" title="State" />
             <Column
