@@ -8,7 +8,7 @@ import FormField from '~components/FormField';
 
 import { initialValues, formFields, transformDateToMoment, validationSchema } from './formSchema';
 import './AddContractor.scss';
-import NotificationService from '../../../services/notification';
+import NotificationService from '~services/notification';
 
 import { handleFormHttpResponse } from '~utils/forms/errors';
 

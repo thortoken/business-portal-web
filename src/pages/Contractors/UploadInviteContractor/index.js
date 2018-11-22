@@ -11,6 +11,7 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import './UploadInviteContractor.scss';
 import Config from '~services/config';
 import { Button } from 'antd';
+import NotificationService from '~services/notification';
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -51,7 +52,13 @@ export class UploadInviteContractor extends React.Component {
                 onload: response => {
                   this.setState({ showDone: true });
                 },
-                onerror: response => {
+                onerror: (response, status) => {
+                  const data = JSON.parse(response);
+                  NotificationService.open({
+                    type: 'error',
+                    message: 'Error',
+                    description: data.error,
+                  });
                   this.setState({ showDone: true });
                 },
               },
