@@ -38,7 +38,7 @@ export class UploadInviteContractor extends React.Component {
             allowFileSizeValidation
             maxFileSize="10MB"
             allowFileTypeValidation
-            acceptedFileTypes={['application/csv']}
+            acceptedFileTypes={['application/csv', 'text/csv']}
             labelTapToCancel="Click to cancel."
             labelTapToRetry="Click to retry."
             labelTapToUndo="Click to undo."

@@ -15,7 +15,7 @@ import { withRouteModal } from '~components/Modal';
 import AddFundingSource from './ContractorFundingSources/AddFundingSource';
 import RetryContractor from './RetryContractor';
 import VerifyFundingSource from './ContractorFundingSources/VerifyFundingSource';
-import { UploadInviteContractor } from './UploadInviteContractor';
+import UploadInviteContractor from './UploadInviteContractor';
 
 export class RootContractorsPage extends React.Component {
   render() {
