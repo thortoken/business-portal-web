@@ -4,11 +4,10 @@ const transactions = {
   effects: {
     async createTransaction({ userId, name, value }) {
       try {
-        const response = await Http.post('/transactions', {
-          quantity: 1,
+        const response = await Http.post('/transactions/custom', {
           userId,
+          value: null,
           job: {
-            id: null,
             name,
             value,
             description: name,
