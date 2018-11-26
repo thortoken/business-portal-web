@@ -1,0 +1,28 @@
+.IAV {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  margin-top: 50px;
+
+  &__title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  &__errors {
+    color: red;
+  }
+
+  &__form {
+    width: 100%;
+    text-align: center;
+    .InputGroup {
+      width: 50%;
+
+      .InputGroup-input {
+        width: 100%;
+      }
+    }
+  }
+}

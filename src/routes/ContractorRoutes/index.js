@@ -23,7 +23,7 @@ export class ContractorRoutes extends React.Component {
           <Switch>
             <Route exact path="/contractor" component={Contractor(ContractorPage)} />
             <Route exact path="/on-boarding/:invitationId" component={OnBoarding} />
-            <Redirect from="*" to={redirect} />
+            <Redirect from="*" to="/contractor" />
           </Switch>
         </Layout.Content>
       </Layout>

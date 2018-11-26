@@ -46,6 +46,19 @@ const onBoarding = {
     changeStep(step) {
       this.setStep(step);
     },
+    async createFundingSourceData(data) {
+      this.setFsData(data);
+    },
+    async getIavToken(token) {
+      setAuthHeader(token);
+      try {
+        const response = await Http.get('/contractors/fundingSources/iav');
+        this.setIavToken(response.data.token);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
     async checkInvitation(id) {
       try {
         const response = await Http.get(`/contractorsInvitations/${id}`);
@@ -97,6 +110,16 @@ const onBoarding = {
         throw err;
       }
     },
+    async createFundingSourceWithIAV(data) {
+      console.log(data);
+      setAuthHeader(data.token);
+      try {
+        const response = await Http.post('/contractors/fundingSources/iav', data.bank);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
   },
   reducers: {
     setContractor(state, payload) {
@@ -111,12 +134,20 @@ const onBoarding = {
     setupOnBoarding(state, payload) {
       return { ...state, ...payload };
     },
+    setIavToken(state, payload) {
+      return { ...state, iavToken: payload };
+    },
+    setFsData(state, payload) {
+      return { ...state, fsData: payload };
+    },
   },
   state: {
     contractor: null,
     agreement: false,
     step: 0,
     ready: false,
+    iavToken: '',
+    fsData: null,
   },
 };
 
