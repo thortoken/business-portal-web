@@ -13,17 +13,17 @@
     line-height: 40px
   }
 
-  &--verified, &--reviewed {
+  &--verified, &--reviewed, &--new {
     color: white;
     background-color: $color-active;
   }
 
-  &--retry, &--document, &--pending {
+  &--retry, &--document, &--pending, &--processed {
     color: black;
     background-color: $color-resting;
   }
 
-  &--suspended, &--deactivated {
+  &--suspended, &--deactivated, &--failed {
     color: white;
     background-color: $color-inactive;
   }

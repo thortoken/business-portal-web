@@ -1,5 +1,8 @@
 .JobsList {
-
+  &--uppercase {
+    text-transform: uppercase;
+    font-weight: bold;
+  }
   .ant-table .ant-table-content table {
     border: none;
 

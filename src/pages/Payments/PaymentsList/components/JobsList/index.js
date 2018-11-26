@@ -7,6 +7,7 @@ import { Table, Button, Icon, Tooltip, Modal } from 'antd';
 import NotificationService from '~services/notification';
 
 import './JobsList.scss';
+import StatusBlock from '../../../../../components/StatusBlock';
 
 const { Column } = Table;
 
@@ -74,16 +75,30 @@ export class JobsList extends Component {
             align="center"
             dataIndex="total"
             render={renderAmount}
-            width="15%"
+            width="14%"
             title="Current"
           />
           <Column
             align="center"
             title="Actions"
             render={record => this.renderActions(record)}
-            width="15%"
+            width="13%"
           />
-          <Column align="center" dataIndex="status" title="Status" width="15%" />
+
+          <Column
+            align="center"
+            // className="JobsList--uppercase"
+            dataIndex="status"
+            title="Status"
+            width="18%"
+            render={text => {
+              return (
+                <div>
+                  <StatusBlock status={text} />
+                </div>
+              );
+            }}
+          />
         </Table>
       </div>
     );
