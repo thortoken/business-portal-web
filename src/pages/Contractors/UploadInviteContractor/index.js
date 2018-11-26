@@ -10,7 +10,7 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 
 import './UploadInviteContractor.scss';
 import Config from '~services/config';
-import { Button } from 'antd';
+import { Button, List } from 'antd';
 import NotificationService from '~services/notification';
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
@@ -22,6 +22,9 @@ export class UploadInviteContractor extends React.Component {
 
   state = {
     showDone: false,
+    showError: false,
+    errorList: [],
+    errorStatus: '',
   };
 
   handleClose = () => {
@@ -31,7 +34,7 @@ export class UploadInviteContractor extends React.Component {
 
   render() {
     const { token } = this.props;
-    const { showDone } = this.state;
+    const { showDone, showError, errorList, errorStatus } = this.state;
     return (
       <div className="UploadInviteContractor">
         <div className="UploadInviteContractor__block">
@@ -43,6 +46,12 @@ export class UploadInviteContractor extends React.Component {
             labelTapToCancel="Click to cancel."
             labelTapToRetry="Click to retry."
             labelTapToUndo="Click to undo."
+            onupdatefiles={file => {
+              this.setState({ showError: false });
+            }}
+            onpreparefile={file => {
+              this.setState({ showError: false });
+            }}
             server={{
               url: `${Config.apiUrl}contractors/invitations/import`,
               process: {
@@ -50,20 +59,34 @@ export class UploadInviteContractor extends React.Component {
                   Authorization: `Bearer ${token}`,
                 },
                 onload: response => {
-                  this.setState({ showDone: true });
+                  this.setState({ showDone: true, showError: false });
                 },
-                onerror: (response, status) => {
-                  const data = JSON.parse(response);
+                onerror: async response => {
+                  const data = await JSON.parse(response);
                   NotificationService.open({
                     type: 'error',
                     message: 'Error',
-                    description: data.error,
+                    description: data.error.status,
                   });
-                  this.setState({ showDone: true });
+                  this.setState({
+                    showDone: true,
+                    showError: true,
+                    errorList: data.error.items,
+                    errorStatus: data.error.status,
+                  });
                 },
               },
             }}
           />
+          {showError && (
+            <List
+              size="small"
+              header={<div className="UploadInviteContractor__header">{errorStatus}</div>}
+              bordered
+              dataSource={errorList}
+              renderItem={item => <List.Item>{item}</List.Item>}
+            />
+          )}
         </div>
         {showDone && (
           <div className="UploadInviteContractor__button-container">

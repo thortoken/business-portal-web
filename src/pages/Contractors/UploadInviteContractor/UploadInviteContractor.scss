@@ -19,4 +19,9 @@
     display: block;
     padding: 1rem;
   }
+
+  &__header {
+    color: $color-inactive;
+    font-weight: bold;
+  }
 }
