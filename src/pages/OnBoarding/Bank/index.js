@@ -5,14 +5,13 @@ import { Button } from 'antd';
 import { Formik } from 'formik';
 
 import FormField from '~components/FormField';
-import { handleFormHttpResponse } from '~utils/forms/errors';
 
 import { initialValues, formFields, validationSchema } from './formSchema';
 import './Bank.scss';
 
 export class Bank extends React.Component {
   static propTypes = {
-    createFundingSource: PropTypes.func.isRequired,
+    createFundingSourceData: PropTypes.func.isRequired,
   };
 
   render() {
@@ -44,35 +43,18 @@ export class Bank extends React.Component {
           loading={isSubmitting}
           htmlType="submit"
           className="Add-contractor__button-container--button">
-          Connect Bank Account
+          Add Bank Account
         </Button>
       </div>
     </form>
   );
 
-  createFundingSource = async ({ account, routing }) => {
-    const { createFundingSource, contractor, token } = this.props;
-    let authToken = token;
-    if (contractor) {
-      authToken = contractor.token;
-    }
-    await createFundingSource({
-      bank: { account, routing },
-      token: authToken,
-    });
-  };
-
   handleSubmit = async (data, form) => {
     const normalizedData = validationSchema.cast(data);
-    const { routing, account } = normalizedData;
+    const { createFundingSourceData } = this.props;
 
-    try {
-      await this.createFundingSource({ account, routing });
-
-      this.handleSubmitSuccess();
-    } catch (err) {
-      handleFormHttpResponse(form, err.response.data.error, err.response);
-    }
+    await createFundingSourceData(normalizedData);
+    this.handleSubmitSuccess();
   };
 
   handleSubmitSuccess = () => {
@@ -81,15 +63,9 @@ export class Bank extends React.Component {
   };
 }
 
-const mapStateToProps = state => ({
-  contractor: state.onBoarding.contractor,
-  token: state.auth.token,
-  isLoading: state.loading.effects.onBoarding.createFundingSource,
-});
-
 const mapDispatchToProps = dispatch => ({
-  createFundingSource: dispatch.onBoarding.createFundingSource,
+  createFundingSourceData: dispatch.onBoarding.createFundingSourceData,
   changeStep: dispatch.onBoarding.changeStep,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Bank);
+export default connect(null, mapDispatchToProps)(Bank);
