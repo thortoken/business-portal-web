@@ -63,14 +63,15 @@ export class UploadInviteContractor extends React.Component {
                 },
                 onerror: async response => {
                   const data = await JSON.parse(response);
+                  let error = data.error.status ? data.error.status : data.error;
                   NotificationService.open({
                     type: 'error',
                     message: 'Error',
-                    description: data.error.status,
+                    description: error,
                   });
                   this.setState({
                     showDone: true,
-                    showError: true,
+                    showError: !!data.error.status,
                     errorList: data.error.items,
                     errorStatus: data.error.status,
                   });
