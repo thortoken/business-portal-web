@@ -46,7 +46,7 @@ export default class Filters extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = this.getNewState(PERIODS.ONE_WEEK);
+    this.state = this.getNewState(PERIODS.TWO_WEEKS);
     this.handleFiltersChange(this.state);
   }
 
