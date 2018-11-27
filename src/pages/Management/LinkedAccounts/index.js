@@ -13,8 +13,6 @@ import Header from '~components/Header';
 import makeDefaultPagination from '~utils/pagination';
 import NotificationService from '~services/notification';
 
-import { handleFormHttpResponse } from '~utils/forms/errors';
-
 const { Column } = Table;
 
 export class LinkedAccounts extends React.Component {
