@@ -15,6 +15,7 @@ import makeDefaultPagination from '~utils/pagination';
 
 import './ContractorDetails.scss';
 import NotificationService from '~services/notification';
+import StatusBlock from '../../../components/StatusBlock';
 
 const { Column } = Table;
 
@@ -207,9 +208,15 @@ class ContractorDetails extends React.Component {
                   align="center"
                   dataIndex="status"
                   className="ContractorDetails-column-status"
-                  render={this.renderJobStatus}
                   title="Status"
                   width="15%"
+                  render={text => {
+                    return (
+                      <div>
+                        <StatusBlock status={text} />
+                      </div>
+                    );
+                  }}
                 />
               </Table>
             </Spin>
