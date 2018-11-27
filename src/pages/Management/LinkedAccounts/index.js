@@ -13,6 +13,8 @@ import Header from '~components/Header';
 import makeDefaultPagination from '~utils/pagination';
 import NotificationService from '~services/notification';
 
+import { handleFormHttpResponse } from '~utils/forms/errors';
+
 const { Column } = Table;
 
 export class LinkedAccounts extends React.Component {
@@ -80,7 +82,20 @@ export class LinkedAccounts extends React.Component {
       okType: 'danger',
       cancelText: 'No',
       onOk: async () => {
-        await deleteFundingSource();
+        try {
+          await deleteFundingSource();
+          NotificationService.open({
+            type: 'success',
+            message: 'Success',
+            description: `Linked Account: ${name} successfully deleted.`,
+          });
+        } catch (err) {
+          NotificationService.open({
+            type: 'error',
+            message: 'Error',
+            description: `Can not delete linked account: ${name}`,
+          });
+        }
         return this.handleRefresh();
       },
     });
