@@ -8,7 +8,7 @@ import FormField from '~components/FormField';
 import './AddTransaction.scss';
 
 import { initialValues, formFields, validationSchema } from './formSchema';
-import NotificationService from "../../../../services/notification";
+import NotificationService from '../../../../services/notification';
 
 export class AddTransactionModal extends Component {
   static propTypes = {
@@ -32,6 +32,11 @@ export class AddTransactionModal extends Component {
 
     try {
       await createTransaction(data);
+      NotificationService.open({
+        type: 'success',
+        message: 'Success',
+        description: 'Transaction successfully added.',
+      });
       onChangeVisibility(false, true);
       handleRefresh();
     } catch (err) {
