@@ -10,7 +10,7 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 
 import './UploadInviteContractor.scss';
 import Config from '~services/config';
-import { Button, List } from 'antd';
+import { Button, Icon, List, Popover } from 'antd';
 import NotificationService from '~services/notification';
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
@@ -38,6 +38,19 @@ export class UploadInviteContractor extends React.Component {
     return (
       <div className="UploadInviteContractor">
         <div className="UploadInviteContractor__block">
+          <small>
+            File hint:{' '}
+            <Popover
+              placement="rightTop"
+              content={
+                'Import file have to have two columns - email and externalId, ' +
+                'separated by semicolon.'
+              }
+              title="File Hints">
+              <Icon type="exclamation-circle" theme="twoTone" />
+            </Popover>
+          </small>
+
           <FilePond
             allowFileSizeValidation
             maxFileSize="10MB"
