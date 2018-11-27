@@ -43,8 +43,7 @@ export class UploadInviteContractor extends React.Component {
             <Popover
               placement="rightTop"
               content={
-                'Import file have to have two columns - email and externalId, ' +
-                'separated by semicolon.'
+                'Import file has to have two columns - email and externalId, separated by semicolon.'
               }
               title="File Hints">
               <Icon type="exclamation-circle" theme="twoTone" />
