@@ -82,7 +82,7 @@ class ContractorDocuments extends React.Component {
 
   handleGoBack = () => {
     const { history, match } = this.props;
-    history.push(`/contractors/${match.params.id}`);
+    history.replace(`/contractors/${match.params.id}`);
   };
 
   handleRefresh = () => {

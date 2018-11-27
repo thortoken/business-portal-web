@@ -143,7 +143,7 @@ export class RetryContractor extends React.Component {
       message: 'Success',
       description: 'Data successfully send.',
     });
-    history.push(`/contractors/${match.params.id}`);
+    history.replace(`/contractors/${match.params.id}`);
   };
 }
 

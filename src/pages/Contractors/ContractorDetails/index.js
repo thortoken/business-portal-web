@@ -226,12 +226,12 @@ class ContractorDetails extends React.Component {
 
   handleGoToFundingSources = () => {
     const { history, match } = this.props;
-    history.push(`/contractors/${match.params.id}/fundingSources`);
+    history.replace(`/contractors/${match.params.id}/fundingSources`);
   };
 
   handleGoToDocuments = () => {
     const { history, match } = this.props;
-    history.push(`/contractors/${match.params.id}/documents`);
+    history.replace(`/contractors/${match.params.id}/documents`);
   };
 
   handleRetryContractor = () => {
