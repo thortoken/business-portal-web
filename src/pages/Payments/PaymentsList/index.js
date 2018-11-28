@@ -266,9 +266,6 @@ class Payments extends React.Component {
               width="10%"
               className="PaymentsList-rank-selector"
               sorter
-              render={(text, record) => {
-                return <span>{text !== null ? text : '-'}</span>;
-              }}
             />
             <Column
               align="center"
