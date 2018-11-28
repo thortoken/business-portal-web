@@ -88,8 +88,8 @@ const users = {
           params: {
             page,
             limit,
-            startDate: startDate.format('YYYY-MM-DD'),
-            endDate: endDate.format('YYYY-MM-DD'),
+            startDate: new Date(startDate.utc()),
+            endDate: new Date(endDate.utc()),
             orderBy,
             order,
             contractor,
@@ -112,10 +112,10 @@ const users = {
       try {
         const response = await Http.get(`/users/${id}/statistics`, {
           params: {
-            currentStartDate: currentStartDate.format('YYYY-MM-DD'),
-            currentEndDate: currentEndDate.format('YYYY-MM-DD'),
-            previousStartDate: previousStartDate.format('YYYY-MM-DD'),
-            previousEndDate: previousEndDate.format('YYYY-MM-DD'),
+            currentStartDate: new Date(currentStartDate.utc()),
+            currentEndDate: new Date(currentEndDate.utc()),
+            previousStartDate: new Date(previousStartDate.utc()),
+            previousEndDate: new Date(previousEndDate.utc()),
           },
         });
 
@@ -130,8 +130,8 @@ const users = {
           params: {
             limit,
             page,
-            startDate: startDate.format('YYYY-MM-DD'),
-            endDate: endDate.format('YYYY-MM-DD'),
+            startDate: new Date(startDate.utc()),
+            endDate: new Date(endDate.utc()),
             status,
             orderBy,
             order,
@@ -155,8 +155,8 @@ const users = {
             limit,
             page,
             embed: 'transactions',
-            startDate: startDate.format('YYYY-MM-DD'),
-            endDate: endDate.format('YYYY-MM-DD'),
+            startDate: new Date(startDate.utc()),
+            endDate: new Date(endDate.utc()),
             status,
           },
         });

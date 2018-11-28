@@ -24,8 +24,8 @@ const transactions = {
           params: {
             page,
             limit,
-            startDate: startDate.format('YYYY-MM-DD'),
-            endDate: endDate.format('YYYY-MM-DD'),
+            startDate: new Date(startDate.utc()),
+            endDate: new Date(endDate.utc()),
             status,
           },
         });
@@ -42,8 +42,8 @@ const transactions = {
           params: {
             page,
             limit,
-            startDate: startDate.format('YYYY-MM-DD'),
-            endDate: endDate.format('YYYY-MM-DD'),
+            startDate: new Date(startDate.utc()),
+            endDate: new Date(endDate.utc()),
           },
         });
         this.setTransactionsSummary(response.data);
