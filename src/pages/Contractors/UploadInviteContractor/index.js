@@ -12,6 +12,7 @@ import './UploadInviteContractor.scss';
 import Config from '~services/config';
 import { Button, Icon, List, Popover } from 'antd';
 import NotificationService from '~services/notification';
+import classnames from 'classnames';
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -22,9 +23,10 @@ export class UploadInviteContractor extends React.Component {
 
   state = {
     showDone: false,
-    showError: false,
-    errorList: [],
-    errorStatus: '',
+    error: false,
+    showList: '',
+    listData: [],
+    listStatus: '',
   };
 
   handleClose = () => {
@@ -34,7 +36,7 @@ export class UploadInviteContractor extends React.Component {
 
   render() {
     const { token } = this.props;
-    const { showDone, showError, errorList, errorStatus } = this.state;
+    const { showDone, listStatus, listData, showList, error } = this.state;
     return (
       <div className="UploadInviteContractor">
         <div className="UploadInviteContractor__block">
@@ -68,8 +70,20 @@ export class UploadInviteContractor extends React.Component {
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },
-                onload: response => {
-                  this.setState({ showDone: true, showError: false });
+                onload: async response => {
+                  const data = await JSON.parse(response);
+                  NotificationService.open({
+                    type: 'success',
+                    message: 'Success',
+                    description: 'Successfully invited.',
+                  });
+                  this.setState({
+                    showDone: true,
+                    showList: true,
+                    listData: data.items,
+                    listStatus: 'Successfully invited',
+                    error: false,
+                  });
                 },
                 onerror: async response => {
                   const data = await JSON.parse(response);
@@ -81,21 +95,30 @@ export class UploadInviteContractor extends React.Component {
                   });
                   this.setState({
                     showDone: true,
-                    showError: !!data.error.status,
-                    errorList: data.error.items,
-                    errorStatus: data.error.status,
+                    showList: !!data.error.status,
+                    listData: data.error.items,
+                    listStatus: data.error.status,
+                    error: true,
                   });
                 },
               },
             }}
           />
-          {showError && (
+          {showList && (
             <List
               size="small"
-              header={<div className="UploadInviteContractor__header">{errorStatus}</div>}
+              header={
+                <div
+                  className={classnames('UploadInviteContractor__header', {
+                    [`UploadInviteContractor__header--error`]: error,
+                    [`UploadInviteContractor__header--success`]: !error,
+                  })}>
+                  {listStatus}
+                </div>
+              }
               bordered
-              dataSource={errorList}
-              renderItem={item => <List.Item>{item}</List.Item>}
+              dataSource={listData}
+              renderItem={item => <List.Item>{error ? item : item.email}</List.Item>}
             />
           )}
         </div>

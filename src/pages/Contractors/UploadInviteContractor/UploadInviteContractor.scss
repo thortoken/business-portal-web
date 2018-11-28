@@ -21,7 +21,12 @@
   }
 
   &__header {
-    color: $color-inactive;
     font-weight: bold;
+    &--error {
+      color: $color-inactive;
+    }
+    &--success {
+      color: $color-green-neon;
+    }
   }
 }
