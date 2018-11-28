@@ -11,6 +11,8 @@ import './SignUp.scss';
 
 import { handleFormHttpResponse } from '~utils/forms/errors';
 
+import { traverseRecursively } from '~utils/iterators';
+
 export class SignUp extends React.Component {
   static propTypes = {
     contractor: PropTypes.object,
@@ -25,7 +27,7 @@ export class SignUp extends React.Component {
   render() {
     const { error } = this.state;
     const { contractor } = this.props;
-    initialValues.email = contractor.email;
+    initialValues.profile.email = contractor.email;
     return (
       <div className="SignUp">
         <div className="SignUp__form">
@@ -41,11 +43,29 @@ export class SignUp extends React.Component {
     );
   }
 
+  prepareForm(fields) {
+    let formArray = [];
+    traverseRecursively(fields, {
+      childKey: 'fields',
+      nodeCallback: () => console.log(),
+      leafCallback: data => {
+        const { value, path } = data;
+        formArray.push(
+          <FormField
+            key={path.join('.')}
+            name={path.join('.')}
+            label={value.label}
+            {...value.input}
+          />
+        );
+      },
+    });
+    return [...formArray];
+  }
+
   renderForm = ({ handleSubmit, isSubmitting, values, dirty }) => (
     <form onSubmit={handleSubmit}>
-      {Object.entries(formFields).map(([name, options]) => (
-        <FormField key={name} name={name} label={options.label} {...options.input} />
-      ))}
+      {this.prepareForm(formFields)}
 
       <div className="Add-contractor__button-container">
         <Button
@@ -74,16 +94,13 @@ export class SignUp extends React.Component {
 
   handleSubmit = async (data, form) => {
     const { invToken } = this.props;
-    const normalizedData = validationSchema.cast(data);
-    normalizedData['country'] = 'USA';
-    const { ...profile } = normalizedData;
+    const validData = validationSchema.cast(data);
+    validData.profile['country'] = 'USA';
 
     const contractor = {
-      profile: {
-        ...normalizedData,
-      },
+      ...validData,
       invitationToken: invToken,
-      password: profile.password,
+      password: validData.profile.password,
     };
 
     try {
