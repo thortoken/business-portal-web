@@ -244,8 +244,8 @@ class Payments extends React.Component {
           <div className="PaymentsList__additional-box--right PaymentsList__additional-box--box">
             <Switch
               onChange={this.onSelectAll}
-              checkedChildren="Approve all"
-              unCheckedChildren="Approve all"
+              checkedChildren="Approve all on the page"
+              unCheckedChildren="Approve all on the page"
               checked={checked}
             />
           </div>
