@@ -244,7 +244,7 @@ class Payments extends React.Component {
           <div className="PaymentsList__additional-box--right PaymentsList__additional-box--box">
             <Switch
               onChange={this.onSelectAll}
-              checkedChildren="Reject all"
+              checkedChildren="Approve all"
               unCheckedChildren="Approve all"
               checked={checked}
             />
@@ -420,7 +420,13 @@ class Payments extends React.Component {
     let newTransactions = record.jobs.filter(entry => {
       return entry.status === 'new';
     });
-    if (newTransactions.length > 0) {
+    let total = 0;
+    if (record.jobs.length > 0) {
+      total = newTransactions.reduce((prev, curr) => {
+        return prev + curr.total;
+      }, 0);
+    }
+    if (newTransactions.length > 0 && total < 10000) {
       return (
         <button
           className={classnames(null, {
@@ -447,7 +453,6 @@ class Payments extends React.Component {
   };
 
   onSelectAll = e => {
-    console.log(e);
     const { usersJobs, updatePaymentsList } = this.props;
     let data = {
       selectedTransactionsSummaryValue: 0,
@@ -459,13 +464,23 @@ class Payments extends React.Component {
     if (e) {
       usersJobs.forEach(user => {
         let selected = false;
-        user.jobs.forEach(job => {
-          if (job.status === 'new') {
-            data.selectedTransactionsIds.add(job.id);
-            data.selectedTransactionsSummaryValue += parseFloat(job.total);
-            selected = true;
-          }
-        });
+        let total = user.jobs
+          .filter(entry => {
+            return entry.status === 'new';
+          })
+          .reduce((prev, curr) => {
+            return prev + curr.total;
+          }, 0);
+        if (total < 10000) {
+          user.jobs.forEach(job => {
+            if (job.status === 'new') {
+              data.selectedTransactionsIds.add(job.id);
+              data.selectedTransactionsSummaryValue += parseFloat(job.total);
+              selected = true;
+            }
+          });
+        }
+
         if (selected) {
           data.selectedContractorsIds.add(user.id);
           data.selectedTransactionGroups.push({
