@@ -107,11 +107,11 @@ export class JobsList extends Component {
   renderActions = record => {
     return (
       <div className="paymentslist-subrow-buttons">
-        <Tooltip placement="top" title={'Edit'}>
-          <Button disabled={record.status !== 'new'}>
-            <Icon type="edit" theme="outlined" />
-          </Button>
-        </Tooltip>
+        {/*<Tooltip placement="top" title={'Edit'}>*/}
+        {/*<Button disabled={record.status !== 'new'}>*/}
+        {/*<Icon type="edit" theme="outlined" />*/}
+        {/*</Button>*/}
+        {/*</Tooltip>*/}
         <Tooltip placement="top" title={'Delete'}>
           <Button disabled={record.status !== 'new'} onClick={() => this.handleDelete(record)}>
             <Icon type="delete" theme="outlined" />
