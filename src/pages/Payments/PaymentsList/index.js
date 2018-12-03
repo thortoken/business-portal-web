@@ -285,6 +285,9 @@ class Payments extends React.Component {
                   </div>
                 );
               }}
+              filterIcon={filtered => (
+                <Icon type="search" />
+              )}
             />
             <Column
               align="center"
