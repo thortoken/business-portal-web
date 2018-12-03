@@ -111,7 +111,6 @@ const onBoarding = {
       }
     },
     async createFundingSourceWithIAV(data) {
-      console.log(data);
       setAuthHeader(data.token);
       try {
         const response = await Http.post('/contractors/fundingSources/iav', data.bank);
