@@ -75,11 +75,6 @@ export class OnBoarding extends React.Component {
         content: () => <SignUp invToken={match.params.invitationId} />,
       },
       {
-        title: 'Bank Account',
-        icon: 'dollar',
-        content: () => <Bank />,
-      },
-      {
         title: 'Verify Bank',
         icon: 'dollar',
         content: () => <IAV />,

@@ -69,24 +69,23 @@ export class IAV extends React.Component {
   }
 
   handleIAVSuccess = async uri => {
-    const { fsData } = this.props;
-    await this.createFundingSource({ ...fsData, uri });
+    await this.createFundingSource({ uri });
     this.handleSubmitSuccess();
   };
 
   handleSubmitSuccess = () => {
     const { changeStep } = this.props;
-    changeStep(4);
+    changeStep(3);
   };
 
-  createFundingSource = async ({ account, routing, uri }) => {
+  createFundingSource = async ({ uri }) => {
     const { createFundingSourceWithIAV, contractor, token } = this.props;
     let authToken = token;
     if (contractor) {
       authToken = contractor.token;
     }
     await createFundingSourceWithIAV({
-      bank: { account, routing, uri },
+      bank: { uri },
       token: authToken,
     });
   };
