@@ -1,3 +1,5 @@
+@import "../../../styles/var";
+
 .IAV {
   display: flex;
   justify-content: center;
@@ -8,6 +10,13 @@
     font-size: 2rem;
     text-align: center;
     margin-bottom: 2rem;
+  }
+
+  &__warning {
+    margin-bottom: 1rem;
+    font-size: 0.7rem;
+    color: $color-error;
+    text-align: left;
   }
 
   &__errors {
