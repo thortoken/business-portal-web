@@ -56,11 +56,14 @@ export class IAV extends React.Component {
           <Spin spinning={iavIsLoading || !dwollaConfig.customerToken}>
             {!iavIsLoading &&
               dwollaConfig.customerToken && (
-                <Dwolla
-                  onSuccess={this.handleIAVSuccess}
-                  onError={onError}
-                  dwollaConfig={dwollaConfig}
-                />
+                <div>
+                  <div className="IAV__warning">Please do not hit refresh.</div>
+                  <Dwolla
+                    onSuccess={this.handleIAVSuccess}
+                    onError={onError}
+                    dwollaConfig={dwollaConfig}
+                  />
+                </div>
               )}
           </Spin>
         </div>
