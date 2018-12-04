@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
 import SignUp from './SignUp';
-import Bank from './Bank';
 import Terms from './Terms';
 import IAV from './IAV';
 import Done from './Done';

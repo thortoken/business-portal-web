@@ -170,8 +170,6 @@ class ContractorFundingSources extends React.Component {
             pagination={pagination}
             loading={isLoading}>
             <Column align="left" dataIndex="name" title="Name" />
-            <Column align="center" dataIndex="routing" title="Routing" />
-            <Column align="center" dataIndex="account" title="Account" />
             <Column
               align="center"
               dataIndex="type"

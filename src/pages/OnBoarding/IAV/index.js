@@ -10,7 +10,6 @@ import Config from '~services/config';
 export class IAV extends React.Component {
   static propTypes = {
     createFundingSourceWithIAV: PropTypes.func.isRequired,
-    fsData: PropTypes.object,
   };
   state = {
     iavToken: '',
@@ -32,7 +31,7 @@ export class IAV extends React.Component {
     if (contractor) {
       authToken = contractor.token;
     }
-    props.getIavToken(authToken);
+    props.getIavToken({ token: authToken, type: 'contractors' });
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -94,16 +93,15 @@ export class IAV extends React.Component {
 const mapStateToProps = state => ({
   contractor: state.onBoarding.contractor,
   token: state.auth.token,
-  iavToken: state.onBoarding.iavToken,
-  fsData: state.onBoarding.fsData,
+  iavToken: state.iav.iavToken,
   isLoading: state.loading.effects.onBoarding.createFundingSourceWithIAV,
-  iavIsLoading: state.loading.effects.onBoarding.getIavToken,
+  iavIsLoading: state.loading.effects.iav.getIavToken,
 });
 
 const mapDispatchToProps = dispatch => ({
   createFundingSourceWithIAV: dispatch.onBoarding.createFundingSourceWithIAV,
   changeStep: dispatch.onBoarding.changeStep,
-  getIavToken: dispatch.onBoarding.getIavToken,
+  getIavToken: dispatch.iav.getIavToken,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(IAV);
