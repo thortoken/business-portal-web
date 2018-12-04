@@ -34,7 +34,7 @@ const SummaryBox = ({ title, summary, period }) => {
 const Summary = ({ previous, current }) => {
   return (
     <div className="Summary">
-      <SummaryBox title="PREV" summary={previous} period="prev" />
+      {/*<SummaryBox title="PREV" summary={previous} period="prev" />*/}
       <SummaryBox title="CURRENT" summary={current} period="current" />
     </div>
   );
