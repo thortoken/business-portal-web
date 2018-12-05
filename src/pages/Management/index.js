@@ -19,6 +19,7 @@ import VerifyLinkedAccounts from './LinkedAccounts/VerifyLinkedAccounts';
 import RetryCompanyDetails from './CompanyDetails/RetryCompanyDetails';
 import CompanyDocuments from './CompanyDetails/CompanyDocuments';
 import AddCompanyDocument from './CompanyDetails/AddCompanyDocument';
+import ChangeAdminPassword from './ChangeAdminPassword';
 
 export class RootManagementPage extends React.Component {
   render() {
@@ -28,7 +29,11 @@ export class RootManagementPage extends React.Component {
         <div className="ManagementPage__content">
           <Switch>
             <Route exact path={`/management/company-details`} component={CompanyDetails} />
-            <Route exact path={`/management/company-details/documents`} component={CompanyDocuments} />
+            <Route
+              exact
+              path={`/management/company-details/documents`}
+              component={CompanyDocuments}
+            />
             <Route exact path={`/management/beneficial-owners`} component={BeneficialOwners} />
             <Route exact path={`/management/company-team`} component={CompanyTeam} />
             <Route exact path={`/management/linked-accounts`} component={LinkedAccounts} />
@@ -48,6 +53,14 @@ export class RootManagementPage extends React.Component {
               component={withRouteModal({
                 component: AddCompanyDocument,
                 title: 'Add Document',
+              })}
+            />{' '}
+            <Route
+              exact
+              path={`/management/change-admin-password`}
+              component={withRouteModal({
+                component: ChangeAdminPassword,
+                title: 'Change Password',
               })}
             />
             <Route

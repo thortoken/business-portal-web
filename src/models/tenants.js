@@ -11,6 +11,14 @@ const tenants = {
         throw err;
       }
     },
+    async changeAdminPassword(data) {
+      try {
+        const response = await Http.patch('/auth/password', data);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
   },
   reducers: {
     setStats(state, payload) {
