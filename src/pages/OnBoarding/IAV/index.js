@@ -10,7 +10,6 @@ import Config from '~services/config';
 export class IAV extends React.Component {
   static propTypes = {
     createFundingSourceWithIAV: PropTypes.func.isRequired,
-    fsData: PropTypes.object,
   };
   state = {
     iavToken: '',
@@ -18,8 +17,8 @@ export class IAV extends React.Component {
       backButton: false,
       customerToken: null,
       environment: Config.env === 'dev' ? 'sandbox' : 'prod',
-      fallbackToMicroDeposits: false,
-      microDeposits: false,
+      fallbackToMicroDeposits: true,
+      microDeposits: true,
       stylesheets: [],
       subscriber: () => {},
     },
@@ -32,7 +31,7 @@ export class IAV extends React.Component {
     if (contractor) {
       authToken = contractor.token;
     }
-    props.getIavToken(authToken);
+    props.getIavToken({ token: authToken, type: 'contractors' });
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -72,24 +71,23 @@ export class IAV extends React.Component {
   }
 
   handleIAVSuccess = async uri => {
-    const { fsData } = this.props;
-    await this.createFundingSource({ ...fsData, uri });
+    await this.createFundingSource({ uri });
     this.handleSubmitSuccess();
   };
 
   handleSubmitSuccess = () => {
     const { changeStep } = this.props;
-    changeStep(4);
+    changeStep(3);
   };
 
-  createFundingSource = async ({ account, routing, uri }) => {
+  createFundingSource = async ({ uri }) => {
     const { createFundingSourceWithIAV, contractor, token } = this.props;
     let authToken = token;
     if (contractor) {
       authToken = contractor.token;
     }
     await createFundingSourceWithIAV({
-      bank: { account, routing, uri },
+      bank: { uri },
       token: authToken,
     });
   };
@@ -98,16 +96,15 @@ export class IAV extends React.Component {
 const mapStateToProps = state => ({
   contractor: state.onBoarding.contractor,
   token: state.auth.token,
-  iavToken: state.onBoarding.iavToken,
-  fsData: state.onBoarding.fsData,
+  iavToken: state.iav.iavToken,
   isLoading: state.loading.effects.onBoarding.createFundingSourceWithIAV,
-  iavIsLoading: state.loading.effects.onBoarding.getIavToken,
+  iavIsLoading: state.loading.effects.iav.getIavToken,
 });
 
 const mapDispatchToProps = dispatch => ({
   createFundingSourceWithIAV: dispatch.onBoarding.createFundingSourceWithIAV,
   changeStep: dispatch.onBoarding.changeStep,
-  getIavToken: dispatch.onBoarding.getIavToken,
+  getIavToken: dispatch.iav.getIavToken,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(IAV);
