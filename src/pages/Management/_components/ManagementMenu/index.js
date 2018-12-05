@@ -11,6 +11,7 @@ const menuItems = [
   { route: '/management/beneficial-owners', label: 'Beneficial Owners', icon: 'crown' },
   // { route: '/management/company-team', label: 'Company & Team', icon: 'user' },
   { route: '/management/linked-accounts', label: 'Linked Accounts', icon: 'bank' },
+  { route: '/management/change-admin-password', label: 'Change Password', icon: 'lock' },
   // { route: '/management/integrations', label: 'Integrations', icon: 'shrink' },
   // { route: '/management/settings', label: 'Settings', icon: 'setting' },
 ];
