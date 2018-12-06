@@ -86,13 +86,13 @@ export class VerifyFundingSource extends React.Component {
   };
 
   handleSubmitSuccess = () => {
-    const { history, match } = this.props;
+    const { history } = this.props;
     NotificationService.open({
       type: 'success',
       message: 'Success',
       description: 'Funding source successfully verified.',
     });
-    history.push(`/contractors/${match.params.id}/fundingSources`);
+    history.back();
   };
 }
 
