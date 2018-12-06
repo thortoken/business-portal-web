@@ -3,11 +3,11 @@ import Http, { setAuthHeader } from '~services/http';
 const iav = {
   effects: {
     async getIavToken({ token, type, data }) {
-      setAuthHeader(token);
       let response = null;
       try {
         switch (type) {
           case 'contractors':
+            setAuthHeader(token);
             response = await Http.get(`/${type}/fundingSources/iav`);
             break;
           case 'users':
