@@ -26,9 +26,9 @@ export class IAVLinkedAccount extends React.Component {
     },
   };
 
-  constructor(props) {
-    super(props);
-    props.getIavToken({ type: 'tenants' });
+  componentDidMount() {
+    const { getIavToken } = this.props;
+    getIavToken({ type: 'tenants' });
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -44,12 +44,13 @@ export class IAVLinkedAccount extends React.Component {
     const { iavIsLoading } = this.props;
 
     const onError = err => {
-      console.log('err', err);
-      NotificationService.open({
-        type: 'error',
-        message: 'Error',
-        description: err,
-      });
+      if (!err.toString().search('dwolla-iav-container')) {
+        NotificationService.open({
+          type: 'error',
+          message: 'Error',
+          description: err.toString(),
+        });
+      }
     };
     return (
       <div className="IAVLinkedAccount">
@@ -84,7 +85,7 @@ export class IAVLinkedAccount extends React.Component {
       message: 'Success',
       description: 'Funding Source successfully added.',
     });
-    history.goBack();
+    history.replace('/management/linked-accounts');
   };
 
   createFundingSource = async ({ uri }) => {

@@ -12,12 +12,15 @@ const linkedAccounts = {
           pages: 1,
           total: 1,
         });
-        if (response.data.account) {
+        if (response.data.name) {
           fundingSources.push(response.data);
         }
         this.setFundingSource(fundingSources);
         return response.data;
       } catch (err) {
+        if (err.response.status === 404) {
+          this.setFundingSource([]);
+        }
         throw err;
       }
     },

@@ -3,6 +3,9 @@
 .LinkedAccounts {
   padding: 1rem;
   width: 100%;
+  &__actions {
+    width: 200px !important;
+  }
   &__table {
     &__buttons {
       Button {
