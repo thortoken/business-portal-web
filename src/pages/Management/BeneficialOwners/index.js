@@ -126,9 +126,9 @@ export class BeneficialOwners extends React.Component {
               render={(text, record) => {
                 return (
                   <span className="BeneficialOwners__table__buttons">
-                    <Button onClick={() => this.handleEdit(record)}>
-                      <Icon type="form" theme="outlined" />
-                    </Button>
+                    {/*<Button onClick={() => this.handleEdit(record)}>*/}
+                      {/*<Icon type="form" theme="outlined" />*/}
+                    {/*</Button>*/}
                     <Button onClick={() => this.handleDelete(record)}>
                       <Icon type="delete" theme="outlined" />
                     </Button>
