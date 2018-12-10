@@ -29,6 +29,22 @@ const invitations = {
         throw err;
       }
     },
+    async deleteInvitation({ id }) {
+      try {
+        const response = await Http.delete(`/contractors/invitations/${id}`);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async resendInvitation({ id }) {
+      try {
+        const response = await Http.post(`/contractors/invitations/${id}/resend`);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
   },
   reducers: {
     setInvitations(state, payload) {

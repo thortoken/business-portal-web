@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
 import SignUp from './SignUp';
-import Bank from './Bank';
 import Terms from './Terms';
 import IAV from './IAV';
 import Done from './Done';
@@ -73,11 +72,6 @@ export class OnBoarding extends React.Component {
         title: 'Sign Up',
         icon: 'user',
         content: () => <SignUp invToken={match.params.invitationId} />,
-      },
-      {
-        title: 'Bank Account',
-        icon: 'dollar',
-        content: () => <Bank />,
       },
       {
         title: 'Verify Bank',

@@ -14,14 +14,26 @@ import './Topbar.scss';
 
 const generateMenuItems = list => {
   return list.map(item => {
-    return {
-      key: item.route,
-      value: (
-        <Link to={item.route} key={item.route} onClick={item.function}>
-          <Icon type={item.icon} theme="outlined" /> <span>{item.label}</span>
-        </Link>
-      ),
-    };
+    if (item.route) {
+      return {
+        key: item.route,
+        value: (
+          <Link to={item.route} key={item.route} onClick={item.function}>
+            <Icon type={item.icon} theme="outlined" /> <span>{item.label}</span>
+          </Link>
+        ),
+      };
+    } else {
+      return {
+        key: item.label,
+        value: (
+          <div key={item.label} onClick={item.function}>
+            <Icon type={item.icon} theme="outlined" />{' '}
+            <span style={{ 'padding-left': '10px' }}>{item.label}</span>
+          </div>
+        ),
+      };
+    }
   });
 };
 
@@ -45,6 +57,13 @@ export class Topbar extends React.Component {
   render() {
     const { className, type } = this.props;
     const menuItems = [
+      {
+        label: 'Help',
+        icon: 'question',
+        function: () => {
+          window.Intercom('show');
+        },
+      },
       {
         route: '/management/company-details',
         label: 'Company Details',
@@ -76,7 +95,12 @@ export class Topbar extends React.Component {
       //   function: () => {},
       // },
       // { route: '/management/settings', label: 'Settings', icon: 'setting', function: () => {} },
-      { route: '/sign-in', label: 'Logout', icon: 'logout', function: this.handleLogout },
+      {
+        route: '/sign-in',
+        label: 'Logout',
+        icon: 'logout',
+        function: this.handleLogout,
+      },
     ];
     return (
       <div className={classNames('Topbar', className)}>

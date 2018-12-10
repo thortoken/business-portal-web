@@ -140,16 +140,15 @@ export class LinkedAccounts extends React.Component {
           <Table
             dataSource={fundingSources}
             className="LinkedAccounts__table"
-            rowKey="account"
+            rowKey="name"
             onChange={this.handleTableChange}
             pagination={pagination}
             loading={isLoading}>
             <Column align="left" dataIndex="name" title="Name" />
-            <Column align="center" dataIndex="account" title="Account" />
-            <Column align="center" dataIndex="routing" title="Routing" />
             <Column
               align="center"
               title="Actions"
+              className="LinkedAccounts__actions"
               render={(text, record) => {
                 return (
                   <span className="LinkedAccounts__table__buttons">

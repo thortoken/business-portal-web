@@ -14,7 +14,7 @@ import './Management.scss';
 import AddCompanyDetails from './CompanyDetails/AddCompanyDetails';
 import EditCompanyDetails from './CompanyDetails/EditCompanyDetails';
 import AddBeneficialOwner from './BeneficialOwners/AddBeneficialOwner';
-import AddLinkedAccount from './LinkedAccounts/AddLinkedAccount';
+import IAVLinkedAccount from './LinkedAccounts/IAVLinkedAccount';
 import VerifyLinkedAccounts from './LinkedAccounts/VerifyLinkedAccounts';
 import RetryCompanyDetails from './CompanyDetails/RetryCompanyDetails';
 import CompanyDocuments from './CompanyDetails/CompanyDocuments';
@@ -67,7 +67,7 @@ export class RootManagementPage extends React.Component {
               exact
               path={`/management/linked-accounts/add`}
               component={withRouteModal({
-                component: AddLinkedAccount,
+                component: IAVLinkedAccount,
                 title: 'Add Linked Account',
               })}
             />

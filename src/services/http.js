@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import store from '~models';
 import Config from './config';
 
 const Http = axios.create({
@@ -9,6 +10,9 @@ const Http = axios.create({
 Http.interceptors.response.use(
   response => response,
   error => {
+    if (error.response.status === 401) {
+      store.dispatch.auth.logout();
+    }
     return Promise.reject(error);
   }
 );

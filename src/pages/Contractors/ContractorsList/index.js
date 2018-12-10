@@ -98,7 +98,7 @@ class ContractorsList extends React.Component {
     });
   }
 
-  handleSearch = text => {
+  handleSearch = (text, confirm) => {
     const { pagination, sorters } = this.state;
 
     this.setState({ pagination: { ...pagination, current: 1 } });
@@ -110,15 +110,16 @@ class ContractorsList extends React.Component {
       order: sorters.order || undefined,
       searchText: text || undefined,
     });
+    confirm();
   };
 
   onSearch = e => {
     this.setState({ searchText: e.target.value });
   };
 
-  clearSearch = () => {
+  clearSearch = (clearFilters) => {
     this.setState({ searchText: null });
-    this.handleSearch(null);
+    this.handleSearch(null, clearFilters);
   };
 
   handleButtonClick = user => {
@@ -140,9 +141,6 @@ class ContractorsList extends React.Component {
   render() {
     const { contractorsData, pagination, searchText } = this.state;
     const { isLoading } = this.props;
-    const prefix = searchText ? (
-      <Icon type="close-circle" key={'searchText'} onClick={this.clearSearch} />
-    ) : null;
 
     return (
       <div className="ContractorsList">
@@ -154,17 +152,7 @@ class ContractorsList extends React.Component {
           <RefreshButton handleRefresh={this.handleRefresh} isLoading={isLoading} />
         </Header>
         <div className="ContractorsList__additional-box">
-          <div className="ContractorsList__additional-box--left PContractorsList__additional-box--box">
-            <Search
-              prefix={prefix}
-              className="ContractorsList__additional-box--search"
-              placeholder="Find Contractor"
-              onChange={this.onSearch}
-              value={this.state.searchText}
-              onSearch={value => this.handleSearch(value)}
-              enterButton
-            />
-          </div>
+          <div className="ContractorsList__additional-box--left PContractorsList__additional-box--box" />
         </div>
         <Box>
           <Table
@@ -175,7 +163,36 @@ class ContractorsList extends React.Component {
             pagination={pagination}
             loading={isLoading}>
             <Column align="center" dataIndex="tenantProfile.firstName" title="First Name" sorter />
-            <Column align="center" dataIndex="tenantProfile.lastName" title="Last Name" sorter />
+            <Column
+              align="center"
+              dataIndex="tenantProfile.lastName"
+              title="Last Name"
+              filterDropdown={({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
+                const prefix = searchText ? (
+                  <Icon
+                    type="close-circle"
+                    key={'searchText'}
+                    onClick={() => {
+                      this.clearSearch(clearFilters);
+                    }}
+                  />
+                ) : null;
+                return (
+                  <div className="ContractorsList__search-dropdown">
+                    <Search
+                      prefix={prefix}
+                      className="ContractorsList__additional-box--search"
+                      placeholder="Find Contractor"
+                      onChange={this.onSearch}
+                      value={searchText}
+                      onSearch={value => this.handleSearch(value, confirm)}
+                      enterButton
+                    />
+                  </div>
+                );
+              }}
+              filterIcon={filtered => <Icon type="search" />}
+            />
             <Column align="center" dataIndex="tenantProfile.city" title="City" />
             <Column align="center" dataIndex="tenantProfile.state" title="State" />
             <Column

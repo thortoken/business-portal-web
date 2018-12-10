@@ -14,6 +14,7 @@ module.exports = {
         '~components': path.resolve(rootDir, 'src/components'),
         '~pages': path.resolve(rootDir, 'src/pages'),
         '~redux': path.resolve(rootDir, 'src/redux/'),
+        '~models': path.resolve(rootDir, 'src/models/'),
         '~services': path.resolve(rootDir, 'src/services/'),
         '~utils': path.resolve(rootDir, 'src/utils/'),
       },

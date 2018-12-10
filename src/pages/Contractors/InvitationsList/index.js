@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Table, Button } from 'antd';
+import { Table, Button, Icon, Tooltip, Modal } from 'antd';
 import moment from 'moment';
 import classnames from 'classnames';
 import Box from '../../../components/Box/index';
 import makeDefaultPagination from '~utils/pagination';
+import NotificationService from '~services/notification';
 
 import './InvitationsList.scss';
 
@@ -79,6 +80,55 @@ class InvitationsList extends React.Component {
     });
   };
 
+  handleDelete = async row => {
+    const { deleteInvitation } = this.props;
+    const { email, id } = row;
+    Modal.confirm({
+      title: `Are you sure you want to delete invitation to ${email}?`,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk: async () => {
+        try {
+          await deleteInvitation({ id });
+          NotificationService.open({
+            type: 'success',
+            message: 'Success',
+            description: `Invitation to ${email} successfully deleted.`,
+          });
+        } catch (err) {
+          NotificationService.open({
+            type: 'error',
+            message: 'Error',
+            description: `Can not delete invitation to ${email}`,
+          });
+        }
+        return this.handleRefresh();
+      },
+    });
+  };
+
+  handleResend = async row => {
+    const { resendInvitation } = this.props;
+    const { email, id } = row;
+
+    try {
+      await resendInvitation({ id });
+      NotificationService.open({
+        type: 'success',
+        message: 'Success',
+        description: `Invitation to ${email} successfully resent.`,
+      });
+    } catch (err) {
+      NotificationService.open({
+        type: 'error',
+        message: 'Error',
+        description: `Can not resend invitation to ${email}`,
+      });
+    }
+    return this.handleRefresh();
+  };
+
   render() {
     const { invitationsList, pagination } = this.state;
     const { isLoading } = this.props;
@@ -106,7 +156,13 @@ class InvitationsList extends React.Component {
               dataIndex="createdAt"
               title="Post Date"
               render={text => {
-                return <div>{ moment(text).format("MM/DD/YY, hh:mm").toString() }</div>;
+                return (
+                  <div>
+                    {moment(text)
+                      .format('MM/DD/YY, hh:mm')
+                      .toString()}
+                  </div>
+                );
               }}
             />
             <Column
@@ -125,6 +181,32 @@ class InvitationsList extends React.Component {
                 );
               }}
             />
+            <Column
+              align="center"
+              title="Actions"
+              className="Invitations__actions"
+              render={(text, record) => {
+                return (
+                  <span className="Invitations__table__buttons">
+                    {record.status === 'pending' && (
+                      <Tooltip title="Delete invitation.">
+                        <Button onClick={() => this.handleDelete(record)}>
+                          <Icon type="delete" theme="outlined" />
+                        </Button>
+                      </Tooltip>
+                    )}
+
+                    {record.status === 'pending' && (
+                      <Tooltip title="Resend invitation.">
+                        <Button onClick={() => this.handleResend(record)}>
+                          <Icon type="mail" theme="outlined" />
+                        </Button>
+                      </Tooltip>
+                    )}
+                  </span>
+                );
+              }}
+            />
           </Table>
         </Box>
       </div>
@@ -140,6 +222,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getInvitations: dispatch.invitations.getInvitations,
+  deleteInvitation: dispatch.invitations.deleteInvitation,
+  resendInvitation: dispatch.invitations.resendInvitation,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(InvitationsList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(InvitationsList);

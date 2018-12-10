@@ -168,10 +168,10 @@ class Payments extends React.Component {
     });
   };
 
-  handleSearch = text => {
+  handleSearch = (text, confirm) => {
     const { pagination, filters, sorters } = this.state;
 
-    this.setState({ pagination: { ...pagination, current: 1 } });
+    this.setState({ pagination: { ...pagination, current: 1 }, searchText: text });
 
     this.updateTable({
       current: 1,
@@ -181,15 +181,16 @@ class Payments extends React.Component {
       order: sorters.order || undefined,
       searchText: text || undefined,
     });
+    confirm();
   };
 
   onSearch = e => {
     this.setState({ searchText: e.target.value });
   };
 
-  clearSearch = () => {
+  clearSearch = clearFilters => {
     this.setState({ searchText: null });
-    this.handleSearch(null);
+    this.handleSearch(null, clearFilters);
   };
 
   render() {
@@ -206,10 +207,6 @@ class Payments extends React.Component {
     } = this.state;
 
     const { isSummaryLoading, isJobsLoading } = this.props;
-
-    const prefix = searchText ? (
-      <Icon type="close-circle" key={'searchText'} onClick={this.clearSearch} />
-    ) : null;
 
     return (
       <div>
@@ -230,17 +227,7 @@ class Payments extends React.Component {
         />
 
         <div className="PaymentsList__additional-box">
-          <div className="PaymentsList__additional-box--left PaymentsList__additional-box--box">
-            <Search
-              prefix={prefix}
-              className="PaymentsList__additional-box--search"
-              placeholder="Find Contractor"
-              onChange={this.onSearch}
-              value={this.state.searchText}
-              onSearch={value => this.handleSearch(value)}
-              enterButton
-            />
-          </div>
+          <div className="PaymentsList__additional-box--left PaymentsList__additional-box--box" />
           <div className="PaymentsList__additional-box--right PaymentsList__additional-box--box">
             <Switch
               onChange={this.onSelectAll}
@@ -274,6 +261,33 @@ class Payments extends React.Component {
               title="Contractor"
               render={this.showContractorName}
               className="PaymentsList-contractor-selector"
+              filterDropdown={({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
+                const prefix = searchText ? (
+                  <Icon
+                    type="close-circle"
+                    key={'searchText'}
+                    onClick={() => {
+                      this.clearSearch(clearFilters);
+                    }}
+                  />
+                ) : null;
+                return (
+                  <div className="PaymentsList__search-dropdown">
+                    <Search
+                      prefix={prefix}
+                      className="PaymentsList__additional-box--search"
+                      placeholder="Find Contractor"
+                      onChange={this.onSearch}
+                      value={searchText}
+                      onSearch={value => this.handleSearch(value, confirm)}
+                      enterButton
+                    />
+                  </div>
+                );
+              }}
+              filterIcon={filtered => (
+                <Icon type="search" />
+              )}
             />
             <Column
               align="center"
