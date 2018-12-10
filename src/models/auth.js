@@ -64,6 +64,22 @@ const auth = {
         throw err;
       }
     },
+    async resetPassword(data) {
+      try {
+        const response = await Http.post('/auth/resetPassword', data);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async checkResetToken(data) {
+      try {
+        const response = await Http.get(`/auth/resetPassword/${data.resetToken}`);
+        return response.status === 204;
+      } catch (err) {
+        return false;
+      }
+    },
 
     async logout() {
       this.removeToken();

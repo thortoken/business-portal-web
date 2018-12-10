@@ -3,5 +3,10 @@
     "prettier.eslintIntegration": true,
     "jest.autoEnable": true,
     "jest.runAllTestsFirst": false,
-    "jest.pathToJest": "yarn test --coverage"
+    "jest.pathToJest": "yarn test --coverage",
+    "jshint.options": {
+      "esversion": 6,
+      "modules": true,
+      "moz": true
+    },
   }

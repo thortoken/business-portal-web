@@ -158,7 +158,8 @@ class ContractorDetails extends React.Component {
                 updatedAt={currentUser.updatedAt}
                 handleRetryContractor={this.handleRetryContractor}
                 handleGoToFundingSources={this.handleGoToFundingSources}
-                handleGoToDocuments={this.handleGoToDocuments}>
+                handleGoToDocuments={this.handleGoToDocuments}
+                handleSendPasswordReset={this.handleSendPasswordReset}>
                 <Button type="primary" ghost onClick={this.handleGoToFundingSources}>
                   Funding Sources
                 </Button>
@@ -267,6 +268,35 @@ class ContractorDetails extends React.Component {
             description: 'User successfully deleted.',
           });
           history.goBack();
+        } catch (err) {
+          if (err.response.status === 409) {
+            NotificationService.open({
+              type: 'warning',
+              message: 'Warning',
+              description: err.response.data.error,
+            });
+          }
+        }
+      },
+    });
+  };
+
+  handleSendPasswordReset = async () => {
+    const { currentUser, sendPasswordReset } = this.props;
+    const { firstName, lastName } = currentUser.tenantProfile;
+    Modal.confirm({
+      title: `Are you sure you want to send a password reset for ${firstName} ${lastName}?`,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk: async () => {
+        try {
+          await sendPasswordReset(currentUser.id);
+          NotificationService.open({
+            type: 'success',
+            message: 'Success',
+            description: 'Password reset sent.',
+          });
         } catch (err) {
           if (err.response.status === 409) {
             NotificationService.open({
@@ -390,6 +420,7 @@ const mapDispatchToProps = ({
     deleteFundingSource,
     checkFundingSource,
     changeFundingSourceStatus,
+    sendPasswordReset,
   },
 }) => ({
   createTransaction,
@@ -401,6 +432,10 @@ const mapDispatchToProps = ({
   deleteFundingSource,
   checkFundingSource,
   changeFundingSourceStatus,
+  sendPasswordReset,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContractorDetails);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContractorDetails);

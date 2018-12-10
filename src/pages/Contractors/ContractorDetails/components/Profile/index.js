@@ -1,7 +1,7 @@
 import React from 'react';
 
 import PropTypes from 'prop-types';
-import { Button, Icon, Popover } from 'antd';
+import { Button, Icon, Popover, Tooltip } from 'antd';
 import Activity from '../Activity';
 
 import { renderDate } from '~utils/time';
@@ -20,6 +20,7 @@ export default class Profile extends React.PureComponent {
     handleGoToFundingSources: PropTypes.func,
     handleRetryContractor: PropTypes.func,
     handleGoToDocuments: PropTypes.func,
+    handleSendPasswordReset: PropTypes.func,
   };
 
   render() {
@@ -39,6 +40,7 @@ export default class Profile extends React.PureComponent {
       isLoading,
       handleDelete,
       handleEdit,
+      handleSendPasswordReset,
     } = this.props;
     const warningsList = this.verifyUserProfile();
     return (
@@ -57,6 +59,11 @@ export default class Profile extends React.PureComponent {
           </div>
           <div className="Profile-activity">
             <Activity lastActivityDate={updatedAt} />
+            <Tooltip title="Send password reset">
+              <Button className="Profile--button" onClick={handleSendPasswordReset}>
+                <Icon type="redo" theme="outlined" />
+              </Button>
+            </Tooltip>
             <Button className="Profile--button" onClick={handleEdit}>
               <Icon type="form" theme="outlined" />
             </Button>

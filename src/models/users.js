@@ -82,6 +82,14 @@ const users = {
         throw err;
       }
     },
+    async sendPasswordReset(id) {
+      try {
+        const response = await Http.post(`/users/${id}/passwordReset`);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
     async getUsers({ startDate, endDate, status, page, limit, orderBy, order, contractor }) {
       try {
         const response = await Http.get(`/users`, {
