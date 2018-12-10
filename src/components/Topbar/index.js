@@ -25,9 +25,10 @@ const generateMenuItems = list => {
       };
     } else {
       return (
-        <a key={item.label} onClick={item.function}>
-          <Icon type={item.icon} theme="outlined" /> <span>{item.label}</span>
-        </a>
+        <div key={item.label} onClick={item.function}>
+          <Icon type={item.icon} theme="outlined" />{' '}
+          <span style={{ 'padding-left': '10px' }}>{item.label}</span>
+        </div>
       );
     }
   });
