@@ -6,7 +6,6 @@ const auth = {
     async init() {
       const token = localStorage.getItem('thor-token') || null;
       const user = JSON.parse(localStorage.getItem('thor-user')) || null;
-      debugger;
       let roles = JSON.parse(localStorage.getItem('thor-roles')) || [];
       setAuthHeader(token);
       this.setInit({ user, token, roles, loggedOut: false });
@@ -26,7 +25,6 @@ const auth = {
       localStorage.setItem('thor-token', token);
       setAuthHeader(token);
       this.setToken({ token, loggedOut: false });
-      //hella
     },
 
     async saveUser(user) {
