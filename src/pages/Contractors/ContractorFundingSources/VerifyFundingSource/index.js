@@ -92,7 +92,7 @@ export class VerifyFundingSource extends React.Component {
       message: 'Success',
       description: 'Funding source successfully verified.',
     });
-    history.back();
+    history.goBack();
   };
 }
 
