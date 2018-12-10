@@ -32,8 +32,11 @@ const formFields = {
   },
   phone: {
     label: 'Phone',
-    validator: Yup.string().matches(/\d{10}/, '${label} must have 10 digits'),
+    validator: Yup.string()
+      .matches(/\d{10}/, '${label} must have 10 digits')
+      .required(),
     input: {
+      maxLength: 12,
       placeholder: '000 000-0000',
       formatter: formUtils.formatters.phone,
       parser: formUtils.parsers.digitsOnly,
