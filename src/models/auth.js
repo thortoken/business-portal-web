@@ -5,9 +5,11 @@ const auth = {
   effects: {
     async init() {
       const token = localStorage.getItem('thor-token') || null;
+      const user = JSON.parse(localStorage.getItem('thor-user')) || null;
+      debugger;
       let roles = JSON.parse(localStorage.getItem('thor-roles')) || [];
       setAuthHeader(token);
-      this.setInit({ token, roles, loggedOut: false });
+      this.setInit({ user, token, roles, loggedOut: false });
     },
     async pickToken() {
       const token = localStorage.getItem('thor-token') || null;
@@ -15,10 +17,21 @@ const auth = {
       this.setToken({ token, loggedOut: false });
     },
 
+    async pickUser() {
+      const user = localStorage.getItem('thor-user') || null;
+      this.setUser({ ...user });
+    },
+
     async saveToken(token) {
       localStorage.setItem('thor-token', token);
       setAuthHeader(token);
       this.setToken({ token, loggedOut: false });
+      //hella
+    },
+
+    async saveUser(user) {
+      localStorage.setItem('thor-user', JSON.stringify(user));
+      this.setUser({ ...user });
     },
 
     async pickRoles() {
@@ -45,6 +58,11 @@ const auth = {
       this.setRoles({ roles: [], loggedOut: true });
     },
 
+    async removeUser() {
+      localStorage.removeItem('thor-user');
+      this.setRoles({ roles: [], loggedOut: true });
+    },
+
     async login(data) {
       try {
         const response = await Http.post('/auth/login', {
@@ -53,13 +71,13 @@ const auth = {
           tenant: data.tenant || Config.tenantId,
         });
 
-        const { token, name, phone, email } = response.data;
-        const { roles } = response.data.tenantProfile;
-        this.setUser({ name, phone, email });
+        const { token } = response.data;
+        const { roles, phone, email, firstName, lastName, id } = response.data.tenantProfile;
+        await this.saveUser({ firstName, lastName, phone, email, id });
         await this.saveRole(roles, true);
         await this.saveToken(token, true);
 
-        return { token, name, phone, email };
+        return { token, phone, email };
       } catch (err) {
         throw err;
       }
@@ -84,6 +102,7 @@ const auth = {
     async logout() {
       this.removeToken();
       this.removeRoles();
+      this.removeUser();
       Config.savedRoot = '/payments';
     },
   },
@@ -107,13 +126,14 @@ const auth = {
         ...state,
         roles: payload.roles,
         token: payload.token,
+        user: payload.user,
         loggedOut: payload.loggedOut,
       };
     },
-    setUser(state, action) {
+    setUser(state, payload) {
       return {
         ...state,
-        user: action.payload,
+        user: { ...payload },
       };
     },
   },
