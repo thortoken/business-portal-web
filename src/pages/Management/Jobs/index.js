@@ -82,7 +82,8 @@ export class Jobs extends React.Component {
   };
 
   handleEdit = row => {
-    console.log('edit', row);
+    const { history } = this.props;
+    history.push(`/management/jobs/${row.id}/edit`);
   };
 
   handleActive = async row => {
@@ -183,11 +184,11 @@ export class Jobs extends React.Component {
               render={(text, record) => {
                 return (
                   <span className="Jobs__table__buttons">
-                    {/*<Button onClick={() => this.handleEdit(record)}>*/}
-                    {/*<Icon type="form" theme="outlined" />*/}
-                    {/*</Button>*/}
                     <Button onClick={() => this.handleDelete(record)}>
                       <Icon type="delete" theme="outlined" />
+                    </Button>
+                    <Button onClick={() => this.handleEdit(record)}>
+                      <Icon type="form" theme="outlined" />
                     </Button>
                   </span>
                 );

@@ -22,6 +22,7 @@ import AddCompanyDocument from './CompanyDetails/AddCompanyDocument';
 import ChangeAdminPassword from './ChangeAdminPassword';
 import Jobs from './Jobs';
 import AddJob from './Jobs/AddJob';
+import EditJob from './Jobs/EditJob';
 
 export class RootManagementPage extends React.Component {
   render() {
@@ -48,6 +49,14 @@ export class RootManagementPage extends React.Component {
               component={withRouteModal({
                 component: AddJob,
                 title: 'Add Job',
+              })}
+            />
+            <Route
+              exact
+              path={`/management/jobs/:id/edit`}
+              component={withRouteModal({
+                component: EditJob,
+                title: 'Edit Job',
               })}
             />
             <Route

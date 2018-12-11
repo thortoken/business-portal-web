@@ -32,6 +32,24 @@ const jobs = {
         throw err;
       }
     },
+    async updateJob(data) {
+      try {
+        const response = await Http.patch(`/jobs/${data.id}`, data);
+        this.setEditedJobs(null);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async getJob(id) {
+      try {
+        const response = await Http.get(`/jobs/${id}`);
+        this.setEditedJobs(response.data);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
     async deleteJob(id) {
       console.log('deleted');
     },
@@ -49,10 +67,17 @@ const jobs = {
         jobsList: payload,
       };
     },
+    setEditedJobs(state, payload) {
+      return {
+        ...state,
+        editedJob: payload,
+      };
+    },
   },
   state: {
     jobsListPagination: null,
     jobsList: [],
+    editedJob: null,
   },
 };
 
