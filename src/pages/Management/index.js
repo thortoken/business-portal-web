@@ -21,6 +21,7 @@ import CompanyDocuments from './CompanyDetails/CompanyDocuments';
 import AddCompanyDocument from './CompanyDetails/AddCompanyDocument';
 import ChangeAdminPassword from './ChangeAdminPassword';
 import Jobs from './Jobs';
+import AddJob from './Jobs/AddJob';
 
 export class RootManagementPage extends React.Component {
   render() {
@@ -41,6 +42,14 @@ export class RootManagementPage extends React.Component {
             <Route exact path={`/management/integrations`} component={Integrations} />
             <Route exact path={`/management/settings`} component={Settings} />
             <Route exact path={`/management/jobs`} component={Jobs} />
+            <Route
+              exact
+              path={`/management/jobs/add`}
+              component={withRouteModal({
+                component: AddJob,
+                title: 'Add Job',
+              })}
+            />
             <Route
               exact
               path={`/management/linked-accounts/verify`}

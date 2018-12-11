@@ -24,6 +24,14 @@ const jobs = {
         throw err;
       }
     },
+    async addJob(data) {
+      try {
+        const response = await Http.post(`/jobs`, data);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
     async deleteJob(id) {
       console.log('deleted');
     },
