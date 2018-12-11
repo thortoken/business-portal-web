@@ -51,7 +51,12 @@ const jobs = {
       }
     },
     async deleteJob(id) {
-      console.log('deleted');
+      try {
+        const response = await Http.delete(`/jobs/${id}`);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
     },
   },
   reducers: {
