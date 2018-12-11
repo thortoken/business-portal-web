@@ -6,7 +6,9 @@ import connect from 'react-redux/es/connect/connect';
 import Box from '~components/Box';
 
 import './Jobs.scss';
-import { Button, Icon, Modal, Table, Tooltip } from 'antd';
+import { Button, Icon, Modal, Table, Tooltip, Switch } from 'antd';
+
+import NotificationService from '~services/notification';
 
 import RefreshButton from '~components/RefreshButton';
 import Header from '~components/Header';
@@ -18,6 +20,7 @@ const { Column } = Table;
 export class Jobs extends React.Component {
   static propTypes = {
     isLoading: PropTypes.bool,
+    statusIsLoading: PropTypes.bool,
     jobsList: PropTypes.arrayOf(PropTypes.object),
     jobsListPagination: PropTypes.object,
   };
@@ -82,6 +85,25 @@ export class Jobs extends React.Component {
     console.log('edit', row);
   };
 
+  handleActive = async row => {
+    const { changeJobStatus } = this.props;
+    try {
+      await changeJobStatus(row);
+      NotificationService.open({
+        type: 'success',
+        message: 'Success',
+        description: `Job: ${row.name} status successfully changed.`,
+      });
+      await this.handleRefresh();
+    } catch (err) {
+      NotificationService.open({
+        type: 'error',
+        message: 'Error',
+        description: err.toString(),
+      });
+    }
+  };
+
   handleDelete = async row => {
     const { deleteJob } = this.props;
     const { id, name } = row;
@@ -100,7 +122,7 @@ export class Jobs extends React.Component {
   renderAmount = amount => formatUsd(amount);
 
   render() {
-    const { isLoading } = this.props;
+    const { isLoading, statusIsLoading } = this.props;
     const { pagination, jobsList } = this.state;
     return (
       <div className="Jobs">
@@ -117,7 +139,7 @@ export class Jobs extends React.Component {
             rowKey="id"
             onChange={this.handleTableChange}
             pagination={pagination}
-            loading={isLoading}>
+            loading={isLoading || statusIsLoading}>
             <Column
               align="center"
               dataIndex="name"
@@ -142,14 +164,15 @@ export class Jobs extends React.Component {
               align="center"
               dataIndex="isActive"
               title="Active"
-              render={text => {
+              render={(text, record) => {
                 return (
                   <span>
-                    {text ? (
-                      <Icon className="Jobs__active" type="check-circle" theme="outlined" />
-                    ) : (
-                      <Icon className="Jobs__inactive" type="close-circle" theme="outlined" />
-                    )}
+                    <Switch
+                      checked={record.isActive}
+                      onChange={() => this.handleActive(record)}
+                      checkedChildren="Active"
+                      unCheckedChildren="Inactive"
+                    />
                   </span>
                 );
               }}
@@ -181,11 +204,13 @@ const mapStateToProps = state => ({
   jobsList: state.jobs.jobsList,
   jobsListPagination: state.jobs.jobsListPagination,
   isLoading: state.loading.effects.jobs.getJobs,
+  statusIsLoading: state.loading.effects.jobs.changeJobStatus,
 });
 
 const mapDispatchToProps = dispatch => ({
   getJobs: dispatch.jobs.getJobs,
   deleteJob: dispatch.jobs.deleteJob,
+  changeJobStatus: dispatch.jobs.changeJobStatus,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Jobs);

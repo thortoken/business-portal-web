@@ -16,6 +16,14 @@ const jobs = {
         throw err;
       }
     },
+    async changeJobStatus({ id, isActive }) {
+      try {
+        const response = await Http.patch(`/jobs/${id}`, { isActive: !isActive });
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
     async deleteJob(id) {
       console.log('deleted');
     },
