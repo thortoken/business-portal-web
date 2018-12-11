@@ -1,27 +1,42 @@
 import Http from '../services/http';
 
 const jobs = {
-  state: {
-    jobs: [],
-  },
   effects: {
-    async getJobs() {
+    async getJobs({ page, limit }) {
       try {
-        const response = await Http.get('/jobs');
-
-        this.setJobs(response.data);
+        const response = await Http.get('/jobs', {
+          params: {
+            page,
+            limit,
+          },
+        });
+        this.setJobsList(response.data.items);
+        this.setJobsPagination(response.data.pagination);
       } catch (err) {
         throw err;
       }
     },
+    async deleteJob(id) {
+      console.log('deleted');
+    },
   },
   reducers: {
-    setJobs(state, action) {
+    setJobsPagination(state, payload) {
       return {
         ...state,
-        jobs: action.items,
+        jobsListPagination: payload,
       };
     },
+    setJobsList(state, payload) {
+      return {
+        ...state,
+        jobsList: payload,
+      };
+    },
+  },
+  state: {
+    jobsListPagination: null,
+    jobsList: [],
   },
 };
 

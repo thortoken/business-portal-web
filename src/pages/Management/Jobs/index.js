@@ -5,25 +5,26 @@ import connect from 'react-redux/es/connect/connect';
 
 import Box from '~components/Box';
 
-import './BeneficialOwners.scss';
-import { Button, Icon, Modal, Table } from 'antd';
+import './Jobs.scss';
+import { Button, Icon, Modal, Table, Tooltip } from 'antd';
 
 import RefreshButton from '~components/RefreshButton';
 import Header from '~components/Header';
 import makeDefaultPagination from '~utils/pagination';
+import { formatUsd } from '~utils/number';
 
 const { Column } = Table;
 
-export class BeneficialOwners extends React.Component {
+export class Jobs extends React.Component {
   static propTypes = {
     isLoading: PropTypes.bool,
-    beneficialList: PropTypes.arrayOf(PropTypes.object),
-    beneficialListPagination: PropTypes.object,
+    jobsList: PropTypes.arrayOf(PropTypes.object),
+    jobsListPagination: PropTypes.object,
   };
   state = {
-    beneficialList: [],
+    jobsList: [],
     pagination: makeDefaultPagination(),
-    beneficialListPagination: null,
+    jobsListPagination: null,
   };
 
   componentDidMount() {
@@ -31,25 +32,25 @@ export class BeneficialOwners extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.beneficialList !== prevState.beneficialList) {
+    if (nextProps.jobsList !== prevState.jobsList) {
       return {
-        beneficialList: nextProps.beneficialList,
+        jobsList: nextProps.jobsList,
       };
     }
-    if (nextProps.beneficialListPagination !== prevState.beneficialListPagination) {
+    if (nextProps.jobsListPagination !== prevState.jobsListPagination) {
       let pag = prevState.pagination;
       return {
-        beneficialListPagination: nextProps.beneficialListPagination,
-        pagination: { ...pag, total: nextProps.beneficialListPagination.total },
+        jobsListPagination: nextProps.jobsListPagination,
+        pagination: { ...pag, total: nextProps.jobsListPagination.total },
       };
     }
     return null;
   }
 
   handleRefresh = () => {
-    const { getBeneficialOwners } = this.props;
+    const { getJobs } = this.props;
     const { pagination } = this.state;
-    getBeneficialOwners({
+    getJobs({
       page: pagination.current,
       limit: pagination.pageSize,
     });
@@ -59,19 +60,19 @@ export class BeneficialOwners extends React.Component {
     const { isLoading } = this.props;
     if (isLoading) {
     } else {
-      this.props.history.push(`/management/beneficial-owners/add`);
+      this.props.history.push(`/management/jobs/add`);
     }
   };
 
   handleTableChange = pag => {
-    const { getBeneficialOwners } = this.props;
+    const { getJobs } = this.props;
     const { pagination } = this.state;
     let curr = pag.current;
     if (pagination.pageSize !== pag.pageSize) {
       curr = 1;
     }
     this.setState({ pagination: { ...pag, current: curr } });
-    getBeneficialOwners({
+    getJobs({
       page: curr,
       limit: pag.pageSize,
     });
@@ -82,26 +83,28 @@ export class BeneficialOwners extends React.Component {
   };
 
   handleDelete = async row => {
-    const { deleteBeneficialOwner } = this.props;
-    const { id, firstName, lastName } = row;
+    const { deleteJob } = this.props;
+    const { id, name } = row;
     Modal.confirm({
-      title: `Are you sure you want to delete ${firstName} ${lastName}?`,
+      title: `Are you sure you want to delete ${name}?`,
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
       onOk: async () => {
-        await deleteBeneficialOwner(id);
+        await deleteJob(id);
         return this.handleRefresh();
       },
     });
   };
 
+  renderAmount = amount => formatUsd(amount);
+
   render() {
     const { isLoading } = this.props;
-    const { pagination, beneficialList } = this.state;
+    const { pagination, jobsList } = this.state;
     return (
-      <div className="BeneficialOwners">
-        <Header title="Beneficial Owners List" size="medium">
+      <div className="Jobs">
+        <Header title="Jobs List" size="medium">
           <Button type="primary" onClick={this.handleAdd}>
             <Icon type="plus" theme="outlined" />
           </Button>
@@ -109,23 +112,54 @@ export class BeneficialOwners extends React.Component {
         </Header>
         <Box>
           <Table
-            dataSource={beneficialList}
-            className="BeneficialOwners__table"
+            dataSource={jobsList}
+            className="Jobs__table"
             rowKey="id"
             onChange={this.handleTableChange}
             pagination={pagination}
             loading={isLoading}>
-            <Column align="center" dataIndex="firstName" title="First Name" />
-            <Column align="center" dataIndex="lastName" title="Last Name" />
-            <Column align="center" dataIndex="address.city" title="City" />
-            <Column align="center" dataIndex="address.stateProvinceRegion" title="State" />
-            <Column align="center" dataIndex="verificationStatus" title="Status" />
+            <Column
+              align="center"
+              dataIndex="name"
+              title="Name"
+              render={(text, record) => {
+                return (
+                  <Tooltip title={record.description}>
+                    <div className="Jobs__name">{text}</div>
+                  </Tooltip>
+                );
+              }}
+            />
+            <Column
+              align="center"
+              dataIndex="value"
+              title="Value"
+              render={text => {
+                return <span className="Jobs__value">{this.renderAmount(text)}</span>;
+              }}
+            />
+            <Column
+              align="center"
+              dataIndex="isActive"
+              title="Active"
+              render={text => {
+                return (
+                  <span>
+                    {text ? (
+                      <Icon className="Jobs__active" type="check-circle" theme="outlined" />
+                    ) : (
+                      <Icon className="Jobs__inactive" type="close-circle" theme="outlined" />
+                    )}
+                  </span>
+                );
+              }}
+            />
             <Column
               align="center"
               title="Actions"
               render={(text, record) => {
                 return (
-                  <span className="BeneficialOwners__table__buttons">
+                  <span className="Jobs__table__buttons">
                     {/*<Button onClick={() => this.handleEdit(record)}>*/}
                     {/*<Icon type="form" theme="outlined" />*/}
                     {/*</Button>*/}
@@ -144,14 +178,14 @@ export class BeneficialOwners extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  beneficialList: state.beneficialOwners.beneficialList,
-  beneficialListPagination: state.beneficialOwners.beneficialListPagination,
-  isLoading: state.loading.effects.beneficialOwners.getBeneficialOwners,
+  jobsList: state.jobs.jobsList,
+  jobsListPagination: state.jobs.jobsListPagination,
+  isLoading: state.loading.effects.jobs.getJobs,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getBeneficialOwners: dispatch.beneficialOwners.getBeneficialOwners,
-  deleteBeneficialOwner: dispatch.beneficialOwners.deleteBeneficialOwner,
+  getJobs: dispatch.jobs.getJobs,
+  deleteJob: dispatch.jobs.deleteJob,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(BeneficialOwners);
+export default connect(mapStateToProps, mapDispatchToProps)(Jobs);

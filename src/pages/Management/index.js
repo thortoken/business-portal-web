@@ -20,6 +20,7 @@ import RetryCompanyDetails from './CompanyDetails/RetryCompanyDetails';
 import CompanyDocuments from './CompanyDetails/CompanyDocuments';
 import AddCompanyDocument from './CompanyDetails/AddCompanyDocument';
 import ChangeAdminPassword from './ChangeAdminPassword';
+import Jobs from './Jobs';
 
 export class RootManagementPage extends React.Component {
   render() {
@@ -39,6 +40,7 @@ export class RootManagementPage extends React.Component {
             <Route exact path={`/management/linked-accounts`} component={LinkedAccounts} />
             <Route exact path={`/management/integrations`} component={Integrations} />
             <Route exact path={`/management/settings`} component={Settings} />
+            <Route exact path={`/management/jobs`} component={Jobs} />
             <Route
               exact
               path={`/management/linked-accounts/verify`}
