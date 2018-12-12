@@ -6,7 +6,7 @@ import connect from 'react-redux/es/connect/connect';
 import Box from '~components/Box';
 
 import './Jobs.scss';
-import { Button, Icon, Modal, Table, Tooltip, Switch } from 'antd';
+import { Button, Icon, Modal, Table, Tooltip, Switch, Input } from 'antd';
 
 import NotificationService from '~services/notification';
 
@@ -16,6 +16,7 @@ import makeDefaultPagination from '~utils/pagination';
 import { formatUsd } from '~utils/number';
 
 const { Column } = Table;
+const Search = Input.Search;
 
 export class Jobs extends React.Component {
   static propTypes = {
@@ -29,8 +30,8 @@ export class Jobs extends React.Component {
     pagination: makeDefaultPagination(),
     jobsListPagination: null,
     searchName: null,
-    searchIsActive: null,
     sorters: {},
+    filters: {},
   };
 
   componentDidMount() {
@@ -59,15 +60,11 @@ export class Jobs extends React.Component {
 
   updateTable(config) {
     const { getJobs } = this.props;
-    let column = undefined;
-    if (config.orderBy) {
-      column = config.orderBy.split('.')[1];
-    }
     console.log('config', config);
     getJobs({
       page: config.current,
       limit: config.limit,
-      orderBy: column,
+      orderBy: config.orderBy,
       order: config.order,
       name: config.searchName,
       isActive: config.searchIsActive,
@@ -115,6 +112,37 @@ export class Jobs extends React.Component {
     });
   };
 
+  handleSearch = (text, confirm) => {
+    const { pagination, filters, sorters } = this.state;
+    let searchIsActive = undefined;
+
+    if (filters.isActive && filters.isActive.length > 0) {
+      searchIsActive = filters.isActive[0] === 'true';
+    }
+
+    this.setState({ pagination: { ...pagination, current: 1 }, searchText: text });
+
+    this.updateTable({
+      current: 1,
+      limit: pagination.pageSize,
+      status: filters && filters.jobs ? filters.jobs[0] : undefined,
+      orderBy: sorters.columnKey || undefined,
+      order: sorters.order || undefined,
+      searchName: text || undefined,
+      searchIsActive,
+    });
+    confirm();
+  };
+
+  onSearch = e => {
+    this.setState({ searchName: e.target.value });
+  };
+
+  clearSearch = clearFilters => {
+    this.setState({ searchName: null });
+    this.handleSearch(null, clearFilters);
+  };
+
   handleEdit = row => {
     const { history } = this.props;
     history.push(`/management/jobs/${row.id}/edit`);
@@ -158,7 +186,7 @@ export class Jobs extends React.Component {
 
   render() {
     const { isLoading, statusIsLoading } = this.props;
-    const { pagination, jobsList } = this.state;
+    const { pagination, jobsList, searchName } = this.state;
     return (
       <div className="Jobs">
         <Header title="Jobs List" size="medium">
@@ -186,6 +214,31 @@ export class Jobs extends React.Component {
                   </Tooltip>
                 );
               }}
+              filterDropdown={({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
+                const prefix = searchName ? (
+                  <Icon
+                    type="close-circle"
+                    key={'searchText'}
+                    onClick={() => {
+                      this.clearSearch(clearFilters);
+                    }}
+                  />
+                ) : null;
+                return (
+                  <div className="Jobs__search-dropdown">
+                    <Search
+                      prefix={prefix}
+                      className="Jobs__additional-box--search"
+                      placeholder="Find Job"
+                      onChange={this.onSearch}
+                      value={searchName}
+                      onSearch={value => this.handleSearch(value, confirm)}
+                      enterButton
+                    />
+                  </div>
+                );
+              }}
+              filterIcon={filtered => <Icon type="search" />}
             />
             <Column
               align="center"
