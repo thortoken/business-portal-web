@@ -8,7 +8,7 @@ import NotificationService from '~services/notification';
 import FormField from '~components/FormField';
 
 import classNames from 'classnames';
-import { initialValues, formFields, validationSchema } from './formSchema';
+import { formFields, validationSchema } from './formSchema';
 import './EditJob.scss';
 
 export class EditJob extends React.Component {

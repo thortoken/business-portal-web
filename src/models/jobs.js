@@ -2,12 +2,16 @@ import Http from '../services/http';
 
 const jobs = {
   effects: {
-    async getJobs({ page, limit }) {
+    async getJobs({ page, limit, name, isActive, order, orderBy }) {
       try {
         const response = await Http.get('/jobs', {
           params: {
             page,
             limit,
+            orderBy,
+            order,
+            name,
+            isActive,
           },
         });
         this.setJobsList(response.data.items);

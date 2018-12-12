@@ -28,10 +28,17 @@ export class Jobs extends React.Component {
     jobsList: [],
     pagination: makeDefaultPagination(),
     jobsListPagination: null,
+    searchName: null,
+    searchIsActive: null,
+    sorters: {},
   };
 
   componentDidMount() {
-    this.handleRefresh();
+    const { pagination } = this.state;
+    this.updateTable({
+      current: pagination.current,
+      limit: pagination.pageSize,
+    });
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -50,11 +57,27 @@ export class Jobs extends React.Component {
     return null;
   }
 
-  handleRefresh = () => {
+  updateTable(config) {
     const { getJobs } = this.props;
-    const { pagination } = this.state;
+    let column = undefined;
+    if (config.orderBy) {
+      column = config.orderBy.split('.')[1];
+    }
+    console.log('config', config);
     getJobs({
-      page: pagination.current,
+      page: config.current,
+      limit: config.limit,
+      orderBy: column,
+      order: config.order,
+      name: config.searchName,
+      isActive: config.searchIsActive,
+    });
+  }
+
+  handleRefresh = () => {
+    const { pagination } = this.state;
+    this.updateTable({
+      current: pagination.current,
       limit: pagination.pageSize,
     });
   };
@@ -67,17 +90,28 @@ export class Jobs extends React.Component {
     }
   };
 
-  handleTableChange = pag => {
-    const { getJobs } = this.props;
-    const { pagination } = this.state;
+  handleTableChange = (pag, filters, sorters) => {
+    const { pagination, searchName } = this.state;
+    let searchIsActive = undefined;
     let curr = pag.current;
+
     if (pagination.pageSize !== pag.pageSize) {
       curr = 1;
     }
-    this.setState({ pagination: { ...pag, current: curr } });
-    getJobs({
-      page: curr,
+
+    if (filters.isActive.length > 0) {
+      searchIsActive = filters.isActive[0] === 'true';
+    }
+
+    this.setState({ pagination: { ...pag, current: curr }, filters, sorters });
+
+    this.updateTable({
+      current: curr,
       limit: pag.pageSize,
+      orderBy: sorters.columnKey || undefined,
+      order: sorters.order || undefined,
+      searchName: searchName || undefined,
+      searchIsActive,
     });
   };
 
@@ -165,6 +199,17 @@ export class Jobs extends React.Component {
               align="center"
               dataIndex="isActive"
               title="Active"
+              filters={[
+                {
+                  text: 'Active',
+                  value: true,
+                },
+                {
+                  text: 'Inactive',
+                  value: false,
+                },
+              ]}
+              filterMultiple={false}
               render={(text, record) => {
                 return (
                   <span>
@@ -184,9 +229,9 @@ export class Jobs extends React.Component {
               render={(text, record) => {
                 return (
                   <span className="Jobs__table__buttons">
-                    <Button onClick={() => this.handleDelete(record)}>
-                      <Icon type="delete" theme="outlined" />
-                    </Button>
+                    {/*<Button onClick={() => this.handleDelete(record)}>*/}
+                    {/*<Icon type="delete" theme="outlined" />*/}
+                    {/*</Button>*/}
                     <Button onClick={() => this.handleEdit(record)}>
                       <Icon type="form" theme="outlined" />
                     </Button>
