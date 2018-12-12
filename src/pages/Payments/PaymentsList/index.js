@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Table, Spin, Button, Tooltip, Input, Switch } from 'antd';
+import { Icon, Table, Spin, Input, Switch } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
@@ -17,9 +17,8 @@ import makeDefaultPagination from '~utils/pagination';
 
 import RefreshButton from '~components/RefreshButton';
 
-import { AddTransactionModal } from '~pages/Payments/components/AddTransactionModal';
-
 import './PaymentsList.scss';
+import AddTransactionMenu from '../../Transactions/AddTransactionMenu';
 
 const { Column } = Table;
 const Search = Input.Search;
@@ -218,14 +217,6 @@ class Payments extends React.Component {
           <Summary previous={previous} current={current} />
         </Spin>
 
-        <AddTransactionModal
-          userId={this.state.selectedUserId}
-          createTransaction={this.props.createTransaction}
-          isModalVisible={this.state.isAddPaymentModalVisible}
-          onChangeVisibility={this.onChangeVisibility}
-          handleRefresh={this.handleRefresh}
-        />
-
         <div className="PaymentsList__additional-box">
           <div className="PaymentsList__additional-box--left PaymentsList__additional-box--box" />
           <div className="PaymentsList__additional-box--right PaymentsList__additional-box--box">
@@ -285,9 +276,7 @@ class Payments extends React.Component {
                   </div>
                 );
               }}
-              filterIcon={filtered => (
-                <Icon type="search" />
-              )}
+              filterIcon={filtered => <Icon type="search" />}
             />
             <Column
               align="center"
@@ -310,13 +299,7 @@ class Payments extends React.Component {
               title="Actions"
               width="15%"
               render={(text, record) => {
-                return (
-                  <Tooltip placement="top" title={'Add a payment'}>
-                    <Button onClick={() => this.handleAddPaymentClick(record)}>
-                      <Icon type="plus" theme="outlined" />
-                    </Button>
-                  </Tooltip>
-                );
+                return <AddTransactionMenu type={'default'} userId={record.id} />;
               }}
             />
             <Column

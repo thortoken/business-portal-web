@@ -5,6 +5,7 @@ import PaymentsConfirmation from './PaymentsConfirmation';
 import PaymentsList from './PaymentsList';
 
 import { withRouteModal } from '~components/Modal';
+import AddCustomTransaction from '../Transactions/AddCustomTransaction';
 
 export class RootPaymentsPage extends React.Component {
   render() {
@@ -18,6 +19,14 @@ export class RootPaymentsPage extends React.Component {
           component={withRouteModal({
             component: PaymentsConfirmation,
             title: 'Payments Confirmation',
+          })}
+        />
+        <Route
+          exact
+          path={`/payments/:id/transactions/custom`}
+          component={withRouteModal({
+            component: AddCustomTransaction,
+            title: 'With Custom Job',
           })}
         />
         <Route path={`${match.path}`} component={PaymentsList} />
