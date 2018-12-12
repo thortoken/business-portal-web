@@ -60,7 +60,6 @@ export class Jobs extends React.Component {
 
   updateTable(config) {
     const { getJobs } = this.props;
-    console.log('config', config);
     getJobs({
       page: config.current,
       limit: config.limit,
