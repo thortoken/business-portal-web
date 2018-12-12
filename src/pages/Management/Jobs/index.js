@@ -99,7 +99,7 @@ export class Jobs extends React.Component {
       curr = 1;
     }
 
-    if (filters.isActive.length > 0) {
+    if (filters.isActive && filters.isActive.length > 0) {
       searchIsActive = filters.isActive[0] === 'true';
     }
 
@@ -191,6 +191,7 @@ export class Jobs extends React.Component {
               align="center"
               dataIndex="value"
               title="Value"
+              sorter={(a, b) => a.value.length - b.value.length}
               render={text => {
                 return <span className="Jobs__value">{this.renderAmount(text)}</span>;
               }}
