@@ -81,7 +81,6 @@ export class EditContractor extends React.Component {
     const data = {
       ...profile,
       postalCode: String(profile.postalCode),
-      dateOfBirth: transformDateToMoment(profile.dateOfBirth).format('YYYY-MM-DD'),
     };
     await updateTenantProfile({ id, tenantProfile: data });
   };
@@ -153,9 +152,13 @@ const mapState = ({ loading, users: { currentUser } }) => ({
   currentUser,
   isLoading: loading.effects.users.getUser,
 });
+
 const mapDispatch = ({ users: { getUser, updateTenantProfile } }) => ({
   getUser,
   updateTenantProfile,
 });
 
-export default connect(mapState, mapDispatch)(EditContractor);
+export default connect(
+  mapState,
+  mapDispatch
+)(EditContractor);
