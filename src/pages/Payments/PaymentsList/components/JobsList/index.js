@@ -28,6 +28,12 @@ export class JobsList extends Component {
     createTransaction: PropTypes.func,
     deleteTransaction: PropTypes.func,
     handleRefresh: PropTypes.func,
+    history: PropTypes.object,
+  };
+
+  handleEdit = async row => {
+    const { history } = this.props;
+    history.push(`/payments/${row.id}/transactions/edit`);
   };
 
   handleDelete = async row => {
@@ -107,11 +113,11 @@ export class JobsList extends Component {
   renderActions = record => {
     return (
       <div className="paymentslist-subrow-buttons">
-        {/*<Tooltip placement="top" title={'Edit'}>*/}
-        {/*<Button disabled={record.status !== 'new'}>*/}
-        {/*<Icon type="edit" theme="outlined" />*/}
-        {/*</Button>*/}
-        {/*</Tooltip>*/}
+        <Tooltip placement="top" title={'Edit'}>
+          <Button disabled={record.status !== 'new'} onClick={() => this.handleEdit(record)}>
+            <Icon type="edit" theme="outlined" />
+          </Button>
+        </Tooltip>
         <Tooltip placement="top" title={'Delete'}>
           <Button disabled={record.status !== 'new'} onClick={() => this.handleDelete(record)}>
             <Icon type="delete" theme="outlined" />
