@@ -67,6 +67,7 @@ export class Jobs extends React.Component {
       order: config.order,
       name: config.searchName,
       isActive: config.searchIsActive,
+      isCustom: false,
     });
   }
 

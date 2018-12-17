@@ -17,6 +17,7 @@ import RetryContractor from './RetryContractor';
 import VerifyFundingSource from './ContractorFundingSources/VerifyFundingSource';
 import UploadInviteContractor from './UploadInviteContractor';
 import AddCustomTransaction from '../Transactions/AddCustomTransaction';
+import AddExistingTransaction from '../Transactions/AddExistingTransaction';
 
 export class RootContractorsPage extends React.Component {
   render() {
@@ -45,6 +46,14 @@ export class RootContractorsPage extends React.Component {
           component={withRouteModal({
             component: AddCustomTransaction,
             title: 'With Custom Job',
+          })}
+        />
+        <Route
+          exact
+          path={`/contractors/:id/transactions/existing`}
+          component={withRouteModal({
+            component: AddExistingTransaction,
+            title: 'With Existing Job',
           })}
         />
         <Route

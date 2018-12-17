@@ -47,11 +47,11 @@ class AddTransactionMenu extends React.Component {
 
   render() {
     const menuList = [
-      // {
-      //   key: 'existing',
-      //   action: this.handleExisting,
-      //   label: 'With existing job',
-      // },
+      {
+        key: 'existing',
+        action: this.handleExisting,
+        label: 'With existing job',
+      },
       {
         key: 'custom',
         action: this.handleCustom,
