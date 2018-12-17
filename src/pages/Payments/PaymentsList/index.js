@@ -499,11 +499,12 @@ class Payments extends React.Component {
   };
 
   renderJobsList = record => {
-    const { createTransaction, deleteTransaction } = this.props;
+    const { createTransaction, deleteTransaction, history } = this.props;
     return (
       <JobsList
         jobsList={record.jobs}
         userId={record.id}
+        history={history}
         renderAmount={this.renderAmount}
         handleRefresh={this.handleRefresh}
         createTransaction={createTransaction}
