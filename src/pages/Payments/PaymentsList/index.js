@@ -4,6 +4,7 @@ import { Icon, Table, Spin, Input, Switch } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
+import moment from 'moment';
 
 import Box from '~components/Box';
 import Header from '~components/Header';
@@ -214,7 +215,11 @@ class Payments extends React.Component {
         </Header>
 
         <Spin spinning={isSummaryLoading}>
-          <Summary previous={previous} current={current} />
+          <Summary
+            previous={previous}
+            current={current}
+            onDatesChanged={this.handleOnDatesChanged}
+          />
         </Spin>
 
         <div className="PaymentsList__additional-box">
@@ -536,4 +541,7 @@ const mapDispatchToProps = dispatch => ({
   reset: dispatch.payments.reset,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Payments);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Payments);
