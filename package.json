@@ -63,7 +63,8 @@
     "coverage": "yarn test --coverage",
     "eject": "react-scripts eject",
     "deploy-dev": "firebase deploy --only hosting:dev",
-    "deploy-prod": "firebase deploy --only hosting:prod"
+    "deploy-prod": "firebase deploy --only hosting:prod",
+    "deploy-stage": "firebase deploy --only hosting:stage"
   },
   "devDependencies": {
     "babel-plugin-import": "^1.7.0",
