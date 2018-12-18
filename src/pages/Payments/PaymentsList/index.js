@@ -4,7 +4,6 @@ import { Icon, Table, Spin, Input, Switch } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import moment from 'moment';
 
 import Box from '~components/Box';
 import Header from '~components/Header';
@@ -42,14 +41,14 @@ class Payments extends React.Component {
     previous: {
       total: 0,
       users: 0,
-      startDate: '',
-      endDate: '',
+      startDate: null,
+      endDate: null,
     },
     current: {
       total: 0,
       users: 0,
-      startDate: '',
-      endDate: '',
+      startDate: null,
+      endDate: null,
     },
     usersJobs: [],
     selectedTransactionsIds: new Set(),
@@ -64,6 +63,9 @@ class Payments extends React.Component {
     filters: {},
     sorters: {},
     searchText: null,
+    config: {
+      ...getCurrentTwoWeeksPeriod(),
+    },
   };
 
   componentDidMount() {
@@ -133,16 +135,25 @@ class Payments extends React.Component {
     });
   };
 
-  updateTable(config) {
+  updateTable(newConfig) {
     const { getUsersJobs, getTransactionsSummary } = this.props;
+    const { config } = this.state;
+
+    // update the config with the new values
+    Object.assign(config, newConfig);
+    this.setState({ config });
+
+    // use the updated config to update the table
     getTransactionsSummary({
       status: config.status || 'new',
-      ...getCurrentTwoWeeksPeriod(),
+      startDate: config.startDate,
+      endDate: config.endDate,
     });
     getUsersJobs({
-      ...getCurrentTwoWeeksPeriod(),
       page: config.current,
       limit: config.limit,
+      startDate: config.startDate,
+      endDate: config.endDate,
       status: config.status || undefined,
       orderBy: config.orderBy || undefined,
       order: config.order || undefined,
@@ -165,6 +176,13 @@ class Payments extends React.Component {
       orderBy: sorters.columnKey || undefined,
       order: sorters.order || undefined,
       searchText: searchText || undefined,
+    });
+  };
+
+  handleOnDatesChanged = ({ startDate, endDate }) => {
+    this.updateTable({
+      startDate,
+      endDate,
     });
   };
 
