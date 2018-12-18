@@ -29,6 +29,88 @@
       display: block;
       font-size: 1.1rem;
     }
+
+    // NOTE: the order of these styles DO matter
+    
+    .CalendarDay {
+      &__selected_span {
+        background: $color-darker-blue; //background
+        color: white; //text
+        border: 1px solid #80e8e0; //default styles include a border
+      }
+
+      &__selected {
+        background: $color-blue;
+        color: white;
+        border: 1px double #80e8e0;
+      }
+
+      &__selected:hover {
+        background: $color-green-neon;
+        color: black;
+      }
+
+      &__hovered_span &__hovered_span:hover {
+        background: $color-green;
+      }
+
+      &__hovered_span,
+      &__hovered_span:hover {
+        background: $color-blue;
+        border: 1px double #80e8e0;
+        color: white
+      }
+    }
+
+    .DateInput {
+      &_input {
+        background-color: $color-grey-light;
+        font-size: 1.1rem;
+        padding: 1px 5px;
+        margin: 0px;
+        color: $color-grey;
+        border-width: 0px;
+        text-align: center;
+        font-weight: 400;
+      }
+
+      &__small {
+        min-width: 110px;
+      }
+    }
+
+    .DateRangePickerInput {
+      background-color: $color-grey-light;
+      color: $color-grey;
+      padding: 0px;
+
+      ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: $color-grey;
+        opacity: 1; /* Firefox */
+      }
+
+      :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: $color-grey;
+      }
+      
+      ::-ms-input-placeholder { /* Microsoft Edge */
+        color: $color-grey;
+      }
+      
+      &_arrow {
+        color: $color-grey;
+        text-align: center;
+      }
+
+      &_calendarIcon {
+        padding: 0px 0px 2px 0px;
+        margin: 0 10px 0 0px;
+        text-align: left;
+      }
+      &_calendarIcon_svg {
+        fill: $color-grey;
+      }
+    }
   }
 
   &-prev {
