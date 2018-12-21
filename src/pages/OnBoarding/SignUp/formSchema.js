@@ -106,7 +106,6 @@ const formFields = {
           maxLength: 10,
           placeholder: 'MM/DD/YYYY',
           formatter: formUtils.formatters.date,
-          parser: formUtils.parsers.digitsOnly,
         },
       },
       ssn: {
