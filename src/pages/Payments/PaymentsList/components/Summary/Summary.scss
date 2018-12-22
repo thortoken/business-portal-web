@@ -63,6 +63,9 @@
     }
 
     .DateInput {
+        background: $color-grey-light;
+        background-color: $color-grey-light;
+
       &_input {
         background-color: $color-grey-light;
         font-size: 1.1rem;

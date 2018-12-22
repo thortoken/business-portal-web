@@ -62,7 +62,7 @@
 
   &-logo {
     height: $Topbar-height;
-    border-bottom: 1px solid $color-grey-lighter;
+    // border-bottom: 1px solid $color-grey-lighter;
     &-svg{
       height: 2.5rem;
       &:hover + img{
