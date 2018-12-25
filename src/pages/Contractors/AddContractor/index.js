@@ -86,7 +86,6 @@ export class AddContractor extends React.Component {
       const data = {
         ...profile,
         postalCode: String(profile.postalCode),
-        dateOfBirth: transformDateToMoment(profile.dateOfBirth).format('YYYY-MM-DD'),
       };
       createdContractor = await createUser({ profile: data });
       this.setState({ createdContractor });

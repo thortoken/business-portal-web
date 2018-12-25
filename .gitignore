@@ -37,3 +37,9 @@ yarn-error.log*
 
 # webstorm
 .idea/*
+
+# vscode
+.vscode
+
+# temp
+/temp

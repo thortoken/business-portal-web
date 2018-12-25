@@ -32,7 +32,7 @@ export const prepareError = (value, inputName) => {
 };
 
 export const handleFormHttpResponse = (form, errors, response) => {
-  if (response && response.status === 409) {
+  if (response && (response.status === 409 || response.status === 406)) {
     let errorMsg = 'Enter valid values.';
     const singleError = setFormErrors(form, errors);
     if (singleError) {

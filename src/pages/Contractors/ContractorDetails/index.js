@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button, Spin, Modal } from 'antd';
+import { Table, Button, Spin, Modal, Tooltip } from 'antd';
 import { connect } from 'react-redux';
 
 import BackBtn from '~components/BackBtn';
@@ -16,6 +16,7 @@ import makeDefaultPagination from '~utils/pagination';
 import './ContractorDetails.scss';
 import NotificationService from '~services/notification';
 import StatusBlock from '../../../components/StatusBlock';
+import AddTransactionMenu from '../../Transactions/AddTransactionMenu';
 
 const { Column } = Table;
 
@@ -169,13 +170,16 @@ class ContractorDetails extends React.Component {
               <ContractorSummary {...currentUserStatistics} />
             </Spin>
             <Filters onPeriodChange={this.onPeriodChange}>
-              <Button
-                type="primary"
-                icon="plus"
-                size="default"
-                onClick={this.openAddTransactionModal}>
-                Add custom transaction
-              </Button>
+              {/*<Button*/}
+              {/*type="primary"*/}
+              {/*icon="plus"*/}
+              {/*size="default"*/}
+              {/*onClick={this.openAddTransactionModal}>*/}
+              {/*Add transaction*/}
+              {/*</Button>*/}
+              <Tooltip placement="top" title={'Add a transaction'}>
+                <AddTransactionMenu type={'primary'} />
+              </Tooltip>
             </Filters>
             <Spin size="large" spinning={loadingTransactions}>
               <Table
@@ -435,7 +439,4 @@ const mapDispatchToProps = ({
   sendPasswordReset,
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ContractorDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(ContractorDetails);

@@ -18,7 +18,7 @@ export class RouteFactory extends Component {
     const { token, roles, user } = this.props;
 
     if (token) {
-      if (roles.includes('admin')) {
+      if (roles.includes('admin') || roles.includes('adminReader')) {
         const intercomUser = {
           user_id: user.id,
           email: user.email,

@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import formUtils from '~utils/forms';
 import { dateAsMoment } from '~utils/time';
 
-const dateFormat = 'YYYY-MM-DD';
+const dateFormat = 'MM/DD/YYYY';
 
 const formFields = {
   routing: {

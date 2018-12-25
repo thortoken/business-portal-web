@@ -116,3 +116,6 @@ export const dateAsMoment = defaultFormat => (date, format = defaultFormat) => {
 
   return moment(date);
 };
+
+export const monthAndDayTimeFormatter = time =>
+  time && moment(new Date(time).toISOString()).format('MMMM D');

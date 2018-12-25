@@ -20,5 +20,5 @@ export const RouteGuard = allowedRoles => WrappedComponent => {
   };
 };
 
-export const Admin = RouteGuard(['admin']);
+export const Admin = RouteGuard(['admin', 'adminReader']);
 export const Contractor = RouteGuard(['admin', 'contractor']);

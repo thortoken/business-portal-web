@@ -5,9 +5,7 @@ import moment from 'moment';
 import formUtils from '~utils/forms';
 import { dateAsMoment } from '~utils/time';
 
-import DatePickerField from '~components/DatePickerField';
-
-const dateFormat = 'YYYY-MM-DD';
+const dateFormat = 'MM/DD/YYYY';
 
 const formFields = {
   firstName: {
@@ -96,9 +94,7 @@ const formFields = {
       .max(moment().subtract(18, 'years'), 'Contractor must be at least 18 years old')
       .transform(formUtils.yup.dateTransformer(dateFormat)),
     input: {
-      allowClear: false,
-      component: DatePickerField,
-      format: dateFormat,
+      disabled: true,
     },
   },
 };
@@ -113,7 +109,9 @@ const transformData = ({ id, tenantProfile }) => {
     (acc, fieldName) => ({ ...acc, [fieldName]: tenantProfile[fieldName] }),
     { id }
   );
-  data.dateOfBirth = transformDateToMoment(tenantProfile.dateOfBirth);
+  data.dateOfBirth = transformDateToMoment(tenantProfile.dateOfBirth, 'YYYY-MM-DD').format(
+    dateFormat
+  );
   return data;
 };
 

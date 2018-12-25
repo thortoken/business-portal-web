@@ -2,6 +2,54 @@ import Http from '~services/http';
 
 const transactions = {
   effects: {
+    async getTransaction(jobId) {
+      try {
+        const response = await Http.get(`/transactions/${jobId}`);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async editTransaction({ jobId, id, value }) {
+      try {
+        const response = await Http.patch(`/transactions/${id}`, {
+          jobId,
+          value,
+        });
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async addCustomTransaction({ userId, name, value }) {
+      try {
+        const response = await Http.post('/transactions/custom', {
+          userId,
+          value,
+          job: {
+            name,
+            value,
+            description: name,
+            isCustom: true,
+          },
+        });
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async addExistingTransaction({ userId, jobId, value }) {
+      try {
+        const response = await Http.post('/transactions', {
+          userId,
+          value,
+          jobId,
+        });
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
     async createTransaction({ userId, name, value }) {
       try {
         const response = await Http.post('/transactions/custom', {

@@ -11,6 +11,18 @@ export const phone = value =>
     return `${g1}`;
   });
 
+export const date = value =>
+  value &&
+  value.toString().replace(/^(\d{2})(\d{2})(\d{1,4})$/, (all, g1, g2, g3) => {
+    if (g3) {
+      return `${g1}/${g2}/${g3}`;
+    }
+    if (g2) {
+      return `${g1}/${g2}`;
+    }
+    return `${g1}/`;
+  });
+
 export const ssn = value =>
   value &&
   value.toString().replace(/^(\d{3})(\d{0,2})(\d{0,4})$/, (all, g1, g2, g3) => {

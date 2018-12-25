@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Table, Spin, Button, Tooltip, Input, Switch } from 'antd';
+import { Icon, Table, Spin, Input, Switch } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
@@ -17,9 +17,8 @@ import makeDefaultPagination from '~utils/pagination';
 
 import RefreshButton from '~components/RefreshButton';
 
-import { AddTransactionModal } from '~pages/Payments/components/AddTransactionModal';
-
 import './PaymentsList.scss';
+import AddTransactionMenu from '../../Transactions/AddTransactionMenu';
 
 const { Column } = Table;
 const Search = Input.Search;
@@ -42,14 +41,14 @@ class Payments extends React.Component {
     previous: {
       total: 0,
       users: 0,
-      startDate: '',
-      endDate: '',
+      startDate: null,
+      endDate: null,
     },
     current: {
       total: 0,
       users: 0,
-      startDate: '',
-      endDate: '',
+      startDate: null,
+      endDate: null,
     },
     usersJobs: [],
     selectedTransactionsIds: new Set(),
@@ -64,6 +63,9 @@ class Payments extends React.Component {
     filters: {},
     sorters: {},
     searchText: null,
+    config: {
+      ...getCurrentTwoWeeksPeriod(),
+    },
   };
 
   componentDidMount() {
@@ -133,16 +135,25 @@ class Payments extends React.Component {
     });
   };
 
-  updateTable(config) {
+  updateTable(newConfig) {
     const { getUsersJobs, getTransactionsSummary } = this.props;
+    const { config } = this.state;
+
+    // update the config with the new values
+    Object.assign(config, newConfig);
+    this.setState({ config });
+
+    // use the updated config to update the table
     getTransactionsSummary({
       status: config.status || 'new',
-      ...getCurrentTwoWeeksPeriod(),
+      startDate: config.startDate,
+      endDate: config.endDate,
     });
     getUsersJobs({
-      ...getCurrentTwoWeeksPeriod(),
       page: config.current,
       limit: config.limit,
+      startDate: config.startDate,
+      endDate: config.endDate,
       status: config.status || undefined,
       orderBy: config.orderBy || undefined,
       order: config.order || undefined,
@@ -165,6 +176,13 @@ class Payments extends React.Component {
       orderBy: sorters.columnKey || undefined,
       order: sorters.order || undefined,
       searchText: searchText || undefined,
+    });
+  };
+
+  handleOnDatesChanged = ({ startDate, endDate }) => {
+    this.updateTable({
+      startDate,
+      endDate,
     });
   };
 
@@ -215,16 +233,12 @@ class Payments extends React.Component {
         </Header>
 
         <Spin spinning={isSummaryLoading}>
-          <Summary previous={previous} current={current} />
+          <Summary
+            previous={previous}
+            current={current}
+            onDatesChanged={this.handleOnDatesChanged}
+          />
         </Spin>
-
-        <AddTransactionModal
-          userId={this.state.selectedUserId}
-          createTransaction={this.props.createTransaction}
-          isModalVisible={this.state.isAddPaymentModalVisible}
-          onChangeVisibility={this.onChangeVisibility}
-          handleRefresh={this.handleRefresh}
-        />
 
         <div className="PaymentsList__additional-box">
           <div className="PaymentsList__additional-box--left PaymentsList__additional-box--box" />
@@ -285,9 +299,7 @@ class Payments extends React.Component {
                   </div>
                 );
               }}
-              filterIcon={filtered => (
-                <Icon type="search" />
-              )}
+              filterIcon={filtered => <Icon type="search" />}
             />
             <Column
               align="center"
@@ -310,13 +322,7 @@ class Payments extends React.Component {
               title="Actions"
               width="15%"
               render={(text, record) => {
-                return (
-                  <Tooltip placement="top" title={'Add a payment'}>
-                    <Button onClick={() => this.handleAddPaymentClick(record)}>
-                      <Icon type="plus" theme="outlined" />
-                    </Button>
-                  </Tooltip>
-                );
+                return <AddTransactionMenu type={'default'} userId={record.id} />;
               }}
             />
             <Column
@@ -516,11 +522,12 @@ class Payments extends React.Component {
   };
 
   renderJobsList = record => {
-    const { createTransaction, deleteTransaction } = this.props;
+    const { createTransaction, deleteTransaction, history } = this.props;
     return (
       <JobsList
         jobsList={record.jobs}
         userId={record.id}
+        history={history}
         renderAmount={this.renderAmount}
         handleRefresh={this.handleRefresh}
         createTransaction={createTransaction}
@@ -552,4 +559,7 @@ const mapDispatchToProps = dispatch => ({
   reset: dispatch.payments.reset,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Payments);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Payments);

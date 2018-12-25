@@ -46,9 +46,12 @@
     &-current {
       color: $color-green-neon;
     }
+    
+    .ant-table-placeholder {
+      z-index: unset;
+    }
 
     table {
-
       thead > tr > th,
       .ant-table-thead > tr > th.ant-table-column-sort {
         background: $color-darker-blue;

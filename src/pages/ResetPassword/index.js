@@ -28,6 +28,11 @@ export class ResetPassword extends React.Component {
 
     // TODO: don't redirect, just display a message
     if (!isTokenValid) {
+      NotificationService.open({
+        type: 'error',
+        message: 'Error',
+        description: `Invalid reset token`,
+      });
       history.push('/sign-in');
     }
   }
@@ -35,12 +40,15 @@ export class ResetPassword extends React.Component {
   render() {
     return (
       <div className="ResetPassword">
-        <Formik
-          initialValues={initialValues}
-          onSubmit={this.handleSubmit}
-          validationSchema={validationSchema}>
-          {this.renderForm}
-        </Formik>
+        <div className="ResetPassword__container">
+          <div className="ResetPassword__msg">Enter your new password and press reset</div>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={this.handleSubmit}
+            validationSchema={validationSchema}>
+            {this.renderForm}
+          </Formik>
+        </div>
       </div>
     );
   }
