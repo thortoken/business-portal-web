@@ -116,9 +116,13 @@ export class AddCompanyDetails extends React.Component {
               dataSource={generateClassificationOptions(categories)}
               showSearch
               className="AddCompanyDetails_half"
-              filterOption={(inputValue, option) =>
-                option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
-              }
+              filterOption={(inputValue, option) => {
+                if (typeof option.props.children.toUpperCase === 'function') {
+                  return (
+                    option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                  );
+                }
+              }}
               label={value.label}
               {...value.input}
             />
@@ -213,4 +217,7 @@ const mapDispatchToProps = dispatch => ({
   addTenantCompany: dispatch.tenantCompany.addTenantCompany,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddCompanyDetails);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddCompanyDetails);

@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import './css/index.css';
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
 
 import App from './App';
 import store, { history } from './models/index';

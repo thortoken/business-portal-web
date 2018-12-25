@@ -28,6 +28,11 @@ export class ResetPassword extends React.Component {
 
     // TODO: don't redirect, just display a message
     if (!isTokenValid) {
+      NotificationService.open({
+        type: 'error',
+        message: 'Error',
+        description: `Invalid reset token`,
+      });
       history.push('/sign-in');
     }
   }
