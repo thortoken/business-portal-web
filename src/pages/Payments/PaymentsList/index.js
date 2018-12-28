@@ -259,6 +259,7 @@ class Payments extends React.Component {
             pagination={pagination}
             onChange={this.handleTableChange}
             rowKey={record => record.id}
+            expandRowByClick
             expandedRowRender={record => <div>{this.renderJobsList(record)}</div>}>
             <Column
               align="center"

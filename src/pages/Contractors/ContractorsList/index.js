@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Table, Button, Icon, Input } from 'antd';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
+
 import Box from '../../../components/Box/index';
 import makeDefaultPagination from '~utils/pagination';
 import { getCurrentTwoWeeksPeriod } from '~utils/time';
-
-import './ContractorsList.scss';
-
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
 import AddContractorMenu from '../AddContractorMenu';
 import StatusBlock from '../../../components/StatusBlock';
+import './ContractorsList.scss';
 
 const { Column } = Table;
 const Search = Input.Search;
@@ -117,7 +117,7 @@ class ContractorsList extends React.Component {
     this.setState({ searchText: e.target.value });
   };
 
-  clearSearch = (clearFilters) => {
+  clearSearch = clearFilters => {
     this.setState({ searchText: null });
     this.handleSearch(null, clearFilters);
   };
@@ -161,6 +161,11 @@ class ContractorsList extends React.Component {
             rowKey="id"
             onChange={this.handleTableChange}
             pagination={pagination}
+            onRowClick={(user, index, event) => {
+              if (user) {
+                this.props.history.push('/contractors/' + user.id);
+              }
+            }}
             loading={isLoading}>
             <Column align="center" dataIndex="tenantProfile.firstName" title="First Name" sorter />
             <Column
@@ -243,4 +248,7 @@ const mapDispatchToProps = dispatch => ({
   getUsers: dispatch.users.getUsers,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContractorsList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContractorsList);
