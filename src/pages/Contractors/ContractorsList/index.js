@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Table, Button, Icon, Input } from 'antd';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
 
 import Box from '../../../components/Box/index';
 import makeDefaultPagination from '~utils/pagination';
@@ -138,6 +137,13 @@ class ContractorsList extends React.Component {
     });
   };
 
+  goToContractor = user => {
+    const { history } = this.props;
+    if (user) {
+      history.push('/contractors/' + user.id);
+    }
+  };
+
   render() {
     const { contractorsData, pagination, searchText } = this.state;
     const { isLoading } = this.props;
@@ -161,11 +167,11 @@ class ContractorsList extends React.Component {
             rowKey="id"
             onChange={this.handleTableChange}
             pagination={pagination}
-            onRowClick={(user, index, event) => {
-              if (user) {
-                this.props.history.push('/contractors/' + user.id);
-              }
-            }}
+            onRow={record => ({
+              onClick: () => {
+                this.goToContractor(record);
+              },
+            })}
             loading={isLoading}>
             <Column align="center" dataIndex="tenantProfile.firstName" title="First Name" sorter />
             <Column
@@ -248,7 +254,4 @@ const mapDispatchToProps = dispatch => ({
   getUsers: dispatch.users.getUsers,
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ContractorsList);
+export default connect(mapStateToProps, mapDispatchToProps)(ContractorsList);
