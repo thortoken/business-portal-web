@@ -29,7 +29,7 @@ const generateMenuItems = list => {
         value: (
           <div key={item.label} onClick={item.function}>
             <Icon type={item.icon} theme="outlined" />{' '}
-            <span style={{ 'padding-left': '10px' }}>{item.label}</span>
+            <span style={{ 'paddingLeft': '10px' }}>{item.label}</span>
           </div>
         ),
       };

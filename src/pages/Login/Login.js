@@ -32,7 +32,6 @@ export class Login extends React.Component {
 
       <Button
         className="Login__submit-btn"
-        type="submit"
         htmlType="submit"
         disabled={!dirty || isSubmitting}
         loading={isSubmitting}>

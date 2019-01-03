@@ -3,16 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Table, Button, Icon, Input } from 'antd';
 import moment from 'moment';
+
 import Box from '../../../components/Box/index';
 import makeDefaultPagination from '~utils/pagination';
 import { getCurrentTwoWeeksPeriod } from '~utils/time';
-
-import './ContractorsList.scss';
-
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
 import AddContractorMenu from '../AddContractorMenu';
 import StatusBlock from '../../../components/StatusBlock';
+import './ContractorsList.scss';
 
 const { Column } = Table;
 const Search = Input.Search;
@@ -117,7 +116,7 @@ class ContractorsList extends React.Component {
     this.setState({ searchText: e.target.value });
   };
 
-  clearSearch = (clearFilters) => {
+  clearSearch = clearFilters => {
     this.setState({ searchText: null });
     this.handleSearch(null, clearFilters);
   };
@@ -136,6 +135,13 @@ class ContractorsList extends React.Component {
       current: pagination.current,
       limit: pagination.pageSize,
     });
+  };
+
+  goToContractor = user => {
+    const { history } = this.props;
+    if (user) {
+      history.push('/contractors/' + user.id);
+    }
   };
 
   render() {
@@ -161,6 +167,11 @@ class ContractorsList extends React.Component {
             rowKey="id"
             onChange={this.handleTableChange}
             pagination={pagination}
+            onRow={record => ({
+              onClick: () => {
+                this.goToContractor(record);
+              },
+            })}
             loading={isLoading}>
             <Column align="center" dataIndex="tenantProfile.firstName" title="First Name" sorter />
             <Column
