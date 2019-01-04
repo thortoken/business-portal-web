@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Table, Spin, Input, Switch } from 'antd';
+import { Icon, Table, Spin, Input, Switch, Tooltip, Button } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
@@ -18,7 +18,7 @@ import makeDefaultPagination from '~utils/pagination';
 import RefreshButton from '~components/RefreshButton';
 
 import './PaymentsList.scss';
-import AddTransactionMenu from '../../Transactions/AddTransactionMenu';
+import { AddPaymentModal } from '~pages/Payments/components/AddPaymentModal';
 
 const { Column } = Table;
 const Search = Input.Search;
@@ -66,11 +66,12 @@ class Payments extends React.Component {
     config: {
       ...getCurrentTwoWeeksPeriod(),
     },
+    jobsList: [],
   };
 
   componentDidMount() {
     const { resetTransactions, pagination } = this.state;
-    const { reset } = this.props;
+    const { reset, getJobs } = this.props;
     this.updateTable({
       current: pagination.current,
       limit: pagination.pageSize,
@@ -78,6 +79,14 @@ class Payments extends React.Component {
     if (resetTransactions) {
       reset();
     }
+
+    // TODO: do this when they click the 'add payment' button
+    getJobs({
+      page: 1,
+      limit: 200,
+      isActive: true,
+      isCustom: false,
+    });
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -124,6 +133,11 @@ class Payments extends React.Component {
         total: nextProps.paymentsListPagination.total,
       };
     }
+
+    if (nextProps.jobsList !== prevState.jobsList) {
+      localState['jobsList'] = nextProps.jobsList;
+    }
+
     return Object.keys(localState).length ? localState : null;
   }
 
@@ -240,6 +254,17 @@ class Payments extends React.Component {
           />
         </Spin>
 
+        <AddPaymentModal
+          jobsList={this.state.jobsList}
+          userId={this.state.selectedUserId}
+          addExistingTransaction={this.props.addExistingTransaction}
+          addCustomTransaction={this.props.addCustomTransaction}
+          isModalVisible={this.state.isAddPaymentModalVisible}
+          onChangeVisibility={this.onChangeVisibility}
+          handleRefresh={this.handleRefresh}
+          isLoading={this.props.isJobsListLoading}
+        />
+
         <div className="PaymentsList__additional-box">
           <div className="PaymentsList__additional-box--left PaymentsList__additional-box--box" />
           <div className="PaymentsList__additional-box--right PaymentsList__additional-box--box">
@@ -323,7 +348,17 @@ class Payments extends React.Component {
               title="Actions"
               width="15%"
               render={(text, record) => {
-                return <AddTransactionMenu type={'default'} userId={record.id} />;
+                return (
+                  <Tooltip placement="top" title={'Add a payment'}>
+                    <Button
+                      onClick={event => {
+                        event.stopPropagation();
+                        this.handleAddPaymentClick(record);
+                      }}>
+                      <Icon type="plus" theme="outlined" />
+                    </Button>
+                  </Tooltip>
+                );
               }}
             />
             <Column
@@ -549,6 +584,8 @@ const mapStateToProps = state => ({
   selectedTransactionsSummaryValue: state.payments.selectedTransactionsSummaryValue,
   isSummaryLoading: state.loading.effects.transactions.getTransactionsSummary,
   isJobsLoading: state.loading.effects.users.getUsersJobs,
+  isJobsListLoading: state.loading.effects.jobs.getJobs,
+  jobsList: state.jobs.jobsList,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -557,10 +594,10 @@ const mapDispatchToProps = dispatch => ({
   getTransactionsSummary: dispatch.transactions.getTransactionsSummary,
   createTransaction: dispatch.transactions.createTransaction,
   deleteTransaction: dispatch.transactions.deleteTransaction,
+  addExistingTransaction: dispatch.transactions.addExistingTransaction,
+  addCustomTransaction: dispatch.transactions.addCustomTransaction,
+  getJobs: dispatch.jobs.getJobs,
   reset: dispatch.payments.reset,
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Payments);
+export default connect(mapStateToProps, mapDispatchToProps)(Payments);

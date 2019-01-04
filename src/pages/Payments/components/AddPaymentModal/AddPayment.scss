@@ -1,0 +1,38 @@
+@import "../../../../styles/var";
+
+.AddPayment {
+  background-color: #fff;
+  &__button-container {
+    width: 100%;
+    text-align: center;
+    margin-top: 4rem;
+    &--button {
+      padding: 1rem 3rem;
+    }
+  }
+  &__link-button-container {
+    width: 100%;
+    text-align: left;
+    margin: 0px 15px;
+    button {
+      background:none!important;
+      color: blue;
+      border:none; 
+      padding:0!important;
+      font: inherit;
+      /*border is optional*/
+      border-bottom:1px solid blue; 
+      cursor: pointer;
+    }
+  }
+  &__errors {
+    color: $color-inactive;
+  }
+}
+
+.InputGroup {
+  width: 50%;
+  &--wide {
+    width: 100%;
+  }
+}

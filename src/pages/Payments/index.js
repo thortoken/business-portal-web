@@ -44,7 +44,7 @@ export class RootPaymentsPage extends React.Component {
           path={`/payments/:id/transactions/edit`}
           component={withRouteModal({
             component: EditTransaction,
-            title: 'Edit Transaction',
+            title: 'Edit Payment',
           })}
         />
         <Route path={`${match.path}`} component={PaymentsList} />

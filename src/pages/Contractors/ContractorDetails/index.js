@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button, Spin, Modal, Tooltip } from 'antd';
+import { Table, Button, Spin, Modal, Tooltip, Icon } from 'antd';
 import { connect } from 'react-redux';
 
 import BackBtn from '~components/BackBtn';
 import ContractorSummary from './components/ContractorSummary';
 import Filters from './components/Filters';
 import Profile from './components/Profile';
-import { AddTransactionModal } from '../../Payments/components/AddTransactionModal';
+import { AddPaymentModal } from '../../Payments/components/AddPaymentModal';
 
 import { formatUsd } from '~utils/number';
 import { movePeriod, renderShortDate } from '~utils/time';
@@ -36,13 +36,14 @@ const generateMenuItems = list => {
 
 class ContractorDetails extends React.Component {
   static propTypes = {
+    getJobs: PropTypes.func.isRequired,
     getUser: PropTypes.func.isRequired,
     getTransactionsForContractor: PropTypes.func.isRequired,
     transactionsListPagination: PropTypes.object,
   };
 
   state = {
-    isAddTransactionModalVisible: false,
+    isAddPaymentModalVisible: false,
     isAddFundingSourceModalVisible: false,
     currentUser: {},
     periodRange: null,
@@ -58,6 +59,7 @@ class ContractorDetails extends React.Component {
     contractorTransactions: {
       items: [],
     },
+    jobsList: [],
   };
 
   constructor(props) {
@@ -67,10 +69,18 @@ class ContractorDetails extends React.Component {
   }
 
   componentDidMount() {
-    const { match, getUser, checkFundingSource } = this.props;
+    const { match, getUser, checkFundingSource, getJobs } = this.props;
 
     getUser(match.params.id);
     checkFundingSource(match.params.id);
+
+    // TODO: do this when they click the 'add payment' button
+    getJobs({
+      page: 1,
+      limit: 200,
+      isActive: true,
+      isCustom: false,
+    });
   }
 
   componentWillUnmount() {
@@ -113,6 +123,10 @@ class ContractorDetails extends React.Component {
       localState['hasFundingSource'] = nextProps.hasFundingSource;
     }
 
+    if (nextProps.jobsList !== prevState.jobsList) {
+      localState['jobsList'] = nextProps.jobsList;
+    }
+
     return Object.keys(localState).length ? localState : null;
   }
 
@@ -125,7 +139,6 @@ class ContractorDetails extends React.Component {
       loadingContractor,
       contractorTransactions,
       loadingTransactions,
-      createTransaction,
       history,
       hasFundingSource,
     } = this.props;
@@ -137,11 +150,15 @@ class ContractorDetails extends React.Component {
 
     return (
       <div>
-        <AddTransactionModal
+        <AddPaymentModal
+          jobsList={this.state.jobsList}
           userId={match.params.id}
-          createTransaction={createTransaction}
-          isModalVisible={this.state.isAddTransactionModalVisible}
-          onChangeVisibility={this.onChangeVisibilityTransactionModal}
+          addExistingTransaction={this.props.addExistingTransaction}
+          addCustomTransaction={this.props.addCustomTransaction}
+          isModalVisible={this.state.isAddPaymentModalVisible}
+          onChangeVisibility={this.onChangeVisibilityPaymentModal}
+          handleRefresh={this.handleRefresh}
+          isLoading={this.props.isJobsListLoading}
         />
         <Spin size="large" spinning={loadingContractor}>
           <div className="ContractorDetails">
@@ -170,15 +187,10 @@ class ContractorDetails extends React.Component {
               <ContractorSummary {...currentUserStatistics} />
             </Spin>
             <Filters onPeriodChange={this.onPeriodChange}>
-              {/*<Button*/}
-              {/*type="primary"*/}
-              {/*icon="plus"*/}
-              {/*size="default"*/}
-              {/*onClick={this.openAddTransactionModal}>*/}
-              {/*Add transaction*/}
-              {/*</Button>*/}
-              <Tooltip placement="top" title={'Add a transaction'}>
-                <AddTransactionMenu type={'primary'} />
+              <Tooltip placement="top" title={'Add a payment'}>
+                <Button type="primary" onClick={this.openAddPaymentModal}>
+                  <Icon type="plus" />
+                </Button>
               </Tooltip>
             </Filters>
             <Spin size="large" spinning={loadingTransactions}>
@@ -329,20 +341,20 @@ class ContractorDetails extends React.Component {
     });
   };
 
-  openAddTransactionModal = () => {
-    this.setState({ isAddTransactionModalVisible: true });
+  openAddPaymentModal = () => {
+    this.setState({ isAddPaymentModalVisible: true });
   };
 
   openAddFundingSourceModal = () => {
     this.setState({ isAddFundingSourcelVisible: true });
   };
 
-  onChangeVisibilityTransactionModal = (isAddTransactionModalVisible, refreshData = false) => {
+  onChangeVisibilityPaymentModal = (isAddPaymentModalVisible, refreshData = false) => {
     if (refreshData) {
       this.handleTableChange({ ...makeDefaultPagination() });
     }
 
-    this.setState({ isAddTransactionModalVisible });
+    this.setState({ isAddPaymentModalVisible });
   };
 
   onChangeVisibilityFundingSourceModal = (isAddFundingSourcelVisible, refreshData = false) => {
@@ -412,10 +424,17 @@ const mapStateToProps = state => ({
   transactionsListPagination: state.transactions.transactionsListPagination,
   loadingTransactions: state.loading.effects.transactions.getTransactionsForContractor,
   hasFundingSource: state.users.hasFundingSource,
+  isJobsListLoading: state.loading.effects.jobs.getJobs,
+  jobsList: state.jobs.jobsList,
 });
 
 const mapDispatchToProps = ({
-  transactions: { getTransactionsForContractor, createTransaction },
+  transactions: {
+    getTransactionsForContractor,
+    createTransaction,
+    addExistingTransaction,
+    addCustomTransaction,
+  },
   users: {
     getUser,
     deleteUser,
@@ -426,8 +445,11 @@ const mapDispatchToProps = ({
     changeFundingSourceStatus,
     sendPasswordReset,
   },
+  jobs: { getJobs },
 }) => ({
   createTransaction,
+  addExistingTransaction,
+  addCustomTransaction,
   getTransactionsForContractor,
   getUser,
   deleteUser,
@@ -437,6 +459,7 @@ const mapDispatchToProps = ({
   checkFundingSource,
   changeFundingSourceStatus,
   sendPasswordReset,
+  getJobs,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContractorDetails);
