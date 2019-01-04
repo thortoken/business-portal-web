@@ -1,13 +1,14 @@
 import React from 'react';
 
 import PropTypes from 'prop-types';
-import { Button, Icon, Popover, Tooltip } from 'antd';
+import { Icon, Popover } from 'antd';
 import Activity from '../Activity';
 
 import { renderDate } from '~utils/time';
 import { formatPhone } from '~utils/number';
 
 import './Profile.scss';
+import TooltipButton from '~components/TooltipButton';
 import RefreshButton from '~components/RefreshButton';
 
 export default class Profile extends React.PureComponent {
@@ -59,17 +60,24 @@ export default class Profile extends React.PureComponent {
           </div>
           <div className="Profile-activity">
             <Activity lastActivityDate={updatedAt} />
-            <Tooltip title="Send password reset">
-              <Button className="Profile--button" onClick={handleSendPasswordReset}>
-                <Icon type="redo" theme="outlined" />
-              </Button>
-            </Tooltip>
-            <Button className="Profile--button" onClick={handleEdit}>
+            <TooltipButton
+              tooltip="Send password reset"
+              className="Profile--button"
+              onClick={handleSendPasswordReset}>
+              <Icon type="redo" theme="outlined" />
+            </TooltipButton>
+            <TooltipButton
+              tooltip="Edit contractor"
+              className="Profile--button"
+              onClick={handleEdit}>
               <Icon type="form" theme="outlined" />
-            </Button>
-            <Button className="Profile--button" onClick={handleDelete}>
+            </TooltipButton>
+            <TooltipButton
+              tooltip="Delete contractor"
+              className="Profile--button"
+              onClick={handleDelete}>
               <Icon type="delete" theme="outlined" />
-            </Button>
+            </TooltipButton>
             <RefreshButton handleRefresh={handleRefresh} isLoading={isLoading} />
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button, Spin, Modal, Tooltip, Icon } from 'antd';
+import { Table, Button, Spin, Modal, Icon } from 'antd';
 import { connect } from 'react-redux';
 
 import BackBtn from '~components/BackBtn';
@@ -8,7 +8,7 @@ import ContractorSummary from './components/ContractorSummary';
 import Filters from './components/Filters';
 import Profile from './components/Profile';
 import { AddPaymentModal } from '../../Payments/components/AddPaymentModal';
-
+import TooltipButton from '~components/TooltipButton';
 import { formatUsd } from '~utils/number';
 import { movePeriod, renderShortDate } from '~utils/time';
 import makeDefaultPagination from '~utils/pagination';
@@ -16,7 +16,6 @@ import makeDefaultPagination from '~utils/pagination';
 import './ContractorDetails.scss';
 import NotificationService from '~services/notification';
 import StatusBlock from '../../../components/StatusBlock';
-import AddTransactionMenu from '../../Transactions/AddTransactionMenu';
 
 const { Column } = Table;
 
@@ -179,7 +178,7 @@ class ContractorDetails extends React.Component {
                 handleGoToDocuments={this.handleGoToDocuments}
                 handleSendPasswordReset={this.handleSendPasswordReset}>
                 <Button type="primary" ghost onClick={this.handleGoToFundingSources}>
-                  Funding Sources
+                  Bank Info
                 </Button>
               </Profile>
             )}
@@ -187,11 +186,13 @@ class ContractorDetails extends React.Component {
               <ContractorSummary {...currentUserStatistics} />
             </Spin>
             <Filters onPeriodChange={this.onPeriodChange}>
-              <Tooltip placement="top" title={'Add a payment'}>
-                <Button type="primary" onClick={this.openAddPaymentModal}>
-                  <Icon type="plus" />
-                </Button>
-              </Tooltip>
+              <TooltipButton
+                placement="top"
+                tooltip="Add a payment"
+                type="primary"
+                onClick={this.openAddPaymentModal}>
+                <Icon type="plus" />
+              </TooltipButton>
             </Filters>
             <Spin size="large" spinning={loadingTransactions}>
               <Table

@@ -237,6 +237,7 @@ export class AddPaymentModal extends Component {
               />
             );
           }
+          return null;
         })}
 
         <div className="AddPayment__button-container">

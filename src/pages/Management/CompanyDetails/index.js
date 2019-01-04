@@ -1,13 +1,12 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
+import { Spin, Icon, Divider, Popover } from 'antd';
 
 import Box from '~components/Box';
-import { Button, Spin, Icon, Divider, Popover } from 'antd';
 import EditCompanyDetails from './EditCompanyDetails';
 import Header from '~components/Header';
-
+import TooltipButton from '~components/TooltipButton';
 import './CompanyDetails.scss';
 import EditCompanyOwner from './EditCompanyOwner';
 import StatusBlock from '../../../components/StatusBlock';
@@ -105,15 +104,19 @@ export class CompanyDetails extends React.Component {
             company &&
             company.status && <StatusBlock status={company.status} />}
           {!isLoadingCompanyDetails &&
-            !isLoadingCategories && (
-              <Button type="primary" onClick={company ? this.handleEdit : this.handleAdd}>
-                {company ? (
-                  <Icon type="form" theme="outlined" />
-                ) : (
-                  <Icon type="plus" theme="outlined" />
-                )}
-              </Button>
-            )}
+            !isLoadingCategories &&
+            (company ? (
+              <TooltipButton
+                tooltip="Edit company details"
+                type="primary"
+                onClick={this.handleEdit}>
+                <Icon type="form" theme="outlined" />
+              </TooltipButton>
+            ) : (
+              <TooltipButton tooltip="Add company details" type="primary" onClick={this.handleAdd}>
+                <Icon type="plus" theme="outlined" />
+              </TooltipButton>
+            ))}
         </Header>
         <Spin
           size="small"

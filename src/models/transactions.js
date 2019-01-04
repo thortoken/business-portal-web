@@ -1,3 +1,4 @@
+import moment from 'moment';
 import Http from '~services/http';
 
 const transactions = {
@@ -90,8 +91,8 @@ const transactions = {
           params: {
             page,
             limit,
-            startDate: new Date(startDate.utc()),
-            endDate: new Date(endDate.utc()),
+            startDate: startDate.toDate(),
+            endDate: endDate.toDate(),
           },
         });
         this.setTransactionsSummary(response.data);
@@ -116,7 +117,14 @@ const transactions = {
       return { ...state, transactionsListPagination: payload };
     },
     setTransactionsSummary(state, payload) {
-      return { ...state, transactionsSummary: payload };
+      return {
+        ...state,
+        transactionsSummary: {
+          startDate: moment(payload.startDate),
+          endDate: moment(payload.endDate),
+          ...payload,
+        },
+      };
     },
   },
   state: {

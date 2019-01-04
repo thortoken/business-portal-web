@@ -6,8 +6,8 @@ import connect from 'react-redux/es/connect/connect';
 import Box from '~components/Box';
 
 import './LinkedAccounts.scss';
-import { Button, Icon, Modal, Table, Tooltip } from 'antd';
-
+import { Icon, Modal, Table } from 'antd';
+import TooltipButton from '~components/TooltipButton';
 import RefreshButton from '~components/RefreshButton';
 import Header from '~components/Header';
 import makeDefaultPagination from '~utils/pagination';
@@ -130,9 +130,9 @@ export class LinkedAccounts extends React.Component {
       <div className="LinkedAccounts">
         <Header title="Linked Accounts List" size="medium">
           {fundingSources.length === 0 && (
-            <Button type="primary" onClick={this.handleAdd}>
+            <TooltipButton tooltip="Add bank info" type="primary" onClick={this.handleAdd}>
               <Icon type="plus" theme="outlined" />
-            </Button>
+            </TooltipButton>
           )}
           <RefreshButton handleRefresh={this.handleRefresh} isLoading={isLoading} />
         </Header>
@@ -152,25 +152,27 @@ export class LinkedAccounts extends React.Component {
               render={(text, record) => {
                 return (
                   <span className="LinkedAccounts__table__buttons">
-                    <Tooltip title="Delete funding source.">
-                      <Button onClick={() => this.handleDelete(record)}>
-                        <Icon type="delete" theme="outlined" />
-                      </Button>
-                    </Tooltip>
+                    <TooltipButton
+                      tooltip="Delete funding source"
+                      onClick={() => this.handleDelete(record)}>
+                      <Icon type="delete" theme="outlined" />
+                    </TooltipButton>
+
                     {!record.verificationStatus && (
-                      <Tooltip title="Verify funding source.">
-                        <Button loading={isLoadingVerify} onClick={() => this.handleVerify(record)}>
-                          <Icon type="setting" theme="outlined" />
-                        </Button>
-                      </Tooltip>
+                      <TooltipButton
+                        tooltip="Verify funding source"
+                        loading={isLoadingVerify}
+                        onClick={() => this.handleVerify(record)}>
+                        <Icon type="setting" theme="outlined" />
+                      </TooltipButton>
                     )}
 
                     {record.verificationStatus === 'initiated' && (
-                      <Tooltip title="Verify funding source.">
-                        <Button onClick={() => this.handleOpenVerifyAmount()}>
-                          <Icon type="dollar" theme="outlined" />
-                        </Button>
-                      </Tooltip>
+                      <TooltipButton
+                        tooltip="Verify funding source"
+                        onClick={() => this.handleOpenVerifyAmount()}>
+                        <Icon type="dollar" theme="outlined" />
+                      </TooltipButton>
                     )}
                   </span>
                 );

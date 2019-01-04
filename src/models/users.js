@@ -138,8 +138,8 @@ const users = {
           params: {
             limit,
             page,
-            startDate: new Date(startDate.utc()),
-            endDate: new Date(endDate.utc()),
+            startDate: startDate.toDate(),
+            endDate: endDate.toDate(),
             status,
             orderBy,
             order,

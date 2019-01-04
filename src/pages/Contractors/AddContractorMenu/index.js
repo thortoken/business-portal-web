@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Button, Icon } from 'antd';
+import { Icon } from 'antd';
+
+import TooltipButton from '~components/TooltipButton';
 import Dropdown from '~components/Dropdown';
 
 const generateMenuItems = list => {
@@ -60,9 +62,9 @@ class AddContractorMenu extends React.Component {
     const { match } = this.props;
     return (
       <Dropdown options={generateMenuItems(menuList, match.params.id)}>
-        <Button size="default" type="primary">
+        <TooltipButton tooltip="Add contractor" size="default" type="primary">
           <Icon type="plus" theme="outlined" />
-        </Button>
+        </TooltipButton>
       </Dropdown>
     );
   }

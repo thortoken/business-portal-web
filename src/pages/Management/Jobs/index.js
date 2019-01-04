@@ -6,10 +6,10 @@ import connect from 'react-redux/es/connect/connect';
 import Box from '~components/Box';
 
 import './Jobs.scss';
-import { Button, Icon, Modal, Table, Tooltip, Switch, Input } from 'antd';
+import { Icon, Modal, Table, Switch, Input, Tooltip } from 'antd';
 
 import NotificationService from '~services/notification';
-
+import TooltipButton from '~components/TooltipButton';
 import RefreshButton from '~components/RefreshButton';
 import Header from '~components/Header';
 import makeDefaultPagination from '~utils/pagination';
@@ -190,9 +190,9 @@ export class Jobs extends React.Component {
     return (
       <div className="Jobs">
         <Header title="Jobs List" size="medium">
-          <Button type="primary" onClick={this.handleAdd}>
+          <TooltipButton tooltip="Add job" type="primary" onClick={this.handleAdd}>
             <Icon type="plus" theme="outlined" />
-          </Button>
+          </TooltipButton>
           <RefreshButton handleRefresh={this.handleRefresh} isLoading={isLoading} />
         </Header>
         <Box>
@@ -286,9 +286,9 @@ export class Jobs extends React.Component {
                     {/*<Button onClick={() => this.handleDelete(record)}>*/}
                     {/*<Icon type="delete" theme="outlined" />*/}
                     {/*</Button>*/}
-                    <Button onClick={() => this.handleEdit(record)}>
+                    <TooltipButton tooltip="Edit job" onClick={() => this.handleEdit(record)}>
                       <Icon type="form" theme="outlined" />
-                    </Button>
+                    </TooltipButton>
                   </span>
                 );
               }}

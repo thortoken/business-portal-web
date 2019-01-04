@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Table, Button, Icon, Modal, Tooltip } from 'antd';
+import { Table, Button, Icon, Modal } from 'antd';
 import Box from '../../../components/Box/index';
 import makeDefaultPagination from '~utils/pagination';
 import BackBtn from '~components/BackBtn';
 
 import './ContractorFundingSources.scss';
-
+import TooltipButton from '~components/TooltipButton';
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
 import NotificationService from '~services/notification';
@@ -201,19 +201,20 @@ class ContractorFundingSources extends React.Component {
                       <Icon type="delete" theme="outlined" />
                     </Button>
                     {!record.verificationStatus && (
-                      <Tooltip title="Verify funding source.">
-                        <Button loading={isLoadingVerify} onClick={() => this.handleVerify(record)}>
-                          <Icon type="setting" theme="outlined" />
-                        </Button>
-                      </Tooltip>
+                      <TooltipButton
+                        tooltip="Verify funding source."
+                        loading={isLoadingVerify}
+                        onClick={() => this.handleVerify(record)}>
+                        <Icon type="setting" theme="outlined" />
+                      </TooltipButton>
                     )}
 
                     {record.verificationStatus === 'initiated' && (
-                      <Tooltip title="Verify funding source.">
-                        <Button onClick={() => this.handleOpenVerifyAmount(record)}>
-                          <Icon type="dollar" theme="outlined" />
-                        </Button>
-                      </Tooltip>
+                      <TooltipButton
+                        tooltip="Verify funding source."
+                        onClick={() => this.handleOpenVerifyAmount(record)}>
+                        <Icon type="dollar" theme="outlined" />
+                      </TooltipButton>
                     )}
                   </span>
                 );

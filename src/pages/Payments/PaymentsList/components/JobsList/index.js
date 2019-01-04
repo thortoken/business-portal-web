@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { Table, Button, Icon, Tooltip, Modal } from 'antd';
+import { Table, Icon, Modal } from 'antd';
 
 import NotificationService from '~services/notification';
-
+import TooltipButton from '~components/TooltipButton';
 import './JobsList.scss';
 import StatusBlock from '../../../../../components/StatusBlock';
 
@@ -76,19 +76,19 @@ export class JobsList extends Component {
           pagination={false}>
           <Column align="center" dataIndex={null} title="Name" width="10%" />
           <Column align="center" dataIndex="name" title="Name" width="35%" />
-          <Column align="center" dataIndex="jobs" title="Jobs" width="10%" />
+          <Column align="center" dataIndex={null} title="Jobs" width="8%" />
           <Column
             align="center"
             dataIndex="total"
             render={renderAmount}
-            width="14%"
+            width="15%"
             title="Current"
           />
           <Column
             align="center"
             title="Actions"
             render={record => this.renderActions(record)}
-            width="13%"
+            width="15%"
           />
 
           <Column
@@ -96,7 +96,7 @@ export class JobsList extends Component {
             // className="JobsList--uppercase"
             dataIndex="status"
             title="Status"
-            width="18%"
+            width="15%"
             render={text => {
               return (
                 <div>
@@ -113,16 +113,20 @@ export class JobsList extends Component {
   renderActions = record => {
     return (
       <div className="paymentslist-subrow-buttons">
-        <Tooltip placement="top" title={'Edit'}>
-          <Button disabled={record.status !== 'new'} onClick={() => this.handleEdit(record)}>
-            <Icon type="edit" theme="outlined" />
-          </Button>
-        </Tooltip>
-        <Tooltip placement="top" title={'Delete'}>
-          <Button disabled={record.status !== 'new'} onClick={() => this.handleDelete(record)}>
-            <Icon type="delete" theme="outlined" />
-          </Button>
-        </Tooltip>
+        <TooltipButton
+          placement="top"
+          tooltip="Edit"
+          disabled={record.status !== 'new'}
+          onClick={() => this.handleEdit(record)}>
+          <Icon type="edit" theme="outlined" />
+        </TooltipButton>
+        <TooltipButton
+          placement="top"
+          tooltip="Delete"
+          disabled={record.status !== 'new'}
+          onClick={() => this.handleDelete(record)}>
+          <Icon type="delete" theme="outlined" />
+        </TooltipButton>
       </div>
     );
   };

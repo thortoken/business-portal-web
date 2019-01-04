@@ -6,8 +6,9 @@ import connect from 'react-redux/es/connect/connect';
 import Box from '~components/Box';
 
 import './BeneficialOwners.scss';
-import { Button, Icon, Modal, Table } from 'antd';
+import { Icon, Modal, Table } from 'antd';
 
+import TooltipButton from '~components/TooltipButton';
 import RefreshButton from '~components/RefreshButton';
 import Header from '~components/Header';
 import makeDefaultPagination from '~utils/pagination';
@@ -102,9 +103,9 @@ export class BeneficialOwners extends React.Component {
     return (
       <div className="BeneficialOwners">
         <Header title="Beneficial Owners List" size="medium">
-          <Button type="primary" onClick={this.handleAdd}>
+          <TooltipButton type="primary" onClick={this.handleAdd} tooltip="Add beneficial owner">
             <Icon type="plus" theme="outlined" />
-          </Button>
+          </TooltipButton>
           <RefreshButton handleRefresh={this.handleRefresh} isLoading={isLoading} />
         </Header>
         <Box>
@@ -129,9 +130,11 @@ export class BeneficialOwners extends React.Component {
                     {/*<Button onClick={() => this.handleEdit(record)}>*/}
                     {/*<Icon type="form" theme="outlined" />*/}
                     {/*</Button>*/}
-                    <Button onClick={() => this.handleDelete(record)}>
+                    <TooltipButton
+                      tooltip="Delete beneficial owner"
+                      onClick={() => this.handleDelete(record)}>
                       <Icon type="delete" theme="outlined" />
-                    </Button>
+                    </TooltipButton>
                   </span>
                 );
               }}

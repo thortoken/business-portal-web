@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Button, Icon, Tooltip } from 'antd';
-import Dropdown from '~components/Dropdown';
+import { Icon } from 'antd';
 
+import TooltipButton from '~components/TooltipButton';
+import Dropdown from '~components/Dropdown';
 import './AddTransactionMenu.scss';
 
 const generateMenuItems = list => {
@@ -61,11 +62,9 @@ class AddTransactionMenu extends React.Component {
     const { match, type } = this.props;
     return (
       <Dropdown options={generateMenuItems(menuList, match.params.id)}>
-        <Tooltip placement="top" title={'Add a transaction'}>
-          <Button size="default" type={type}>
-            <Icon type="plus" theme="outlined" className="AddTransactionMenu__icon" />
-          </Button>
-        </Tooltip>
+        <TooltipButton placement="top" tooltip="Add a transaction" size="default" type={type}>
+          <Icon type="plus" theme="outlined" className="AddTransactionMenu__icon" />
+        </TooltipButton>
       </Dropdown>
     );
   }

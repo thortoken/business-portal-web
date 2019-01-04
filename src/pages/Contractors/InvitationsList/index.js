@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Table, Button, Icon, Tooltip, Modal } from 'antd';
+import { Table, Button, Icon, Modal } from 'antd';
 import moment from 'moment';
 import classnames from 'classnames';
 import Box from '../../../components/Box/index';
@@ -10,6 +10,7 @@ import NotificationService from '~services/notification';
 
 import './InvitationsList.scss';
 
+import TooltipButton from '~components/TooltipButton';
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
 import AddContractorMenu from '../AddContractorMenu';
@@ -189,19 +190,19 @@ class InvitationsList extends React.Component {
                 return (
                   <span className="Invitations__table__buttons">
                     {record.status === 'pending' && (
-                      <Tooltip title="Delete invitation.">
-                        <Button onClick={() => this.handleDelete(record)}>
-                          <Icon type="delete" theme="outlined" />
-                        </Button>
-                      </Tooltip>
+                      <TooltipButton
+                        tooltip="Delete invitation"
+                        onClick={() => this.handleDelete(record)}>
+                        <Icon type="delete" theme="outlined" />
+                      </TooltipButton>
                     )}
 
                     {record.status === 'pending' && (
-                      <Tooltip title="Resend invitation.">
-                        <Button onClick={() => this.handleResend(record)}>
-                          <Icon type="mail" theme="outlined" />
-                        </Button>
-                      </Tooltip>
+                      <TooltipButton
+                        tooltip="Resend invitation"
+                        onClick={() => this.handleResend(record)}>
+                        <Icon type="mail" theme="outlined" />
+                      </TooltipButton>
                     )}
                   </span>
                 );
@@ -226,7 +227,4 @@ const mapDispatchToProps = dispatch => ({
   resendInvitation: dispatch.invitations.resendInvitation,
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(InvitationsList);
+export default connect(mapStateToProps, mapDispatchToProps)(InvitationsList);

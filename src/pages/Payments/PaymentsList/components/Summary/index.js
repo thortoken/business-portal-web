@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import momentPropTypes from 'react-moment-proptypes';
 import { formatUsd } from '~utils/number';
 import { DateRangePicker } from 'react-dates';
 import { getCurrentTwoWeeksPeriod } from '~utils/time';
@@ -15,8 +16,15 @@ class SummaryBox extends React.Component {
       users: PropTypes.number.isRequired,
     }).isRequired,
     period: PropTypes.oneOf(['prev', 'current']),
+    startDate: momentPropTypes.momentObj,
+    endDate: momentPropTypes.momentObj,
     onDatesChanged: PropTypes.func.isRequired,
   };
+
+  componentDidMount() {
+    const { startDate, endDate } = this.state;
+    this.props.onDatesChanged({ startDate, endDate });
+  }
 
   state = {
     focusedInput: null,
@@ -27,6 +35,11 @@ class SummaryBox extends React.Component {
     if (startDate && endDate && this.state.endDate !== endDate) {
       this.props.onDatesChanged({ startDate, endDate });
     }
+    this.setState({ startDate, endDate });
+  };
+
+  handleOnDatePickerClosed = () => {
+    const { startDate, endDate } = this.props;
     this.setState({ startDate, endDate });
   };
 
@@ -63,6 +76,7 @@ class SummaryBox extends React.Component {
               onFocusChange={focusedInput => {
                 this.handleOnFocusChanged({ focusedInput });
               }}
+              onClose={this.handleOnDatePickerClosed}
               small
               isOutsideRange={() => false}
               noBorder
@@ -78,7 +92,7 @@ class SummaryBox extends React.Component {
   }
 }
 
-const Summary = ({ previous, current, onDatesChanged }) => (
+const Summary = ({ previous, current, onDatesChanged, startDate, endDate }) => (
   <div className="Summary">
     {/*<SummaryBox title="PREV" summary={previous} period="prev" />*/}
     <SummaryBox
@@ -86,6 +100,8 @@ const Summary = ({ previous, current, onDatesChanged }) => (
       summary={current}
       period="current"
       onDatesChanged={onDatesChanged}
+      startDate={startDate}
+      endDate={endDate}
     />
   </div>
 );
@@ -99,6 +115,8 @@ Summary.propTypes = {
     total: PropTypes.number.isRequired,
     users: PropTypes.number.isRequired,
   }).isRequired,
+  startDate: momentPropTypes.momentObj,
+  endDate: momentPropTypes.momentObj,
   onDatesChanged: PropTypes.func.isRequired,
 };
 

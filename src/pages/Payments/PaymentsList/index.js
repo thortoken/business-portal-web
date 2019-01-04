@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Table, Spin, Input, Switch, Tooltip, Button } from 'antd';
+import { Icon, Table, Spin, Tooltip, Input, Radio } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
@@ -9,8 +9,7 @@ import Box from '~components/Box';
 import Header from '~components/Header';
 import BottomBar from '~components/BottomBar';
 import Summary from './components/Summary';
-
-import { getCurrentTwoWeeksPeriod } from '~utils/time';
+import TooltipButton from '~components/TooltipButton';
 import { formatUsd } from '~utils/number';
 import { JobsList } from './components/JobsList';
 import makeDefaultPagination from '~utils/pagination';
@@ -37,45 +36,41 @@ class Payments extends React.Component {
   };
 
   state = {
-    checked: false,
+    selectAll: false,
     previous: {
       total: 0,
       users: 0,
-      startDate: null,
-      endDate: null,
     },
     current: {
       total: 0,
       users: 0,
-      startDate: null,
-      endDate: null,
     },
     usersJobs: [],
     selectedTransactionsIds: new Set(),
     selectedContractorsIds: new Set(),
     selectedTransactionsSummaryValue: 0,
-    pagination: makeDefaultPagination(),
     paymentsListPagination: null,
     selectedTransactionGroups: [],
     resetTransactions: false,
     isAddPaymentModalVisible: false,
     selectedUserId: '',
-    filters: {},
-    sorters: {},
-    searchText: null,
-    config: {
-      ...getCurrentTwoWeeksPeriod(),
+    pagination: makeDefaultPagination(),
+    filters: {
+      status: undefined,
+      contractor: undefined,
     },
-    jobsList: [],
+    sorters: {
+      orderBy: undefined,
+      order: undefined,
+    },
+    searchText: null,
+    statusFilter: null,
   };
 
   componentDidMount() {
-    const { resetTransactions, pagination } = this.state;
+    const { resetTransactions } = this.state;
     const { reset, getJobs } = this.props;
-    this.updateTable({
-      current: pagination.current,
-      limit: pagination.pageSize,
-    });
+    this.updateTable(this.state);
     if (resetTransactions) {
       reset();
     }
@@ -126,10 +121,9 @@ class Payments extends React.Component {
     }
 
     if (nextProps.paymentsListPagination !== prevState.paymentsListPagination) {
-      let pag = prevState.pagination;
       localState['paymentsListPagination'] = nextProps.paymentsListPagination;
       localState['pagination'] = {
-        ...pag,
+        ...prevState.pagination,
         total: nextProps.paymentsListPagination.total,
       };
     }
@@ -142,77 +136,70 @@ class Payments extends React.Component {
   }
 
   handleRefresh = () => {
-    const { pagination } = this.state;
-    this.updateTable({
-      current: pagination.current,
-      limit: pagination.pageSize,
-    });
+    this.updateTable(this.state);
   };
 
-  updateTable(newConfig) {
+  updateTable({ filters, sorters, pagination }) {
     const { getUsersJobs, getTransactionsSummary } = this.props;
-    const { config } = this.state;
 
-    // update the config with the new values
-    Object.assign(config, newConfig);
-    this.setState({ config });
+    this.setState({
+      pagination,
+      filters,
+      sorters,
+    });
 
-    // use the updated config to update the table
     getTransactionsSummary({
-      status: config.status || 'new',
-      startDate: config.startDate,
-      endDate: config.endDate,
+      ...filters,
     });
     getUsersJobs({
-      page: config.current,
-      limit: config.limit,
-      startDate: config.startDate,
-      endDate: config.endDate,
-      status: config.status || undefined,
-      orderBy: config.orderBy || undefined,
-      order: config.order || undefined,
-      contractor: config.searchText || undefined,
+      ...filters,
+      ...sorters,
+      page: pagination.current,
+      limit: pagination.pageSize,
     });
   }
 
-  handleTableChange = (pag, filters, sorters) => {
-    const { pagination, searchText } = this.state;
-    let curr = pag.current;
-    if (pagination.pageSize !== pag.pageSize) {
-      curr = 1;
-    }
-    this.setState({ pagination: { ...pag, current: curr }, filters, sorters });
+  handleTableChange = (p, f, s) => {
+    let { pagination, filters, sorters } = this.state;
 
-    this.updateTable({
-      current: curr,
-      limit: pag.pageSize,
-      status: filters && filters.jobs ? filters.jobs[0] : undefined,
-      orderBy: sorters.columnKey || undefined,
-      order: sorters.order || undefined,
-      searchText: searchText || undefined,
-    });
+    pagination = {
+      ...pagination,
+      current: pagination.pageSize !== p.pageSize && 1,
+    };
+    filters = {
+      ...filters,
+      status: f && f.jobs ? f.jobs[0] : undefined,
+    };
+    sorters = {
+      ...sorters,
+      orderBy: s.columnKey || undefined,
+      order: s.order || undefined,
+    };
+
+    this.updateTable({ filters, sorters, pagination });
   };
 
   handleOnDatesChanged = ({ startDate, endDate }) => {
-    this.updateTable({
-      startDate,
-      endDate,
-    });
+    const { filters, sorters, pagination } = this.state;
+    filters.startDate = startDate;
+    filters.endDate = endDate;
+    this.updateTable({ filters, sorters, pagination });
+  };
+
+  handleStatusFilterChange = e => {
+    const { value } = e.target;
+    const { filters, sorters, pagination } = this.state;
+
+    filters.status = value === 'all' ? undefined : value;
+    this.updateTable({ filters, sorters, pagination });
   };
 
   handleSearch = (text, confirm) => {
-    const { pagination, filters, sorters } = this.state;
+    const { pagination, sorters, filters } = this.state;
+    pagination.current = 1;
+    filters.contractor = text;
 
-    this.setState({ pagination: { ...pagination, current: 1 }, searchText: text });
-
-    this.updateTable({
-      current: 1,
-      limit: pagination.pageSize,
-      status: filters && filters.jobs ? filters.jobs[0] : undefined,
-      orderBy: sorters.columnKey || undefined,
-      order: sorters.order || undefined,
-      searchText: text || undefined,
-    });
+    this.updateTable({ pagination, filters, sorters });
     confirm();
   };
 
@@ -227,7 +214,7 @@ class Payments extends React.Component {
 
   render() {
     const {
-      checked,
+      selectAll,
       previous,
       current,
       selectedTransactionsIds,
@@ -243,6 +230,14 @@ class Payments extends React.Component {
     return (
       <div>
         <Header title="Payments List" size="medium">
+          <Radio.Group
+            value={this.state.filters.status || 'all'}
+            onChange={this.handleStatusFilterChange}>
+            <Radio.Button value="new">New</Radio.Button>
+            <Radio.Button value="processed">Processed</Radio.Button>
+            <Radio.Button value="failed">Failed</Radio.Button>
+            <Radio.Button value="all">All</Radio.Button>
+          </Radio.Group>
           <RefreshButton handleRefresh={this.handleRefresh} isLoading={isJobsLoading} />
         </Header>
 
@@ -250,6 +245,8 @@ class Payments extends React.Component {
           <Summary
             previous={previous}
             current={current}
+            startDate={this.state.filters.startDate}
+            endDate={this.state.filters.endDate}
             onDatesChanged={this.handleOnDatesChanged}
           />
         </Spin>
@@ -265,17 +262,6 @@ class Payments extends React.Component {
           isLoading={this.props.isJobsListLoading}
         />
 
-        <div className="PaymentsList__additional-box">
-          <div className="PaymentsList__additional-box--left PaymentsList__additional-box--box" />
-          <div className="PaymentsList__additional-box--right PaymentsList__additional-box--box">
-            <Switch
-              onChange={this.onSelectAll}
-              checkedChildren="Approve all on the page"
-              unCheckedChildren="Approve all on the page"
-              checked={checked}
-            />
-          </div>
-        </div>
         <Box>
           <Table
             dataSource={usersJobs}
@@ -349,39 +335,36 @@ class Payments extends React.Component {
               width="15%"
               render={(text, record) => {
                 return (
-                  <Tooltip placement="top" title={'Add a payment'}>
-                    <Button
-                      onClick={event => {
-                        event.stopPropagation();
-                        this.handleAddPaymentClick(record);
-                      }}>
-                      <Icon type="plus" theme="outlined" />
-                    </Button>
-                  </Tooltip>
+                  <TooltipButton
+                    placement="top"
+                    tooltip="Add a payment"
+                    onClick={event => {
+                      event.stopPropagation();
+                      this.handleAddPaymentClick(record);
+                    }}>
+                    <Icon type="plus" theme="outlined" />
+                  </TooltipButton>
                 );
               }}
             />
             <Column
               className="PaymentsList-table-approve PaymentsList-approve-selector"
-              title="Approve"
+              title={() => {
+                return (
+                  <button
+                    className={classnames(null, {
+                      active: selectAll,
+                    })}
+                    onClick={this.onSelectAll}>
+                    <Tooltip title="Approve All">
+                      <Icon type="check" />
+                    </Tooltip>
+                  </button>
+                );
+              }}
               dataIndex="jobs"
               align="center"
               width="15%"
-              filters={[
-                {
-                  text: 'New',
-                  value: 'new',
-                },
-                {
-                  text: 'Processed',
-                  value: 'processed',
-                },
-                {
-                  text: 'Failed',
-                  value: 'failed',
-                },
-              ]}
-              filterMultiple={false}
               render={(text, record) => this.renderStatusColumn(record)}
             />
           </Table>
@@ -451,7 +434,7 @@ class Payments extends React.Component {
     });
 
     this.setState({
-      checked: selectedTransactionsIds.size === usersJobs.length,
+      selectAll: selectedTransactionsIds.size === usersJobs.length,
     });
 
     updatePaymentsList({
@@ -485,7 +468,10 @@ class Payments extends React.Component {
           className={classnames(null, {
             active: this.isActive(record),
           })}
-          onClick={() => this.handleSelectTransaction(record)}>
+          onClick={event => {
+            event.stopPropagation();
+            this.handleSelectTransaction(record);
+          }}>
           <Icon type="check" />
         </button>
       );
@@ -505,7 +491,7 @@ class Payments extends React.Component {
     history.push(`${match.url}/confirmation`);
   };
 
-  onSelectAll = e => {
+  onSelectAll = () => {
     const { usersJobs, updatePaymentsList } = this.props;
     let data = {
       selectedTransactionsSummaryValue: 0,
@@ -514,7 +500,9 @@ class Payments extends React.Component {
       selectedTransactionGroups: [],
     };
 
-    if (e) {
+    const selectAll = !this.state.selectAll;
+
+    if (selectAll) {
       usersJobs.forEach(user => {
         let selected = false;
         let total = user.jobs
@@ -544,8 +532,7 @@ class Payments extends React.Component {
       });
     }
 
-    this.setState({ checked: e });
-
+    this.setState({ selectAll });
     updatePaymentsList({ ...data });
   };
 
