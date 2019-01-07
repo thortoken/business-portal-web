@@ -204,9 +204,14 @@ export class AddPaymentModal extends Component {
                   name={name}
                   label={options.label}
                   {...options.input}
-                  className={classNames('', {
+                  className={classNames('InputGroup--addon', {
                     'InputGroup--wide': options.input.wide,
                   })}
+                  addonAfter={
+                    <button tabIndex="-1" onClick={this.handleUseExistingJobClick}>
+                      X
+                    </button>
+                  }
                 />
               );
             }

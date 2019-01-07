@@ -35,4 +35,17 @@
   &--wide {
     width: 100%;
   }
+  &--addon {
+    .ant-input-group {
+      .ant-input-group-addon {
+        position: absolute;
+        right: 16px;
+        top: 14px;
+        padding-bottom: 10px;
+        background-color: transparent;
+        border: 0px;
+        color: #d9d9d9;
+      }
+    }
+  }
 }
