@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button, Select, Spin } from 'antd';
+import { Modal, Button, Select, Spin, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik } from 'formik';
@@ -119,9 +119,9 @@ export class AddPaymentModal extends Component {
     NotificationService.open({
       type: 'success',
       message: 'Success',
-      description: 'Transaction successfully added.',
+      description: 'Payment successfully added.',
     });
-    onChangeVisibility(false);
+    onChangeVisibility(false, true);
     this.setState({
       errorMsg: '',
       formData: prepareFormFieldsAndValidation(),
@@ -207,10 +207,16 @@ export class AddPaymentModal extends Component {
                   className={classNames('InputGroup--addon', {
                     'InputGroup--wide': options.input.wide,
                   })}
-                  addonAfter={
-                    <button tabIndex="-1" onClick={this.handleUseExistingJobClick}>
-                      X
-                    </button>
+                  addonBefore={
+                    <Tooltip title="Cancel create new">
+                      <button
+                        className="InputGroup--cancel-button"
+                        type="button"
+                        tabIndex="-1"
+                        onClick={this.handleUseExistingJobClick}>
+                        X
+                      </button>
+                    </Tooltip>
                   }
                 />
               );

@@ -479,6 +479,10 @@ class Payments extends React.Component {
   };
 
   onChangeVisibility = (isAddPaymentModalVisible, refreshData = false) => {
+    if (refreshData) {
+      this.handleRefresh();
+    }
+
     this.setState({ isAddPaymentModalVisible });
   };
 

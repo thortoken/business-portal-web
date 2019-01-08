@@ -39,13 +39,17 @@
     .ant-input-group {
       .ant-input-group-addon {
         position: absolute;
-        right: 16px;
+        right: -5px;
         top: 14px;
         padding-bottom: 10px;
         background-color: transparent;
+        background: transparent;
         border: 0px;
         color: #d9d9d9;
       }
     }
+  }
+  &--cancel-button {
+    background: transparent;
   }
 }
