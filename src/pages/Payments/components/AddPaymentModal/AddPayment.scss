@@ -10,21 +10,6 @@
       padding: 1rem 3rem;
     }
   }
-  &__link-button-container {
-    width: 100%;
-    text-align: left;
-    margin: 0px 15px;
-    button {
-      background:none!important;
-      color: blue;
-      border:none; 
-      padding:0!important;
-      font: inherit;
-      /*border is optional*/
-      border-bottom:1px solid blue; 
-      cursor: pointer;
-    }
-  }
   &__errors {
     color: $color-inactive;
   }
@@ -38,18 +23,16 @@
   &--addon {
     .ant-input-group {
       .ant-input-group-addon {
-        position: absolute;
-        right: -5px;
-        top: 14px;
-        padding-bottom: 10px;
+        padding: 0px;
         background-color: transparent;
         background: transparent;
         border: 0px;
-        color: #d9d9d9;
+        width: auto;
+        .ant-btn {
+          padding: 4px;
+          height: auto;
+        }
       }
     }
-  }
-  &--cancel-button {
-    background: transparent;
   }
 }

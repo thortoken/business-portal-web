@@ -65,6 +65,7 @@
     "coverage": "yarn test --coverage",
     "eject": "react-scripts eject",
     "deploy-dev": "firebase deploy --only hosting:dev",
+    "deploy-stage": "firebase deploy --only hosting:stage",
     "deploy-prod": "firebase deploy --only hosting:prod"
   },
   "devDependencies": {

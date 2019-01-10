@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Modal, Button, Select, Spin, Tooltip } from 'antd';
+import { Modal, Button, Select, Spin, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik } from 'formik';
 
+import TooltipButton from '~components/TooltipButton';
 import SelectField from '~components/SelectField';
 import FormField from '~components/FormField';
 import NotificationService from '../../../../services/notification';
@@ -21,7 +22,9 @@ const generateJobs = (list, customJobName) => {
     </Option>
   ));
   jobs.push(
-    <Option key={'custom-job'} value={'custom-job'}>
+    <Option
+      key={'3aad44dc-bec1-43c0-8ec2-b0bed00bb1d4'}
+      value={'3aad44dc-bec1-43c0-8ec2-b0bed00bb1d4'}>
       {`${customJobName} (create new)`}
     </Option>
   );
@@ -33,13 +36,12 @@ export class AddPaymentModal extends Component {
     isLoading: PropTypes.bool,
     jobsList: PropTypes.arrayOf(PropTypes.object).isRequired,
     addExistingTransaction: PropTypes.func.isRequired,
+    addCustomTransaction: PropTypes.func.isRequired,
     onChangeVisibility: PropTypes.func,
     userId: PropTypes.string,
-    canAddCustom: PropTypes.bool,
   };
 
   state = {
-    isValid: false,
     errorMsg: '',
     formData: prepareFormFieldsAndValidation(),
     jobsList: [],
@@ -57,12 +59,7 @@ export class AddPaymentModal extends Component {
   handleModalCancel = () => {
     const { onChangeVisibility } = this.props;
     onChangeVisibility(false);
-    this.setState({
-      errorMsg: '',
-      formData: prepareFormFieldsAndValidation(),
-      isCustomJob: false,
-      customJobName: '',
-    });
+    this.resetCustomJob();
   };
 
   handleOnSelect = event => {
@@ -78,7 +75,6 @@ export class AddPaymentModal extends Component {
             value: filtered[0].value,
             description: filtered[0].description,
           }),
-          isValid: true,
           isCustomJob: false,
           customJobName: '',
         });
@@ -90,7 +86,6 @@ export class AddPaymentModal extends Component {
             value: undefined,
             description: undefined,
           }),
-          isValid: true,
           isCustomJob: true,
         });
       }
@@ -122,26 +117,20 @@ export class AddPaymentModal extends Component {
       description: 'Payment successfully added.',
     });
     onChangeVisibility(false, true);
-    this.setState({
-      errorMsg: '',
-      formData: prepareFormFieldsAndValidation(),
-      isCustomJob: false,
-      customJobName: '',
-    });
+    this.resetCustomJob();
   };
 
-  handleUseExistingJobClick = () => {
+  resetCustomJob = () => {
     this.setState({
       errorMsg: '',
       formData: prepareFormFieldsAndValidation(),
       isCustomJob: false,
       customJobName: '',
-      isValid: false,
     });
   };
 
   render() {
-    const { errorMsg, formData, jobsList, isValid } = this.state;
+    const { errorMsg, formData, isValid } = this.state;
     const { isLoading } = this.props;
 
     return (
@@ -153,24 +142,23 @@ export class AddPaymentModal extends Component {
         destroyOnClose>
         <div className="AddPayment_errors">{errorMsg}</div>
         <Spin spinning={isLoading}>
-          {jobsList.length > 0 &&
-            !isLoading && (
-              <Formik
-                initialValues={formData.initialValues}
-                onSubmit={this.handleSubmit}
-                validationSchema={validationSchema}
-                isInitialValid={isValid}
-                enableReinitialize>
-                {this.renderForm}
-              </Formik>
-            )}
+          {!isLoading && (
+            <Formik
+              initialValues={formData.initialValues}
+              onSubmit={this.handleSubmit}
+              validationSchema={validationSchema}
+              isInitialValid={isValid}
+              enableReinitialize>
+              {this.renderForm}
+            </Formik>
+          )}
         </Spin>
       </Modal>
     );
   }
 
   renderForm = ({ handleSubmit, isSubmitting, values, dirty, valid }) => {
-    const { customJobName, jobsList, isCustomJob, isValid } = this.state;
+    const { customJobName, isCustomJob, jobsList } = this.state;
     return (
       <form onSubmit={handleSubmit}>
         {Object.entries(formFields).map(([name, options]) => {
@@ -207,16 +195,15 @@ export class AddPaymentModal extends Component {
                   className={classNames('InputGroup--addon', {
                     'InputGroup--wide': options.input.wide,
                   })}
-                  addonBefore={
-                    <Tooltip title="Cancel create new">
-                      <button
-                        className="InputGroup--cancel-button"
-                        type="button"
-                        tabIndex="-1"
-                        onClick={this.handleUseExistingJobClick}>
-                        X
-                      </button>
-                    </Tooltip>
+                  addonAfter={
+                    <TooltipButton
+                      tooltip="Cancel create new"
+                      className="InputGroup--cancel-button"
+                      type="button"
+                      tabIndex="-1"
+                      onClick={this.resetCustomJob}>
+                      <Icon type="close" />
+                    </TooltipButton>
                   }
                 />
               );
@@ -253,7 +240,6 @@ export class AddPaymentModal extends Component {
 
         <div className="AddPayment__button-container">
           <Button
-            disabled={!isValid}
             size="large"
             type="primary"
             loading={this.isSubmitting}
