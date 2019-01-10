@@ -8,8 +8,9 @@ import EditContractor from './EditContractor';
 import InvitationsList from './InvitationsList';
 import InviteContractor from './InviteContractor';
 import ContractorFundingSources from './ContractorFundingSources';
-import ContractorDocuments from './ContractorDocuments';
+import ContractorDocumentsList from './ContractorDocumentsList';
 import AddContractorDocument from './AddContractorDocument';
+import AddDwollaDocument from './AddDwollaDocument';
 
 import { withRouteModal } from '~components/Modal';
 import AddFundingSource from './ContractorFundingSources/AddFundingSource';
@@ -31,7 +32,7 @@ export class RootContractorsPage extends React.Component {
           path={`${match.path}/:id/fundingSources`}
           component={ContractorFundingSources}
         />
-        <Route exact path={`${match.path}/:id/documents`} component={ContractorDocuments} />
+        <Route exact path={`${match.path}/:id/documents`} component={ContractorDocumentsList} />
         <Route
           exact
           path={`/contractors/:id/fundingSources/verify/:fsId`}
@@ -73,6 +74,11 @@ export class RootContractorsPage extends React.Component {
           exact
           path={`/contractors/:id/documents/add`}
           component={withRouteModal({ component: AddContractorDocument, title: 'Add Document' })}
+        />
+        <Route
+          exact
+          path={`/contractors/:id/documents/dwolla`}
+          component={withRouteModal({ component: AddDwollaDocument, title: 'Add Document' })}
         />
         <Route
           exact

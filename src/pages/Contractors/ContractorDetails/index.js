@@ -175,10 +175,17 @@ class ContractorDetails extends React.Component {
                 updatedAt={currentUser.updatedAt}
                 handleRetryContractor={this.handleRetryContractor}
                 handleGoToFundingSources={this.handleGoToFundingSources}
-                handleGoToDocuments={this.handleGoToDocuments}
+                handleGoToDocuments={this.handleAddDwollaDocuments}
                 handleSendPasswordReset={this.handleSendPasswordReset}>
                 <Button type="primary" ghost onClick={this.handleGoToFundingSources}>
                   Bank Info
+                </Button>
+                <Button
+                  style={{ marginLeft: '10px' }}
+                  type="primary"
+                  ghost
+                  onClick={this.handleGoToDocuments}>
+                  Documents
                 </Button>
               </Profile>
             )}
@@ -257,6 +264,11 @@ class ContractorDetails extends React.Component {
   handleGoToDocuments = () => {
     const { history, match } = this.props;
     history.replace(`/contractors/${match.params.id}/documents`);
+  };
+
+  handleAddDwollaDocuments = () => {
+    const { history, match } = this.props;
+    history.replace(`/contractors/${match.params.id}/documents/dwolla`);
   };
 
   handleRetryContractor = () => {
