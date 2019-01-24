@@ -37,7 +37,12 @@ class Contractor extends React.Component {
   };
 
   componentDidMount() {
-    this.handleRefresh();
+    const { user, history } = this.props;
+    if (user.status !== 'active') {
+      history.push('/on-boarding');
+    } else {
+      this.handleRefresh();
+    }
   }
 
   componentWillUnmount() {}
@@ -153,13 +158,14 @@ class Contractor extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  user: state.auth.user,
   contractorTransactions: state.transactions.contractorTransactions,
   transactionsListPagination: state.transactions.transactionsListPagination,
   loadingTransactions: state.loading.effects.transactions.getTransactions,
 });
 
-const mapDispatchToProps = ({ transactions: { getTransactions } }) => ({
-  getTransactions,
+const mapDispatchToProps = dispatch => ({
+  getTransactions: dispatch.transactions.getTransactions,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Contractor);
