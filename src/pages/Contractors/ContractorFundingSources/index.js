@@ -38,7 +38,7 @@ class ContractorFundingSources extends React.Component {
     getUserFundingSources({
       page: pagination.current,
       limit: pagination.pageSize,
-      id: match.params.id,
+      userId: match.params.id,
     });
   }
 
@@ -69,7 +69,7 @@ class ContractorFundingSources extends React.Component {
     getUserFundingSources({
       page: curr,
       limit: pag.pageSize,
-      id: match.params.id,
+      userId: match.params.id,
     });
   };
 
@@ -89,7 +89,7 @@ class ContractorFundingSources extends React.Component {
     getUserFundingSources({
       page: pagination.current,
       limit: pagination.pageSize,
-      id: match.params.id,
+      userId: match.params.id,
     });
   };
 

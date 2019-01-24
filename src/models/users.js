@@ -3,17 +3,25 @@ import _ from 'lodash';
 
 const users = {
   effects: {
-    async create(data) {
+    async addAdmin(data) {
       try {
-        const response = await Http.post('/users', data);
+        const response = await Http.post('/users/admins', data);
         return response.data;
       } catch (err) {
         throw err;
       }
     },
-    async createFundingSource({ id, data }) {
+    async addContractor(data) {
       try {
-        const response = await Http.post(`/users/${id}/fundingSources`, data);
+        const response = await Http.post('/users/contractors', data);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async createFundingSource({ userId, data }) {
+      try {
+        const response = await Http.post(`/users/${userId}/fundingSources`, data);
         return response.data;
       } catch (err) {
         throw err;
@@ -35,9 +43,9 @@ const users = {
         throw err;
       }
     },
-    async updateTenantProfile({ id, tenantProfile }) {
+    async updateTenantProfile({ userId, tenantProfile }) {
       try {
-        const response = await Http.patch(`/users/${id}/profile`, { profile: tenantProfile });
+        const response = await Http.patch(`/users/${userId}/profile`, { profile: tenantProfile });
         this.setTenantProfile(tenantProfile);
         return response.data;
       } catch (err) {
@@ -52,9 +60,9 @@ const users = {
         throw err;
       }
     },
-    async checkFundingSource(id) {
+    async checkFundingSource(userId) {
       try {
-        const response = await Http.get(`/users/${id}/fundingSources/default`);
+        const response = await Http.get(`/users/${userId}/fundingSources/default`);
         this.setHasFundingSource(true);
         return response.data;
       } catch (err) {
@@ -82,9 +90,9 @@ const users = {
         throw err;
       }
     },
-    async sendPasswordReset(id) {
+    async sendPasswordReset(userId) {
       try {
-        const response = await Http.post(`/users/${id}/passwordReset`);
+        const response = await Http.post(`/users/${userId}/passwordReset`);
         return response.data;
       } catch (err) {
         throw err;
@@ -111,14 +119,14 @@ const users = {
       }
     },
     async getCurrentUserStatistics({
-      id,
+      userId,
       currentStartDate,
       currentEndDate,
       previousStartDate,
       previousEndDate,
     }) {
       try {
-        const response = await Http.get(`/users/${id}/statistics`, {
+        const response = await Http.get(`/users/${userId}/statistics`, {
           params: {
             currentStartDate: new Date(currentStartDate.utc()),
             currentEndDate: new Date(currentEndDate.utc()),
@@ -182,9 +190,9 @@ const users = {
         throw err;
       }
     },
-    async getUserFundingSources({ id, page, limit }) {
+    async getUserFundingSources({ userId, page, limit }) {
       try {
-        const response = await Http.get(`/users/${id}/fundingSources`, {
+        const response = await Http.get(`/users/${userId}/fundingSources`, {
           params: {
             page,
             limit,
@@ -201,9 +209,9 @@ const users = {
       this.setUserFundingSources([]);
       this.setFundingSourcesPagination(null);
     },
-    async getUserDocuments({ id, page, limit }) {
+    async getUserDocuments({ userId, page, limit }) {
       try {
-        const response = await Http.get(`/users/${id}/documents`, {
+        const response = await Http.get(`/users/${userId}/documents`, {
           params: {
             page,
             limit,
@@ -223,7 +231,7 @@ const users = {
         throw err;
       }
     },
-    async getUserDocumentDownloadLink(id) {
+    async getDocumentDownloadLink(id) {
       try {
         const response = await Http.get(`/users/documents/${id}`);
         return response.data;
@@ -304,12 +312,6 @@ const users = {
     setUserDocumentsPagination(state, payload) {
       return { ...state, userDocumentsPagination: payload };
     },
-    setContractorDocuments(state, payload) {
-      return { ...state, contractorDocuments: payload };
-    },
-    setContractorDocumentsPagination(state, payload) {
-      return { ...state, contractorDocumentsPagination: payload };
-    },
   },
   state: {
     usersList: [],
@@ -331,8 +333,6 @@ const users = {
     userFundingSourcesPagination: null,
     userDocuments: [],
     userDocumentsPagination: null,
-    contractorDocuments: [],
-    contractorDocumentsPagination: null,
   },
 };
 

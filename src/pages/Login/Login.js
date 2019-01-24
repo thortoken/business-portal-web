@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { Button } from 'antd';
+
 import FormField from '~components/FormField';
 import Config from '~services/config';
-
 import './Login.scss';
 
 import { formFields, validationSchema, initialValues } from './formSchema';

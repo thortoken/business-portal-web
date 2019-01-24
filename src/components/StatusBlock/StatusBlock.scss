@@ -18,12 +18,12 @@
     background-color: $color-primary;
   }
 
-  &--verified, &--reviewed, &--processed {
+  &--verified, &--reviewed, &--processed, &--active {
     color: white;
     background-color: $color-active;
   }
 
-  &--retry, &--document, &--pending, &--new {
+  &--retry, &--document, &--pending, &--new, &--invited {
     color: black;
     background-color: $color-resting;
   }

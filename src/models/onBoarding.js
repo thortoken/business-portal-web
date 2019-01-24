@@ -1,63 +1,59 @@
-import Http, { setAuthHeader } from '~services/http';
-import NotificationService from '~services/notification';
+import Http from '~services/http';
+
+const Steps = {
+  AGREEMENT: 0,
+  SIGNUP: 1,
+  BANK: 2,
+  DOCUMENTS: 3,
+  DONE: 4,
+};
 
 const onBoarding = {
-  effects: {
-    async checkStep({ invitationToken }, models) {
+  effects: dispatch => ({
+    async checkStep(_payload, models) {
       let redirect = false;
       let setup = {
-        step: 0,
+        step: Steps.AGREEMENT,
         agreement: false,
-        contractor: null,
         ready: false,
       };
 
-      if (models.auth.token === null && !models.auth.loggedOut) {
-        const invitationResponse = await this.checkInvitation(invitationToken);
-        setup.contractor = invitationResponse.data;
-        if (localStorage.getItem('thor-terms-agreement') && invitationResponse.status === 200) {
+      if (models.auth.user.status) {
+        if (localStorage.getItem('thor-terms-agreement')) {
           setup.agreement = true;
-          setup.step = 1;
+          switch (models.auth.user.status) {
+            case 'tax':
+              setup.step = Steps.SIGNUP;
+              break;
+            case 'bank':
+              setup.step = Steps.BANK;
+              break;
+            case 'documents':
+              setup.step = Steps.DOCUMENTS;
+              break;
+            case 'active':
+            default:
+              setup.step = Steps.DONE;
+              redirect = true;
+              break;
+          }
         } else {
           setup.agreement = false;
-          if (invitationResponse.status === 406) {
-            redirect = true;
-            NotificationService.open({
-              type: 'warning',
-              message: 'Warning',
-              description: `${invitationResponse.data.error}. Sign in with your credentials.`,
-            });
-          } else if (invitationResponse.status === 404) {
-            redirect = true;
-            NotificationService.open({
-              type: 'warning',
-              message: 'Warning',
-              description: 'Wrong invitation token.',
-            });
-          }
         }
-      } else {
-        setup.step = 2;
       }
       setup.ready = true;
       this.setupOnBoarding(setup);
       return redirect;
     },
+
     changeStep(step) {
       this.setStep(step);
     },
+
     async createFundingSourceData(data) {
       this.setFsData(data);
     },
-    async checkInvitation(id) {
-      try {
-        const response = await Http.get(`/contractorsInvitations/${id}`);
-        this.setContractor(response.data);
-        return response;
-      } catch (err) {
-        return err.response;
-      }
-    },
+
     async getAgreement() {
       const agreement = localStorage.getItem('thor-terms-agreement');
       if (agreement) {
@@ -66,6 +62,7 @@ const onBoarding = {
         this.setAgreement({ agreement: false, step: 0 });
       }
     },
+
     async saveAgreement(value) {
       if (value) {
         localStorage.setItem('thor-terms-agreement', 'true');
@@ -73,26 +70,28 @@ const onBoarding = {
         localStorage.removeItem('thor-terms-agreement');
       }
     },
-    async create(data) {
+
+    async createContractor(data) {
       try {
         const response = await Http.post('/contractors', data);
-        this.setContractor(response.data);
+
+        await dispatch.auth.saveUser(response.data.tenantProfile);
         return response.data;
       } catch (err) {
         throw err;
       }
     },
+
     async checkFundingSource() {
       try {
         const response = await Http.get('/contractors/fundingSources/default');
-
         return response.data;
       } catch (err) {
         return err.response;
       }
     },
+
     async createFundingSource(data) {
-      setAuthHeader(data.token);
       try {
         const response = await Http.post('/contractors/fundingSources/', data.bank);
         return response.data;
@@ -100,20 +99,19 @@ const onBoarding = {
         throw err;
       }
     },
+
     async createFundingSourceWithIAV(data) {
-      setAuthHeader(data.token);
       try {
         const response = await Http.post('/contractors/fundingSources/iav', data.bank);
+        // TODO: update with real status?
+        await dispatch.auth.saveUser({ status: 'active' });
         return response.data;
       } catch (err) {
         throw err;
       }
     },
-  },
+  }),
   reducers: {
-    setContractor(state, payload) {
-      return { ...state, contractor: payload };
-    },
     setAgreement(state, payload) {
       return { ...state, agreement: payload.agreement, step: payload.step };
     },
@@ -125,7 +123,6 @@ const onBoarding = {
     },
   },
   state: {
-    contractor: null,
     agreement: false,
     step: 0,
     ready: false,

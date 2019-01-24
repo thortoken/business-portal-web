@@ -12,7 +12,6 @@ export class IAV extends React.Component {
     createFundingSourceWithIAV: PropTypes.func.isRequired,
   };
   state = {
-    iavToken: '',
     dwollaConfig: {
       backButton: false,
       customerToken: null,
@@ -26,12 +25,7 @@ export class IAV extends React.Component {
 
   constructor(props) {
     super(props);
-    const { contractor, token } = props;
-    let authToken = token;
-    if (contractor) {
-      authToken = contractor.token;
-    }
-    props.getIavToken({ token: authToken, type: 'contractors' });
+    props.getIavToken({ type: 'contractors' });
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -81,21 +75,15 @@ export class IAV extends React.Component {
   };
 
   createFundingSource = async ({ uri }) => {
-    const { createFundingSourceWithIAV, contractor, token } = this.props;
-    let authToken = token;
-    if (contractor) {
-      authToken = contractor.token;
-    }
+    const { createFundingSourceWithIAV } = this.props;
     await createFundingSourceWithIAV({
       bank: { uri },
-      token: authToken,
     });
   };
 }
 
 const mapStateToProps = state => ({
   contractor: state.onBoarding.contractor,
-  token: state.auth.token,
   iavToken: state.iav.iavToken,
   isLoading: state.loading.effects.onBoarding.createFundingSourceWithIAV,
   iavIsLoading: state.loading.effects.iav.getIavToken,

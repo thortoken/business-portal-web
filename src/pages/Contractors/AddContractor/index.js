@@ -16,8 +16,7 @@ import { traverseRecursively } from '~utils/iterators';
 
 export class AddContractor extends React.Component {
   static propTypes = {
-    createFundingSource: PropTypes.func.isRequired,
-    createUser: PropTypes.func.isRequired,
+    addContractor: PropTypes.func.isRequired,
   };
 
   state = {
@@ -79,40 +78,30 @@ export class AddContractor extends React.Component {
     </form>
   );
 
-  createContractor = async profile => {
-    const { createUser } = this.props;
-    let { createdContractor } = this.state;
-    if (!createdContractor) {
+  addContractor = async profile => {
+    const { addContractor } = this.props;
+    let { addedContractor } = this.state;
+    if (!addedContractor) {
       const data = {
         ...profile,
         postalCode: String(profile.postalCode),
       };
-      createdContractor = await createUser({ profile: data });
-      this.setState({ createdContractor });
+      addedContractor = await addContractor({ profile: data });
+      this.setState({ addedContractor });
     }
   };
 
-  createFundingSource = async ({ account, routing }) => {
-    const { createFundingSource } = this.props;
-    const { createdContractor } = this.state;
-
-    await createFundingSource({
-      id: createdContractor.id,
-      data: {
-        account,
-        routing,
-      },
-    });
-  };
-
   handleSubmit = async (data, form) => {
-    const { routing, account, profile } = data;
+    const { profile } = data;
     try {
       let dataProfile = JSON.parse(JSON.stringify(profile));
-      dataProfile.dateOfBirth = transformDateToMoment(dataProfile.dateOfBirth).format('YYYY-MM-DD');
+      if (dataProfile.dateOfBirth) {
+        dataProfile.dateOfBirth = transformDateToMoment(dataProfile.dateOfBirth).format(
+          'YYYY-MM-DD'
+        );
+      }
 
-      await this.createContractor(dataProfile);
-      await this.createFundingSource({ account, routing });
+      await this.addContractor(dataProfile);
 
       this.handleSubmitSuccess();
     } catch (err) {
@@ -125,8 +114,8 @@ export class AddContractor extends React.Component {
 
     const { onSubmit, history } = this.props;
     if (typeof onSubmit === 'function') {
-      const { createdContractor } = this.state;
-      onSubmit(createdContractor);
+      const { addedContractor } = this.state;
+      onSubmit(addedContractor);
     }
     NotificationService.open({
       type: 'success',
@@ -137,9 +126,8 @@ export class AddContractor extends React.Component {
   };
 }
 
-const mapDispatch = ({ users: { create, createFundingSource } }) => ({
-  createUser: create,
-  createFundingSource,
+const mapDispatch = ({ users: { addContractor } }) => ({
+  addContractor,
 });
 
 export default connect(null, mapDispatch)(AddContractor);

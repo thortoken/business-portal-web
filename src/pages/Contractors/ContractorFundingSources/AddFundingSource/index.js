@@ -65,7 +65,7 @@ export class AddFundingSource extends React.Component {
   handleSubmit = async (data, form) => {
     const { createFundingSource, match } = this.props;
     try {
-      await createFundingSource({ id: match.params.id, data });
+      await createFundingSource({ userId: match.params.id, data });
       this.handleSubmitSuccess();
     } catch (err) {
       handleFormHttpResponse(form, err.response.data.error, err.response);

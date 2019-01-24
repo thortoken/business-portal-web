@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Table, Button, Icon, Input } from 'antd';
+import { Table, Icon, Input } from 'antd';
 import moment from 'moment';
 
 import TooltipButton from '~components/TooltipButton';
@@ -10,7 +10,6 @@ import makeDefaultPagination from '~utils/pagination';
 import { getCurrentTwoWeeksPeriod } from '~utils/time';
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
-import AddContractorMenu from '../AddContractorMenu';
 import StatusBlock from '../../../components/StatusBlock';
 import './ContractorsList.scss';
 
@@ -138,6 +137,10 @@ class ContractorsList extends React.Component {
     });
   };
 
+  handleInvite = () => {
+    this.props.history.push('/contractors/invite');
+  };
+
   goToContractor = user => {
     const { history } = this.props;
     if (user) {
@@ -152,10 +155,13 @@ class ContractorsList extends React.Component {
     return (
       <div className="ContractorsList">
         <Header title="Contractors List" size="medium">
-          <Button type="primary" ghost onClick={this.handleGoInv}>
-            Invitations List
-          </Button>
-          <AddContractorMenu />
+          <TooltipButton
+            tooltip="Invite contractor"
+            type="primary"
+            size="default"
+            onClick={this.handleInvite}>
+            <Icon type="plus" />
+          </TooltipButton>
           <RefreshButton handleRefresh={this.handleRefresh} isLoading={isLoading} />
         </Header>
         <div className="ContractorsList__additional-box">
@@ -218,7 +224,7 @@ class ContractorsList extends React.Component {
             <Column
               align="center"
               title="Status"
-              dataIndex="tenantProfile.externalStatus"
+              dataIndex="tenantProfile.status"
               render={text => {
                 return (
                   <div>

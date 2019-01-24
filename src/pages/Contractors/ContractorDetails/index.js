@@ -176,7 +176,8 @@ class ContractorDetails extends React.Component {
                 handleRetryContractor={this.handleRetryContractor}
                 handleGoToFundingSources={this.handleGoToFundingSources}
                 handleGoToDocuments={this.handleAddDwollaDocuments}
-                handleSendPasswordReset={this.handleSendPasswordReset}>
+                handleSendPasswordReset={this.handleSendPasswordReset}
+                handleResendInvitation={this.handleResendInvitation}>
                 <Button type="primary" ghost onClick={this.handleGoToFundingSources}>
                   Bank Info
                 </Button>
@@ -339,6 +340,35 @@ class ContractorDetails extends React.Component {
     });
   };
 
+  handleResendInvitation = async () => {
+    const { currentUser, resendInvitation } = this.props;
+    const { firstName, lastName } = currentUser.tenantProfile;
+    Modal.confirm({
+      title: `Are you sure you want to resend the invitation for ${firstName} ${lastName}?`,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk: async () => {
+        try {
+          await resendInvitation({ userId: currentUser.id });
+          NotificationService.open({
+            type: 'success',
+            message: 'Success',
+            description: 'Invitation sent.',
+          });
+        } catch (err) {
+          if (err.response.status === 409) {
+            NotificationService.open({
+              type: 'warning',
+              message: 'Warning',
+              description: err.response.data.error,
+            });
+          }
+        }
+      },
+    });
+  };
+
   handleDeleteFundingSource = async () => {
     const { currentUser, deleteFundingSource, getUser, match } = this.props;
     const { firstName, lastName } = currentUser.tenantProfile;
@@ -414,7 +444,7 @@ class ContractorDetails extends React.Component {
     const previousTwoWeeksPeriod = movePeriod(period, startDate, endDate, 'prev');
 
     getCurrentUserStatistics({
-      id: match.params.id,
+      userId: match.params.id,
       currentStartDate: startDate,
       currentEndDate: endDate,
       previousStartDate: previousTwoWeeksPeriod.startDate,
@@ -459,6 +489,7 @@ const mapDispatchToProps = ({
     sendPasswordReset,
   },
   jobs: { getJobs },
+  invitations: { resendInvitation },
 }) => ({
   createTransaction,
   addExistingTransaction,
@@ -473,6 +504,7 @@ const mapDispatchToProps = ({
   changeFundingSourceStatus,
   sendPasswordReset,
   getJobs,
+  resendInvitation,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContractorDetails);

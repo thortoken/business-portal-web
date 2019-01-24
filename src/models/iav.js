@@ -1,20 +1,18 @@
-import Http, { setAuthHeader } from '~services/http';
+import Http from '~services/http';
 
 const iav = {
   effects: {
-    async getIavToken({ token, type, data }) {
+    async getIavToken({ type }) {
       let response = null;
       try {
         switch (type) {
           case 'contractors':
-            setAuthHeader(token);
-            response = await Http.get(`/${type}/fundingSources/iav`);
+            response = await Http.get(`/contractors/fundingSources/iav`);
             break;
-          case 'users':
-            response = await Http.get(`/${type}/${data.userId}/fundingSources/iav`);
-            break;
+          case 'tenants':
           default:
             response = await Http.get(`/tenants/company/fundingSources/iav`);
+            break;
         }
 
         this.setIavToken(response.data.token);

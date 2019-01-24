@@ -14,7 +14,6 @@ export class IAVLinkedAccount extends React.Component {
     createIAVFundingSource: PropTypes.func.isRequired,
   };
   state = {
-    iavToken: '',
     dwollaConfig: {
       backButton: false,
       customerToken: null,

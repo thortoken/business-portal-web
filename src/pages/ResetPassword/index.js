@@ -123,7 +123,4 @@ const mapDispatchToProps = dispatch => ({
   checkResetToken: dispatch.auth.checkResetToken,
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(ResetPassword);
+export default connect(null, mapDispatchToProps)(ResetPassword);

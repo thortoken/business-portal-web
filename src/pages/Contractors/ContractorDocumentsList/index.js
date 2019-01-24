@@ -39,7 +39,7 @@ class ContractorDocumentsList extends React.Component {
     getUserDocuments({
       page: pagination.current,
       limit: pagination.pageSize,
-      id: match.params.id,
+      userId: match.params.id,
     });
   }
 
@@ -70,7 +70,7 @@ class ContractorDocumentsList extends React.Component {
     getUserDocuments({
       page: curr,
       limit: pag.pageSize,
-      id: match.params.id,
+      userId: match.params.id,
     });
   };
 
@@ -108,10 +108,10 @@ class ContractorDocumentsList extends React.Component {
   };
 
   handleDownload = async row => {
-    const { getUserDocumentDownloadLink } = this.props;
+    const { getDocumentDownloadLink } = this.props;
     const { name, id } = row;
     try {
-      const link = await getUserDocumentDownloadLink(id);
+      const link = await getDocumentDownloadLink(id);
       window.open(link, '_blank');
     } catch (err) {
       NotificationService.open({
@@ -133,7 +133,7 @@ class ContractorDocumentsList extends React.Component {
     getUserDocuments({
       page: pagination.current,
       limit: pagination.pageSize,
-      id: match.params.id,
+      userId: match.params.id,
     });
   };
 
@@ -215,7 +215,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getUserDocuments: dispatch.users.getUserDocuments,
   deleteUserDocument: dispatch.users.deleteUserDocument,
-  getUserDocumentDownloadLink: dispatch.users.getUserDocumentDownloadLink,
+  getDocumentDownloadLink: dispatch.users.getDocumentDownloadLink,
   unmountUserDocuments: dispatch.users.unmountUserDocuments,
 });
 

@@ -3,6 +3,25 @@ import Http from '~services/http';
 
 const transactions = {
   effects: {
+    async getTransactions({ startDate, endDate, status, page, limit }) {
+      try {
+        const response = await Http.get(`/contractors/transactions`, {
+          params: {
+            page,
+            limit,
+            startDate: new Date(startDate.utc()),
+            endDate: new Date(endDate.utc()),
+            status,
+          },
+        });
+        this.setTransactionsForContractor(response.data);
+        this.setTransactionsPagination(response.data.pagination);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+
     async getTransaction(jobId) {
       try {
         const response = await Http.get(`/transactions/${jobId}`);

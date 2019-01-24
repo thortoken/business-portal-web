@@ -79,8 +79,9 @@ const formFields = {
           .max(99999, '${label} must be a valid zip code'),
         input: {
           maxLength: 5,
-          placeholder: '12345',
+          placeholder: 12345,
         },
+        error: 'please enter a valid number',
       },
       country: {
         label: 'Country',
@@ -112,6 +113,7 @@ const formFields = {
       },
     },
   },
+  /*
   routing: {
     label: 'Bank routing number',
     validator: Yup.string()
@@ -131,6 +133,7 @@ const formFields = {
       .min(3, 'Bank account number must have minimum 3 digits')
       .max(17, 'Bank account number must have maximum 17 digits'),
   },
+  */
 };
 
 const validationSchema = formUtils.formik.makeValidationSchema(formFields);

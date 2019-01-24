@@ -91,7 +91,7 @@ class InvitationsList extends React.Component {
       cancelText: 'No',
       onOk: async () => {
         try {
-          await deleteInvitation({ id });
+          await deleteInvitation({ userId: id });
           NotificationService.open({
             type: 'success',
             message: 'Success',
@@ -114,7 +114,7 @@ class InvitationsList extends React.Component {
     const { email, id } = row;
 
     try {
-      await resendInvitation({ id });
+      await resendInvitation({ userId: id });
       NotificationService.open({
         type: 'success',
         message: 'Success',

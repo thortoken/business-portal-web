@@ -22,26 +22,6 @@ const formFields = {
           .ensure()
           .required(),
       },
-      password: {
-        label: 'Password',
-        validator: Yup.string()
-          .ensure()
-          .required(),
-        input: {
-          type: 'password',
-        },
-      },
-      email: {
-        label: 'E-mail',
-        validator: Yup.string()
-          .ensure()
-          .email()
-          .required()
-          .min(5),
-        input: {
-          disabled: true,
-        },
-      },
       phone: {
         label: 'Phone',
         validator: Yup.string()
@@ -109,13 +89,16 @@ const formFields = {
         },
       },
       ssn: {
-        label: 'Last 4 digits of SSN',
+        label: 'SSN',
         validator: Yup.string()
           .ensure()
           .required()
-          .matches(/\d{4}/, 'Please input last 4 digits of your SSN'),
+          .matches(/\d{9}/, 'Please input your full SSN')
+          .transform(formUtils.yup.ssnTransformer()),
         input: {
-          maxLength: 4,
+          maxLength: 11,
+          placeholder: '123-45-6789',
+          formatter: formUtils.formatters.ssn,
         },
       },
     },

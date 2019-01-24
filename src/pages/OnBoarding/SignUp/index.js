@@ -5,29 +5,22 @@ import { Button } from 'antd';
 import { Formik } from 'formik';
 
 import FormField from '~components/FormField';
-
 import { initialValues, formFields, transformDateToMoment, validationSchema } from './formSchema';
-import './SignUp.scss';
-
 import { handleFormHttpResponse } from '~utils/forms/errors';
-
 import { traverseRecursively } from '~utils/iterators';
+import './SignUp.scss';
 
 export class SignUp extends React.Component {
   static propTypes = {
-    contractor: PropTypes.object,
-    invToken: PropTypes.string,
+    user: PropTypes.object,
   };
 
   state = {
-    createdContractor: null,
     error: null,
   };
 
   render() {
     const { error } = this.state;
-    const { contractor } = this.props;
-    initialValues.profile.email = contractor.email;
     return (
       <div className="SignUp">
         <div className="SignUp__form">
@@ -82,29 +75,23 @@ export class SignUp extends React.Component {
   );
 
   create = async data => {
-    const { createContractor } = this.props;
+    const { createContractor, user } = this.props;
     let dataProfile = JSON.parse(JSON.stringify(data));
     dataProfile.profile.dateOfBirth = transformDateToMoment(dataProfile.profile.dateOfBirth).format(
       'YYYY-MM-DD'
     );
     dataProfile.profile.postalCode = String(dataProfile.profile.postalCode);
+    dataProfile.profile.email = user.email;
 
     await createContractor(dataProfile);
   };
 
   handleSubmit = async (data, form) => {
-    const { invToken } = this.props;
     const validData = validationSchema.cast(data);
     validData.profile['country'] = 'USA';
 
-    const contractor = {
-      ...validData,
-      invitationToken: invToken,
-      password: validData.profile.password,
-    };
-
     try {
-      await this.create(contractor);
+      await this.create(validData);
 
       this.handleSubmitSuccess();
     } catch (err) {
@@ -119,12 +106,12 @@ export class SignUp extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  contractor: state.onBoarding.contractor,
-  isLoading: state.loading.effects.onBoarding.create,
+  user: state.auth.user,
+  isLoading: state.loading.effects.onBoarding.createContractor,
 });
 
 const mapDispatchToProps = dispatch => ({
-  createContractor: dispatch.onBoarding.create,
+  createContractor: dispatch.onBoarding.createContractor,
   changeStep: dispatch.onBoarding.changeStep,
 });
 

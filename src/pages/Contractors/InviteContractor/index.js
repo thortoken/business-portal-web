@@ -91,12 +91,12 @@ export class InviteContractor extends React.Component {
       message: 'Success',
       description: 'Contractor successfully invited.',
     });
-    history.push(`/contractors/invitationsList`);
+    history.push(`/contractors`);
   };
 }
 
-const mapDispatch = ({ invitations: { sendInvitation } }) => ({
-  sendInvitation,
+const mapDispatch = ({ invitations: { sendContractorInvitation } }) => ({
+  sendInvitation: sendContractorInvitation,
 });
 
 export default connect(null, mapDispatch)(InviteContractor);

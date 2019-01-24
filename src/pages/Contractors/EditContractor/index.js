@@ -82,7 +82,7 @@ export class EditContractor extends React.Component {
       ...profile,
       postalCode: String(profile.postalCode),
     };
-    await updateTenantProfile({ id, tenantProfile: data });
+    await updateTenantProfile({ userId: id, tenantProfile: data });
   };
 
   handleSubmit = async (data, form) => {
@@ -158,7 +158,4 @@ const mapDispatch = ({ users: { getUser, updateTenantProfile } }) => ({
   updateTenantProfile,
 });
 
-export default connect(
-  mapState,
-  mapDispatch
-)(EditContractor);
+export default connect(mapState, mapDispatch)(EditContractor);

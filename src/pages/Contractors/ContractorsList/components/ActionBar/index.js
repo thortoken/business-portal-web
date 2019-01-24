@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Button } from 'antd';
+import { Icon } from 'antd';
 
 import './ActionBar.scss';
 import RefreshButton from '~components/RefreshButton';
+import TooltipButton from '~components/TooltipButton';
 
 class ActionBar extends React.Component {
   static propTypes = {
@@ -26,9 +27,13 @@ class ActionBar extends React.Component {
     return (
       <div>
         <div className="ActionBar">
-          <Button type="primary" icon="plus" size="default" onClick={this.handleAdd}>
-            Add contractor
-          </Button>
+          <TooltipButton
+            tooltip="Add contractor"
+            type="primary"
+            size="default"
+            onClick={this.handleAdd}>
+            <Icon type="plus" />
+          </TooltipButton>
           <RefreshButton handleRefresh={handleRefresh} isLoading={isLoading} />
         </div>
       </div>

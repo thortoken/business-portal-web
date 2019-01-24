@@ -22,6 +22,7 @@ export default class Profile extends React.PureComponent {
     handleRetryContractor: PropTypes.func,
     handleGoToDocuments: PropTypes.func,
     handleSendPasswordReset: PropTypes.func,
+    handleResendInvitation: PropTypes.func,
   };
 
   render() {
@@ -36,12 +37,14 @@ export default class Profile extends React.PureComponent {
       state,
       postalCode,
       phone,
+      status,
       children,
       handleRefresh,
       isLoading,
       handleDelete,
       handleEdit,
       handleSendPasswordReset,
+      handleResendInvitation,
     } = this.props;
     const warningsList = this.verifyUserProfile();
     return (
@@ -60,12 +63,21 @@ export default class Profile extends React.PureComponent {
           </div>
           <div className="Profile-activity">
             <Activity lastActivityDate={updatedAt} />
-            <TooltipButton
-              tooltip="Send password reset"
-              className="Profile--button"
-              onClick={handleSendPasswordReset}>
-              <Icon type="redo" theme="outlined" />
-            </TooltipButton>
+            {status === 'invited' ? (
+              <TooltipButton
+                tooltip="Resend invitation"
+                className="Profile--button"
+                onClick={handleResendInvitation}>
+                <Icon type="mail" theme="outlined" />
+              </TooltipButton>
+            ) : (
+              <TooltipButton
+                tooltip="Send password reset"
+                className="Profile--button"
+                onClick={handleSendPasswordReset}>
+                <Icon type="redo" theme="outlined" />
+              </TooltipButton>
+            )}
             <TooltipButton
               tooltip="Edit contractor"
               className="Profile--button"
