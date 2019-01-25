@@ -243,7 +243,7 @@ export class Jobs extends React.Component {
             <Column
               align="center"
               dataIndex="value"
-              title="Value"
+              title="Amount"
               sorter={(a, b) => a.value.length - b.value.length}
               render={text => {
                 return <span className="Jobs__value">{this.renderAmount(text)}</span>;

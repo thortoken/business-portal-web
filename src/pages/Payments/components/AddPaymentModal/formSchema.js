@@ -27,7 +27,8 @@ const formFields = {
     label: 'Amount',
     validator: Yup.number()
       .positive()
-      .required(),
+      .required()
+      .max(10000),
     input: {
       placeholder: '123.45',
       // formatter: formUtils.formatters.price,
