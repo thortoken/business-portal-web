@@ -7,6 +7,8 @@ import { formatUsd } from '~utils/number';
 import { getCurrentTwoWeeksPeriod, renderShortDate } from '~utils/time';
 import makeDefaultPagination from '~utils/pagination';
 import StatusBlock from '~components/StatusBlock';
+import Header from '~components/Header';
+import RefreshButton from '~components/RefreshButton';
 import './Contractor.scss';
 
 const { Column } = Table;
@@ -90,6 +92,9 @@ class Contractor extends React.Component {
 
     return (
       <div className="Contractor">
+        <Header title="Payments List" size="medium">
+          <RefreshButton handleRefresh={this.handleRefresh} isLoading={false} />
+        </Header>
         <Spin size="large" spinning={loadingTransactions}>
           <Table
             className="Contractor-table"

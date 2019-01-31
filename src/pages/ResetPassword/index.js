@@ -6,7 +6,6 @@ import { Formik } from 'formik';
 import classNames from 'classnames';
 
 import FormField from '~components/FormField';
-
 import { initialValues, formFields, validationSchema } from './formSchema';
 import './ResetPassword.scss';
 import NotificationService from '../../services/notification';

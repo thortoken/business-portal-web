@@ -22,7 +22,7 @@ const onBoarding = {
         if (localStorage.getItem('thor-terms-agreement')) {
           setup.agreement = true;
           switch (models.auth.user.status) {
-            case 'tax':
+            case 'profile':
               setup.step = Steps.SIGNUP;
               break;
             case 'bank':

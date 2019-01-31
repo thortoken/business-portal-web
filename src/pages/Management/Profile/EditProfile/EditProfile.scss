@@ -1,0 +1,36 @@
+@import "../../../../styles/var";
+
+.EditProfile {
+  padding: 1rem;
+  width: 100%;
+  //background-color: #fff;
+  &__button-container {
+    width: 100%;
+    text-align: center;
+    margin-top: 4rem;
+  &--button {
+      padding: 1rem 3rem;
+    }
+  }
+  &__errors {
+    color: $color-inactive;
+  }
+  &__input{
+    &--disabled {
+      .ant-input-disabled {
+          cursor: default !important;
+      }
+      .ant-input {
+        border: 0 !important;
+      }
+    }
+  }
+
+  .InputGroup {
+    width: 50%;
+  }
+
+  .ant-calendar-picker {
+    width: 100%;
+  }
+}

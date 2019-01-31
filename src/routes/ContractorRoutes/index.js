@@ -1,11 +1,10 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { Layout } from 'antd';
 
 import ContractorPage from '~pages/Contractor';
 import OnBoarding from '~pages/OnBoarding';
-import Topbar from '~components/Topbar';
 import { Contractor } from '../RouteGuard';
+import RouteLayout from '../RouteLayout';
 import './ContractorRoutes.scss';
 
 export class ContractorRoutes extends React.Component {
@@ -14,17 +13,17 @@ export class ContractorRoutes extends React.Component {
     if (redirect === '/sign-in' || redirect === '/') {
       redirect = '/contractor';
     }
+    const routeClass = 'AdminRoutes-content';
     return (
-      <Layout className="ContractorRoutes">
-        <Topbar className="ContractorRoutes-nav" type="contractor" />
-        <Layout.Content className="ContractorRoutes-content">
-          <Switch>
-            <Route exact path="/contractor" component={Contractor(ContractorPage)} />
-            <Route exact path="/on-boarding" component={OnBoarding} />
-            <Redirect from="*" to="/contractor" />
-          </Switch>
-        </Layout.Content>
-      </Layout>
+      <Switch>
+        <Route
+          exact
+          path="/contractor"
+          component={Contractor(RouteLayout(routeClass, 'contractor')(ContractorPage))}
+        />
+        <Route exact path="/on-boarding" component={OnBoarding} />
+        <Redirect from="*" to="/contractor" />
+      </Switch>
     );
   }
 }

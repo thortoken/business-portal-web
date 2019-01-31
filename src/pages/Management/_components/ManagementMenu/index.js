@@ -1,20 +1,19 @@
 import React from 'react';
-
 import { Link } from 'react-router-dom';
-
-import './ManagementMenu.scss';
 import { Menu as MenuAnt, Icon } from 'antd';
 import connect from 'react-redux/es/connect/connect';
+import './ManagementMenu.scss';
 
 const menuItems = [
   { route: '/management/company-details', label: 'Company Details', icon: 'home' },
   { route: '/management/beneficial-owners', label: 'Beneficial Owners', icon: 'crown' },
   // { route: '/management/company-team', label: 'Company & Team', icon: 'user' },
   { route: '/management/linked-accounts', label: 'Bank Info', icon: 'bank' },
-  { route: '/management/jobs', label: 'Jobs', icon: 'tags' },
-  { route: '/management/change-admin-password', label: 'Change Password', icon: 'lock' },
+  { route: '/management/jobs', label: 'Jobs Managment', icon: 'tags' },
+  // { route: '/management/change-admin-password', label: 'Change Password', icon: 'lock' },
   // { route: '/management/integrations', label: 'Integrations', icon: 'shrink' },
   // { route: '/management/settings', label: 'Settings', icon: 'setting' },
+  { route: '/management/profile', label: 'My Profile', icon: 'user' },
 ];
 
 export const generateMenuItems = list => {

@@ -15,6 +15,7 @@ import onBoarding from './onBoarding';
 import tenantCompany from './tenantCompany';
 import beneficialOwners from './beneficialOwners';
 import linkedAccounts from './linkedAccounts';
+import welcome from './welcome';
 
 export const history = createHistory();
 const middleware = routerMiddleware(history);
@@ -35,6 +36,7 @@ const store = init({
     beneficialOwners,
     linkedAccounts,
     iav,
+    welcome,
   },
   plugins: [loading],
   redux: {

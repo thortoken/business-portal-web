@@ -22,9 +22,11 @@ export class StatusBlock extends React.Component {
     let newStatus = status;
     switch (status.toLowerCase()) {
       case 'bank':
-      case 'tax':
+      case 'profile':
       case 'document':
         newStatus = 'pending';
+        break;
+      default:
         break;
     }
 

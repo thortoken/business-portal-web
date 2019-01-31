@@ -2,7 +2,7 @@ import Http from '~services/http';
 import _ from 'lodash';
 
 const users = {
-  effects: {
+  effects: dispatch => ({
     async addAdmin(data) {
       try {
         const response = await Http.post('/users/admins', data);
@@ -11,6 +11,7 @@ const users = {
         throw err;
       }
     },
+
     async addContractor(data) {
       try {
         const response = await Http.post('/users/contractors', data);
@@ -19,6 +20,18 @@ const users = {
         throw err;
       }
     },
+
+    async updateProfile(data) {
+      try {
+        const response = await Http.patch('/profiles', data);
+        // update the user status
+        await dispatch.auth.saveUser(response.data);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+
     async createFundingSource({ userId, data }) {
       try {
         const response = await Http.post(`/users/${userId}/fundingSources`, data);
@@ -27,6 +40,7 @@ const users = {
         throw err;
       }
     },
+
     async setDefaultFundingSource({ userId, fundingId }) {
       try {
         const response = await Http.post(`/users/${userId}/fundingSources/${fundingId}/default`);
@@ -259,7 +273,7 @@ const users = {
         throw err;
       }
     },
-  },
+  }),
   reducers: {
     setUsersPaidTransactions(state, payload) {
       return { ...state, usersPaidTransactions: payload };

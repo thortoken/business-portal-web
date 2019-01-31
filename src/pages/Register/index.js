@@ -39,7 +39,7 @@ export class Register extends React.Component {
     return (
       <div className="Register">
         <div className="Register__form-container">
-          <img className="Register__image-top" src="images/loginImage.png" alt="" />
+          <img className="Register__image-top" src="/images/loginImage.png" alt="" />
           <Formik
             initialValues={initialValues}
             onSubmit={this.handleSubmit}
@@ -47,7 +47,7 @@ export class Register extends React.Component {
             {this.renderForm}
           </Formik>
           <div className="Register__image-container">
-            <img className="Register__image-bottom" src="images/poweredBy.png" alt="" />
+            <img className="Register__image-bottom" src="/images/poweredBy.png" alt="" />
           </div>
         </div>
       </div>

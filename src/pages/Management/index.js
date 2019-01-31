@@ -23,6 +23,8 @@ import ChangeAdminPassword from './ChangeAdminPassword';
 import Jobs from './Jobs';
 import AddJob from './Jobs/AddJob';
 import EditJob from './Jobs/EditJob';
+import Profile from './Profile';
+import EditProfile from './Profile/EditProfile';
 
 export class RootManagementPage extends React.Component {
   render() {
@@ -43,6 +45,7 @@ export class RootManagementPage extends React.Component {
             <Route exact path={`/management/integrations`} component={Integrations} />
             <Route exact path={`/management/settings`} component={Settings} />
             <Route exact path={`/management/jobs`} component={Jobs} />
+            <Route exact path={`/management/profile`} component={Profile} />
             <Route
               exact
               path={`/management/jobs/add`}
@@ -122,6 +125,11 @@ export class RootManagementPage extends React.Component {
                 component: AddBeneficialOwner,
                 title: 'Add Beneficial Owner',
               })}
+            />
+            <Route
+              exact
+              path={`/management/profile/edit`}
+              component={withRouteModal({ component: EditProfile, title: 'Edit Profile' })}
             />
             <Route path={`/management`} component={CompanyDetails} />
           </Switch>

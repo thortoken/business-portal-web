@@ -1,0 +1,11 @@
+.Done {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  margin-top: 50px;
+
+  &__msg {
+    font-size: 2rem;
+    text-align: center;
+  }
+}

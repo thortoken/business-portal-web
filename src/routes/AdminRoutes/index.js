@@ -1,17 +1,33 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import { Layout } from 'antd';
+import { connect } from 'react-redux';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
+import WelcomePage from '~pages/Welcome';
 import PaymentsPage from '~pages/Payments';
 import ContractorsPage from '~pages/Contractors';
 import RootManagementPage from '~pages/Management';
-import Topbar from '~components/Topbar';
-
 import { Admin } from '../RouteGuard';
-
+import RouteLayout from '../RouteLayout';
 import './AdminRoutes.scss';
 
 export class AdminRoutes extends React.Component {
+  static propTypes = {
+    redirent: PropTypes.string,
+    user: PropTypes.object,
+    tenant: PropTypes.object,
+  };
+
+  async componentDidMount() {
+    const { user, tenant, history, getTenant } = this.props;
+    if (!tenant.status) {
+      await getTenant();
+    }
+    if (user.status !== 'active' || !tenant.status || tenant.status !== 'active') {
+      history.push('/welcome');
+    }
+  }
+
   render() {
     let redirect = this.props.redirect;
     if (redirect === '/sign-in' || redirect === '/') {
@@ -22,19 +38,31 @@ export class AdminRoutes extends React.Component {
       ? 'SidebarRoutes-content'
       : 'AdminRoutes-content';
     return (
-      <Layout className="AdminRoutes">
-        <Topbar className="AdminRoutes-nav" type="admin" />
-        <Layout.Content className={routeClass}>
-          <Switch>
-            <Route path="/payments" component={Admin(PaymentsPage)} />
-            <Route path="/contractors" component={Admin(ContractorsPage)} />
-            <Route path="/management" component={Admin(RootManagementPage)} />
-            <Redirect from="*" to={redirect} />
-          </Switch>
-        </Layout.Content>
-      </Layout>
+      <Switch>
+        <Route path="/payments" component={Admin(RouteLayout(routeClass, 'admin')(PaymentsPage))} />
+        <Route
+          path="/contractors"
+          component={Admin(RouteLayout(routeClass, 'admin')(ContractorsPage))}
+        />
+        <Route
+          path="/management"
+          component={Admin(RouteLayout(routeClass, 'admin')(RootManagementPage))}
+        />
+        <Route path="/welcome" component={Admin(WelcomePage)} />
+        <Redirect from="*" to={redirect} />
+      </Switch>
     );
   }
 }
 
-export default AdminRoutes;
+const mapStateToProps = ({ auth: { user }, tenants: { tenant } }, ownProps) => ({
+  user,
+  tenant,
+  ...ownProps,
+});
+
+const mapDispatchToProps = dispatch => ({
+  getTenant: dispatch.tenants.getTenant,
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AdminRoutes));

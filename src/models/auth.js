@@ -2,29 +2,14 @@ import Http, { setAuthHeader, removeAuthHeader } from '~services/http';
 import Config from '~services/config';
 
 const auth = {
-  effects: {
+  effects: dispatch => ({
     async init() {
       const token = localStorage.getItem('thor-token') || null;
       const user = JSON.parse(localStorage.getItem('thor-user')) || null;
       let roles = JSON.parse(localStorage.getItem('thor-roles')) || [];
+      await dispatch.tenants.pickTenant();
       setAuthHeader(token);
       this.setInit({ user, token, roles, loggedOut: false });
-    },
-
-    async pickToken() {
-      const token = localStorage.getItem('thor-token') || null;
-      setAuthHeader(token);
-      this.setToken({ token, loggedOut: false });
-    },
-
-    async pickUser() {
-      const user = JSON.parse(localStorage.getItem('thor-user')) || null;
-      this.setUser({ ...user });
-    },
-
-    async pickRoles() {
-      let roles = JSON.parse(localStorage.getItem('thor-roles')) || [];
-      this.setRoles({ roles, loggedOut: false });
     },
 
     async saveToken(token) {
@@ -86,6 +71,7 @@ const auth = {
       this.removeToken();
       this.removeRoles();
       this.removeUser();
+      dispatch.tenants.removeTenant();
       Config.savedRoot = '/payments';
     },
 
@@ -119,18 +105,7 @@ const auth = {
         return false;
       }
     },
-
-    async getMyself() {
-      try {
-        const response = await Http.get('/users/myself');
-        await this.refresh(response.data);
-
-        return response.data;
-      } catch (err) {
-        throw err;
-      }
-    },
-  },
+  }),
   reducers: {
     setToken(state, payload) {
       return {

@@ -68,3 +68,12 @@ export const zipcode = value => {
     return Number(value);
   }
 };
+
+export const ein = value =>
+  value &&
+  value.toString().replace(/^(\d{2})(\d{1,7})$/, (all, g1, g2) => {
+    if (g2) {
+      return `${g1}-${g2}`;
+    }
+    return `${g1}`;
+  });

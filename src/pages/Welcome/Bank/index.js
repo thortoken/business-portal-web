@@ -1,18 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Dwolla from '~components/Dwolla';
 import { Spin } from 'antd';
 
-import NotificationService from '~services/notification';
-
-import './IAVLinkedAccount.scss';
+import Dwolla from '~components/Dwolla';
 import Config from '~services/config';
+import './Bank.scss';
 
-export class IAVLinkedAccount extends React.Component {
+export class Bank extends React.Component {
   static propTypes = {
+    getIavToken: PropTypes.func.isRequired,
     createIAVFundingSource: PropTypes.func.isRequired,
   };
+
   state = {
     dwollaConfig: {
       backButton: false,
@@ -43,22 +43,16 @@ export class IAVLinkedAccount extends React.Component {
     const { iavIsLoading } = this.props;
 
     const onError = err => {
-      if (!err.toString().search('dwolla-iav-container')) {
-        NotificationService.open({
-          type: 'error',
-          message: 'Error',
-          description: err.toString(),
-        });
-      }
+      console.log('err', err);
     };
     return (
-      <div className="IAVLinkedAccount">
-        <div className="IAVLinkedAccount__form">
+      <div className="IAV">
+        <div className="IAV__form">
           <Spin spinning={iavIsLoading || !dwollaConfig.customerToken}>
             {!iavIsLoading &&
               dwollaConfig.customerToken && (
                 <div>
-                  <div className="IAVLinkedAccount__warning">Please do not hit refresh.</div>
+                  <div className="IAV__warning">Please do not hit refresh.</div>
                   <Dwolla
                     onSuccess={this.handleIAVSuccess}
                     onError={onError}
@@ -78,13 +72,8 @@ export class IAVLinkedAccount extends React.Component {
   };
 
   handleSubmitSuccess = () => {
-    const { history } = this.props;
-    NotificationService.open({
-      type: 'success',
-      message: 'Success',
-      description: 'Funding Source successfully added.',
-    });
-    history.replace('/management/linked-accounts');
+    const { changeStep } = this.props;
+    changeStep(3);
   };
 
   createFundingSource = async ({ uri }) => {
@@ -95,13 +84,14 @@ export class IAVLinkedAccount extends React.Component {
 
 const mapStateToProps = state => ({
   iavToken: state.iav.iavToken,
-  isLoading: state.loading.effects.tenants.createIAVFundingSource,
+  isLoading: state.loading.effects.tenants.createFundingSourceWithIAV,
   iavIsLoading: state.loading.effects.iav.getIavToken,
 });
 
 const mapDispatchToProps = dispatch => ({
   createIAVFundingSource: dispatch.tenants.createIAVFundingSource,
+  changeStep: dispatch.welcome.changeStep,
   getIavToken: dispatch.iav.getIavToken,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(IAVLinkedAccount);
+export default connect(mapStateToProps, mapDispatchToProps)(Bank);

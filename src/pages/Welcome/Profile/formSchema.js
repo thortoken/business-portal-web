@@ -1,28 +1,24 @@
 /* eslint-disable no-template-curly-in-string */
 import * as Yup from 'yup';
-
 import formUtils from '~utils/forms';
 
 const formFields = {
-  newPassword: {
-    label: 'New Password',
+  firstName: {
+    label: 'First name',
     validator: Yup.string()
       .ensure()
       .required(),
     input: {
-      wide: null,
-      type: 'password',
+      placeholder: '',
     },
   },
-  confirmPassword: {
-    label: 'Confirm',
+  lastName: {
+    label: 'Last name',
     validator: Yup.string()
       .ensure()
-      .required()
-      .oneOf([Yup.ref('newPassword')], 'Passwords are not the same!'),
+      .required(),
     input: {
-      wide: null,
-      type: 'password',
+      placeholder: '',
     },
   },
 };

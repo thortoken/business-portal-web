@@ -1,17 +1,17 @@
 import React from 'react';
-import { Steps, Icon, Spin } from 'antd';
+import { Steps, Icon, Spin, Button } from 'antd';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
-import SignUp from './SignUp';
-import Terms from './Terms';
-import IAV from './IAV';
+import Bank from './Bank';
+import Company from './Company';
 import Done from './Done';
-import './OnBoarding.scss';
+import Profile from './Profile';
+import './Welcome.scss';
 
 const Step = Steps.Step;
 
-export class OnBoarding extends React.Component {
+export class Welcome extends React.Component {
   static propTypes = {
     step: PropTypes.number,
     ready: PropTypes.bool,
@@ -27,7 +27,7 @@ export class OnBoarding extends React.Component {
 
     const redirect = await checkStep();
     if (redirect) {
-      history.push('/contractor');
+      history.push('/payments');
     }
   }
 
@@ -42,32 +42,30 @@ export class OnBoarding extends React.Component {
     return Object.keys(localState).length ? localState : null;
   }
 
+  handleLogout = () => {
+    const { logout } = this.props;
+    logout();
+  };
+
   render() {
     const { step, ready } = this.state;
 
     const steps = [
       {
-        title: 'Terms',
-        icon: 'solution',
-        content: () => <Terms />,
-      },
-      {
-        title: 'Sign Up',
-        icon: 'user',
-        content: () => <SignUp />,
-      },
-      {
-        title: 'Verify Bank',
-        icon: 'dollar',
-        content: () => <IAV />,
-      },
-      /*
-      {
-        title: 'Documents',
+        title: 'Profile',
         icon: 'idcard',
-        content: () => <Documents />,
+        content: () => <Profile />,
       },
-      */
+      {
+        title: 'Company',
+        icon: 'home',
+        content: () => <Company />,
+      },
+      {
+        title: 'Bank Info',
+        icon: 'bank',
+        content: () => <Bank />,
+      },
       {
         title: 'Done',
         icon: 'smile-o',
@@ -75,9 +73,12 @@ export class OnBoarding extends React.Component {
       },
     ];
     return (
-      <div className="OnBoarding">
-        <div className="OnBoarding__container">
-          <div className="OnBoarding__steps">
+      <div className="Welcome">
+        <div className="Welcome__topbar">
+          <Button onClick={this.handleLogout}>Logout</Button>
+        </div>
+        <div className="Welcome__container">
+          <div className="Welcome__steps">
             <Steps current={step}>
               {steps.map(item => (
                 <Step
@@ -89,8 +90,8 @@ export class OnBoarding extends React.Component {
             </Steps>
           </div>
 
-          <div className="OnBoarding__steps--content">
-            {!ready && <Spin size="large" className="OnBoarding__steps--spin" />}
+          <div className="Welcome__steps--content">
+            {!ready && <Spin size="large" className="Welcome__steps--spin" />}
             {ready && steps[step].content()}
           </div>
         </div>
@@ -99,12 +100,13 @@ export class OnBoarding extends React.Component {
   }
 }
 const mapStateToProps = state => ({
-  step: state.onBoarding.step,
-  ready: state.onBoarding.ready,
+  step: state.welcome.step,
+  ready: state.welcome.ready,
 });
 
 const mapDispatchToProps = dispatch => ({
-  checkStep: dispatch.onBoarding.checkStep,
+  checkStep: dispatch.welcome.checkStep,
+  logout: dispatch.auth.logout,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(OnBoarding);
+export default connect(mapStateToProps, mapDispatchToProps)(Welcome);
