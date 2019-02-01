@@ -8,6 +8,7 @@ import FormField from '~components/FormField';
 import { initialValues, formFields, validationSchema } from './formSchema';
 import { handleFormHttpResponse } from '~utils/forms/errors';
 import NotificationService from '../../services/notification';
+import Config from '~services/config';
 import './Register.scss';
 
 export class Register extends React.Component {
@@ -21,6 +22,10 @@ export class Register extends React.Component {
     checkInvitation: PropTypes.func,
     register: PropTypes.func,
   };
+  constructor(props) {
+    super(props);
+    Config.savedRoot = '/sign-in';
+  }
 
   state = {};
 
