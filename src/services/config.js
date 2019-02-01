@@ -1,6 +1,6 @@
 export class Config {
   constructor() {
-    this.apiUrl = 'https://odin-api.dev.gothor.com/';
+    this.apiUrl = 'https://odin-api.stg.gothor.com/';
     this.savedRoot = '';
     this.env = 'dev';
   }
