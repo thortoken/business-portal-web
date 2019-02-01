@@ -61,9 +61,8 @@ export class Login extends React.Component {
 
   checkLogin = async data => {
     const { login } = this.props;
-    const tenant = Config.tenantId;
     const { email, password } = data;
-    await login({ email, password, tenant });
+    await login({ email, password });
   };
 
   handleSubmit = async (data, form) => {

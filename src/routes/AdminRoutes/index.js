@@ -21,10 +21,14 @@ export class AdminRoutes extends React.Component {
   async componentDidMount() {
     const { user, tenant, history, getTenant } = this.props;
     if (!tenant.status) {
-      await getTenant();
-    }
-    if (user.status !== 'active' || !tenant.status || tenant.status !== 'active') {
-      history.push('/welcome');
+      const { status } = await getTenant();
+      if (status !== 'active') {
+        history.push('/welcome');
+      }
+    } else if (user.status !== 'active' || tenant.status !== 'active') {
+      if (tenant.status) {
+        history.push('/welcome');
+      }
     }
   }
 

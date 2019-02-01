@@ -150,6 +150,8 @@ class Payments extends React.Component {
 
     getTransactionsSummary({
       ...filters,
+      page: pagination.current,
+      limit: pagination.pageSize,
     });
     getUsersJobs({
       ...filters,
@@ -164,11 +166,11 @@ class Payments extends React.Component {
 
     pagination = {
       ...pagination,
-      current: pagination.pageSize !== p.pageSize && 1,
+      pageSize: p.pageSize,
+      current: p.current,
     };
     filters = {
       ...filters,
-      status: f && f.jobs ? f.jobs[0] : undefined,
     };
     sorters = {
       ...sorters,
@@ -234,8 +236,7 @@ class Payments extends React.Component {
             value={this.state.filters.status || 'all'}
             onChange={this.handleStatusFilterChange}>
             <Radio.Button value="new">New</Radio.Button>
-            <Radio.Button value="processed">Processed</Radio.Button>
-            <Radio.Button value="failed">Failed</Radio.Button>
+            <Radio.Button value="pending">Pending</Radio.Button>
             <Radio.Button value="all">All</Radio.Button>
           </Radio.Group>
           <RefreshButton handleRefresh={this.handleRefresh} isLoading={isJobsLoading} />

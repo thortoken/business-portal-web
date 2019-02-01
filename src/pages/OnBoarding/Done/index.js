@@ -17,7 +17,7 @@ export class Done extends React.Component {
     return (
       <div className="Done">
         <div className="Done__register">
-          <div className="Done__msg">All done. Thanks for registration!</div>
+          <div className="Done__msg">All done. Thanks for registering!</div>
         </div>
       </div>
     );
