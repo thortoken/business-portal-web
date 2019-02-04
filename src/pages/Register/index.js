@@ -34,6 +34,11 @@ export class Register extends React.Component {
 
     const redirect = await checkInvitation(match.params.invitationId);
     if (redirect) {
+      NotificationService.open({
+        type: 'error',
+        message: 'Error',
+        description: `Invalid invitation token`,
+      });
       history.push('/sign-in');
     }
   }

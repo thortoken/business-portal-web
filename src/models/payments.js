@@ -8,7 +8,7 @@ const payments = {
       let done = 0;
 
       let requests = [...data].map(group => {
-        return Http.post(`/transactions/transfers/user/${group.userId}`, {
+        return Http.post(`/transactions/transfers`, {
           transactionsIds: group.transactionsIds,
         })
           .then(res => {

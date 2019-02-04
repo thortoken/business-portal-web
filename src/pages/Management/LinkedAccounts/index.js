@@ -1,17 +1,15 @@
 import React from 'react';
-
+import { Icon, Modal, Table } from 'antd';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
 import Box from '~components/Box';
-
-import './LinkedAccounts.scss';
-import { Icon, Modal, Table } from 'antd';
 import TooltipButton from '~components/TooltipButton';
 import RefreshButton from '~components/RefreshButton';
 import Header from '~components/Header';
 import makeDefaultPagination from '~utils/pagination';
 import NotificationService from '~services/notification';
+import './LinkedAccounts.scss';
 
 const { Column } = Table;
 
@@ -158,7 +156,7 @@ export class LinkedAccounts extends React.Component {
                       <Icon type="delete" theme="outlined" />
                     </TooltipButton>
 
-                    {!record.verificationStatus && (
+                    {!record.status && (
                       <TooltipButton
                         tooltip="Verify funding source"
                         loading={isLoadingVerify}
@@ -167,7 +165,7 @@ export class LinkedAccounts extends React.Component {
                       </TooltipButton>
                     )}
 
-                    {record.verificationStatus === 'initiated' && (
+                    {record.status === 'initiated' && (
                       <TooltipButton
                         tooltip="Verify funding source"
                         onClick={() => this.handleOpenVerifyAmount()}>

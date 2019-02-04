@@ -6,12 +6,7 @@ import { withRouter } from 'react-router-dom';
 import './Done.scss';
 
 export class Done extends React.Component {
-  componentDidMount() {
-    const { history } = this.props;
-    setTimeout(() => {
-      history.push('/');
-    }, 5000);
-  }
+  componentDidMount() {}
 
   render() {
     return (
