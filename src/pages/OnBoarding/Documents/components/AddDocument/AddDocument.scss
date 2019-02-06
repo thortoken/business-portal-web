@@ -1,6 +1,6 @@
-@import "../../../styles/var";
+@import "../../../../../styles/var";
 
-.Documents {
+.AddDocument {
   background-color: #fff;
   &__button-container {
     width: 100%;
@@ -12,15 +12,6 @@
   }
   &__errors {
     color: $color-inactive;
-  }
-  &__steps {
-    margin-top: 3rem;
-    margin-bottom: 3rem;
-    width: 100%;
-    &--spin {
-      display: block !important;
-      margin: 0 auto !important;
-    }
   }
 
   &__block {

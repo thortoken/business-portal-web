@@ -6,6 +6,16 @@
   height: 100vh;
   overflow-x: hidden;
 
+  &__topbar {
+    width: 100%;
+    position: absolute;
+    button {
+      position: absolute;
+      margin: 5px;
+      right: 0px;
+    }
+  }
+
   &__steps {
     margin-top: 3rem;
     margin-bottom: 3rem;

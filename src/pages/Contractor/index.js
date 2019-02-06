@@ -20,34 +20,16 @@ class Contractor extends React.Component {
   };
 
   state = {
-    isAddPaymentModalVisible: false,
-    isAddFundingSourceModalVisible: false,
-    currentUser: {},
     pagination: makeDefaultPagination(),
     transactionsListPagination: null,
-    currentUserStatistics: {
-      rank: 0,
-      nJobs: 0,
-      prev: 0,
-      current: 0,
-      ytd: 0,
-    },
     contractorTransactions: {
       items: [],
     },
-    jobsList: [],
   };
 
-  componentDidMount() {
-    const { user, history } = this.props;
-    if (user.status !== 'active') {
-      history.push('/on-boarding');
-    } else {
-      this.handleRefresh();
-    }
+  async componentDidMount() {
+    this.handleRefresh();
   }
-
-  componentWillUnmount() {}
 
   handleRefresh = () => {
     const { getTransactions } = this.props;
@@ -62,12 +44,6 @@ class Contractor extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     let localState = {};
-
-    if (nextProps.currentUser !== prevState.currentUser) {
-      localState = {
-        currentUser: nextProps.currentUser,
-      };
-    }
 
     if (nextProps.contractorTransactions !== prevState.contractorTransactions) {
       localState['contractorTransactions'] = nextProps.contractorTransactions;
@@ -163,7 +139,6 @@ class Contractor extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.auth.user,
   contractorTransactions: state.transactions.contractorTransactions,
   transactionsListPagination: state.transactions.transactionsListPagination,
   loadingTransactions: state.loading.effects.transactions.getTransactions,

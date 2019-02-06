@@ -1,96 +1,74 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Steps } from 'antd';
 import PropTypes from 'prop-types';
-import { Button, Select } from 'antd';
-import { FilePond, registerPlugin } from 'react-filepond';
-import 'filepond/dist/filepond.min.css';
-import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
-import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 
-import Config from '~services/config';
+import AddDocument from './components/AddDocument';
 import './Documents.scss';
 
-registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
+const Step = Steps.Step;
 
 export class Documents extends React.Component {
   static propTypes = {
-    token: PropTypes.string,
-    user: PropTypes.object,
+    token: PropTypes.string.isRequired,
+    changeStep: PropTypes.func.isRequired,
   };
 
   state = {
-    showDone: false,
-    docType: 'license',
+    step: 0,
   };
 
-  handleClose = () => {
-    const { history, user } = this.props;
-    history.push(`/contractors/${user.id}/documents`);
-  };
-
-  handleChange = value => {
-    this.setState({ docType: value });
+  handleChangeStep = () => {
+    const { step } = this.state;
+    if (step === 2) {
+      this.props.changeStep(3);
+    } else {
+      this.setState({ step: step + 1 });
+    }
   };
 
   render() {
-    const { user, token } = this.props;
-    const { showDone, docType } = this.state;
+    const { step } = this.state;
+    const { token } = this.props;
+    const steps = [
+      {
+        title: 'W-9',
+        icon: 'solution',
+        type: 'w9',
+      },
+      {
+        title: `Driver's License`,
+        icon: 'user',
+        type: 'license',
+      },
+      {
+        title: 'Passport',
+        icon: 'file',
+        type: 'passport',
+      },
+    ];
     return (
       <div className="Documents">
-        <div className="Documents__block">
-          <Select defaultValue="license" onChange={this.handleChange}>
-            <Select.Option value="passport">Passport</Select.Option>
-            <Select.Option value="license">License</Select.Option>
-            <Select.Option value="idCard">Id Card</Select.Option>
-            <Select.Option value="i9">I-9</Select.Option>
-            <Select.Option value="w9">W-9</Select.Option>
-            <Select.Option value="other">Other</Select.Option>
-          </Select>
+        <div className="Documents__steps">
+          <Steps current={step}>
+            {steps.map(item => <Step key={item.title} title={item.title} />)}
+          </Steps>
         </div>
-        <div className="Documents__block">
-          <FilePond
-            allowFileSizeValidation
-            maxFileSize="10MB"
-            allowFileTypeValidation
-            acceptedFileTypes={['application/pdf', 'image/jpg', 'image/jpeg', 'image/png']}
-            labelTapToCancel="Click to cancel."
-            labelTapToRetry="Click to retry."
-            labelTapToUndo="Click to undo."
-            server={{
-              url: `${Config.apiUrl}users/${user.id}/documents?type=${docType}`,
-              process: {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-                onload: response => {
-                  this.setState({ showDone: true });
-                },
-                onerror: response => {
-                  this.setState({ showDone: true });
-                },
-              },
-            }}
-          />
+
+        <div className="Documents__steps--content">
+          {<AddDocument token={token} changeStep={this.handleChangeStep} type={steps[step].type} />}
         </div>
-        {showDone && (
-          <div className="Documents__button-container">
-            <Button
-              size="large"
-              type="default"
-              onClick={this.handleClose}
-              className="Documents__button-container--button">
-              Close
-            </Button>
-          </div>
-        )}
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  user: state.auth.user,
   token: state.auth.token,
 });
 
-export default connect(mapStateToProps, null)(Documents);
+const mapDispatchToProps = dispatch => ({
+  changeStep: dispatch.onBoarding.changeStep,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Documents);

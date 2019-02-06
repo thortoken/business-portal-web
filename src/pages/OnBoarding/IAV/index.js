@@ -71,7 +71,7 @@ export class IAV extends React.Component {
 
   handleSubmitSuccess = () => {
     const { changeStep } = this.props;
-    changeStep(3);
+    changeStep(4);
   };
 
   createFundingSource = async ({ uri }) => {

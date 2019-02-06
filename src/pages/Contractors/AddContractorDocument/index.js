@@ -1,16 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
 import { FilePond, registerPlugin } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
-
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-
-import './AddContractorDocument.scss';
-import Config from '~services/config';
 import { Button, Select } from 'antd';
+
+import Config from '~services/config';
+import './AddContractorDocument.scss';
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -27,15 +25,15 @@ export class AddContractorDocument extends React.Component {
   state = {
     showDone: false,
     docType: 'license',
-  };
-
-  handleClose = () => {
-    const { history, match } = this.props;
-    history.push(`/contractors/${match.params.id}/documents`);
+    files: [],
   };
 
   handleChange = value => {
     this.setState({ docType: value });
+  };
+
+  handleUploadAnother = value => {
+    this.setState({ showDone: false, files: [] });
   };
 
   render() {
@@ -55,13 +53,20 @@ export class AddContractorDocument extends React.Component {
         </div>
         <div className="AddContractorDocument__block">
           <FilePond
+            files={this.state.files}
             allowFileSizeValidation
-            maxFileSize="10MB"
             allowFileTypeValidation
+            maxFileSize="10MB"
             acceptedFileTypes={['application/pdf', 'image/jpg', 'image/jpeg', 'image/png']}
             labelTapToCancel="Click to cancel."
             labelTapToRetry="Click to retry."
             labelTapToUndo="Click to undo."
+            instantUpload={false}
+            onupdatefiles={fileItems => {
+              this.setState({
+                files: fileItems.map(fileItem => fileItem.file),
+              });
+            }}
             server={{
               url: `${Config.apiUrl}users/${match.params.id}/documents?type=${docType}`,
               process: {
@@ -83,9 +88,9 @@ export class AddContractorDocument extends React.Component {
             <Button
               size="large"
               type="default"
-              onClick={this.handleClose}
+              onClick={this.handleUploadAnother}
               className="AddContractorDocument__button-container--button">
-              Close
+              Upload Another
             </Button>
           </div>
         )}

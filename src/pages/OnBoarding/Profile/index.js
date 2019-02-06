@@ -8,9 +8,9 @@ import FormField from '~components/FormField';
 import { initialValues, formFields, transformDateToMoment, validationSchema } from './formSchema';
 import { handleFormHttpResponse } from '~utils/forms/errors';
 import { traverseRecursively } from '~utils/iterators';
-import './SignUp.scss';
+import './Profile.scss';
 
-export class SignUp extends React.Component {
+export class Profile extends React.Component {
   static propTypes = {
     user: PropTypes.object,
   };
@@ -22,9 +22,9 @@ export class SignUp extends React.Component {
   render() {
     const { error } = this.state;
     return (
-      <div className="SignUp">
-        <div className="SignUp__form">
-          <div className="SignUp__errors">{error}</div>
+      <div className="Profile">
+        <div className="Profile__form">
+          <div className="Profile__errors">{error}</div>
           <Formik
             initialValues={initialValues}
             onSubmit={this.handleSubmit}
@@ -60,15 +60,15 @@ export class SignUp extends React.Component {
     <form onSubmit={handleSubmit}>
       {this.prepareForm(formFields)}
 
-      <div className="Add-contractor__button-container">
+      <div className="Profile__button-container">
         <Button
           disabled={!dirty || isSubmitting}
           size="large"
           type="primary"
           loading={isSubmitting}
           htmlType="submit"
-          className="Add-contractor__button-container--button">
-          Sign Up
+          className="Profile__button-container--button">
+          Next
         </Button>
       </div>
     </form>
@@ -115,4 +115,4 @@ const mapDispatchToProps = dispatch => ({
   changeStep: dispatch.onBoarding.changeStep,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
