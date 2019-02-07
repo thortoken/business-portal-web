@@ -135,7 +135,7 @@ export class CompanyTeam extends React.Component {
     const { invitationsList, pagination } = this.state;
     return (
       <div className="CompanyTeam">
-        <Header title="Admins List" size="medium">
+        <Header title={`${invitationsList.length} Users`} size="medium">
           <TooltipButton tooltip="Add admin" type="primary" onClick={this.handleAdd}>
             <Icon type="plus" theme="outlined" />
           </TooltipButton>
@@ -189,19 +189,18 @@ export class CompanyTeam extends React.Component {
                 return (
                   <span className="Invitations__table__buttons">
                     {record.status === 'pending' && (
-                      <TooltipButton
-                        tooltip="Delete invitation"
-                        onClick={() => this.handleDelete(record)}>
-                        <Icon type="delete" theme="outlined" />
-                      </TooltipButton>
-                    )}
-
-                    {record.status === 'pending' && (
-                      <TooltipButton
-                        tooltip="Resend invitation"
-                        onClick={() => this.handleResend(record)}>
-                        <Icon type="mail" theme="outlined" />
-                      </TooltipButton>
+                      <div>
+                        <TooltipButton
+                          tooltip="Delete invitation"
+                          onClick={() => this.handleDelete(record)}>
+                          <Icon type="delete" theme="outlined" />
+                        </TooltipButton>
+                        <TooltipButton
+                          tooltip="Resend invitation"
+                          onClick={() => this.handleResend(record)}>
+                          <Icon type="mail" theme="outlined" />
+                        </TooltipButton>
+                      </div>
                     )}
                   </span>
                 );

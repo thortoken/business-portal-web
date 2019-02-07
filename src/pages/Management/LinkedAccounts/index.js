@@ -7,6 +7,7 @@ import Box from '~components/Box';
 import TooltipButton from '~components/TooltipButton';
 import RefreshButton from '~components/RefreshButton';
 import Header from '~components/Header';
+import BackBtn from '~components/BackBtn';
 import makeDefaultPagination from '~utils/pagination';
 import NotificationService from '~services/notification';
 import './LinkedAccounts.scss';
@@ -56,6 +57,11 @@ export class LinkedAccounts extends React.Component {
     } else {
       this.props.history.push(`/management/linked-accounts/add`);
     }
+  };
+
+  handleBack = () => {
+    const { history } = this.props;
+    history.push(`/management/billing`);
   };
 
   handleTableChange = pag => {
@@ -122,10 +128,13 @@ export class LinkedAccounts extends React.Component {
   };
 
   render() {
-    const { isLoading, isLoadingVerify } = this.props;
+    const { isLoading, isLoadingVerify, history } = this.props;
     const { pagination, fundingSources } = this.state;
     return (
       <div className="LinkedAccounts">
+        <div className="LinkedAccounts__back">
+          <BackBtn history={history} goBack={this.handleBack} />
+        </div>
         <Header title="Linked Accounts List" size="medium">
           {fundingSources.length === 0 && (
             <TooltipButton tooltip="Add bank info" type="primary" onClick={this.handleAdd}>

@@ -26,6 +26,7 @@ export class CompanyDetails extends React.Component {
       company: null,
       owner: null,
       categories: [],
+      tenant: {},
     };
   }
 
@@ -43,6 +44,11 @@ export class CompanyDetails extends React.Component {
     if (nextProps.owner !== prevState.owner) {
       return {
         owner: nextProps.owner,
+      };
+    }
+    if (nextProps.tenant !== prevState.tenant) {
+      return {
+        tenant: nextProps.tenant,
       };
     }
     return null;
@@ -84,6 +90,12 @@ export class CompanyDetails extends React.Component {
     }
   };
 
+  handleManageBeneficialOwners = () => {
+    if (!this.checkLoading()) {
+      this.props.history.push(`/management/beneficial-owners`);
+    }
+  };
+
   checkLoading() {
     const { isLoadingCompany, isLoadingCategories } = this.props;
     return isLoadingCategories || isLoadingCompany;
@@ -91,27 +103,37 @@ export class CompanyDetails extends React.Component {
 
   render() {
     const { isLoadingCompanyDetails, isLoadingCategories } = this.props;
-    const { company, owner } = this.state;
+    const { company, owner, tenant } = this.state;
     let warningsList = [];
     if (company) {
       warningsList = this.verifyStatus();
     }
     return (
       <div className="CompanyDetails">
-        <Header title="Company Details" size="medium" warning={this.renderWarning(warningsList)}>
-          {!isLoadingCompanyDetails &&
-            !isLoadingCategories &&
-            company &&
-            company.status && <StatusBlock status={company.status} />}
+        <Header
+          title={`${tenant.name} Details`}
+          size="medium"
+          warning={this.renderWarning(warningsList)}>
           {!isLoadingCompanyDetails &&
             !isLoadingCategories &&
             (company ? (
-              <TooltipButton
-                tooltip="Edit company details"
-                type="primary"
-                onClick={this.handleEdit}>
-                <Icon type="form" theme="outlined" />
-              </TooltipButton>
+              <div>
+                {company.status && <StatusBlock status={company.status} />}
+                {company.businessType !== 'soleProprietorship' && (
+                  <TooltipButton
+                    tooltip="Manage Beneficial Owners"
+                    type="primary"
+                    onClick={this.handleManageBeneficialOwners}>
+                    <Icon type="crown" theme="outlined" />
+                  </TooltipButton>
+                )}
+                <TooltipButton
+                  tooltip="Edit company details"
+                  type="primary"
+                  onClick={this.handleEdit}>
+                  <Icon type="form" theme="outlined" />
+                </TooltipButton>
+              </div>
             ) : (
               <TooltipButton tooltip="Add company details" type="primary" onClick={this.handleAdd}>
                 <Icon type="plus" theme="outlined" />
@@ -195,6 +217,7 @@ export class CompanyDetails extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  tenant: state.tenants.tenant,
   company: state.tenantCompany.company,
   categories: state.tenantCompany.categories,
   owner: state.tenantCompany.owner,

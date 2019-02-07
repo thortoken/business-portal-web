@@ -6,13 +6,13 @@ import './ManagementMenu.scss';
 
 const menuItems = [
   { route: '/management/company-details', label: 'Company Details', icon: 'home' },
-  { route: '/management/beneficial-owners', label: 'Beneficial Owners', icon: 'crown' },
-  { route: '/management/linked-accounts', label: 'Bank Info', icon: 'bank' },
-  { route: '/management/company-team', label: 'Team', icon: 'team' },
-  { route: '/management/jobs', label: 'Jobs', icon: 'tags' },
+  // { route: '/management/beneficial-owners', label: 'Beneficial Owners', icon: 'crown' },
+  { route: '/management/billing', label: 'Billing', icon: 'dollar' },
+  { route: '/management/company-team', label: 'Manage Team', icon: 'team' },
+  { route: '/management/jobs', label: 'Manage Jobs', icon: 'tool' },
   // { route: '/management/integrations', label: 'Integrations', icon: 'shrink' },
-  // { route: '/management/settings', label: 'Settings', icon: 'setting' },
   { route: '/management/profile', label: 'My Profile', icon: 'user' },
+  // { route: '/management/settings', label: 'Settings', icon: 'setting' },
 ];
 
 export const generateMenuItems = list => {

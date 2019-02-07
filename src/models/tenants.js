@@ -46,7 +46,6 @@ const tenants = {
         throw err;
       }
     },
-
     async changeAdminPassword(data) {
       try {
         const response = await Http.patch('/auth/password', data);

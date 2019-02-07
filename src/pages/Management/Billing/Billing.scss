@@ -1,11 +1,14 @@
 @import "../../../styles/var";
 
-.LinkedAccounts {
+$color-usd-header: #92cf48;
+$color-usd-column: #dbedc0;
+$color-thor-header: #84bcf0;
+$color-thor-column: #a6cff4;
+
+.Billing {
   padding: 1rem;
   width: 100%;
-  &__back {
-    margin-bottom: 2rem;
-  }
+  min-width: 970px;
   &__actions {
     width: 200px !important;
   }
@@ -39,7 +42,6 @@
       }
     }
   }
-
   &__button-container {
     width: 100%;
     text-align: center;
@@ -50,6 +52,67 @@
   }
   &__errors {
     color: $color-inactive;
+  }
+
+  $column-width: 190px;
+
+  .column {
+    width: calc(100% - 190px);
+    min-width: 550px;
+  }
+  .thor_column {
+    width: $column-width;
+    .header {
+      background: $color-thor-header;
+    }
+    background: $color-thor-column;
+    color: white;
+  }
+  .usd_column {
+    width: $column-width;
+    border-top-right-radius: $border-radius;
+    .header {
+      background: $color-usd-header;
+      border-top-right-radius: $border-radius;
+    }
+    background: $color-usd-column;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    padding: 5px 10px;
+    height: 40px;
+  }
+  .content {
+    height: 120px;
+    padding: 5px 10px;
+  }
+  .center {
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    width: $column-width;
+  }
+
+  .cell {
+    padding: 5px 10px;
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  &__check {
+    font-size: 48px;
+    color: $color-usd-header;
+  }
+
+  .ant-divider-horizontal {
+    margin: 0px;
   }
 
   .InputGroup {
@@ -65,5 +128,11 @@
   }
   .Box {
     border-radius: 0.9rem 0.9rem 0 0;
+  }
+
+  .image {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
   }
 }

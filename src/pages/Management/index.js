@@ -19,6 +19,7 @@ import RetryCompanyDetails from './CompanyDetails/RetryCompanyDetails';
 import CompanyDocuments from './CompanyDetails/CompanyDocuments';
 import AddCompanyDocument from './CompanyDetails/AddCompanyDocument';
 import ChangeAdminPassword from './ChangeAdminPassword';
+import Billing from './Billing';
 import Jobs from './Jobs';
 import AddJob from './Jobs/AddJob';
 import EditJob from './Jobs/EditJob';
@@ -41,6 +42,7 @@ export class RootManagementPage extends React.Component {
             />
             <Route exact path={`/management/beneficial-owners`} component={BeneficialOwners} />
             <Route exact path={`/management/company-team`} component={CompanyTeam} />
+            <Route exact path={`/management/billing`} component={Billing} />
             <Route exact path={`/management/linked-accounts`} component={LinkedAccounts} />
             <Route exact path={`/management/integrations`} component={Integrations} />
             <Route exact path={`/management/settings`} component={Settings} />
@@ -134,7 +136,7 @@ export class RootManagementPage extends React.Component {
             <Route
               exact
               path={`/management/company-team/add`}
-              component={withRouteModal({ component: AddCompanyTeam, title: 'Add Admin' })}
+              component={withRouteModal({ component: AddCompanyTeam, title: 'Add User' })}
             />
             <Route path={`/management`} component={CompanyDetails} />
           </Switch>

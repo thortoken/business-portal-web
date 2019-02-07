@@ -186,7 +186,7 @@ export class Jobs extends React.Component {
     const { pagination, jobsList, searchName } = this.state;
     return (
       <div className="Jobs">
-        <Header title="Jobs List" size="medium">
+        <Header title={`${jobsList.length} Jobs`} size="medium">
           <TooltipButton tooltip="Add job" type="primary" onClick={this.handleAdd}>
             <Icon type="plus" theme="outlined" />
           </TooltipButton>
