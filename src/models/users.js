@@ -122,6 +122,7 @@ const users = {
             endDate: new Date(endDate.utc()),
             orderBy,
             order,
+            status,
             contractor,
           },
         });

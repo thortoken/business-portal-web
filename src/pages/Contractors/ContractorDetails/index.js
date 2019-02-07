@@ -341,7 +341,7 @@ class ContractorDetails extends React.Component {
   };
 
   handleResendInvitation = async () => {
-    const { currentUser, resendInvitation } = this.props;
+    const { currentUser, resendUserInvitation } = this.props;
     const { firstName, lastName } = currentUser.tenantProfile;
     Modal.confirm({
       title: `Are you sure you want to resend the invitation for ${firstName} ${lastName}?`,
@@ -350,7 +350,7 @@ class ContractorDetails extends React.Component {
       cancelText: 'No',
       onOk: async () => {
         try {
-          await resendInvitation({ userId: currentUser.id });
+          await resendUserInvitation({ userId: currentUser.id });
           NotificationService.open({
             type: 'success',
             message: 'Success',
@@ -489,7 +489,7 @@ const mapDispatchToProps = ({
     sendPasswordReset,
   },
   jobs: { getJobs },
-  invitations: { resendInvitation },
+  invitations: { resendUserInvitation },
 }) => ({
   createTransaction,
   addExistingTransaction,
@@ -504,7 +504,7 @@ const mapDispatchToProps = ({
   changeFundingSourceStatus,
   sendPasswordReset,
   getJobs,
-  resendInvitation,
+  resendUserInvitation,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContractorDetails);

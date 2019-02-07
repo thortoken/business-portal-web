@@ -4,16 +4,15 @@ import { connect } from 'react-redux';
 import { Table, Button, Icon, Modal } from 'antd';
 import moment from 'moment';
 import classnames from 'classnames';
-import Box from '../../../components/Box/index';
+
+import Box from '~components/Box/index';
 import makeDefaultPagination from '~utils/pagination';
 import NotificationService from '~services/notification';
-
-import './InvitationsList.scss';
-
 import TooltipButton from '~components/TooltipButton';
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
 import AddContractorMenu from '../AddContractorMenu';
+import './InvitationsList.scss';
 
 const { Column } = Table;
 
@@ -31,11 +30,7 @@ class InvitationsList extends React.Component {
   };
 
   componentDidMount() {
-    const { pagination } = this.state;
-    this.props.getInvitations({
-      page: pagination.current,
-      limit: pagination.pageSize,
-    });
+    this.handleRefresh();
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -63,6 +58,7 @@ class InvitationsList extends React.Component {
     }
     this.setState({ pagination: { ...pag, current: curr } });
     getInvitations({
+      type: 'contractor',
       page: curr,
       limit: pag.pageSize,
     });
@@ -76,6 +72,7 @@ class InvitationsList extends React.Component {
     const { getInvitations } = this.props;
     const { pagination } = this.state;
     getInvitations({
+      type: 'contractor',
       page: pagination.current,
       limit: pagination.pageSize,
     });
@@ -114,7 +111,7 @@ class InvitationsList extends React.Component {
     const { email, id } = row;
 
     try {
-      await resendInvitation({ userId: id });
+      await resendInvitation({ id });
       NotificationService.open({
         type: 'success',
         message: 'Success',

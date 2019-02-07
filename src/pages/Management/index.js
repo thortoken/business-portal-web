@@ -1,16 +1,15 @@
 import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
+import { withRouteModal } from '~components/Modal';
 import CompanyDetails from './CompanyDetails';
 import BeneficialOwners from './BeneficialOwners';
-import { CompanyTeam } from './CompanyTeam';
+import CompanyTeam from './CompanyTeam';
+import AddCompanyTeam from './CompanyTeam/AddCompanyTeam';
 import LinkedAccounts from './LinkedAccounts';
-import { Integrations } from './Integrations';
-import { Settings } from './Settings';
-import { withRouteModal } from '~components/Modal';
+import Integrations from './Integrations';
+import Settings from './Settings';
 import ManagementMenu from './_components/ManagementMenu';
-
-import './Management.scss';
 import AddCompanyDetails from './CompanyDetails/AddCompanyDetails';
 import EditCompanyDetails from './CompanyDetails/EditCompanyDetails';
 import AddBeneficialOwner from './BeneficialOwners/AddBeneficialOwner';
@@ -25,6 +24,7 @@ import AddJob from './Jobs/AddJob';
 import EditJob from './Jobs/EditJob';
 import Profile from './Profile';
 import EditProfile from './Profile/EditProfile';
+import './Management.scss';
 
 export class RootManagementPage extends React.Component {
   render() {
@@ -130,6 +130,11 @@ export class RootManagementPage extends React.Component {
               exact
               path={`/management/profile/edit`}
               component={withRouteModal({ component: EditProfile, title: 'Edit Profile' })}
+            />
+            <Route
+              exact
+              path={`/management/company-team/add`}
+              component={withRouteModal({ component: AddCompanyTeam, title: 'Add Admin' })}
             />
             <Route path={`/management`} component={CompanyDetails} />
           </Switch>

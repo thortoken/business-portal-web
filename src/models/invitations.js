@@ -4,10 +4,12 @@ import NotificationService from '~services/notification';
 
 const invitations = {
   effects: {
-    async sendAdminInvitation({ email }) {
+    async sendInvitation({ email, type, role }) {
       try {
-        const response = await Http.post('users/invitations/admin', {
+        const response = await Http.post('/invitations', {
           email,
+          type,
+          role,
         });
         return response.data;
       } catch (err) {
@@ -15,25 +17,14 @@ const invitations = {
       }
     },
 
-    async sendContractorInvitation({ email }) {
+    async getInvitations({ status, page, limit, type }) {
       try {
-        const response = await Http.post('users/invitations/contractors', {
-          email,
-        });
-        return response.data;
-      } catch (err) {
-        throw err;
-      }
-    },
-
-    async getInvitations({ status, page, limit }) {
-      try {
-        const response = await Http.get(`users/invitations`, {
+        const response = await Http.get(`/invitations`, {
           params: {
             page,
             limit,
             status,
-            type: 'contractors',
+            type,
           },
         });
         this.setInvitations(_.orderBy(response.data.items, ['status'], ['asc']));
@@ -46,16 +37,29 @@ const invitations = {
 
     async deleteInvitation({ userId }) {
       try {
-        const response = await Http.delete(`users/${userId}/invitations`);
+        const response = await Http.delete(`/invitations`, {
+          userId,
+        });
         return response.data;
       } catch (err) {
         throw err;
       }
     },
 
-    async resendInvitation({ userId }) {
+    async resendInvitation({ id }) {
       try {
-        const response = await Http.put(`users/${userId}/invitations/resend`);
+        const response = await Http.patch(`/invitations/${id}/resend`);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+
+    async resendUserInvitation({ userId }) {
+      try {
+        const response = await Http.patch(`/invitations/resend`, {
+          userId,
+        });
         return response.data;
       } catch (err) {
         throw err;
@@ -65,7 +69,7 @@ const invitations = {
     async checkInvitation(id) {
       try {
         let redirect = false;
-        const response = await Http.get(`invitations/${id}`);
+        const response = await Http.get(`/public/invitations/${id}`);
         if (response.status === 200) {
           this.setInvitedUser(response.data);
         } else {

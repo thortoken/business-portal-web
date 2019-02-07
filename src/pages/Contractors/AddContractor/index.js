@@ -5,14 +5,11 @@ import { Button } from 'antd';
 import { Formik } from 'formik';
 
 import FormField from '~components/FormField';
-
 import { initialValues, formFields, transformDateToMoment, validationSchema } from './formSchema';
-import './AddContractor.scss';
 import NotificationService from '~services/notification';
-
 import { handleFormHttpResponse } from '~utils/forms/errors';
-
 import { traverseRecursively } from '~utils/iterators';
+import './AddContractor.scss';
 
 export class AddContractor extends React.Component {
   static propTypes = {

@@ -1,19 +1,16 @@
 import React from 'react';
-
+import { Icon, Modal, Table, Switch, Input, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
 import Box from '~components/Box';
-
-import './Jobs.scss';
-import { Icon, Modal, Table, Switch, Input, Tooltip } from 'antd';
-
 import NotificationService from '~services/notification';
 import TooltipButton from '~components/TooltipButton';
 import RefreshButton from '~components/RefreshButton';
 import Header from '~components/Header';
 import makeDefaultPagination from '~utils/pagination';
 import { formatUsd } from '~utils/number';
+import './Jobs.scss';
 
 const { Column } = Table;
 const Search = Input.Search;
