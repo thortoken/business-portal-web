@@ -7,9 +7,9 @@ import Box from '~components/Box';
 import EditCompanyDetails from './EditCompanyDetails';
 import Header from '~components/Header';
 import TooltipButton from '~components/TooltipButton';
-import './CompanyDetails.scss';
 import EditCompanyOwner from './EditCompanyOwner';
-import StatusBlock from '../../../components/StatusBlock';
+import StatusBlock from '~components/StatusBlock';
+import './CompanyDetails.scss';
 
 export class CompanyDetails extends React.Component {
   static propTypes = {
@@ -156,7 +156,7 @@ export class CompanyDetails extends React.Component {
               !isLoadingCategories &&
               owner && (
                 <div>
-                  <Divider orientation="left">Owner</Divider>
+                  <Divider orientation="left">Controller</Divider>
                   <EditCompanyOwner disabled />
                 </div>
               )}

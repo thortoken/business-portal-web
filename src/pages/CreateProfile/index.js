@@ -3,17 +3,15 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import { Formik } from 'formik';
-import classnames from 'classnames';
 
 import FormField from '~components/FormField';
 import { initialValues, formFields, validationSchema } from './formSchema';
 import { handleFormHttpResponse } from '~utils/forms/errors';
-import './Profile.scss';
+import './CreateProfile.scss';
 
-export class Profile extends React.Component {
+export class CreateProfile extends React.Component {
   static propTypes = {
     updateProfile: PropTypes.func.isRequired,
-    disabled: PropTypes.bool,
   };
 
   state = {
@@ -22,7 +20,7 @@ export class Profile extends React.Component {
 
   render() {
     return (
-      <div className="EditProfile">
+      <div className="CreateProfile">
         <Formik
           initialValues={initialValues}
           onSubmit={this.handleSubmit}
@@ -36,29 +34,19 @@ export class Profile extends React.Component {
   renderForm = ({ handleSubmit, isSubmitting, values, dirty }) => (
     <form onSubmit={handleSubmit}>
       {Object.entries(formFields).map(([name, options]) => (
-        <FormField
-          key={name}
-          name={name}
-          label={options.label}
-          disabled={this.props.disabled}
-          {...options.input}
-          placeholder={this.props.disabled ? '' : options.input.placeholder}
-          className={classnames('EditCompanyDetails__input', {
-            'EditCompanyDetails__input--disabled': this.props.disabled,
-          })}
-        />
+        <FormField key={name} name={name} label={options.label} {...options.input} />
       ))}
 
       {!this.props.disabled && (
-        <div className="EditCompanyDetails__button-container">
+        <div className="CreateProfile__button-container">
           <Button
             disabled={!dirty || isSubmitting}
             size="large"
             type="primary"
             loading={isSubmitting}
             htmlType="submit"
-            className="EditCompanyDetails__button-container--button">
-            Next
+            className="CreateProfile__button-container--button">
+            Create
           </Button>
         </div>
       )}
@@ -76,9 +64,14 @@ export class Profile extends React.Component {
     }
   };
 
-  handleSubmitSuccess = () => {
-    const { changeStep } = this.props;
-    changeStep(2);
+  handleSubmitSuccess = async () => {
+    const { checkStatus, history } = this.props;
+    const redirect = await checkStatus();
+    if (redirect) {
+      history.push(redirect);
+    } else {
+      history.push('/payments');
+    }
   };
 }
 
@@ -88,7 +81,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   updateProfile: dispatch.users.updateProfile,
-  changeStep: dispatch.onBoarding.changeStep,
+  checkStatus: dispatch.welcome.checkStatus,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateProfile);

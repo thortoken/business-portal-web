@@ -1,33 +1,46 @@
 const Steps = {
-  PROFILE: 0,
-  COMPANY: 1,
-  BANK: 2,
-  DONE: 3,
+  COMPANY: 0,
+  BANK: 1,
+  DONE: 2,
 };
 
 const welcome = {
   effects: dispatch => ({
-    async checkStep(_payload, models) {
-      let redirect = false;
-      let step = Steps.PROFILE;
+    async checkStatus(_payload, models) {
       let tenantStatus = models.tenants.tenant.status;
       let userStatus = models.auth.user.status;
 
-      if (userStatus === 'profile') {
-        step = Steps.PROFILE;
-      } else {
-        switch (tenantStatus) {
-          case 'company':
-            step = Steps.COMPANY;
-            break;
-          case 'bank':
-            step = Steps.BANK;
-            break;
-          default:
-            step = Steps.DONE;
-            redirect = true;
-            break;
+      if (userStatus !== 'active') {
+        return '/create-profile';
+      }
+
+      if (!tenantStatus) {
+        const { status } = await dispatch.tenants.getTenant();
+        if (status !== 'active') {
+          return '/welcome';
         }
+      } else if (tenantStatus !== 'active') {
+        return '/welcome';
+      }
+      return null;
+    },
+
+    async checkStep(_payload, models) {
+      const tenantStatus = models.tenants.tenant.status;
+      let redirect = false;
+      let step = Steps.PROFILE;
+
+      switch (tenantStatus) {
+        case 'company':
+          step = Steps.COMPANY;
+          break;
+        case 'bank':
+          step = Steps.BANK;
+          break;
+        default:
+          step = Steps.DONE;
+          redirect = true;
+          break;
       }
       this.setStep(step);
       return redirect;
@@ -35,12 +48,8 @@ const welcome = {
 
     async changeStep(step) {
       switch (step) {
-        case Steps.PROFILE:
-        default:
-          break;
         case Steps.COMPANY:
-          // process the current tenant status
-          await this.checkStep();
+        default:
           break;
         case Steps.BANK:
           // update the tenant status to bank

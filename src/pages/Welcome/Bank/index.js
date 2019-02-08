@@ -73,7 +73,7 @@ export class Bank extends React.Component {
 
   handleSubmitSuccess = () => {
     const { changeStep } = this.props;
-    changeStep(3);
+    changeStep(2);
   };
 
   createFundingSource = async ({ uri }) => {

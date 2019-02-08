@@ -8,151 +8,166 @@ import { dateAsMoment } from '~utils/time';
 const dateFormat = 'MM/DD/YYYY';
 
 const companyFormFields = {
-  businessType: {
-    label: 'Business Type',
-    validator: Yup.string()
-      .ensure()
-      .required(),
-  },
-  businessClassification: {
-    label: 'Business Classification',
-    validator: Yup.string()
-      .ensure()
-      .required(),
-  },
-  businessName: {
-    label: 'Business Name',
-    validator: Yup.string()
-      .ensure()
-      .required(),
-  },
-  doingBusinessAs: {
-    label: 'Doing Business As',
-    validator: Yup.string()
-      .ensure()
-      .required(),
-  },
-  firstName: {
-    label: 'First name',
-    validator: Yup.string()
-      .ensure()
-      .required(),
-  },
-  lastName: {
-    label: 'Last name',
-    validator: Yup.string()
-      .ensure()
-      .required(),
-  },
-  email: {
-    label: 'E-mail',
-    validator: Yup.string()
-      .ensure()
-      .email()
-      .required()
-      .min(5),
-  },
-  phone: {
-    label: 'Phone',
-    validator: Yup.string().matches(/\d{10}/, '${label} must have 10 digits'),
-    input: {
-      maxLength: 12,
-      placeholder: '000 000-0000',
-      formatter: formUtils.formatters.phone,
-      parser: formUtils.parsers.digitsOnly,
+  company: {
+    fields: {
+      businessType: {
+        label: 'Business Type',
+        validator: Yup.string()
+          .ensure()
+          .required(),
+      },
+      businessClassification: {
+        label: 'Business Classification',
+        validator: Yup.string()
+          .ensure()
+          .required(),
+      },
+      businessName: {
+        label: 'Business Name',
+        validator: Yup.string()
+          .ensure()
+          .required(),
+      },
+      doingBusinessAs: {
+        label: 'Doing Business As',
+        validator: Yup.string().nullable(),
+      },
+      address1: {
+        label: 'Address 1',
+        validator: Yup.string()
+          .ensure()
+          .required()
+          .max(50),
+        input: {
+          placeholder: 'Street number, street name',
+        },
+      },
+      address2: {
+        label: 'Address 2',
+        validator: Yup.string()
+          .max(50)
+          .nullable(),
+        input: {
+          placeholder: 'Apartment, floor, suite, bldg. #',
+        },
+      },
+      city: {
+        label: 'City',
+        validator: Yup.string()
+          .ensure()
+          .required(),
+      },
+      state: {
+        label: 'State',
+        validator: Yup.string()
+          .ensure()
+          .required()
+          .max(2)
+          .uppercase(),
+        input: {
+          maxLength: 2,
+          placeholder: 'e.g. CA',
+          parser: formUtils.parsers.lettersOnly,
+        },
+      },
+      postalCode: {
+        label: 'Postal Code',
+        validator: Yup.string()
+          .required()
+          .max(99999, '${label} must be a valid zip code'),
+        input: {
+          maxLength: 5,
+          placeholder: '12345',
+        },
+      },
+      website: {
+        label: 'Website',
+        validator: Yup.string().nullable(),
+      },
+      phone: {
+        label: 'Phone',
+        validator: Yup.string()
+          .notRequired()
+          .matches(/\d{10}/, {
+            message: '${label} must have 10 digits',
+            excludeEmptyString: true,
+          }),
+        input: {
+          maxLength: 12,
+          placeholder: '000 000-0000',
+          formatter: formUtils.formatters.phone,
+          parser: formUtils.parsers.digitsOnly,
+        },
+      },
+      ein: {
+        label: 'E.I.N.',
+        validator: Yup.string()
+          .nullable()
+          .when('businessType', {
+            is: val => val !== 'soleProprietorship',
+            then: Yup.string()
+              .ensure()
+              .required(),
+          }),
+        input: {
+          maxLength: 10,
+          placeholder: '00-0000000',
+          formatter: formUtils.formatters.ein,
+        },
+      },
     },
   },
-  address1: {
-    label: 'Address 1',
-    validator: Yup.string()
-      .ensure()
-      .required()
-      .max(50),
-    input: {
-      placeholder: 'Street number, street name',
+  owner: {
+    fields: {
+      firstName: {
+        label: 'First name',
+        validator: Yup.string()
+          .ensure()
+          .required(),
+      },
+      lastName: {
+        label: 'Last name',
+        validator: Yup.string()
+          .ensure()
+          .required(),
+      },
+      email: {
+        label: 'E-mail',
+        validator: Yup.string()
+          .ensure()
+          .email()
+          .required()
+          .min(5),
+      },
+      dateOfBirth: {
+        label: 'Date of Birth',
+        validator: Yup.date()
+          .required()
+          .max(moment().subtract(18, 'years'), 'Contractor must be at least 18 years old')
+          .transform(formUtils.yup.dateTransformer(dateFormat)),
+        input: {
+          maxLength: 10,
+          placeholder: 'MM/DD/YYYY',
+          formatter: formUtils.formatters.date,
+        },
+      },
+      ssn: {
+        label: 'Last 4 digits of SSN',
+        validator: Yup.string()
+          .nullable()
+          .matches(/\d{4}/, {
+            message: 'Please input last 4 digits of your SSN',
+            excludeEmptyString: true,
+          }),
+        input: {
+          maxLength: 4,
+        },
+      },
     },
-  },
-  address2: {
-    label: 'Address 2',
-    validator: Yup.string()
-      .max(50)
-      .nullable(),
-    input: {
-      placeholder: 'Apartment, floor, suite, bldg. #',
-    },
-  },
-  city: {
-    label: 'City',
-    validator: Yup.string()
-      .ensure()
-      .required(),
-  },
-  state: {
-    label: 'State',
-    validator: Yup.string()
-      .ensure()
-      .required()
-      .max(2)
-      .uppercase(),
-    input: {
-      maxLength: 2,
-      placeholder: 'e.g. CA',
-      parser: formUtils.parsers.lettersOnly,
-    },
-  },
-  postalCode: {
-    label: 'Postal Code',
-    validator: Yup.string()
-      .required()
-      .max(99999, '${label} must be a valid zip code'),
-    input: {
-      maxLength: 5,
-      placeholder: '12345',
-    },
-  },
-  dateOfBirth: {
-    label: 'Date of Birth',
-    validator: Yup.date()
-      .required()
-      .max(moment().subtract(18, 'years'), 'Contractor must be at least 18 years old')
-      .transform(formUtils.yup.dateTransformer(dateFormat)),
-    input: {
-      maxLength: 10,
-      placeholder: 'MM/DD/YYYY',
-      formatter: formUtils.formatters.date,
-    },
-  },
-  ssn: {
-    label: 'Last 4 digits of SSN',
-    validator: Yup.string()
-      .ensure()
-      .required()
-      .matches(/\d{4}/, 'Please input last 4 digits of your SSN'),
-    input: {
-      maxLength: 4,
-    },
-  },
-  ein: {
-    label: 'E.I.N.',
-    validator: Yup.string()
-      .ensure()
-      .when('businessType', {
-        is: val => val !== 'soleProprietorship',
-        then: Yup.string().required(),
-      }),
-    input: {
-      maxLength: 10,
-      placeholder: '00-0000000',
-      formatter: formUtils.formatters.ein,
-    },
-  },
-  website: {
-    label: 'Website',
-    validator: Yup.string().ensure(),
   },
 };
 
-const ownerFormFields = {
+const controllerFormFields = {
   controller: {
     fields: {
       firstName: {
@@ -177,7 +192,10 @@ const ownerFormFields = {
         label: 'Last 4 digits of SSN',
         validator: Yup.string()
           .ensure()
-          .matches(/\d{4}/, 'Please input last 4 digits of your SSN'),
+          .matches(/\d{4}/, {
+            message: 'Please input last 4 digits of your SSN',
+            excludeEmptyString: true,
+          }),
         input: {
           maxLength: 4,
         },
@@ -207,6 +225,9 @@ const ownerFormFields = {
             validator: Yup.string()
               .max(50)
               .nullable(),
+            input: {
+              placeholder: 'Apartment, floor, suite, bldg. #',
+            },
           },
           city: {
             label: 'City',
@@ -230,11 +251,10 @@ const ownerFormFields = {
           postalCode: {
             label: 'Postal Code',
             validator: Yup.string()
-              .required()
-              .max(99999 - 9999, '${label} must be a valid zip code'),
+              .nullable()
+              .max(99999, '${label} must be a valid zip code'),
             input: {
-              maxLength: 9,
-              minLength: 5,
+              maxLength: 5,
               placeholder: '12345',
             },
           },
@@ -249,7 +269,7 @@ const prepareFormFieldsAndValidation = (type, values) => {
   if (type === 'soleProprietorship') {
     formFields = { ...companyFormFields };
   } else {
-    formFields = { ...companyFormFields, ...ownerFormFields };
+    formFields = { ...companyFormFields, ...controllerFormFields };
   }
   validationSchema = formUtils.formik.makeValidationSchema(formFields);
   initialValues = formUtils.formik.makeEmptyInitialValues(formFields);

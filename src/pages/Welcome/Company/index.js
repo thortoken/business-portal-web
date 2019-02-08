@@ -58,6 +58,7 @@ export class AddCompanyDetails extends React.Component {
     super(props);
     this.state = {
       formData: prepareFormFieldsAndValidation(),
+      businessType: null,
     };
   }
 
@@ -84,12 +85,14 @@ export class AddCompanyDetails extends React.Component {
     if (event.value) {
       this.setState({
         formData: prepareFormFieldsAndValidation(event.value),
+        businessType: event.value,
       });
     }
   };
 
   prepareForm(fields) {
     const { categories } = this.props;
+    const { businessType } = this.state;
     let formObject = {
       company: [
         <Divider orientation="left" key="company">
@@ -98,7 +101,14 @@ export class AddCompanyDetails extends React.Component {
       ],
       owner: [
         <Divider orientation="left" key="owner">
-          Owner Details
+          {businessType && businessType === 'soleProprietorship'
+            ? 'Owner Details'
+            : 'Admin Details'}
+        </Divider>,
+      ],
+      controller: [
+        <Divider orientation="left" key="controller">
+          Controller Details
         </Divider>,
       ],
     };
@@ -107,7 +117,7 @@ export class AddCompanyDetails extends React.Component {
       nodeCallback: () => console.log(),
       leafCallback: data => {
         const { key, value, path } = data;
-        let push = path.length > 1 ? 'owner' : 'company';
+        let push = path[0];
         if (key === 'businessClassification') {
           formObject[push].push(
             <FormField
@@ -153,10 +163,10 @@ export class AddCompanyDetails extends React.Component {
         }
       },
     });
-    if (formObject.owner.length === 1) {
-      formObject.owner.length = 0;
+    if (formObject.controller.length === 1) {
+      formObject.controller.length = 0;
     }
-    return [...formObject.company, ...formObject.owner];
+    return [...formObject.company, ...formObject.owner, ...formObject.controller];
   }
 
   renderForm = ({ handleSubmit, isSubmitting, values, dirty }) => (
@@ -180,10 +190,16 @@ export class AddCompanyDetails extends React.Component {
   handleSubmit = async (data, form) => {
     const { addTenantCompany } = this.props;
     let dataProfile = JSON.parse(JSON.stringify(data));
-    dataProfile.dateOfBirth = transformDateToMoment(dataProfile.dateOfBirth).format('YYYY-MM-DD');
+    // dataProfile: {
+    //   company: {}
+    //   owner: {}
+    //   controller: {}
+    // }
+    dataProfile.owner.dateOfBirth = transformDateToMoment(dataProfile.owner.dateOfBirth).format(
+      'YYYY-MM-DD'
+    );
 
-    dataProfile.country = 'US';
-    if (dataProfile.businessType === 'soleProprietorship' && dataProfile.controller) {
+    if (dataProfile.company.businessType === 'soleProprietorship' && dataProfile.controller) {
       delete dataProfile.controller;
     } else {
       dataProfile.controller.address.country = 'US';
@@ -201,7 +217,7 @@ export class AddCompanyDetails extends React.Component {
 
   handleSubmitSuccess = () => {
     const { changeStep } = this.props;
-    changeStep(2);
+    changeStep(1);
   };
 }
 

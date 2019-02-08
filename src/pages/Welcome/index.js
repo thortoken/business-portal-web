@@ -6,7 +6,6 @@ import connect from 'react-redux/es/connect/connect';
 import Bank from './Bank';
 import Company from './Company';
 import Done from './Done';
-import Profile from './Profile';
 import './Welcome.scss';
 
 const Step = Steps.Step;
@@ -51,11 +50,6 @@ export class Welcome extends React.Component {
     const { step, ready } = this.state;
 
     const steps = [
-      {
-        title: 'Profile',
-        icon: 'idcard',
-        content: () => <Profile />,
-      },
       {
         title: 'Company',
         icon: 'home',
