@@ -133,9 +133,10 @@ export class CompanyTeam extends React.Component {
   render() {
     const { isLoading } = this.props;
     const { invitationsList, pagination } = this.state;
+    const title = `${invitationsList.length} ${invitationsList.length === 1 ? 'User' : 'Users'}`;
     return (
       <div className="CompanyTeam">
-        <Header title={`${invitationsList.length} Users`} size="medium">
+        <Header title={title} size="medium">
           <TooltipButton tooltip="Add admin" type="primary" onClick={this.handleAdd}>
             <Icon type="plus" theme="outlined" />
           </TooltipButton>

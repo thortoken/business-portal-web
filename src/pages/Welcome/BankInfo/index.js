@@ -1,16 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Dwolla from '~components/Dwolla';
 import { Spin } from 'antd';
 
-import './IAV.scss';
+import Dwolla from '~components/Dwolla';
 import Config from '~services/config';
+import './BankInfo.scss';
 
-export class IAV extends React.Component {
+export class BankInfo extends React.Component {
   static propTypes = {
-    createFundingSourceWithIAV: PropTypes.func.isRequired,
+    getIavToken: PropTypes.func.isRequired,
+    createIAVFundingSource: PropTypes.func.isRequired,
+    checkStep: PropTypes.func.isRequired,
   };
+
   state = {
     dwollaConfig: {
       backButton: false,
@@ -23,9 +26,9 @@ export class IAV extends React.Component {
     },
   };
 
-  constructor(props) {
-    super(props);
-    props.getIavToken({ type: 'contractors' });
+  componentDidMount() {
+    const { getIavToken } = this.props;
+    getIavToken({ type: 'tenants' });
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -44,13 +47,13 @@ export class IAV extends React.Component {
       console.log('err', err);
     };
     return (
-      <div className="IAV">
-        <div className="IAV__form">
+      <div className="BankInfo">
+        <div className="BankInfo__form">
           <Spin spinning={iavIsLoading || !dwollaConfig.customerToken}>
             {!iavIsLoading &&
               dwollaConfig.customerToken && (
                 <div>
-                  <div className="IAV__warning">Please do not hit refresh.</div>
+                  <div className="BankInfo__warning">Please do not hit refresh.</div>
                   <Dwolla
                     onSuccess={this.handleIAVSuccess}
                     onError={onError}
@@ -70,29 +73,25 @@ export class IAV extends React.Component {
   };
 
   handleSubmitSuccess = () => {
-    const { changeStep } = this.props;
-    changeStep(4);
+    this.props.checkStep();
   };
 
   createFundingSource = async ({ uri }) => {
-    const { createFundingSourceWithIAV } = this.props;
-    await createFundingSourceWithIAV({
-      bank: { uri },
-    });
+    const { createIAVFundingSource } = this.props;
+    await createIAVFundingSource({ uri });
   };
 }
 
 const mapStateToProps = state => ({
-  contractor: state.onBoarding.contractor,
   iavToken: state.iav.iavToken,
-  isLoading: state.loading.effects.onBoarding.createFundingSourceWithIAV,
+  isLoading: state.loading.effects.tenants.createFundingSourceWithIAV,
   iavIsLoading: state.loading.effects.iav.getIavToken,
 });
 
 const mapDispatchToProps = dispatch => ({
-  createFundingSourceWithIAV: dispatch.onBoarding.createFundingSourceWithIAV,
-  changeStep: dispatch.onBoarding.changeStep,
+  createIAVFundingSource: dispatch.tenants.createIAVFundingSource,
+  checkStep: dispatch.welcome.checkStep,
   getIavToken: dispatch.iav.getIavToken,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(IAV);
+export default connect(mapStateToProps, mapDispatchToProps)(BankInfo);

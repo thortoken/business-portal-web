@@ -1,4 +1,6 @@
-.Bank {
+@import "../../../styles/var";
+
+.BankInfo {
   display: flex;
   justify-content: center;
   height: 100vh;
@@ -10,12 +12,20 @@
     margin-bottom: 2rem;
   }
 
+  &__warning {
+    margin-bottom: 1rem;
+    font-size: 0.7rem;
+    color: $color-error;
+    text-align: left;
+  }
+
   &__errors {
     color: red;
   }
 
   &__form {
     width: 100%;
+    text-align: center;
     .InputGroup {
       width: 50%;
 

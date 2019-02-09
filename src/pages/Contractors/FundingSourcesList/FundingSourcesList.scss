@@ -1,6 +1,6 @@
 @import "../../../styles/var";
 
-.ContractorDocumentsList {
+.FundingSourcesList {
   &__back {
     margin-bottom: 2rem;
   }
@@ -30,17 +30,17 @@
       .ant-table-column-sorter-down.on .anticon-caret-down {
         color: #fff;
       }
-      td.ContractorDocuments__activity {
+      td.FundingSourcesList__activity {
         padding: 0;
-        .ContractorDocuments--active,
-        .ContractorDocuments--resting,
-        .ContractorDocuments--inactive {
+        .FundingSourcesList--active,
+        .FundingSourcesList--resting,
+        .FundingSourcesList--inactive {
           padding: 16px;
           color: #fff;
         }
       }
 
-      td.ContractorDocuments__date, td.ContractorDocuments__status {
+      td.FundingSourcesList__date, td.FundingSourcesList__status {
         max-width: 250px !important;
         width: 250px;
       }

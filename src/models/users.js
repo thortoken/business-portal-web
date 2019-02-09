@@ -238,6 +238,7 @@ const users = {
         throw err;
       }
     },
+
     async deleteUserDocument(id) {
       try {
         const response = await Http.delete(`/users/documents/${id}`);
@@ -246,6 +247,7 @@ const users = {
         throw err;
       }
     },
+
     async getDocumentDownloadLink(id) {
       try {
         const response = await Http.get(`/users/documents/${id}`);

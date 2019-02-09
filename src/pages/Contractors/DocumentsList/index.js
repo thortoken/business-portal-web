@@ -11,11 +11,11 @@ import TooltipButton from '~components/TooltipButton';
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
 import { renderRegularDate } from '~utils/time';
-import './ContractorDocumentsList.scss';
+import './DocumentsList.scss';
 
 const { Column } = Table;
 
-class ContractorDocumentsList extends React.Component {
+class DocumentsList extends React.Component {
   static propTypes = {
     userDocuments: PropTypes.arrayOf(PropTypes.object),
     userDocumentsPagination: PropTypes.object,
@@ -141,8 +141,8 @@ class ContractorDocumentsList extends React.Component {
     const { userDocuments, pagination } = this.state;
     const { isLoading, history } = this.props;
     return (
-      <div className="ContractorDocumentsList">
-        <div className="ContractorDocumentsList__back">
+      <div className="DocumentsList">
+        <div className="DocumentsList__back">
           <BackBtn history={history} goBack={this.handleGoBack} />
         </div>
         <Header title="Documents List" size="medium">
@@ -154,7 +154,7 @@ class ContractorDocumentsList extends React.Component {
         <Box>
           <Table
             dataSource={userDocuments}
-            className="ContractorDocumentsList__table"
+            className="DocumentsList__table"
             rowKey="created"
             onChange={this.handleTableChange}
             pagination={pagination}
@@ -164,7 +164,7 @@ class ContractorDocumentsList extends React.Component {
               dataIndex="name"
               title="Name"
               render={text => {
-                return <div className="ContractorDocumentsList__name">{text}</div>;
+                return <div className="DocumentsList__name">{text}</div>;
               }}
             />
             <Column
@@ -172,7 +172,7 @@ class ContractorDocumentsList extends React.Component {
               dataIndex="type"
               title="Type"
               render={text => {
-                return <div className="ContractorDocumentsList__type">{text}</div>;
+                return <div className="DocumentsList__type">{text}</div>;
               }}
             />
             <Column
@@ -187,11 +187,9 @@ class ContractorDocumentsList extends React.Component {
               render={(text, record) => {
                 return (
                   <div>
-                    {/*
                     <TooltipButton tooltip="Download" onClick={() => this.handleDownload(record)}>
                       <Icon type="download" theme="outlined" />
                     </TooltipButton>
-                    */}
                     <TooltipButton tooltip="Delete" onClick={() => this.handleDelete(record)}>
                       <Icon type="delete" theme="outlined" />
                     </TooltipButton>
@@ -219,4 +217,4 @@ const mapDispatchToProps = dispatch => ({
   unmountUserDocuments: dispatch.users.unmountUserDocuments,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContractorDocumentsList);
+export default connect(mapStateToProps, mapDispatchToProps)(DocumentsList);

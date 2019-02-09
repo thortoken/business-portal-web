@@ -16,7 +16,7 @@ const linkedAccounts = {
           fundingSources.push(response.data);
         }
         this.setFundingSource(fundingSources);
-        return response.data;
+        return [response.data];
       } catch (err) {
         if (err.response.status === 404) {
           this.setFundingSource([]);
@@ -24,6 +24,7 @@ const linkedAccounts = {
         throw err;
       }
     },
+
     async addFundingSource(data) {
       try {
         const response = await Http.post('/tenants/company/fundingSources/', data);

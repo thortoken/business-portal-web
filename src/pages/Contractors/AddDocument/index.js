@@ -1,18 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Button, Select } from 'antd';
 import { FilePond, registerPlugin } from 'react-filepond';
-import 'filepond/dist/filepond.min.css';
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-import { Button, Select } from 'antd';
+import 'filepond/dist/filepond.min.css';
 
 import Config from '~services/config';
-import './AddContractorDocument.scss';
+import './AddDocument.scss';
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
-export class AddContractorDocument extends React.Component {
+export class AddDocument extends React.Component {
   static propTypes = {
     token: PropTypes.string,
     match: PropTypes.shape({
@@ -32,7 +32,7 @@ export class AddContractorDocument extends React.Component {
     this.setState({ docType: value });
   };
 
-  handleUploadAnother = value => {
+  handleUploadAnother = () => {
     this.setState({ showDone: false, files: [] });
   };
 
@@ -40,8 +40,8 @@ export class AddContractorDocument extends React.Component {
     const { match, token } = this.props;
     const { showDone, docType } = this.state;
     return (
-      <div className="AddContractorDocument">
-        <div className="AddContractorDocument__block">
+      <div className="AddDocument">
+        <div className="AddDocument__block">
           <Select defaultValue="license" onChange={this.handleChange}>
             <Select.Option value="passport">Passport</Select.Option>
             <Select.Option value="license">License</Select.Option>
@@ -51,7 +51,7 @@ export class AddContractorDocument extends React.Component {
             <Select.Option value="other">Other</Select.Option>
           </Select>
         </div>
-        <div className="AddContractorDocument__block">
+        <div className="AddDocument__block">
           <FilePond
             files={this.state.files}
             allowFileSizeValidation
@@ -84,12 +84,12 @@ export class AddContractorDocument extends React.Component {
           />
         </div>
         {showDone && (
-          <div className="AddContractorDocument__button-container">
+          <div className="AddDocument__button-container">
             <Button
               size="large"
               type="default"
               onClick={this.handleUploadAnother}
-              className="AddContractorDocument__button-container--button">
+              className="AddDocument__button-container--button">
               Upload Another
             </Button>
           </div>
@@ -103,4 +103,4 @@ const mapStateToProps = state => ({
   token: state.auth.token,
 });
 
-export default connect(mapStateToProps, null)(AddContractorDocument);
+export default connect(mapStateToProps, null)(AddDocument);

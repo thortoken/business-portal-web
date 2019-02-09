@@ -110,10 +110,7 @@ export class CompanyDetails extends React.Component {
     }
     return (
       <div className="CompanyDetails">
-        <Header
-          title={`${tenant.name} Details`}
-          size="medium"
-          warning={this.renderWarning(warningsList)}>
+        <Header title={`${tenant.name}`} size="medium" warning={this.renderWarning(warningsList)}>
           {!isLoadingCompanyDetails &&
             !isLoadingCategories &&
             (company ? (

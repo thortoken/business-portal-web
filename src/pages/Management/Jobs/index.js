@@ -184,9 +184,10 @@ export class Jobs extends React.Component {
   render() {
     const { isLoading, statusIsLoading } = this.props;
     const { pagination, jobsList, searchName } = this.state;
+    const title = `${jobsList.length} ${jobsList.length === 1 ? 'Job' : 'Jobs'}`;
     return (
       <div className="Jobs">
-        <Header title={`${jobsList.length} Jobs`} size="medium">
+        <Header title={title} size="medium">
           <TooltipButton tooltip="Add job" type="primary" onClick={this.handleAdd}>
             <Icon type="plus" theme="outlined" />
           </TooltipButton>

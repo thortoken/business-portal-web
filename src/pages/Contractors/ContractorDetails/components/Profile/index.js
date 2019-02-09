@@ -101,8 +101,7 @@ export default class Profile extends React.PureComponent {
                 {address1} {address2}
               </div>
               <div>
-                {city} {state}
-                {postalCode}
+                {city}, {state} {postalCode}
               </div>
             </div>
           </div>

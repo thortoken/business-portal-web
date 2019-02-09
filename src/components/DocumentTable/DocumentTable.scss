@@ -1,8 +1,11 @@
-@import "../../../styles/var";
+@import "../../styles/var";
 
-.ContractorFundingSources {
+.DocumentTable {
   &__back {
     margin-bottom: 2rem;
+  }
+  &__type {
+      text-transform: uppercase;
   }
   &__table {
     &__buttons {
@@ -27,17 +30,17 @@
       .ant-table-column-sorter-down.on .anticon-caret-down {
         color: #fff;
       }
-      td.ContractorFundingSources__activity {
+      td.Documents__activity {
         padding: 0;
-        .ContractorFundingSources--active,
-        .ContractorFundingSources--resting,
-        .ContractorFundingSources--inactive {
+        .Documents--active,
+        .Documents--resting,
+        .Documents--inactive {
           padding: 16px;
           color: #fff;
         }
       }
 
-      td.ContractorFundingSources__date, td.ContractorFundingSources__status {
+      td.Documents__date, td.Documents__status {
         max-width: 250px !important;
         width: 250px;
       }

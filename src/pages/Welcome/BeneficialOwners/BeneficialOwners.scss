@@ -1,6 +1,6 @@
 @import "../../../styles/var";
 
-.AddBeneficialOwner {
+.BeneficialOwners {
   padding: 1rem;
   width: 100%;
   //background-color: #fff;
@@ -9,6 +9,7 @@
     text-align: center;
     margin-top: 4rem;
   &--button {
+      margin-right: 10px;
       padding: 1rem 3rem;
     }
   }

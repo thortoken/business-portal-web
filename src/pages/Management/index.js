@@ -9,7 +9,7 @@ import AddCompanyTeam from './CompanyTeam/AddCompanyTeam';
 import LinkedAccounts from './LinkedAccounts';
 import Integrations from './Integrations';
 import Settings from './Settings';
-import ManagementMenu from './_components/ManagementMenu';
+import ManagementMenu from './components/ManagementMenu';
 import AddCompanyDetails from './CompanyDetails/AddCompanyDetails';
 import EditCompanyDetails from './CompanyDetails/EditCompanyDetails';
 import AddBeneficialOwner from './BeneficialOwners/AddBeneficialOwner';

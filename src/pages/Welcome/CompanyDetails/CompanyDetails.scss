@@ -1,12 +1,14 @@
 @import "../../../styles/var";
 
-.AddContractorDocument {
-  background-color: #fff;
+.CompanyDetails {
+  padding: 1rem;
+  width: 100%;
+  //background-color: #fff;
   &__button-container {
     width: 100%;
     text-align: center;
     margin-top: 4rem;
-    &--button {
+  &--button {
       padding: 1rem 3rem;
     }
   }
@@ -14,12 +16,11 @@
     color: $color-inactive;
   }
 
-  &__block {
-    vertical-align: top;
-    display: block;
-    padding: 1rem;
-    .ant-select {
-      width: 50%;
-    }
+  .InputGroup {
+    width: 50%;
+  }
+
+  .ant-calendar-picker {
+    width: 100%;
   }
 }

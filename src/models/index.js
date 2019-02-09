@@ -16,6 +16,7 @@ import tenantCompany from './tenantCompany';
 import beneficialOwners from './beneficialOwners';
 import linkedAccounts from './linkedAccounts';
 import welcome from './welcome';
+import documents from './documents';
 
 export const history = createHistory();
 const middleware = routerMiddleware(history);
@@ -37,6 +38,7 @@ const store = init({
     linkedAccounts,
     iav,
     welcome,
+    documents,
   },
   plugins: [loading],
   redux: {

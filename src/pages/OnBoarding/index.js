@@ -5,7 +5,7 @@ import connect from 'react-redux/es/connect/connect';
 
 import Profile from './Profile';
 import Terms from './Terms';
-import IAV from './IAV';
+import BankInfo from './BankInfo';
 import Done from './Done';
 import Documents from './Documents';
 import './OnBoarding.scss';
@@ -70,7 +70,7 @@ export class OnBoarding extends React.Component {
       {
         title: 'Bank Info',
         icon: 'dollar',
-        content: () => <IAV />,
+        content: () => <BankInfo />,
       },
       {
         title: 'Done',

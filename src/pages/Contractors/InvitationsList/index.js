@@ -11,7 +11,7 @@ import NotificationService from '~services/notification';
 import TooltipButton from '~components/TooltipButton';
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
-import AddContractorMenu from '../AddContractorMenu';
+import AddContractorMenu from '../ContractorsList/components/AddContractorMenu';
 import './InvitationsList.scss';
 
 const { Column } = Table;

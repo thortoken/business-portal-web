@@ -88,7 +88,7 @@ export class Profile extends React.Component {
 
   handleSubmit = async (data, form) => {
     const validData = validationSchema.cast(data);
-    validData.profile['country'] = 'USA';
+    validData.profile['country'] = 'US';
 
     try {
       await this.create(validData);

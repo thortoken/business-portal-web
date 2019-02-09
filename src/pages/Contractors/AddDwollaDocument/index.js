@@ -1,16 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
+import { Button, Select } from 'antd';
 import { FilePond, registerPlugin } from 'react-filepond';
-import 'filepond/dist/filepond.min.css';
-
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import 'filepond/dist/filepond.min.css';
 
-import './AddDwollaDocument.scss';
 import Config from '~services/config';
-import { Button, Select } from 'antd';
+import './AddDwollaDocument.scss';
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -26,7 +24,7 @@ export class AddDwollaDocument extends React.Component {
 
   state = {
     showDone: false,
-    docType: 'license',
+    docType: 'w9',
   };
 
   handleClose = () => {

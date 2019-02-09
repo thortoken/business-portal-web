@@ -7,7 +7,7 @@ import './ManagementMenu.scss';
 const menuItems = [
   { route: '/management/company-details', label: 'Company Details', icon: 'home' },
   // { route: '/management/beneficial-owners', label: 'Beneficial Owners', icon: 'crown' },
-  { route: '/management/billing', label: 'Billing', icon: 'dollar' },
+  { route: '/management/billing', label: 'Billing Settings', icon: 'dollar' },
   { route: '/management/company-team', label: 'Manage Team', icon: 'team' },
   { route: '/management/jobs', label: 'Manage Jobs', icon: 'tool' },
   // { route: '/management/integrations', label: 'Integrations', icon: 'shrink' },

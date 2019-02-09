@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Table, Icon, Input } from 'antd';
+import { Table, Icon, Input, Button } from 'antd';
 import moment from 'moment';
 
 import TooltipButton from '~components/TooltipButton';
-import Box from '../../../components/Box/index';
+import Box from '~components/Box';
 import makeDefaultPagination from '~utils/pagination';
 import { getCurrentTwoWeeksPeriod } from '~utils/time';
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
-import StatusBlock from '../../../components/StatusBlock';
+import StatusBlock from '~components/StatusBlock';
+import AddContractorMenu from './components/AddContractorMenu';
 import './ContractorsList.scss';
 
 const { Column } = Table;
@@ -156,20 +157,25 @@ class ContractorsList extends React.Component {
     return (
       <div className="ContractorsList">
         <Header title="Contractors List" size="medium">
-          <TooltipButton
-            tooltip="Invite contractor"
-            type="primary"
-            size="default"
-            onClick={this.handleInvite}>
-            <Icon type="plus" />
-          </TooltipButton>
+          <AddContractorMenu />
           <RefreshButton handleRefresh={this.handleRefresh} isLoading={isLoading} />
         </Header>
         <div className="ContractorsList__additional-box">
-          <div className="ContractorsList__additional-box--left PContractorsList__additional-box--box" />
+          <div className="ContractorsList__additional-box--left ContractorsList__additional-box--box" />
         </div>
         <Box>
           <Table
+            locale={{
+              emptyText: (
+                <div>
+                  You don't have any contractors yet<br />
+                  <br />
+                  <Button type="primary" onClick={this.handleInvite}>
+                    Send some invites
+                  </Button>
+                </div>
+              ),
+            }}
             dataSource={contractorsData}
             className="ContractorsList__table"
             rowKey="id"

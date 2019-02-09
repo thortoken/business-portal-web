@@ -1,7 +1,8 @@
 const Steps = {
   COMPANY: 0,
-  BANK: 1,
-  DONE: 2,
+  OWNERS: 1,
+  BANK: 2,
+  DONE: 3,
 };
 
 const welcome = {
@@ -26,41 +27,46 @@ const welcome = {
     },
 
     async checkStep(_payload, models) {
-      const tenantStatus = models.tenants.tenant.status;
       let redirect = false;
-      let step = Steps.PROFILE;
+      let step = Steps.COMPANY;
 
-      switch (tenantStatus) {
-        case 'company':
-          step = Steps.COMPANY;
-          break;
-        case 'bank':
-          step = Steps.BANK;
-          break;
-        default:
-          step = Steps.DONE;
-          redirect = true;
-          break;
+      try {
+        const company = models.tenantCompany.company || (await dispatch.tenantCompany.getCompany());
+        if (company) {
+          if (company.businessType !== 'soleProprietorship') {
+            step = Steps.OWNERS;
+          } else {
+            step = Steps.BANK;
+          }
+        }
+
+        if (step === Steps.OWNERS) {
+          let owners = models.beneficialOwners.owners;
+          if (!owners || owners.length === 0) {
+            owners = await dispatch.beneficialOwners.getBeneficialOwners();
+          }
+          if (owners && owners.length > 0) {
+            step = Steps.BANK;
+          }
+        }
+
+        if (step === Steps.BANK) {
+          let linkedAccounts = models.linkedAccounts.fundingSources;
+          if (!linkedAccounts || linkedAccounts.length === 0) {
+            linkedAccounts = await dispatch.linkedAccounts.getFundingSource();
+          }
+          if (linkedAccounts && linkedAccounts.length > 0) {
+            dispatch.tenants.updateStatus('active');
+            step = Steps.DONE;
+            redirect = true;
+          }
+        }
+      } catch (error) {
+        // catch is okay, just means missing something
       }
+
       this.setStep(step);
       return redirect;
-    },
-
-    async changeStep(step) {
-      switch (step) {
-        case Steps.COMPANY:
-        default:
-          break;
-        case Steps.BANK:
-          // update the tenant status to bank
-          dispatch.tenants.updateStatus('bank');
-          break;
-        case Steps.DONE:
-          // update the tenant status to active
-          dispatch.tenants.updateStatus('active');
-          break;
-      }
-      this.setStep(step);
     },
   }),
   reducers: {

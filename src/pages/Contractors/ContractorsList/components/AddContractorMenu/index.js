@@ -44,20 +44,20 @@ class AddContractorMenu extends React.Component {
   render() {
     const menuList = [
       {
-        key: 'add',
-        action: this.handleAdd,
-        label: 'Add Contractor',
-      },
-      {
         key: 'invite',
         action: this.handleInvite,
         label: 'Invite Contractor',
       },
       {
-        key: 'upload',
-        action: this.handleUpload,
-        label: 'Upload invite CSV',
+        key: 'add',
+        action: this.handleAdd,
+        label: 'Add Contractor',
       },
+      // {
+      //   key: 'upload',
+      //   action: this.handleUpload,
+      //   label: 'Upload invite CSV',
+      // },
     ];
     const { match } = this.props;
     return (

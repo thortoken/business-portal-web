@@ -3,8 +3,9 @@ import { Steps, Icon, Spin, Button } from 'antd';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
-import Bank from './Bank';
-import Company from './Company';
+import BankInfo from './BankInfo';
+import CompanyDetails from './CompanyDetails';
+import BeneficialOwners from './BeneficialOwners';
 import Done from './Done';
 import './Welcome.scss';
 
@@ -51,14 +52,19 @@ export class Welcome extends React.Component {
 
     const steps = [
       {
-        title: 'Company',
+        title: 'Company Details',
         icon: 'home',
-        content: () => <Company />,
+        content: () => <CompanyDetails />,
+      },
+      {
+        title: 'Beneficial Owners',
+        icon: 'crown',
+        content: () => <BeneficialOwners />,
       },
       {
         title: 'Bank Info',
         icon: 'bank',
-        content: () => <Bank />,
+        content: () => <BankInfo />,
       },
       {
         title: 'Done',

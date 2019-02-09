@@ -7,15 +7,14 @@ import ContractorsList from './ContractorsList';
 import EditContractor from './EditContractor';
 import InvitationsList from './InvitationsList';
 import InviteContractor from './InviteContractor';
-import ContractorFundingSources from './ContractorFundingSources';
-import ContractorDocumentsList from './ContractorDocumentsList';
-import AddContractorDocument from './AddContractorDocument';
+import FundingSourcesList from './FundingSourcesList';
+import DocumentsList from './DocumentsList';
+import AddDocument from './AddDocument';
 import AddDwollaDocument from './AddDwollaDocument';
-
 import { withRouteModal } from '~components/Modal';
-import AddFundingSource from './ContractorFundingSources/AddFundingSource';
+import AddFundingSource from './FundingSourcesList/AddFundingSource';
 import RetryContractor from './RetryContractor';
-import VerifyFundingSource from './ContractorFundingSources/VerifyFundingSource';
+import VerifyFundingSource from './FundingSourcesList/VerifyFundingSource';
 import UploadInviteContractor from './UploadInviteContractor';
 import AddCustomTransaction from '../Transactions/AddCustomTransaction';
 import AddExistingTransaction from '../Transactions/AddExistingTransaction';
@@ -27,12 +26,8 @@ export class RootContractorsPage extends React.Component {
     return (
       <Switch>
         <Route exact path={`${match.path}/invitationsList`} component={InvitationsList} />
-        <Route
-          exact
-          path={`${match.path}/:id/fundingSources`}
-          component={ContractorFundingSources}
-        />
-        <Route exact path={`${match.path}/:id/documents`} component={ContractorDocumentsList} />
+        <Route exact path={`${match.path}/:id/fundingSources`} component={FundingSourcesList} />
+        <Route exact path={`${match.path}/:id/documents`} component={DocumentsList} />
         <Route
           exact
           path={`/contractors/:id/fundingSources/verify/:fsId`}
@@ -73,7 +68,7 @@ export class RootContractorsPage extends React.Component {
         <Route
           exact
           path={`/contractors/:id/documents/add`}
-          component={withRouteModal({ component: AddContractorDocument, title: 'Add Document' })}
+          component={withRouteModal({ component: AddDocument, title: 'Add Document' })}
         />
         <Route
           exact

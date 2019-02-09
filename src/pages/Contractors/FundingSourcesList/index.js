@@ -2,19 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Table, Button, Icon, Modal } from 'antd';
-import Box from '../../../components/Box/index';
+
+import Box from '~components/Box/index';
 import makeDefaultPagination from '~utils/pagination';
 import BackBtn from '~components/BackBtn';
-
-import './ContractorFundingSources.scss';
 import TooltipButton from '~components/TooltipButton';
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
 import NotificationService from '~services/notification';
+import './FundingSourcesList.scss';
 
 const { Column } = Table;
 
-class ContractorFundingSources extends React.Component {
+class FundingSourcesList extends React.Component {
   static propTypes = {
     userFundingSources: PropTypes.arrayOf(PropTypes.object),
     userFundingSourcesPagination: PropTypes.object,
@@ -151,8 +151,8 @@ class ContractorFundingSources extends React.Component {
     const { userFundingSources, pagination } = this.state;
     const { isLoading, history, isLoadingVerify } = this.props;
     return (
-      <div className="ContractorFundingSources">
-        <div className="ContractorFundingSources__back">
+      <div className="FundingSourcesList">
+        <div className="FundingSourcesList__back">
           <BackBtn history={history} goBack={this.handleGoBack} />
         </div>
         <Header title="Funding Sources List" size="medium">
@@ -164,7 +164,7 @@ class ContractorFundingSources extends React.Component {
         <Box>
           <Table
             dataSource={userFundingSources}
-            className="ContractorFundingSources__table"
+            className="FundingSourcesList__table"
             rowKey="id"
             onChange={this.handleTableChange}
             pagination={pagination}
@@ -175,7 +175,7 @@ class ContractorFundingSources extends React.Component {
               dataIndex="type"
               title="Type"
               render={text => {
-                return <span className="ContractorFundingSources__table__type">{text}</span>;
+                return <span className="FundingSourcesList__table__type">{text}</span>;
               }}
             />
             <Column
@@ -191,7 +191,7 @@ class ContractorFundingSources extends React.Component {
               title="Actions"
               render={(text, record) => {
                 return (
-                  <span className="ContractorFundingSources__table__buttons">
+                  <span className="FundingSourcesList__table__buttons">
                     {!record.isDefault && (
                       <Button onClick={() => this.handleDefault(record)}>
                         <Icon type="check-circle" theme="outlined" />
@@ -200,7 +200,7 @@ class ContractorFundingSources extends React.Component {
                     <Button onClick={() => this.handleDelete(record)}>
                       <Icon type="delete" theme="outlined" />
                     </Button>
-                    {!record.verificationStatus && (
+                    {!record.status && (
                       <TooltipButton
                         tooltip="Verify funding source."
                         loading={isLoadingVerify}
@@ -209,7 +209,7 @@ class ContractorFundingSources extends React.Component {
                       </TooltipButton>
                     )}
 
-                    {record.verificationStatus === 'initiated' && (
+                    {record.status === 'initiated' && (
                       <TooltipButton
                         tooltip="Verify funding source."
                         onClick={() => this.handleOpenVerifyAmount(record)}>
@@ -242,4 +242,4 @@ const mapDispatchToProps = dispatch => ({
   verifyFundingSource: dispatch.users.verifyFundingSource,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContractorFundingSources);
+export default connect(mapStateToProps, mapDispatchToProps)(FundingSourcesList);

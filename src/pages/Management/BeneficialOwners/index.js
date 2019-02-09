@@ -1,30 +1,27 @@
 import React from 'react';
-
+import { Icon, Modal, Table } from 'antd';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
 import Box from '~components/Box';
-
-import './BeneficialOwners.scss';
-import { Icon, Modal, Table } from 'antd';
-
 import TooltipButton from '~components/TooltipButton';
 import RefreshButton from '~components/RefreshButton';
 import Header from '~components/Header';
 import makeDefaultPagination from '~utils/pagination';
+import './BeneficialOwners.scss';
 
 const { Column } = Table;
 
 export class BeneficialOwners extends React.Component {
   static propTypes = {
     isLoading: PropTypes.bool,
-    beneficialList: PropTypes.arrayOf(PropTypes.object),
-    beneficialListPagination: PropTypes.object,
+    ownersList: PropTypes.arrayOf(PropTypes.object),
+    ownersListPagination: PropTypes.object,
   };
   state = {
-    beneficialList: [],
+    ownersList: [],
     pagination: makeDefaultPagination(),
-    beneficialListPagination: null,
+    ownersListPagination: null,
   };
 
   componentDidMount() {
@@ -32,16 +29,16 @@ export class BeneficialOwners extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.beneficialList !== prevState.beneficialList) {
+    if (nextProps.ownersList !== prevState.ownersList) {
       return {
-        beneficialList: nextProps.beneficialList,
+        ownersList: nextProps.ownersList,
       };
     }
-    if (nextProps.beneficialListPagination !== prevState.beneficialListPagination) {
+    if (nextProps.ownersListPagination !== prevState.ownersListPagination) {
       let pag = prevState.pagination;
       return {
-        beneficialListPagination: nextProps.beneficialListPagination,
-        pagination: { ...pag, total: nextProps.beneficialListPagination.total },
+        ownersListPagination: nextProps.ownersListPagination,
+        pagination: { ...pag, total: nextProps.ownersListPagination.total },
       };
     }
     return null;
@@ -99,7 +96,7 @@ export class BeneficialOwners extends React.Component {
 
   render() {
     const { isLoading } = this.props;
-    const { pagination, beneficialList } = this.state;
+    const { pagination, ownersList } = this.state;
     return (
       <div className="BeneficialOwners">
         <Header title="Beneficial Owners List" size="medium">
@@ -110,7 +107,7 @@ export class BeneficialOwners extends React.Component {
         </Header>
         <Box>
           <Table
-            dataSource={beneficialList}
+            dataSource={ownersList}
             className="BeneficialOwners__table"
             rowKey="id"
             onChange={this.handleTableChange}
@@ -147,8 +144,8 @@ export class BeneficialOwners extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  beneficialList: state.beneficialOwners.beneficialList,
-  beneficialListPagination: state.beneficialOwners.beneficialListPagination,
+  ownersList: state.beneficialOwners.ownersList,
+  ownersListPagination: state.beneficialOwners.ownersListPagination,
   isLoading: state.loading.effects.beneficialOwners.getBeneficialOwners,
 });
 

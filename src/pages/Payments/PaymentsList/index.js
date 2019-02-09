@@ -265,6 +265,9 @@ class Payments extends React.Component {
 
         <Box>
           <Table
+            locale={{
+              emptyText: <div>No Payments</div>,
+            }}
             dataSource={usersJobs}
             className="PaymentsList-table"
             loading={isJobsLoading}

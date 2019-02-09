@@ -12,10 +12,9 @@ import TooltipButton from '~components/TooltipButton';
 import { formatUsd } from '~utils/number';
 import { movePeriod, renderShortDate } from '~utils/time';
 import makeDefaultPagination from '~utils/pagination';
-
-import './ContractorDetails.scss';
 import NotificationService from '~services/notification';
-import StatusBlock from '../../../components/StatusBlock';
+import StatusBlock from '~components/StatusBlock';
+import './ContractorDetails.scss';
 
 const { Column } = Table;
 
@@ -179,7 +178,7 @@ class ContractorDetails extends React.Component {
                 handleSendPasswordReset={this.handleSendPasswordReset}
                 handleResendInvitation={this.handleResendInvitation}>
                 <Button type="primary" ghost onClick={this.handleGoToFundingSources}>
-                  Bank Info
+                  Funding Sources
                 </Button>
                 <Button
                   style={{ marginLeft: '10px' }}

@@ -9,7 +9,7 @@ import { prepareFormFieldsAndValidation, transformDateToMoment } from './formSch
 import SelectField from '~components/SelectField';
 import { handleFormHttpResponse } from '~utils/forms/errors';
 import { traverseRecursively } from '~utils/iterators';
-import './Company.scss';
+import './CompanyDetails.scss';
 
 const { Option, OptGroup } = Select;
 
@@ -48,10 +48,11 @@ const generateBusinessOptions = list => {
   ));
 };
 
-export class AddCompanyDetails extends React.Component {
+export class CompanyDetails extends React.Component {
   static propTypes = {
     categories: PropTypes.arrayOf(PropTypes.object),
     addTenantCompany: PropTypes.func.isRequired,
+    checkStep: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -126,7 +127,7 @@ export class AddCompanyDetails extends React.Component {
               component={SelectField}
               dataSource={generateClassificationOptions(categories)}
               showSearch
-              className="AddCompanyDetails_half"
+              className="CompanyDetails_half"
               filterOption={(inputValue, option) => {
                 if (typeof option.props.children.toUpperCase === 'function') {
                   return (
@@ -146,7 +147,7 @@ export class AddCompanyDetails extends React.Component {
               component={SelectField}
               dataSource={generateBusinessOptions(businessTypes)}
               onSelect={this.handleChange}
-              className="AddCompanyDetails_half"
+              className="CompanyDetails_half"
               label={value.label}
               {...value.input}
             />
@@ -173,14 +174,14 @@ export class AddCompanyDetails extends React.Component {
     <form onSubmit={handleSubmit}>
       {this.prepareForm(this.state.formData.formFields)}
 
-      <div className="AddCompanyDetails__button-container">
+      <div className="CompanyDetails__button-container">
         <Button
           disabled={!dirty || isSubmitting}
           size="large"
           type="primary"
           loading={isSubmitting}
           htmlType="submit"
-          className="AddCompanyDetails__button-container--button">
+          className="CompanyDetails__button-container--button">
           Next
         </Button>
       </div>
@@ -216,8 +217,7 @@ export class AddCompanyDetails extends React.Component {
   };
 
   handleSubmitSuccess = () => {
-    const { changeStep } = this.props;
-    changeStep(1);
+    this.props.checkStep();
   };
 }
 
@@ -228,7 +228,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getCategories: dispatch.tenantCompany.getCategories,
   addTenantCompany: dispatch.tenantCompany.addTenantCompany,
-  changeStep: dispatch.welcome.changeStep,
+  checkStep: dispatch.welcome.checkStep,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddCompanyDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(CompanyDetails);

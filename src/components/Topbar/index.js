@@ -72,24 +72,24 @@ export class Topbar extends React.Component {
         icon: 'home',
         function: () => {},
       });
-      menuItems.push({
-        route: '/management/beneficial-owners',
-        label: 'Beneficial Owners',
-        icon: 'info',
-        function: () => {},
-      });
+      // menuItems.push({
+      //   route: '/management/beneficial-owners',
+      //   label: 'Beneficial Owners',
+      //   icon: 'info',
+      //   function: () => {},
+      // });
       // {
       //   route: '/management/company-team',
       //   label: 'Company & Team',
       //   icon: 'user',
       //   function: () => {},
       // },
-      menuItems.push({
-        route: '/management/linked-accounts',
-        label: 'Linked Accounts',
-        icon: 'bank',
-        function: () => {},
-      });
+      // menuItems.push({
+      //   route: '/management/linked-accounts',
+      //   label: 'Linked Accounts',
+      //   icon: 'bank',
+      //   function: () => {},
+      // });
       // {
       //   route: '/management/integrations',
       //   label: 'Integrations',
