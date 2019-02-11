@@ -57,7 +57,7 @@ class Payments extends React.Component {
     pagination: makeDefaultPagination(),
     filters: {
       status: undefined,
-      contractor: undefined,
+      name: undefined,
     },
     sorters: {
       orderBy: undefined,
@@ -199,7 +199,7 @@ class Payments extends React.Component {
   handleSearch = (text, confirm) => {
     const { pagination, sorters, filters } = this.state;
     pagination.current = 1;
-    filters.contractor = text;
+    filters.name = text;
 
     this.updateTable({ pagination, filters, sorters });
     confirm();
@@ -286,11 +286,11 @@ class Payments extends React.Component {
             />
             <Column
               align="center"
-              dataIndex="contractor"
+              dataIndex="name"
               width="35%"
               title="Contractor"
               render={this.showContractorName}
-              className="PaymentsList-contractor-selector"
+              className="PaymentsList-name-selector"
               filterDropdown={({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
                 const prefix = searchText ? (
                   <Icon
@@ -545,11 +545,11 @@ class Payments extends React.Component {
   };
 
   showContractorName = (val, user) => {
-    if (user.contractor === ' ') {
+    if (user.name === ' ') {
       return <div>Profile doesn't exist</div>;
     }
 
-    return <Link to={'/contractors/' + user.id}>{user.contractor}</Link>;
+    return <Link to={'/contractors/' + user.id}>{user.name}</Link>;
   };
 
   renderJobsList = record => {

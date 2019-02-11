@@ -85,12 +85,12 @@ export class BankInfo extends React.Component {
 const mapStateToProps = state => ({
   contractor: state.onBoarding.contractor,
   iavToken: state.iav.iavToken,
-  isLoading: state.loading.effects.onBoarding.createFundingSourceWithIAV,
+  isLoading: state.loading.effects.fundingSources.createFundingSourceWithIAV,
   iavIsLoading: state.loading.effects.iav.getIavToken,
 });
 
 const mapDispatchToProps = dispatch => ({
-  createFundingSourceWithIAV: dispatch.onBoarding.createFundingSourceWithIAV,
+  createFundingSourceWithIAV: dispatch.fundingSources.createContractorFundingSourceWithIAV,
   changeStep: dispatch.onBoarding.changeStep,
   getIavToken: dispatch.iav.getIavToken,
 });

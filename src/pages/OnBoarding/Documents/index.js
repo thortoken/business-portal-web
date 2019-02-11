@@ -18,7 +18,7 @@ export class Documents extends React.Component {
     isLoading: PropTypes.bool,
     token: PropTypes.string.isRequired,
     deleteDocument: PropTypes.func.isRequired,
-    getDocuments: PropTypes.func.isRequired,
+    getDocumentList: PropTypes.func.isRequired,
     changeStep: PropTypes.func.isRequired,
   };
 
@@ -32,8 +32,8 @@ export class Documents extends React.Component {
 
   componentDidMount() {
     const { pagination } = this.state;
-    const { getDocuments } = this.props;
-    getDocuments({
+    const { getDocumentList } = this.props;
+    getDocumentList({
       page: pagination.current,
       limit: pagination.pageSize,
     });
@@ -66,14 +66,14 @@ export class Documents extends React.Component {
   }
 
   handleTableChange = pag => {
-    const { getDocuments } = this.props;
+    const { getDocumentList } = this.props;
     const { pagination } = this.state;
     let curr = pag.current;
     if (pagination.pageSize !== pag.pageSize) {
       curr = 1;
     }
     this.setState({ pagination: { ...pag, current: curr } });
-    getDocuments({
+    getDocumentList({
       page: curr,
       limit: pag.pageSize,
     });
@@ -119,9 +119,9 @@ export class Documents extends React.Component {
   };
 
   handleRefresh = () => {
-    const { getDocuments } = this.props;
+    const { getDocumentList } = this.props;
     const { pagination } = this.state;
-    getDocuments({
+    getDocumentList({
       page: pagination.current,
       limit: pagination.pageSize,
     });
@@ -196,15 +196,15 @@ export class Documents extends React.Component {
 
 const mapStateToProps = state => ({
   token: state.auth.token,
-  documentsList: state.documents.documentsList,
-  documentsListPagination: state.documents.documentsListPagination,
-  isLoading: state.loading.effects.documents.getDocuments,
+  documentList: state.documents.contractorDocumentList,
+  documentPagination: state.documents.contractorDocumentPagination,
+  isLoading: state.loading.effects.documents.getContractorDocumentList,
 });
 
 const mapDispatchToProps = dispatch => ({
   changeStep: dispatch.onBoarding.changeStep,
-  getDocuments: dispatch.documents.getDocuments,
-  deleteDocument: dispatch.documents.deleteDocument,
+  getDocumentList: dispatch.documents.getContractorDocumentList,
+  deleteDocument: dispatch.documents.deleteContractorDocument,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Documents);

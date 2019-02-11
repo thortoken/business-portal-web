@@ -17,8 +17,8 @@ const { Column } = Table;
 
 class DocumentsList extends React.Component {
   static propTypes = {
-    userDocuments: PropTypes.arrayOf(PropTypes.object),
-    userDocumentsPagination: PropTypes.object,
+    documentList: PropTypes.arrayOf(PropTypes.object),
+    documentPagination: PropTypes.object,
     isLoading: PropTypes.bool,
     match: PropTypes.shape({
       params: PropTypes.shape({
@@ -28,46 +28,40 @@ class DocumentsList extends React.Component {
   };
 
   state = {
-    userDocuments: [],
+    documentList: [],
     pagination: makeDefaultPagination(),
-    userDocumentsPagination: null,
+    documentPagination: null,
   };
 
   componentDidMount() {
-    const { pagination } = this.state;
-    const { getUserDocuments, match } = this.props;
-    getUserDocuments({
-      page: pagination.current,
-      limit: pagination.pageSize,
-      userId: match.params.id,
-    });
+    this.handleRefresh();
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.userDocuments !== prevState.userDocuments) {
+    if (nextProps.documentList !== prevState.documentList) {
       return {
-        userDocuments: nextProps.userDocuments,
+        documentList: nextProps.documentList,
       };
     }
-    if (nextProps.userDocumentsPagination !== prevState.userDocumentsPagination) {
+    if (nextProps.documentPagination !== prevState.documentPagination) {
       let pag = prevState.pagination;
       return {
-        userDocumentsPagination: nextProps.userDocumentsPagination,
-        pagination: { ...pag, total: nextProps.userDocumentsPagination.total },
+        documentPagination: nextProps.documentPagination,
+        pagination: { ...pag, total: nextProps.documentPagination.total },
       };
     }
     return null;
   }
 
   handleTableChange = pag => {
-    const { getUserDocuments, match } = this.props;
+    const { getDocumentList, match } = this.props;
     const { pagination } = this.state;
     let curr = pag.current;
     if (pagination.pageSize !== pag.pageSize) {
       curr = 1;
     }
     this.setState({ pagination: { ...pag, current: curr } });
-    getUserDocuments({
+    getDocumentList({
       page: curr,
       limit: pag.pageSize,
       userId: match.params.id,
@@ -80,7 +74,7 @@ class DocumentsList extends React.Component {
   };
 
   handleDelete = async row => {
-    const { deleteUserDocument } = this.props;
+    const { deleteDocument } = this.props;
     const { name, id } = row;
     Modal.confirm({
       title: `Are you sure you want to delete ${name}?`,
@@ -89,7 +83,7 @@ class DocumentsList extends React.Component {
       cancelText: 'No',
       onOk: async () => {
         try {
-          await deleteUserDocument(id);
+          await deleteDocument(id);
           NotificationService.open({
             type: 'success',
             message: 'Success',
@@ -128,9 +122,9 @@ class DocumentsList extends React.Component {
   };
 
   handleRefresh = () => {
-    const { getUserDocuments, match } = this.props;
+    const { getDocumentList, match } = this.props;
     const { pagination } = this.state;
-    getUserDocuments({
+    getDocumentList({
       page: pagination.current,
       limit: pagination.pageSize,
       userId: match.params.id,
@@ -138,7 +132,7 @@ class DocumentsList extends React.Component {
   };
 
   render() {
-    const { userDocuments, pagination } = this.state;
+    const { documentList, pagination } = this.state;
     const { isLoading, history } = this.props;
     return (
       <div className="DocumentsList">
@@ -153,7 +147,7 @@ class DocumentsList extends React.Component {
         </Header>
         <Box>
           <Table
-            dataSource={userDocuments}
+            dataSource={documentList}
             className="DocumentsList__table"
             rowKey="created"
             onChange={this.handleTableChange}
@@ -205,16 +199,15 @@ class DocumentsList extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  userDocuments: state.users.userDocuments,
-  userDocumentsPagination: state.users.userDocumentsPagination,
-  isLoading: state.loading.effects.users.getUserDocuments,
+  documentList: state.documents.userDocumentList,
+  documentPagination: state.documents.userDocumentPagination,
+  isLoading: state.loading.effects.documents.getUserDocumentList,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getUserDocuments: dispatch.users.getUserDocuments,
-  deleteUserDocument: dispatch.users.deleteUserDocument,
-  getDocumentDownloadLink: dispatch.users.getDocumentDownloadLink,
-  unmountUserDocuments: dispatch.users.unmountUserDocuments,
+  getDocumentList: dispatch.documents.getUserDocumentList,
+  deleteDocument: dispatch.documents.deleteDocument,
+  getDocumentDownloadLink: dispatch.documents.getDocumentDownloadLink,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DocumentsList);

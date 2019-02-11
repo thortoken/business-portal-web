@@ -14,9 +14,9 @@ import invitations from './invitations';
 import onBoarding from './onBoarding';
 import tenantCompany from './tenantCompany';
 import beneficialOwners from './beneficialOwners';
-import linkedAccounts from './linkedAccounts';
 import welcome from './welcome';
 import documents from './documents';
+import fundingSources from './fundingSources';
 
 export const history = createHistory();
 const middleware = routerMiddleware(history);
@@ -35,10 +35,10 @@ const store = init({
     onBoarding,
     tenantCompany,
     beneficialOwners,
-    linkedAccounts,
     iav,
     welcome,
     documents,
+    fundingSources,
   },
   plugins: [loading],
   redux: {

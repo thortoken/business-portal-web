@@ -193,16 +193,16 @@ export class LinkedAccounts extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  fundingSources: state.linkedAccounts.fundingSources,
-  fundingSourcesPagination: state.linkedAccounts.fundingSourcesPagination,
-  isLoading: state.loading.effects.linkedAccounts.getFundingSource,
-  isLoadingVerify: state.loading.effects.linkedAccounts.verifyFundingSource,
+  fundingSources: state.fundingSources.tenantFundingSourceList,
+  fundingSourcesPagination: state.fundingSources.tenantFundingSourcePagination,
+  isLoading: state.loading.effects.fundingSources.getTenantFundingSourceList,
+  isLoadingVerify: state.loading.effects.fundingSources.verifyTenantFundingSource,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getFundingSource: dispatch.linkedAccounts.getFundingSource,
-  deleteFundingSource: dispatch.linkedAccounts.deleteFundingSource,
-  verifyFundingSource: dispatch.linkedAccounts.verifyFundingSource,
+  getFundingSource: dispatch.fundingSources.getTenantFundingSourceList,
+  deleteFundingSource: dispatch.fundingSources.deleteTenantFundingSource,
+  verifyFundingSource: dispatch.fundingSources.verifyTenantFundingSource,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LinkedAccounts);

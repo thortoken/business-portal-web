@@ -4,19 +4,6 @@ import NotificationService from '~services/notification';
 
 const invitations = {
   effects: {
-    async sendInvitation({ email, type, role }) {
-      try {
-        const response = await Http.post('/invitations', {
-          email,
-          type,
-          role,
-        });
-        return response.data;
-      } catch (err) {
-        throw err;
-      }
-    },
-
     async getInvitations({ status, page, limit, type }) {
       try {
         const response = await Http.get(`/invitations`, {
@@ -35,11 +22,31 @@ const invitations = {
       }
     },
 
-    async deleteInvitation({ userId }) {
+    async sendInvitation({ email, type, role }) {
       try {
-        const response = await Http.delete(`/invitations`, {
-          userId,
+        const response = await Http.post('/invitations', {
+          email,
+          type,
+          role,
         });
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+
+    async deleteInvitation({ id }) {
+      try {
+        const response = await Http.delete(`/invitations/${id}`);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+
+    async deleteUserInvitation({ userId }) {
+      try {
+        const response = await Http.delete(`/users/${userId}/invitations`);
         return response.data;
       } catch (err) {
         throw err;
@@ -48,7 +55,7 @@ const invitations = {
 
     async resendInvitation({ id }) {
       try {
-        const response = await Http.patch(`/invitations/${id}/resend`);
+        const response = await Http.post(`/invitations/${id}/resend`);
         return response.data;
       } catch (err) {
         throw err;
@@ -57,9 +64,7 @@ const invitations = {
 
     async resendUserInvitation({ userId }) {
       try {
-        const response = await Http.patch(`/invitations/resend`, {
-          userId,
-        });
+        const response = await Http.post(`/users/${userId}/invitations/resend`);
         return response.data;
       } catch (err) {
         throw err;

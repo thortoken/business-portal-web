@@ -51,11 +51,11 @@ const welcome = {
         }
 
         if (step === Steps.BANK) {
-          let linkedAccounts = models.linkedAccounts.fundingSources;
-          if (!linkedAccounts || linkedAccounts.length === 0) {
-            linkedAccounts = await dispatch.linkedAccounts.getFundingSource();
+          let fundingSources = models.fundingSources.tenantfundingSourceList;
+          if (!fundingSources || fundingSources.length === 0) {
+            fundingSources = await dispatch.fundingSources.getTenantFundingSourceList();
           }
-          if (linkedAccounts && linkedAccounts.length > 0) {
+          if (fundingSources && fundingSources.length > 0) {
             dispatch.tenants.updateStatus('active');
             step = Steps.DONE;
             redirect = true;

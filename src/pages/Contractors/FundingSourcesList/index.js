@@ -228,18 +228,18 @@ class FundingSourcesList extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  userFundingSources: state.users.userFundingSources,
-  userFundingSourcesPagination: state.users.userFundingSourcesPagination,
-  isLoading: state.loading.effects.users.getUserFundingSources,
-  isLoadingVerify: state.loading.effects.users.verifyFundingSource,
+  userFundingSources: state.fundingSources.userFundingSourceList,
+  userFundingSourcesPagination: state.fundingSources.userFundingSourcePagination,
+  isLoading: state.loading.effects.fundingSources.getUserFundingSourceList,
+  isLoadingVerify: state.loading.effects.fundingSources.verifyUserFundingSource,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getUserFundingSources: dispatch.users.getUserFundingSources,
-  unmountUserFundingSources: dispatch.users.unmountUserFundingSources,
-  deleteFundingSource: dispatch.users.deleteFundingSource,
-  setDefaultFundingSource: dispatch.users.setDefaultFundingSource,
-  verifyFundingSource: dispatch.users.verifyFundingSource,
+  getUserFundingSources: dispatch.fundingSources.getUserFundingSourceList,
+  unmountUserFundingSources: dispatch.fundingSources.unmountUserFundingSourceList,
+  deleteFundingSource: dispatch.fundingSources.deleteUserFundingSource,
+  setDefaultFundingSource: dispatch.fundingSources.setUserDefaultFundingSource,
+  verifyFundingSource: dispatch.fundingSources.verifyUserFundingSource,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FundingSourcesList);

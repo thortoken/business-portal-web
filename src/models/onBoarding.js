@@ -71,10 +71,6 @@ const onBoarding = {
       this.setStep(step);
     },
 
-    async createFundingSourceData(data) {
-      this.setFsData(data);
-    },
-
     async getAgreement() {
       const agreement = localStorage.getItem('thor-terms-agreement');
       if (agreement) {
@@ -97,35 +93,6 @@ const onBoarding = {
         const response = await Http.post('/contractors', data);
 
         await dispatch.auth.saveUser(response.data.tenantProfile);
-        return response.data;
-      } catch (err) {
-        throw err;
-      }
-    },
-
-    async checkFundingSource() {
-      try {
-        const response = await Http.get('/contractors/fundingSources/default');
-        return response.data;
-      } catch (err) {
-        return err.response;
-      }
-    },
-
-    async createFundingSource(data) {
-      try {
-        const response = await Http.post('/contractors/fundingSources/', data.bank);
-        return response.data;
-      } catch (err) {
-        throw err;
-      }
-    },
-
-    async createFundingSourceWithIAV(data) {
-      try {
-        const response = await Http.post('/contractors/fundingSources/iav', data.bank);
-        // TODO: update with real status?
-        await dispatch.auth.saveUser({ status: 'active' });
         return response.data;
       } catch (err) {
         throw err;

@@ -95,7 +95,7 @@ class ContractorsList extends React.Component {
       orderBy: column || undefined,
       order: config.order || undefined,
       status: 'invited',
-      contractor: config.searchText || undefined,
+      name: config.searchText || undefined,
     });
   }
 

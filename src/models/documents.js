@@ -2,9 +2,9 @@ import Http from '../services/http';
 
 const documents = {
   effects: {
-    async getDocuments({ page, limit, status, order, orderBy }) {
+    async getContractorDocumentList({ page, limit, status, order, orderBy }) {
       try {
-        const response = await Http.get('/documents', {
+        const response = await Http.get('/contractors/documents', {
           params: {
             page,
             limit,
@@ -13,8 +13,50 @@ const documents = {
             status,
           },
         });
-        this.setDocumentsList(response.data.items);
-        this.setDocumentsPagination(response.data.pagination);
+        this.setContractorDocumentList(response.data.items);
+        this.setContractorDocumentPagination(response.data.pagination);
+      } catch (err) {
+        throw err;
+      }
+    },
+
+    async getContractorDocumentDownloadLink(id) {
+      try {
+        const response = await Http.get(`/contractors/documents/${id}`);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+
+    async deleteContractorDocument(id) {
+      try {
+        const response = await Http.delete(`/contractors/documents/${id}`);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+
+    async getUserDocumentList({ userId, page, limit }) {
+      try {
+        const response = await Http.get(`/users/${userId}/documents`, {
+          params: {
+            page,
+            limit,
+          },
+        });
+        this.setUserDocumentList(response.data.items);
+        this.setUserDocumentPagination(response.data.pagination);
+      } catch (err) {
+        throw err;
+      }
+    },
+
+    async deleteDocument(id) {
+      try {
+        const response = await Http.delete(`/documents/${id}`);
+        return response.data;
       } catch (err) {
         throw err;
       }
@@ -29,32 +71,42 @@ const documents = {
       }
     },
 
-    async deleteDocument(id) {
-      try {
-        const response = await Http.delete(`/documents/${id}`);
-        return response.data;
-      } catch (err) {
-        throw err;
-      }
+    async unmountUserDocumentList() {
+      this.setUserDocumentList([]);
+      this.setUserDocumentPagination(null);
     },
   },
   reducers: {
-    setDocumentsPagination(state, payload) {
+    setContractorDocumentPagination(state, payload) {
       return {
         ...state,
-        documentsListPagination: payload,
+        contractorDocumentPagination: payload,
       };
     },
-    setDocumentsList(state, payload) {
+    setContractorDocumentList(state, payload) {
       return {
         ...state,
-        documentsList: payload,
+        contractorDocumentList: payload,
+      };
+    },
+    setUserDocumentPagination(state, payload) {
+      return {
+        ...state,
+        userDocumentPagination: payload,
+      };
+    },
+    setUserDocumentList(state, payload) {
+      return {
+        ...state,
+        userDocumentList: payload,
       };
     },
   },
   state: {
-    documentsListPagination: null,
-    documentsList: [],
+    contractorDocumentPagination: null,
+    contractorDocumentList: [],
+    userDocumentList: [],
+    userDocumentPagination: null,
   },
 };
 

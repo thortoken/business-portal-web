@@ -155,12 +155,12 @@ export class Billing extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  fundingSources: state.linkedAccounts.fundingSources,
+  fundingSources: state.fundingSources.tenantFundingSourceList,
   tenant: state.tenants.tenant,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getFundingSource: dispatch.linkedAccounts.getFundingSource,
+  getFundingSource: dispatch.fundingSources.getTenantFundingSourceList,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Billing);
