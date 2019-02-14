@@ -1,6 +1,6 @@
 @import "../../../styles/var";
 
-.CompanyTeam {
+.ManagmentJobList {
   padding: 1rem;
   width: 100%;
   &__value {
@@ -83,11 +83,11 @@
       .ant-table-column-sorter-down.on .anticon-caret-down {
         color: #fff;
       }
-      td.CompanyTeam__activity {
+      td.ManagmentJobList__activity {
         padding: 0;
-        .CompanyTeam--active,
-        .CompanyTeam--resting,
-        .CompanyTeam--inactive {
+        .ManagmentJobList--active,
+        .ManagmentJobList--resting,
+        .ManagmentJobList--inactive {
           padding: 16px;
           color: #fff;
         }
@@ -103,16 +103,16 @@
       padding: 1rem 3rem;
     }
   }
+  &__errors {
+    color: $color-inactive;
+  }
 
-  &__status {
-    text-transform: uppercase;
-    font-weight: 500;
-    &--pending {
-      color: $color-resting;
-    }
-    &--used {
-      color: $color-active;
-    }
+  &__inactive {
+    color: $color-inactive;
+  }
+
+  &__active {
+    color: $color-green-neon;
   }
 
   .InputGroup {

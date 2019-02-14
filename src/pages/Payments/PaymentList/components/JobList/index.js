@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
 import { Table, Icon, Modal } from 'antd';
 
 import NotificationService from '~services/notification';
 import TooltipButton from '~components/TooltipButton';
-import './JobsList.scss';
-import StatusBlock from '../../../../../components/StatusBlock';
+import StatusBlock from '~components/StatusBlock';
+import './JobList.scss';
 
 const { Column } = Table;
 
@@ -20,9 +19,9 @@ const prepareList = list => {
   });
 };
 
-export class JobsList extends Component {
+export class JobList extends Component {
   static propTypes = {
-    jobsList: PropTypes.array,
+    jobList: PropTypes.array,
     renderAmount: PropTypes.func,
     userId: PropTypes.string,
     createTransaction: PropTypes.func,
@@ -65,14 +64,14 @@ export class JobsList extends Component {
   };
 
   render() {
-    const { jobsList, renderAmount } = this.props;
+    const { jobList, renderAmount } = this.props;
 
     return (
       <div>
         <Table
-          className="JobsList JobsList--hidden-empty-state"
+          className="JobList JobsList--hidden-empty-state"
           showHeader={false}
-          dataSource={prepareList(jobsList)}
+          dataSource={prepareList(jobList)}
           pagination={false}>
           <Column align="center" dataIndex={null} title="Name" width="10%" />
           <Column align="center" dataIndex="name" title="Name" width="35%" />
@@ -132,4 +131,4 @@ export class JobsList extends Component {
   };
 }
 
-export default connect(null, null)(JobsList);
+export default connect(null, null)(JobList);

@@ -10,11 +10,11 @@ import TooltipButton from '~components/TooltipButton';
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
 import NotificationService from '~services/notification';
-import './FundingSourcesList.scss';
+import './FundingSourceList.scss';
 
 const { Column } = Table;
 
-class FundingSourcesList extends React.Component {
+class FundingSourceList extends React.Component {
   static propTypes = {
     userFundingSources: PropTypes.arrayOf(PropTypes.object),
     userFundingSourcesPagination: PropTypes.object,
@@ -151,11 +151,11 @@ class FundingSourcesList extends React.Component {
     const { userFundingSources, pagination } = this.state;
     const { isLoading, history, isLoadingVerify } = this.props;
     return (
-      <div className="FundingSourcesList">
-        <div className="FundingSourcesList__back">
+      <div className="FundingSourceList">
+        <div className="FundingSourceList__back">
           <BackBtn history={history} goBack={this.handleGoBack} />
         </div>
-        <Header title="Funding Sources List" size="medium">
+        <Header title="Funding Source List" size="medium">
           <Button type="primary" onClick={this.handleAdd}>
             <Icon type="plus" theme="outlined" />
           </Button>
@@ -164,7 +164,7 @@ class FundingSourcesList extends React.Component {
         <Box>
           <Table
             dataSource={userFundingSources}
-            className="FundingSourcesList__table"
+            className="FundingSourceList__table"
             rowKey="id"
             onChange={this.handleTableChange}
             pagination={pagination}
@@ -175,7 +175,7 @@ class FundingSourcesList extends React.Component {
               dataIndex="type"
               title="Type"
               render={text => {
-                return <span className="FundingSourcesList__table__type">{text}</span>;
+                return <span className="FundingSourceList__table__type">{text}</span>;
               }}
             />
             <Column
@@ -191,7 +191,7 @@ class FundingSourcesList extends React.Component {
               title="Actions"
               render={(text, record) => {
                 return (
-                  <span className="FundingSourcesList__table__buttons">
+                  <span className="FundingSourceList__table__buttons">
                     {!record.isDefault && (
                       <Button onClick={() => this.handleDefault(record)}>
                         <Icon type="check-circle" theme="outlined" />
@@ -242,4 +242,4 @@ const mapDispatchToProps = dispatch => ({
   verifyFundingSource: dispatch.fundingSources.verifyUserFundingSource,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FundingSourcesList);
+export default connect(mapStateToProps, mapDispatchToProps)(FundingSourceList);

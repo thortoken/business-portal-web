@@ -14,8 +14,8 @@ const invitations = {
             type,
           },
         });
-        this.setInvitations(_.orderBy(response.data.items, ['status'], ['asc']));
-        this.setInvitationsPagination(response.data.pagination);
+        this.setInvitationList(_.orderBy(response.data.items, ['status'], ['asc']));
+        this.setInvitationPagination(response.data.pagination);
         return response.data;
       } catch (err) {
         throw err;
@@ -104,17 +104,17 @@ const invitations = {
     setInvitedUser(state, payload) {
       return { ...state, invitedUser: payload };
     },
-    setInvitations(state, payload) {
-      return { ...state, invitationsList: payload };
+    setInvitationList(state, payload) {
+      return { ...state, invitationList: payload };
     },
-    setInvitationsPagination(state, payload) {
-      return { ...state, invitationsListPagination: payload };
+    setInvitationPagination(state, payload) {
+      return { ...state, invitationPagination: payload };
     },
   },
   state: {
     invitedUser: null,
-    invitationsList: [],
-    invitationsListPagination: null,
+    invitationList: [],
+    invitationPagination: null,
   },
 };
 

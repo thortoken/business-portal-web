@@ -1,21 +1,15 @@
 @import "../../../styles/var";
 
-.DocumentsList {
-  &__back {
-    margin-bottom: 2rem;
+.InvitationList {
+  &__actions {
+    width: 200px !important;
   }
-  &__type {
-      text-transform: uppercase;
-  }
+  
   &__table {
     &__buttons {
       Button {
         margin-right: 0.5rem;
       }
-    }
-    &__type {
-      text-transform: uppercase;
-      font-weight: bold;
     }
     table {
       thead > tr > th,
@@ -30,17 +24,17 @@
       .ant-table-column-sorter-down.on .anticon-caret-down {
         color: #fff;
       }
-      td.Documents__activity {
+      td.InvitationList__activity {
         padding: 0;
-        .Documents--active,
-        .Documents--resting,
-        .Documents--inactive {
+        .InvitationsList--active,
+        .InvitationsList--resting,
+        .InvitationsList--inactive {
           padding: 16px;
           color: #fff;
         }
       }
 
-      td.Documents__date, td.Documents__status {
+      td.InvitationList__date, td.InvitationList__status {
         max-width: 250px !important;
         width: 250px;
       }

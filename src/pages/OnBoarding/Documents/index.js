@@ -13,8 +13,8 @@ import './Documents.scss';
 
 export class Documents extends React.Component {
   static propTypes = {
-    documentsList: PropTypes.arrayOf(PropTypes.object),
-    documentsListPagination: PropTypes.object,
+    documentList: PropTypes.arrayOf(PropTypes.object),
+    documentPagination: PropTypes.object,
     isLoading: PropTypes.bool,
     token: PropTypes.string.isRequired,
     deleteDocument: PropTypes.func.isRequired,
@@ -23,9 +23,9 @@ export class Documents extends React.Component {
   };
 
   state = {
-    documentsList: [],
+    documentList: [],
     pagination: makeDefaultPagination(),
-    documentsListPagination: null,
+    documentPagination: null,
     isAddDocumentModelVisible: false,
     showNext: false,
   };
@@ -39,12 +39,16 @@ export class Documents extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    this.props.unmountDocumentList();
+  }
+
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.documentsList !== prevState.documentsList) {
+    if (nextProps.documentList !== prevState.documentList) {
       // check if a w9 is in the document list
       let showNext = false;
-      for (let index = 0; index < nextProps.documentsList.length; index++) {
-        const document = nextProps.documentsList[index];
+      for (let index = 0; index < nextProps.documentList.length; index++) {
+        const document = nextProps.documentList[index];
         if (document.type === 'w9') {
           showNext = true;
           break;
@@ -52,14 +56,14 @@ export class Documents extends React.Component {
       }
       return {
         showNext,
-        documentsList: nextProps.documentsList,
+        documentList: nextProps.documentList,
       };
     }
-    if (nextProps.documentsListPagination !== prevState.documentsListPagination) {
+    if (nextProps.documentPagination !== prevState.documentPagination) {
       let pag = prevState.pagination;
       return {
-        documentsListPagination: nextProps.documentsListPagination,
-        pagination: { ...pag, total: nextProps.documentsListPagination.total },
+        documentPagination: nextProps.documentPagination,
+        pagination: { ...pag, total: nextProps.documentPagination.total },
       };
     }
     return null;
@@ -129,7 +133,7 @@ export class Documents extends React.Component {
 
   render() {
     const { token, isLoading } = this.props;
-    const { documentsList, pagination, showNext, isAddDocumentModalVisible } = this.state;
+    const { documentList, pagination, showNext, isAddDocumentModalVisible } = this.state;
     return (
       <div className="Documents">
         <AddDocumentModal
@@ -150,7 +154,7 @@ export class Documents extends React.Component {
         </Header>
         <DocumentTable
           handleTableChange={this.handleTableChange}
-          documents={documentsList}
+          documents={documentList}
           pagination={pagination}
           isLoading={isLoading}
           renderActions={this.renderActions}
@@ -196,8 +200,8 @@ export class Documents extends React.Component {
 
 const mapStateToProps = state => ({
   token: state.auth.token,
-  documentList: state.documents.contractorDocumentList,
-  documentPagination: state.documents.contractorDocumentPagination,
+  documentList: state.documents.documentList,
+  documentPagination: state.documents.documentPagination,
   isLoading: state.loading.effects.documents.getContractorDocumentList,
 });
 
@@ -205,6 +209,7 @@ const mapDispatchToProps = dispatch => ({
   changeStep: dispatch.onBoarding.changeStep,
   getDocumentList: dispatch.documents.getContractorDocumentList,
   deleteDocument: dispatch.documents.deleteContractorDocument,
+  unmountDocumentList: dispatch.documents.unmountDocumentList,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Documents);

@@ -15,12 +15,13 @@ const jobs = {
             isCustom,
           },
         });
-        this.setJobsList(response.data.items);
-        this.setJobsPagination(response.data.pagination);
+        this.setJobList(response.data.items);
+        this.setJobPagination(response.data.pagination);
       } catch (err) {
         throw err;
       }
     },
+
     async changeJobStatus({ id, isActive }) {
       try {
         const response = await Http.patch(`/jobs/${id}`, { isActive: !isActive });
@@ -29,6 +30,7 @@ const jobs = {
         throw err;
       }
     },
+
     async addJob(data) {
       try {
         const response = await Http.post(`/jobs`, data);
@@ -37,6 +39,7 @@ const jobs = {
         throw err;
       }
     },
+
     async updateJob(data) {
       try {
         const response = await Http.patch(`/jobs/${data.id}`, data);
@@ -46,6 +49,7 @@ const jobs = {
         throw err;
       }
     },
+
     async getJob(id) {
       try {
         const response = await Http.get(`/jobs/${id}`);
@@ -55,6 +59,7 @@ const jobs = {
         throw err;
       }
     },
+
     async deleteJob(id) {
       try {
         const response = await Http.delete(`/jobs/${id}`);
@@ -65,16 +70,16 @@ const jobs = {
     },
   },
   reducers: {
-    setJobsPagination(state, payload) {
+    setJobPagination(state, payload) {
       return {
         ...state,
-        jobsListPagination: payload,
+        jobPagination: payload,
       };
     },
-    setJobsList(state, payload) {
+    setJobList(state, payload) {
       return {
         ...state,
-        jobsList: payload,
+        jobList: payload,
       };
     },
     setEditedJobs(state, payload) {
@@ -85,8 +90,8 @@ const jobs = {
     },
   },
   state: {
-    jobsListPagination: null,
-    jobsList: [],
+    jobList: [],
+    jobPagination: null,
     editedJob: null,
   },
 };

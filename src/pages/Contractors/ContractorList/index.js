@@ -12,7 +12,7 @@ import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
 import StatusBlock from '~components/StatusBlock';
 import AddContractorMenu from './components/AddContractorMenu';
-import './ContractorsList.scss';
+import './ContractorList.scss';
 
 const { Column } = Table;
 const Search = Input.Search;
@@ -24,7 +24,7 @@ export const prepareActivity = list => {
   });
 };
 
-class ContractorsList extends React.Component {
+class ContractorList extends React.Component {
   static propTypes = {
     usersList: PropTypes.arrayOf(PropTypes.object),
     userListPagination: PropTypes.object,
@@ -155,13 +155,13 @@ class ContractorsList extends React.Component {
     const { isLoading } = this.props;
 
     return (
-      <div className="ContractorsList">
-        <Header title="Contractors List" size="medium">
+      <div className="ContractorList">
+        <Header title="Contractor List" size="medium">
           <AddContractorMenu />
           <RefreshButton handleRefresh={this.handleRefresh} isLoading={isLoading} />
         </Header>
-        <div className="ContractorsList__additional-box">
-          <div className="ContractorsList__additional-box--left ContractorsList__additional-box--box" />
+        <div className="ContractorList__additional-box">
+          <div className="ContractorList__additional-box--left ContractorList__additional-box--box" />
         </div>
         <Box>
           <Table
@@ -177,7 +177,7 @@ class ContractorsList extends React.Component {
               ),
             }}
             dataSource={contractorsData}
-            className="ContractorsList__table"
+            className="ContractorList__table"
             rowKey="id"
             onChange={this.handleTableChange}
             pagination={pagination}
@@ -203,10 +203,10 @@ class ContractorsList extends React.Component {
                   />
                 ) : null;
                 return (
-                  <div className="ContractorsList__search-dropdown">
+                  <div className="ContractorList__search-dropdown">
                     <Search
                       prefix={prefix}
-                      className="ContractorsList__additional-box--search"
+                      className="ContractorList__additional-box--search"
                       placeholder="Find Contractor"
                       onChange={this.onSearch}
                       value={searchText}
@@ -223,7 +223,7 @@ class ContractorsList extends React.Component {
             <Column
               align="center"
               title="Last Activity"
-              className="ContractorsList__activity"
+              className="ContractorList__activity"
               render={(text, record) => {
                 return <div>{record.lastActivityLabel}</div>;
               }}
@@ -273,4 +273,4 @@ const mapDispatchToProps = dispatch => ({
   getUsers: dispatch.users.getUsers,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContractorsList);
+export default connect(mapStateToProps, mapDispatchToProps)(ContractorList);

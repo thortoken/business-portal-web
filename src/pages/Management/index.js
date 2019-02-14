@@ -20,11 +20,12 @@ import CompanyDocuments from './CompanyDetails/CompanyDocuments';
 import AddCompanyDocument from './CompanyDetails/AddCompanyDocument';
 import ChangeAdminPassword from './ChangeAdminPassword';
 import Billing from './Billing';
-import Jobs from './Jobs';
-import AddJob from './Jobs/AddJob';
-import EditJob from './Jobs/EditJob';
+import JobList from './JobList';
+import AddJob from './JobList/AddJob';
+import EditJob from './JobList/EditJob';
 import Profile from './Profile';
 import EditProfile from './Profile/EditProfile';
+import DocumentList from './DocumentList';
 import './Management.scss';
 
 export class RootManagementPage extends React.Component {
@@ -46,8 +47,9 @@ export class RootManagementPage extends React.Component {
             <Route exact path={`/management/linked-accounts`} component={LinkedAccounts} />
             <Route exact path={`/management/integrations`} component={Integrations} />
             <Route exact path={`/management/settings`} component={Settings} />
-            <Route exact path={`/management/jobs`} component={Jobs} />
+            <Route exact path={`/management/jobs`} component={JobList} />
             <Route exact path={`/management/profile`} component={Profile} />
+            <Route exact path={`/management/documents`} component={DocumentList} />
             <Route
               exact
               path={`/management/jobs/add`}

@@ -57,7 +57,7 @@ class ContractorDetails extends React.Component {
     contractorTransactions: {
       items: [],
     },
-    jobsList: [],
+    jobList: [],
   };
 
   constructor(props) {
@@ -121,8 +121,8 @@ class ContractorDetails extends React.Component {
       localState['hasFundingSource'] = nextProps.hasFundingSource;
     }
 
-    if (nextProps.jobsList !== prevState.jobsList) {
-      localState['jobsList'] = nextProps.jobsList;
+    if (nextProps.jobList !== prevState.jobList) {
+      localState['jobList'] = nextProps.jobList;
     }
 
     return Object.keys(localState).length ? localState : null;
@@ -149,7 +149,7 @@ class ContractorDetails extends React.Component {
     return (
       <div>
         <AddPaymentModal
-          jobsList={this.state.jobsList}
+          jobList={this.state.jobList}
           userId={match.params.id}
           addExistingTransaction={this.props.addExistingTransaction}
           addCustomTransaction={this.props.addCustomTransaction}
@@ -466,8 +466,8 @@ const mapStateToProps = state => ({
   transactionsListPagination: state.transactions.transactionsListPagination,
   loadingTransactions: state.loading.effects.transactions.getTransactionsForContractor,
   hasFundingSource: state.fundingSources.userHasFundingSource,
-  isJobsListLoading: state.loading.effects.jobs.getJobs,
-  jobsList: state.jobs.jobsList,
+  isJobListLoading: state.loading.effects.jobs.getJobs,
+  jobList: state.jobs.jobList,
 });
 
 const mapDispatchToProps = ({

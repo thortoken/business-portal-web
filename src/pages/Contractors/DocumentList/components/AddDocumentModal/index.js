@@ -1,40 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Select } from 'antd';
+import { Modal } from 'antd';
 import { FilePond, registerPlugin } from 'react-filepond';
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import 'filepond/dist/filepond.min.css';
 
 import Config from '~services/config';
-import './AddDocument.scss';
+import './AddDocumentModal.scss';
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
 export class AddDocumentModal extends React.Component {
   static propTypes = {
+    userId: PropTypes.string.isRequired,
+    document: PropTypes.object.isRequired,
     token: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
     isModalVisible: PropTypes.bool.isRequired,
     onChangeVisibility: PropTypes.func.isRequired,
   };
 
-  state = {
-    docType: 'w9',
-  };
+  state = {};
 
   handleModalCancel = () => {
     const { onChangeVisibility } = this.props;
     onChangeVisibility(false);
   };
 
-  handleChange = value => {
-    this.setState({ docType: value });
-  };
-
   render() {
-    const { token, isModalVisible, onChangeVisibility } = this.props;
-    const { docType } = this.state;
+    const { token, isModalVisible, onChangeVisibility, document, userId } = this.props;
     return (
       <Modal
         title="Add a document"
@@ -42,17 +36,8 @@ export class AddDocumentModal extends React.Component {
         footer={null}
         onCancel={this.handleModalCancel}
         destroyOnClose>
-        <div className="AddDocument">
-          <div className="AddDocument__block">
-            <Select defaultValue="w9" onChange={this.handleChange}>
-              <Select.Option value="w9">W-9</Select.Option>
-              <Select.Option value="passport">Passport</Select.Option>
-              <Select.Option value="license">License</Select.Option>
-              <Select.Option value="idCard">Id Card</Select.Option>
-              <Select.Option value="other">Other</Select.Option>
-            </Select>
-          </div>
-          <div className="AddDocument__block">
+        <div className="AddDocumentModal">
+          <div className="AddDocumentModal__block">
             <FilePond
               allowFileSizeValidation
               allowFileTypeValidation
@@ -62,7 +47,7 @@ export class AddDocumentModal extends React.Component {
               labelTapToRetry="Click to retry."
               labelTapToUndo="Click to undo."
               server={{
-                url: `${Config.apiUrl}contractors/documents?type=${docType}`,
+                url: `${Config.apiUrl}users/${userId}/documents/${document.documentId}`,
                 process: {
                   headers: {
                     Authorization: `Bearer ${token}`,

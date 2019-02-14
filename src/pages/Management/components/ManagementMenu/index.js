@@ -10,6 +10,7 @@ const menuItems = [
   { route: '/management/billing', label: 'Billing Settings', icon: 'dollar' },
   { route: '/management/company-team', label: 'Manage Team', icon: 'team' },
   { route: '/management/jobs', label: 'Manage Jobs', icon: 'tool' },
+  { route: '/management/documents', label: 'Documents', icon: 'folder-open' },
   // { route: '/management/integrations', label: 'Integrations', icon: 'shrink' },
   { route: '/management/profile', label: 'My Profile', icon: 'user' },
   // { route: '/management/settings', label: 'Settings', icon: 'setting' },

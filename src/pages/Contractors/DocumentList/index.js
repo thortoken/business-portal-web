@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Table, Button, Icon, Modal } from 'antd';
+import { Table, Icon, Modal } from 'antd';
+import classnames from 'classnames';
 
 import NotificationService from '~services/notification';
 import Box from '../../../components/Box/index';
@@ -10,12 +11,13 @@ import BackBtn from '~components/BackBtn';
 import TooltipButton from '~components/TooltipButton';
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
+import AddDocumentModal from './components/AddDocumentModal';
 import { renderRegularDate } from '~utils/time';
-import './DocumentsList.scss';
+import './DocumentList.scss';
 
 const { Column } = Table;
 
-class DocumentsList extends React.Component {
+class DocumentList extends React.Component {
   static propTypes = {
     documentList: PropTypes.arrayOf(PropTypes.object),
     documentPagination: PropTypes.object,
@@ -28,13 +30,20 @@ class DocumentsList extends React.Component {
   };
 
   state = {
+    document: {},
     documentList: [],
     pagination: makeDefaultPagination(),
     documentPagination: null,
+    isAddDocumentModalVisible: false,
+    match: null,
   };
 
   componentDidMount() {
     this.handleRefresh();
+  }
+
+  componentWillUnmount() {
+    this.props.unmountDocumentList();
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -68,13 +77,29 @@ class DocumentsList extends React.Component {
     });
   };
 
-  handleAdd = () => {
-    const { history, match } = this.props;
-    history.push(`/contractors/${match.params.id}/documents/add`);
+  handleRefresh = () => {
+    const { getDocumentList, match } = this.props;
+    const { pagination } = this.state;
+    getDocumentList({
+      page: pagination.current,
+      limit: pagination.pageSize,
+      userId: match.params.id,
+    });
+  };
+
+  handleAdd = row => {
+    this.setState({ document: { ...row }, isAddDocumentModalVisible: true });
+  };
+
+  onChangeVisibility = (isAddDocumentModalVisible, refreshData = false) => {
+    if (refreshData) {
+      this.handleRefresh();
+    }
+    this.setState({ isAddDocumentModalVisible });
   };
 
   handleDelete = async row => {
-    const { deleteDocument } = this.props;
+    const { deleteDocument, match } = this.props;
     const { name, id } = row;
     Modal.confirm({
       title: `Are you sure you want to delete ${name}?`,
@@ -83,7 +108,7 @@ class DocumentsList extends React.Component {
       cancelText: 'No',
       onOk: async () => {
         try {
-          await deleteDocument(id);
+          await deleteDocument({ userId: match.params.id, id });
           NotificationService.open({
             type: 'success',
             message: 'Success',
@@ -121,35 +146,30 @@ class DocumentsList extends React.Component {
     history.replace(`/contractors/${match.params.id}`);
   };
 
-  handleRefresh = () => {
-    const { getDocumentList, match } = this.props;
-    const { pagination } = this.state;
-    getDocumentList({
-      page: pagination.current,
-      limit: pagination.pageSize,
-      userId: match.params.id,
-    });
-  };
-
   render() {
-    const { documentList, pagination } = this.state;
-    const { isLoading, history } = this.props;
+    const { documentList, pagination, isAddDocumentModalVisible, document } = this.state;
+    const { isLoading, history, token, match } = this.props;
     return (
-      <div className="DocumentsList">
-        <div className="DocumentsList__back">
+      <div className="DocumentList">
+        <AddDocumentModal
+          userId={match.params.id}
+          token={token}
+          document={document}
+          isModalVisible={isAddDocumentModalVisible}
+          onChangeVisibility={this.onChangeVisibility}
+          handleRefresh={this.handleRefresh}
+        />
+        <div className="DocumentList__back">
           <BackBtn history={history} goBack={this.handleGoBack} />
         </div>
-        <Header title="Documents List" size="medium">
-          <Button type="primary" onClick={this.handleAdd}>
-            <Icon type="plus" theme="outlined" />
-          </Button>
+        <Header title="Document List" size="medium">
           <RefreshButton handleRefresh={this.handleRefresh} isLoading={isLoading} />
         </Header>
         <Box>
           <Table
             dataSource={documentList}
-            className="DocumentsList__table"
-            rowKey="created"
+            className="DocumentList__table"
+            rowKey="createdAt"
             onChange={this.handleTableChange}
             pagination={pagination}
             loading={isLoading}>
@@ -158,20 +178,29 @@ class DocumentsList extends React.Component {
               dataIndex="name"
               title="Name"
               render={text => {
-                return <div className="DocumentsList__name">{text}</div>;
-              }}
-            />
-            <Column
-              align="left"
-              dataIndex="type"
-              title="Type"
-              render={text => {
-                return <div className="DocumentsList__type">{text}</div>;
+                return <div className="DocumentList__name">{text}</div>;
               }}
             />
             <Column
               align="center"
-              dataIndex="created"
+              dataIndex="status"
+              title="Status"
+              render={text => {
+                return (
+                  <div
+                    className={classnames('DocumentList__status', {
+                      'DocumentList__status--pending': text === 'pending',
+                      'DocumentList__status--approved': text === 'approved',
+                      'DocumentList__status--rejected': text === 'rejected',
+                    })}>
+                    {text}
+                  </div>
+                );
+              }}
+            />
+            <Column
+              align="center"
+              dataIndex="createdAt"
               title="Added On"
               render={renderRegularDate}
             />
@@ -179,7 +208,7 @@ class DocumentsList extends React.Component {
               align="center"
               title="Actions"
               render={(text, record) => {
-                return (
+                return record.id ? (
                   <div>
                     <TooltipButton tooltip="Download" onClick={() => this.handleDownload(record)}>
                       <Icon type="download" theme="outlined" />
@@ -188,6 +217,10 @@ class DocumentsList extends React.Component {
                       <Icon type="delete" theme="outlined" />
                     </TooltipButton>
                   </div>
+                ) : (
+                  <TooltipButton tooltip="Upload" onClick={() => this.handleAdd(record)}>
+                    <Icon type="upload" theme="outlined" />
+                  </TooltipButton>
                 );
               }}
             />
@@ -199,15 +232,17 @@ class DocumentsList extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  documentList: state.documents.userDocumentList,
-  documentPagination: state.documents.userDocumentPagination,
+  documentList: state.documents.documentList,
+  documentPagination: state.documents.documentPagination,
   isLoading: state.loading.effects.documents.getUserDocumentList,
+  token: state.auth.token,
 });
 
 const mapDispatchToProps = dispatch => ({
   getDocumentList: dispatch.documents.getUserDocumentList,
-  deleteDocument: dispatch.documents.deleteDocument,
+  deleteDocument: dispatch.documents.deleteUserDocument,
   getDocumentDownloadLink: dispatch.documents.getDocumentDownloadLink,
+  unmountDocumentList: dispatch.documents.unmountDocumentList,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(DocumentsList);
+export default connect(mapStateToProps, mapDispatchToProps)(DocumentList);

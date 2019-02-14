@@ -11,22 +11,20 @@ import BottomBar from '~components/BottomBar';
 import Summary from './components/Summary';
 import TooltipButton from '~components/TooltipButton';
 import { formatUsd } from '~utils/number';
-import { JobsList } from './components/JobsList';
+import { JobList } from './components/JobList';
 import makeDefaultPagination from '~utils/pagination';
-
 import RefreshButton from '~components/RefreshButton';
-
-import './PaymentsList.scss';
 import { AddPaymentModal } from '~pages/Payments/components/AddPaymentModal';
+import './PaymentList.scss';
 
 const { Column } = Table;
 const Search = Input.Search;
 
-class Payments extends React.Component {
+class PaymentList extends React.Component {
   static propTypes = {
     isSummaryLoading: PropTypes.bool,
     isJobsLoading: PropTypes.bool,
-    paymentsListPagination: PropTypes.object,
+    paymentPagination: PropTypes.object,
     usersJobs: PropTypes.array,
     selectedTransactionGroups: PropTypes.array,
     selectedTransactionsSummaryValue: PropTypes.number,
@@ -49,7 +47,7 @@ class Payments extends React.Component {
     selectedTransactionsIds: new Set(),
     selectedContractorsIds: new Set(),
     selectedTransactionsSummaryValue: 0,
-    paymentsListPagination: null,
+    paymentPagination: null,
     selectedTransactionGroups: [],
     resetTransactions: false,
     isAddPaymentModalVisible: false,
@@ -120,16 +118,16 @@ class Payments extends React.Component {
       localState['selectedTransactionsSummaryValue'] = nextProps.selectedTransactionsSummaryValue;
     }
 
-    if (nextProps.paymentsListPagination !== prevState.paymentsListPagination) {
-      localState['paymentsListPagination'] = nextProps.paymentsListPagination;
+    if (nextProps.paymentPagination !== prevState.paymentPagination) {
+      localState['paymentPagination'] = nextProps.paymentPagination;
       localState['pagination'] = {
         ...prevState.pagination,
-        total: nextProps.paymentsListPagination.total,
+        total: nextProps.paymentPagination.total,
       };
     }
 
-    if (nextProps.jobsList !== prevState.jobsList) {
-      localState['jobsList'] = nextProps.jobsList;
+    if (nextProps.jobList !== prevState.jobList) {
+      localState['jobList'] = nextProps.jobList;
     }
 
     return Object.keys(localState).length ? localState : null;
@@ -231,7 +229,7 @@ class Payments extends React.Component {
 
     return (
       <div>
-        <Header title="Payments List" size="medium">
+        <Header title="Payment List" size="medium">
           <Radio.Group
             value={this.state.filters.status || 'all'}
             onChange={this.handleStatusFilterChange}>
@@ -253,7 +251,7 @@ class Payments extends React.Component {
         </Spin>
 
         <AddPaymentModal
-          jobsList={this.state.jobsList}
+          jobList={this.state.jobList}
           userId={this.state.selectedUserId}
           addExistingTransaction={this.props.addExistingTransaction}
           addCustomTransaction={this.props.addCustomTransaction}
@@ -269,7 +267,7 @@ class Payments extends React.Component {
               emptyText: <div>No Payments</div>,
             }}
             dataSource={usersJobs}
-            className="PaymentsList-table"
+            className="PaymentList-table"
             loading={isJobsLoading}
             pagination={pagination}
             onChange={this.handleTableChange}
@@ -281,7 +279,7 @@ class Payments extends React.Component {
               dataIndex="rank"
               title="Rank"
               width="10%"
-              className="PaymentsList-rank-selector"
+              className="PaymentList-rank-selector"
               sorter
             />
             <Column
@@ -290,7 +288,7 @@ class Payments extends React.Component {
               width="35%"
               title="Contractor"
               render={this.showContractorName}
-              className="PaymentsList-name-selector"
+              className="PaymentList-name-selector"
               filterDropdown={({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
                 const prefix = searchText ? (
                   <Icon
@@ -302,10 +300,10 @@ class Payments extends React.Component {
                   />
                 ) : null;
                 return (
-                  <div className="PaymentsList__search-dropdown">
+                  <div className="PaymentList__search-dropdown">
                     <Search
                       prefix={prefix}
-                      className="PaymentsList__additional-box--search"
+                      className="PaymentList__additional-box--search"
                       placeholder="Find Contractor"
                       onChange={this.onSearch}
                       value={searchText}
@@ -322,11 +320,11 @@ class Payments extends React.Component {
               dataIndex="jobsCount"
               title="Jobs"
               width="10%"
-              className="PaymentsList-numOfJobs-selector"
+              className="PaymentList-numOfJobs-selector"
             />
             <Column
               align="center"
-              className="PaymentsList-table-current PaymentsList-current-selector"
+              className="PaymentList-table-current PaymentsList-current-selector"
               dataIndex="total"
               render={this.renderAmount}
               width="15%"
@@ -352,7 +350,7 @@ class Payments extends React.Component {
               }}
             />
             <Column
-              className="PaymentsList-table-approve PaymentsList-approve-selector"
+              className="PaymentList-table-approve PaymentsList-approve-selector"
               title={() => {
                 return (
                   <button
@@ -555,8 +553,8 @@ class Payments extends React.Component {
   renderJobsList = record => {
     const { createTransaction, deleteTransaction, history } = this.props;
     return (
-      <JobsList
-        jobsList={record.jobs}
+      <JobList
+        jobList={record.jobs}
         userId={record.id}
         history={history}
         renderAmount={this.renderAmount}
@@ -570,7 +568,7 @@ class Payments extends React.Component {
 
 const mapStateToProps = state => ({
   transactionsSummary: state.transactions.transactionsSummary,
-  paymentsListPagination: state.users.paymentsListPagination,
+  paymentPagination: state.users.paymentPagination,
   usersJobs: state.users.usersJobs,
   selectedTransactionsIds: state.payments.selectedTransactionsIds,
   selectedContractorsIds: state.payments.selectedContractorsIds,
@@ -580,7 +578,7 @@ const mapStateToProps = state => ({
   isSummaryLoading: state.loading.effects.transactions.getTransactionsSummary,
   isJobsLoading: state.loading.effects.users.getUsersJobs,
   isJobsListLoading: state.loading.effects.jobs.getJobs,
-  jobsList: state.jobs.jobsList,
+  jobList: state.jobs.jobList,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -595,4 +593,4 @@ const mapDispatchToProps = dispatch => ({
   reset: dispatch.payments.reset,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Payments);
+export default connect(mapStateToProps, mapDispatchToProps)(PaymentList);

@@ -17,15 +17,15 @@ const Column = Table.Column;
 
 export class CompanyTeam extends React.Component {
   static propTypes = {
-    invitationsList: PropTypes.arrayOf(PropTypes.object),
-    invitationsListPagination: PropTypes.object,
+    invitationList: PropTypes.arrayOf(PropTypes.object),
+    invitationPagination: PropTypes.object,
     isLoading: PropTypes.bool,
   };
 
   state = {
-    invitationsList: [],
+    invitationList: [],
     pagination: makeDefaultPagination(),
-    invitationsListPagination: null,
+    invitationPagination: null,
   };
 
   componentDidMount() {
@@ -33,16 +33,16 @@ export class CompanyTeam extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.invitationsList !== prevState.invitationsList) {
+    if (nextProps.invitationList !== prevState.invitationList) {
       return {
-        invitationsList: nextProps.invitationsList,
+        invitationList: nextProps.invitationList,
       };
     }
-    if (nextProps.invitationsListPagination !== prevState.invitationsListPagination) {
+    if (nextProps.invitationPagination !== prevState.invitationPagination) {
       let pag = prevState.pagination;
       return {
-        invitationsListPagination: nextProps.invitationsListPagination,
-        pagination: { ...pag, total: nextProps.invitationsListPagination.total },
+        invitationPagination: nextProps.invitationPagination,
+        pagination: { ...pag, total: nextProps.invitationPagination.total },
       };
     }
     return null;
@@ -132,8 +132,8 @@ export class CompanyTeam extends React.Component {
 
   render() {
     const { isLoading } = this.props;
-    const { invitationsList, pagination } = this.state;
-    const title = `${invitationsList.length} ${invitationsList.length === 1 ? 'User' : 'Users'}`;
+    const { invitationList, pagination } = this.state;
+    const title = `${invitationList.length} ${invitationList.length === 1 ? 'User' : 'Users'}`;
     return (
       <div className="CompanyTeam">
         <Header title={title} size="medium">
@@ -144,8 +144,8 @@ export class CompanyTeam extends React.Component {
         </Header>
         <Box>
           <Table
-            dataSource={invitationsList}
-            className="InvitationsList__table"
+            dataSource={invitationList}
+            className="CompanyTeam__table"
             rowKey="id"
             onChange={this.handleTableChange}
             pagination={pagination}
@@ -153,7 +153,7 @@ export class CompanyTeam extends React.Component {
             <Column align="left" dataIndex="email" title="Email" />
             <Column
               align="center"
-              className="InvitationsList__date"
+              className="CompanyTeam__date"
               dataIndex="createdAt"
               title="Post Date"
               render={text => {
@@ -173,9 +173,9 @@ export class CompanyTeam extends React.Component {
               render={text => {
                 return (
                   <div
-                    className={classnames('InvitationsList__status', {
-                      'InvitationsList__status--pending': text === 'pending',
-                      'InvitationsList__status--registered': text === 'registered',
+                    className={classnames('CompanyTeam__status', {
+                      'CompanyTeam__status--pending': text === 'pending',
+                      'CompanyTeam__status--used': text === 'used',
                     })}>
                     {text}
                   </div>
@@ -185,10 +185,10 @@ export class CompanyTeam extends React.Component {
             <Column
               align="center"
               title="Actions"
-              className="Invitations__actions"
+              className="CompanyTeam__actions"
               render={(text, record) => {
                 return (
-                  <span className="Invitations__table__buttons">
+                  <span className="CompanyTeam__table__buttons">
                     {record.status === 'pending' && (
                       <div>
                         <TooltipButton
@@ -215,8 +215,8 @@ export class CompanyTeam extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  invitationsList: state.invitations.invitationsList,
-  invitationsListPagination: state.invitations.invitationsListPagination,
+  invitationList: state.invitations.invitationList,
+  invitationPagination: state.invitations.invitationPagination,
   isLoading: state.loading.effects.invitations.getInvitations,
 });
 

@@ -1,6 +1,6 @@
 @import "../../../styles/var";
 
-.PaymentsList {
+.PaymentList {
   &__search-dropdown {
     padding: 8px;
     border-radius: 6px;
@@ -63,7 +63,7 @@
         color: #fff !important;
       }
 
-      .ant-table-thead > tr > th.ant-table-column-has-actions.ant-table-column-has-sorters:hover, th.PaymentsList-table-approve {
+      .ant-table-thead > tr > th.ant-table-column-has-actions.ant-table-column-has-sorters:hover, th.PaymentList-table-approve {
         word-break: unset;
         padding: 0;
         line-height: 3.375rem;
@@ -128,7 +128,7 @@
           background: transparent;
         }
 
-        td.PaymentsList-table-approve {
+        td.PaymentList-table-approve {
           padding: 0;
           line-height: 3.375rem;
 

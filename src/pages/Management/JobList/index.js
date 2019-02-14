@@ -10,22 +10,22 @@ import RefreshButton from '~components/RefreshButton';
 import Header from '~components/Header';
 import makeDefaultPagination from '~utils/pagination';
 import { formatUsd } from '~utils/number';
-import './Jobs.scss';
+import './JobList.scss';
 
 const { Column } = Table;
 const Search = Input.Search;
 
-export class Jobs extends React.Component {
+export class JobList extends React.Component {
   static propTypes = {
     isLoading: PropTypes.bool,
     statusIsLoading: PropTypes.bool,
-    jobsList: PropTypes.arrayOf(PropTypes.object),
-    jobsListPagination: PropTypes.object,
+    jobList: PropTypes.arrayOf(PropTypes.object),
+    jobPagination: PropTypes.object,
   };
   state = {
-    jobsList: [],
+    jobList: [],
     pagination: makeDefaultPagination(),
-    jobsListPagination: null,
+    jobPagination: null,
     searchName: null,
     sorters: {},
     filters: {},
@@ -40,16 +40,16 @@ export class Jobs extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.jobsList !== prevState.jobsList) {
+    if (nextProps.jobList !== prevState.jobList) {
       return {
-        jobsList: nextProps.jobsList,
+        jobList: nextProps.jobList,
       };
     }
-    if (nextProps.jobsListPagination !== prevState.jobsListPagination) {
+    if (nextProps.jobPagination !== prevState.jobPagination) {
       let pag = prevState.pagination;
       return {
-        jobsListPagination: nextProps.jobsListPagination,
-        pagination: { ...pag, total: nextProps.jobsListPagination.total },
+        jobPagination: nextProps.jobPagination,
+        pagination: { ...pag, total: nextProps.jobPagination.total },
       };
     }
     return null;
@@ -183,10 +183,10 @@ export class Jobs extends React.Component {
 
   render() {
     const { isLoading, statusIsLoading } = this.props;
-    const { pagination, jobsList, searchName } = this.state;
-    const title = `${jobsList.length} ${jobsList.length === 1 ? 'Job' : 'Jobs'}`;
+    const { pagination, jobList, searchName } = this.state;
+    const title = `${jobList.length} ${jobList.length === 1 ? 'Job' : 'Jobs'}`;
     return (
-      <div className="Jobs">
+      <div className="ManagmentJobList">
         <Header title={title} size="medium">
           <TooltipButton tooltip="Add job" type="primary" onClick={this.handleAdd}>
             <Icon type="plus" theme="outlined" />
@@ -195,8 +195,8 @@ export class Jobs extends React.Component {
         </Header>
         <Box>
           <Table
-            dataSource={jobsList}
-            className="Jobs__table"
+            dataSource={jobList}
+            className="ManagmentJobList__table"
             rowKey="id"
             onChange={this.handleTableChange}
             pagination={pagination}
@@ -208,7 +208,7 @@ export class Jobs extends React.Component {
               render={(text, record) => {
                 return (
                   <Tooltip title={record.description}>
-                    <div className="Jobs__name">{text}</div>
+                    <div className="ManagmentJobList__name">{text}</div>
                   </Tooltip>
                 );
               }}
@@ -223,10 +223,10 @@ export class Jobs extends React.Component {
                   />
                 ) : null;
                 return (
-                  <div className="Jobs__search-dropdown">
+                  <div className="ManagmentJobList__search-dropdown">
                     <Search
                       prefix={prefix}
-                      className="Jobs__additional-box--search"
+                      className="ManagmentJobList__additional-box--search"
                       placeholder="Find Job"
                       onChange={this.onSearch}
                       value={searchName}
@@ -244,7 +244,7 @@ export class Jobs extends React.Component {
               title="Amount"
               sorter={(a, b) => a.value.length - b.value.length}
               render={text => {
-                return <span className="Jobs__value">{this.renderAmount(text)}</span>;
+                return <span className="ManagmentJobList__value">{this.renderAmount(text)}</span>;
               }}
             />
             <Column
@@ -280,7 +280,7 @@ export class Jobs extends React.Component {
               title="Actions"
               render={(text, record) => {
                 return (
-                  <span className="Jobs__table__buttons">
+                  <span className="ManagmentJobList__table__buttons">
                     {/*<Button onClick={() => this.handleDelete(record)}>*/}
                     {/*<Icon type="delete" theme="outlined" />*/}
                     {/*</Button>*/}
@@ -299,8 +299,8 @@ export class Jobs extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  jobsList: state.jobs.jobsList,
-  jobsListPagination: state.jobs.jobsListPagination,
+  jobList: state.jobs.jobList,
+  jobPagination: state.jobs.jobPagination,
   isLoading: state.loading.effects.jobs.getJobs,
   statusIsLoading: state.loading.effects.jobs.changeJobStatus,
 });
@@ -311,4 +311,4 @@ const mapDispatchToProps = dispatch => ({
   changeJobStatus: dispatch.jobs.changeJobStatus,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Jobs);
+export default connect(mapStateToProps, mapDispatchToProps)(JobList);

@@ -11,22 +11,22 @@ import NotificationService from '~services/notification';
 import TooltipButton from '~components/TooltipButton';
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
-import AddContractorMenu from '../ContractorsList/components/AddContractorMenu';
-import './InvitationsList.scss';
+import AddContractorMenu from '../ContractorList/components/AddContractorMenu';
+import './InvitationList.scss';
 
 const { Column } = Table;
 
-class InvitationsList extends React.Component {
+class InvitationList extends React.Component {
   static propTypes = {
-    invitationsList: PropTypes.arrayOf(PropTypes.object),
-    invitationsListPagination: PropTypes.object,
+    invitationList: PropTypes.arrayOf(PropTypes.object),
+    invitationPagination: PropTypes.object,
     isLoading: PropTypes.bool,
   };
 
   state = {
-    invitationsList: [],
+    invitationList: [],
     pagination: makeDefaultPagination(),
-    invitationsListPagination: null,
+    invitationPagination: null,
   };
 
   componentDidMount() {
@@ -34,16 +34,16 @@ class InvitationsList extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.invitationsList !== prevState.invitationsList) {
+    if (nextProps.invitationList !== prevState.invitationList) {
       return {
-        invitationsList: nextProps.invitationsList,
+        invitationList: nextProps.invitationList,
       };
     }
-    if (nextProps.invitationsListPagination !== prevState.invitationsListPagination) {
+    if (nextProps.invitationPagination !== prevState.invitationPagination) {
       let pag = prevState.pagination;
       return {
-        invitationsListPagination: nextProps.invitationsListPagination,
-        pagination: { ...pag, total: nextProps.invitationsListPagination.total },
+        invitationPagination: nextProps.invitationPagination,
+        pagination: { ...pag, total: nextProps.invitationPagination.total },
       };
     }
     return null;
@@ -128,11 +128,11 @@ class InvitationsList extends React.Component {
   };
 
   render() {
-    const { invitationsList, pagination } = this.state;
+    const { invitationList, pagination } = this.state;
     const { isLoading } = this.props;
     return (
-      <div className="InvitationsList">
-        <Header title="Invitations List" size="medium">
+      <div className="InvitationList">
+        <Header title="Invitation List" size="medium">
           <Button type="primary" ghost onClick={this.handleGoContractor}>
             Contractors List
           </Button>
@@ -141,8 +141,8 @@ class InvitationsList extends React.Component {
         </Header>
         <Box>
           <Table
-            dataSource={invitationsList}
-            className="InvitationsList__table"
+            dataSource={invitationList}
+            className="InvitationList__table"
             rowKey="id"
             onChange={this.handleTableChange}
             pagination={pagination}
@@ -150,7 +150,7 @@ class InvitationsList extends React.Component {
             <Column align="left" dataIndex="email" title="Email" />
             <Column
               align="center"
-              className="InvitationsList__date"
+              className="InvitationList__date"
               dataIndex="createdAt"
               title="Post Date"
               render={text => {
@@ -171,8 +171,8 @@ class InvitationsList extends React.Component {
                 return (
                   <div
                     className={classnames('InvitationsList__status', {
-                      'InvitationsList__status--pending': text === 'pending',
-                      'InvitationsList__status--registered': text === 'registered',
+                      'InvitationList__status--pending': text === 'pending',
+                      'InvitationList__status--registered': text === 'registered',
                     })}>
                     {text}
                   </div>
@@ -182,10 +182,10 @@ class InvitationsList extends React.Component {
             <Column
               align="center"
               title="Actions"
-              className="Invitations__actions"
+              className="Invitation__actions"
               render={(text, record) => {
                 return (
-                  <span className="Invitations__table__buttons">
+                  <span className="Invitation__table__buttons">
                     {record.status === 'pending' && (
                       <TooltipButton
                         tooltip="Delete invitation"
@@ -213,8 +213,8 @@ class InvitationsList extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  invitationsList: state.invitations.invitationsList,
-  invitationsListPagination: state.invitations.invitationsListPagination,
+  invitationList: state.invitations.invitationList,
+  invitationPagination: state.invitations.invitationPagination,
   isLoading: state.loading.effects.invitations.getInvitations,
 });
 
@@ -224,4 +224,4 @@ const mapDispatchToProps = dispatch => ({
   resendInvitation: dispatch.invitations.resendInvitation,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(InvitationsList);
+export default connect(mapStateToProps, mapDispatchToProps)(InvitationList);

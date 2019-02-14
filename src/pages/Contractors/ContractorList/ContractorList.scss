@@ -1,11 +1,11 @@
 @import "../../../styles/var";
 
-.ContractorsList {
+.ContractorList {
   &__search-dropdown {
     padding: 8px;
     border-radius: 6px;
     background: #fff;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, .2);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
   }
   &__additional-box {
     margin-bottom: 1rem;
@@ -13,11 +13,11 @@
       width: 50%;
       display: inline-block;
     }
-    &--left{
+    &--left {
       text-align: left;
       display: inline-block;
     }
-    &--right{
+    &--right {
       text-align: right;
       display: inline-block;
     }
@@ -34,23 +34,34 @@
         color: $color-white;
       }
 
-      .ant-table-thead > tr > th .ant-table-column-sorter-up.on, .ant-table-thead > tr > th .ant-table-column-sorter-down.on {
+      .ant-table-thead > tr > th .ant-table-column-sorter-up.on,
+      .ant-table-thead > tr > th .ant-table-column-sorter-down.on {
         color: #fff !important;
       }
 
-      .ant-table-thead > tr > th.ant-table-column-has-actions.ant-table-column-has-sorters:hover {
+      .ant-table-thead
+        > tr
+        > th.ant-table-column-has-actions.ant-table-column-has-sorters:hover {
         background: linear-gradient($color-darker-blue, $color-blue);
       }
 
-      .ant-table-thead > tr > th.ant-table-column-has-actions.ant-table-column-has-filters:hover .anticon-filter:hover, .ant-table-thead > tr > th.ant-table-column-has-actions.ant-table-column-has-filters:hover .ant-table-filter-icon:hover {
+      .ant-table-thead
+        > tr
+        > th.ant-table-column-has-actions.ant-table-column-has-filters:hover
+        .anticon-filter:hover,
+      .ant-table-thead
+        > tr
+        > th.ant-table-column-has-actions.ant-table-column-has-filters:hover
+        .ant-table-filter-icon:hover {
         background: linear-gradient($color-darker-blue, $color-blue);
       }
 
-      .anticon.anticon-filter.ant-dropdown-trigger::before{
+      .anticon.anticon-filter.ant-dropdown-trigger::before {
         background: rgba(0, 0, 0, 0.04) !important;
       }
 
-      .ant-table-thead > tr > th .anticon-filter, .ant-table-thead > tr > th .ant-table-filter-icon {
+      .ant-table-thead > tr > th .anticon-filter,
+      .ant-table-thead > tr > th .ant-table-filter-icon {
         border-top-right-radius: 0.9rem;
         &:hover {
           color: #fff !important;
@@ -61,16 +72,23 @@
         color: #fff;
       }
 
-      .ant-table-thead > tr > th.ant-table-column-has-actions.ant-table-column-has-filters .anticon-filter.ant-table-filter-open, .ant-table-thead > tr > th.ant-table-column-has-actions.ant-table-column-has-filters .ant-table-filter-icon.ant-table-filter-open {
+      .ant-table-thead
+        > tr
+        > th.ant-table-column-has-actions.ant-table-column-has-filters
+        .anticon-filter.ant-table-filter-open,
+      .ant-table-thead
+        > tr
+        > th.ant-table-column-has-actions.ant-table-column-has-filters
+        .ant-table-filter-icon.ant-table-filter-open {
         background: rgba(0, 0, 0, 0.04) !important;
         color: #fff !important;
       }
 
-      td.ContractorsList__activity {
+      td.ContractorList__activity {
         padding: 0;
-        .ContractorsList--active,
-        .ContractorsList--resting,
-        .ContractorsList--inactive {
+        .ContractorList--active,
+        .ContractorList--resting,
+        .ContractorList--inactive {
           padding: 16px;
           color: #fff;
         }

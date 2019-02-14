@@ -34,7 +34,7 @@ const generateJobs = (list, customJobName) => {
 export class AddPaymentModal extends Component {
   static propTypes = {
     isLoading: PropTypes.bool,
-    jobsList: PropTypes.arrayOf(PropTypes.object).isRequired,
+    jobList: PropTypes.arrayOf(PropTypes.object).isRequired,
     addExistingTransaction: PropTypes.func.isRequired,
     addCustomTransaction: PropTypes.func.isRequired,
     onChangeVisibility: PropTypes.func,
@@ -44,14 +44,14 @@ export class AddPaymentModal extends Component {
   state = {
     errorMsg: '',
     formData: prepareFormFieldsAndValidation(),
-    jobsList: [],
+    jobList: [],
     isCustomJob: false,
     customJobName: '',
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.jobsList !== prevState.jobsList) {
-      return { jobsList: nextProps.jobsList };
+    if (nextProps.jobList !== prevState.jobList) {
+      return { jobList: nextProps.jobList };
     }
     return null;
   }
@@ -64,7 +64,7 @@ export class AddPaymentModal extends Component {
 
   handleOnSelect = event => {
     if (event.value) {
-      const filtered = this.state.jobsList.filter(entry => {
+      const filtered = this.state.jobList.filter(entry => {
         return entry.id === event.value;
       });
       if (filtered.length > 0) {
@@ -158,7 +158,7 @@ export class AddPaymentModal extends Component {
   }
 
   renderForm = ({ handleSubmit, isSubmitting, values, dirty, valid }) => {
-    const { customJobName, isCustomJob, jobsList } = this.state;
+    const { customJobName, isCustomJob, jobList } = this.state;
     return (
       <form onSubmit={handleSubmit}>
         {Object.entries(formFields).map(([name, options]) => {
@@ -168,7 +168,7 @@ export class AddPaymentModal extends Component {
                 key={name}
                 name={name}
                 component={SelectField}
-                dataSource={generateJobs(jobsList, customJobName)}
+                dataSource={generateJobs(jobList, customJobName)}
                 showSearch
                 filterOption={(inputValue, option) =>
                   option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1

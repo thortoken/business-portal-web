@@ -141,7 +141,7 @@ const users = {
           return { ...userJob, name: `${userJob.firstName} ${userJob.lastName}` };
         });
         this.setUsersJobs(res);
-        this.setPaymentsPagination(response.data.pagination);
+        this.setPaymentPagination(response.data.pagination);
         return response.data;
       } catch (err) {
         throw err;
@@ -167,7 +167,7 @@ const users = {
         } else {
           this.setUsersTransactions(response.data);
         }
-        this.setPaymentsPagination(response.data.pagination);
+        this.setPaymentPagination(response.data.pagination);
 
         return response.data;
       } catch (err) {
@@ -194,8 +194,8 @@ const users = {
     setUsersPagination(state, payload) {
       return { ...state, userListPagination: payload };
     },
-    setPaymentsPagination(state, payload) {
-      return { ...state, paymentsListPagination: payload };
+    setPaymentPagination(state, payload) {
+      return { ...state, paymentPagination: payload };
     },
     setCurrentUserStatistics(state, payload) {
       return { ...state, currentUserStatistics: payload };
@@ -217,7 +217,7 @@ const users = {
     usersList: [],
     currentUser: null,
     userListPagination: null,
-    paymentsListPagination: null,
+    paymentPagination: null,
     currentUserStatistics: {
       rank: 0,
       nJobs: 0,
