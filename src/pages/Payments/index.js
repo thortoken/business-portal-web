@@ -2,8 +2,7 @@ import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
 import PaymentsConfirmation from './PaymentsConfirmation';
-import PaymentsList from './PaymentsList';
-
+import PaymentList from './PaymentList';
 import { withRouteModal } from '~components/Modal';
 import AddCustomTransaction from '../Transactions/AddCustomTransaction';
 import AddExistingTransaction from '../Transactions/AddExistingTransaction';
@@ -47,7 +46,7 @@ export class RootPaymentsPage extends React.Component {
             title: 'Edit Payment',
           })}
         />
-        <Route path={`${match.path}`} component={PaymentsList} />
+        <Route path={`${match.path}`} component={PaymentList} />
       </Switch>
     );
   }

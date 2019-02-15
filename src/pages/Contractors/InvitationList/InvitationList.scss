@@ -1,0 +1,63 @@
+@import "../../../styles/var";
+
+.InvitationList {
+  &__actions {
+    width: 200px !important;
+  }
+  
+  &__table {
+    &__buttons {
+      Button {
+        margin-right: 0.5rem;
+      }
+    }
+    table {
+      thead > tr > th,
+      .ant-table-thead > tr > th.ant-table-column-sort {
+        background: $color-darker-blue;
+        background: linear-gradient($color-darker-blue, $color-blue);
+        color: $color-white;
+      }
+      .ant-table-column-sorter-up.on .anticon-caret-up,
+      .ant-table-column-sorter-down.on .anticon-caret-up,
+      .ant-table-column-sorter-up.on .anticon-caret-down,
+      .ant-table-column-sorter-down.on .anticon-caret-down {
+        color: #fff;
+      }
+      td.InvitationList__activity {
+        padding: 0;
+        .InvitationsList--active,
+        .InvitationsList--resting,
+        .InvitationsList--inactive {
+          padding: 16px;
+          color: #fff;
+        }
+      }
+
+      td.InvitationList__date, td.InvitationList__status {
+        max-width: 250px !important;
+        width: 250px;
+      }
+    }
+  }
+  &__status {
+    text-transform: uppercase;
+    font-weight: 500;
+    &--pending {
+      color: $color-resting;
+    }
+    &--registered {
+      color: $color-active;
+    }
+  }
+
+  &--active {
+    background: $color-active;
+  }
+  &--resting {
+    background: $color-resting;
+  }
+  &--inactive {
+    background: $color-inactive;
+  }
+}

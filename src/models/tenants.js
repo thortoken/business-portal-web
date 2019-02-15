@@ -46,19 +46,9 @@ const tenants = {
         throw err;
       }
     },
-
     async changeAdminPassword(data) {
       try {
         const response = await Http.patch('/auth/password', data);
-        return response.data;
-      } catch (err) {
-        throw err;
-      }
-    },
-
-    async createIAVFundingSource(uri) {
-      try {
-        const response = await Http.post('/tenants/company/fundingSources/iav', uri);
         return response.data;
       } catch (err) {
         throw err;

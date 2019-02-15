@@ -1,5 +1,4 @@
 import Http from '~services/http';
-import _ from 'lodash';
 
 const users = {
   effects: dispatch => ({
@@ -32,40 +31,16 @@ const users = {
       }
     },
 
-    async createFundingSource({ userId, data }) {
-      try {
-        const response = await Http.post(`/users/${userId}/fundingSources`, data);
-        return response.data;
-      } catch (err) {
-        throw err;
-      }
-    },
-
-    async setDefaultFundingSource({ userId, fundingId }) {
-      try {
-        const response = await Http.post(`/users/${userId}/fundingSources/${fundingId}/default`);
-        return response.data;
-      } catch (err) {
-        throw err;
-      }
-    },
-    async deleteFundingSource({ userId, fundingId }) {
-      try {
-        const response = await Http.delete(`/users/${userId}/fundingSources/${fundingId}`);
-        return response.data;
-      } catch (err) {
-        throw err;
-      }
-    },
     async updateTenantProfile({ userId, tenantProfile }) {
       try {
-        const response = await Http.patch(`/users/${userId}/profile`, { profile: tenantProfile });
+        const response = await Http.patch(`/users/${userId}/profiles`, { profile: tenantProfile });
         this.setTenantProfile(tenantProfile);
         return response.data;
       } catch (err) {
         throw err;
       }
     },
+
     async retryContractor({ id, data }) {
       try {
         const response = await Http.put(`/users/${id}`, data);
@@ -74,19 +49,7 @@ const users = {
         throw err;
       }
     },
-    async checkFundingSource(userId) {
-      try {
-        const response = await Http.get(`/users/${userId}/fundingSources/default`);
-        this.setHasFundingSource(true);
-        return response.data;
-      } catch (err) {
-        this.setHasFundingSource(false);
-        throw err;
-      }
-    },
-    async changeFundingSourceStatus(status) {
-      this.setHasFundingSource(status);
-    },
+
     async getUser(id) {
       try {
         const response = await Http.get(`/users/${id}`);
@@ -96,6 +59,7 @@ const users = {
         throw err;
       }
     },
+
     async deleteUser(id) {
       try {
         const response = await Http.delete(`/users/${id}`);
@@ -104,6 +68,7 @@ const users = {
         throw err;
       }
     },
+
     async sendPasswordReset(userId) {
       try {
         const response = await Http.post(`/users/${userId}/passwordReset`);
@@ -112,7 +77,8 @@ const users = {
         throw err;
       }
     },
-    async getUsers({ startDate, endDate, status, page, limit, orderBy, order, contractor }) {
+
+    async getUsers({ startDate, endDate, status, page, limit, orderBy, order, name }) {
       try {
         const response = await Http.get(`/users`, {
           params: {
@@ -122,7 +88,8 @@ const users = {
             endDate: new Date(endDate.utc()),
             orderBy,
             order,
-            contractor,
+            status,
+            name,
           },
         });
         this.setUsers(response.data.items);
@@ -132,6 +99,7 @@ const users = {
         throw err;
       }
     },
+
     async getCurrentUserStatistics({
       userId,
       currentStartDate,
@@ -140,7 +108,7 @@ const users = {
       previousEndDate,
     }) {
       try {
-        const response = await Http.get(`/users/${userId}/statistics`, {
+        const response = await Http.get(`/users/${userId}/contractors/statistics`, {
           params: {
             currentStartDate: new Date(currentStartDate.utc()),
             currentEndDate: new Date(currentEndDate.utc()),
@@ -154,7 +122,8 @@ const users = {
         throw err;
       }
     },
-    async getUsersJobs({ startDate, endDate, status, page, limit, orderBy, order, contractor }) {
+
+    async getUsersJobs({ startDate, endDate, status, page, limit, orderBy, order, name }) {
       try {
         const response = await Http.get(`/users/rating/jobs`, {
           params: {
@@ -165,19 +134,20 @@ const users = {
             status,
             orderBy,
             order,
-            contractor,
+            name,
           },
         });
         const res = response.data.items.map(userJob => {
-          return { ...userJob, contractor: `${userJob.firstName} ${userJob.lastName}` };
+          return { ...userJob, name: `${userJob.firstName} ${userJob.lastName}` };
         });
         this.setUsersJobs(res);
-        this.setPaymentsPagination(response.data.pagination);
+        this.setPaymentPagination(response.data.pagination);
         return response.data;
       } catch (err) {
         throw err;
       }
     },
+
     async getUsersWithTransactions({ startDate, endDate, status, page, limit }) {
       try {
         const response = await Http.get(`/users/payments/list`, {
@@ -197,77 +167,8 @@ const users = {
         } else {
           this.setUsersTransactions(response.data);
         }
-        this.setPaymentsPagination(response.data.pagination);
+        this.setPaymentPagination(response.data.pagination);
 
-        return response.data;
-      } catch (err) {
-        throw err;
-      }
-    },
-    async getUserFundingSources({ userId, page, limit }) {
-      try {
-        const response = await Http.get(`/users/${userId}/fundingSources`, {
-          params: {
-            page,
-            limit,
-          },
-        });
-        this.setUserFundingSources(_.orderBy(response.data.items, ['isDefault'], ['asc']));
-        this.setFundingSourcesPagination(response.data.pagination);
-        return response.data;
-      } catch (err) {
-        throw err;
-      }
-    },
-    async unmountUserFundingSources() {
-      this.setUserFundingSources([]);
-      this.setFundingSourcesPagination(null);
-    },
-    async getUserDocuments({ userId, page, limit }) {
-      try {
-        const response = await Http.get(`/users/${userId}/documents`, {
-          params: {
-            page,
-            limit,
-          },
-        });
-        this.setUserDocuments(response.data.items);
-        this.setUserDocumentsPagination(response.data.pagination);
-      } catch (err) {
-        throw err;
-      }
-    },
-    async deleteUserDocument(id) {
-      try {
-        const response = await Http.delete(`/users/documents/${id}`);
-        return response.data;
-      } catch (err) {
-        throw err;
-      }
-    },
-    async getDocumentDownloadLink(id) {
-      try {
-        const response = await Http.get(`/users/documents/${id}`);
-        return response.data;
-      } catch (err) {
-        throw err;
-      }
-    },
-    async unmountUserDocuments() {
-      this.setUserDocuments([]);
-      this.setUserDocumentsPagination(null);
-    },
-    async verifyFundingSource(id) {
-      try {
-        const response = await Http.post(`/fundingSources/${id}/verify`);
-        return response.data;
-      } catch (err) {
-        throw err;
-      }
-    },
-    async verifyFundingSourceAmount({ data, id }) {
-      try {
-        const response = await Http.patch(`/fundingSources/${id}/verify`, data);
         return response.data;
       } catch (err) {
         throw err;
@@ -293,8 +194,8 @@ const users = {
     setUsersPagination(state, payload) {
       return { ...state, userListPagination: payload };
     },
-    setPaymentsPagination(state, payload) {
-      return { ...state, paymentsListPagination: payload };
+    setPaymentPagination(state, payload) {
+      return { ...state, paymentPagination: payload };
     },
     setCurrentUserStatistics(state, payload) {
       return { ...state, currentUserStatistics: payload };
@@ -311,27 +212,12 @@ const users = {
         },
       };
     },
-    setFundingSourcesPagination(state, payload) {
-      return { ...state, userFundingSourcesPagination: payload };
-    },
-    setHasFundingSource(state, payload) {
-      return { ...state, hasFundingSource: payload };
-    },
-    setUserFundingSources(state, payload) {
-      return { ...state, userFundingSources: payload };
-    },
-    setUserDocuments(state, payload) {
-      return { ...state, userDocuments: payload };
-    },
-    setUserDocumentsPagination(state, payload) {
-      return { ...state, userDocumentsPagination: payload };
-    },
   },
   state: {
     usersList: [],
     currentUser: null,
     userListPagination: null,
-    paymentsListPagination: null,
+    paymentPagination: null,
     currentUserStatistics: {
       rank: 0,
       nJobs: 0,
@@ -342,11 +228,6 @@ const users = {
     usersPendingTransactions: null,
     usersPaidTransactions: null,
     usersJobs: null,
-    hasFundingSource: true,
-    userFundingSources: [],
-    userFundingSourcesPagination: null,
-    userDocuments: [],
-    userDocumentsPagination: null,
   },
 };
 

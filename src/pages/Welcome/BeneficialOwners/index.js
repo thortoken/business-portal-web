@@ -5,24 +5,31 @@ import { Button } from 'antd';
 import { Formik } from 'formik';
 
 import FormField from '~components/FormField';
-import { formFields, validationSchema, initialValues, transformDateToMoment } from './formSchema';
+import { prepareFormFieldsAndValidation, transformDateToMoment } from './formSchema';
 import NotificationService from '~services/notification';
 import { handleFormHttpResponse } from '~utils/forms/errors';
 import { traverseRecursively } from '~utils/iterators';
-import './AddBeneficialOwner.scss';
+import './BeneficialOwners.scss';
 
-export class AddBeneficialOwner extends React.Component {
+export class BeneficialOwners extends React.Component {
   static propTypes = {
-    createBeneficialOwner: PropTypes.func,
+    isLoading: PropTypes.bool.isRequired,
+    createBeneficialOwner: PropTypes.func.isRequired,
+    checkStep: PropTypes.func.isRequired,
+  };
+  state = {
+    canNext: false,
+    formData: prepareFormFieldsAndValidation(),
   };
 
   render() {
+    const { formData } = this.state;
     return (
-      <div className="AddBeneficialOwner">
+      <div className="BeneficialOwners">
         <Formik
-          initialValues={initialValues}
+          initialValues={formData.initialValues}
           onSubmit={this.handleSubmit}
-          validationSchema={validationSchema}>
+          validationSchema={formData.validationSchema}>
           {this.renderForm}
         </Formik>
       </div>
@@ -51,17 +58,25 @@ export class AddBeneficialOwner extends React.Component {
 
   renderForm = ({ handleSubmit, isSubmitting, values, dirty }) => (
     <form onSubmit={handleSubmit}>
-      {this.prepareForm(formFields)}
+      {this.prepareForm(this.state.formData.formFields)}
 
-      <div className="AddBeneficialOwner__button-container">
+      <div className="BeneficialOwners__button-container">
         <Button
           disabled={!dirty || isSubmitting}
           size="large"
           type="primary"
-          loading={isSubmitting}
+          loading={this.props.isLoading}
           htmlType="submit"
-          className="AddBeneficialOwner__button-container--button">
-          Add {values.firstName}
+          className="BeneficialOwners__button-container--button">
+          Add Beneficial Owner
+        </Button>
+        <Button
+          disabled={!this.state.canNext}
+          size="large"
+          type="primary"
+          onClick={this.handleNext}
+          className="BeneficialOwners__button-container--button">
+          Next
         </Button>
       </div>
     </form>
@@ -81,19 +96,30 @@ export class AddBeneficialOwner extends React.Component {
     }
   };
 
+  handleNext = () => {
+    this.props.checkStep();
+  };
+
   handleSubmitSuccess = () => {
-    const { history } = this.props;
     NotificationService.open({
       type: 'success',
       message: 'Success',
-      description: 'Beneficial Owner successfully added.',
+      description: 'Owner successfully added.',
     });
-    history.push(`/management/beneficial-owners`);
+    this.setState({
+      formData: prepareFormFieldsAndValidation(),
+      canNext: true,
+    });
   };
 }
 
+const mapStateToProps = state => ({
+  isLoading: state.loading.effects.beneficialOwners.createBeneficialOwner,
+});
+
 const mapDispatchToProps = dispatch => ({
+  checkStep: dispatch.welcome.checkStep,
   createBeneficialOwner: dispatch.beneficialOwners.createBeneficialOwner,
 });
 
-export default connect(null, mapDispatchToProps)(AddBeneficialOwner);
+export default connect(mapStateToProps, mapDispatchToProps)(BeneficialOwners);

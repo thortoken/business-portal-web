@@ -5,14 +5,11 @@ import { Button } from 'antd';
 import { Formik } from 'formik';
 
 import FormField from '~components/FormField';
-
 import { initialValues, formFields, transformDateToMoment, validationSchema } from './formSchema';
-import './AddContractor.scss';
 import NotificationService from '~services/notification';
-
 import { handleFormHttpResponse } from '~utils/forms/errors';
-
 import { traverseRecursively } from '~utils/iterators';
+import './AddContractor.scss';
 
 export class AddContractor extends React.Component {
   static propTypes = {
@@ -72,36 +69,29 @@ export class AddContractor extends React.Component {
           loading={isSubmitting}
           htmlType="submit"
           className="Add-contractor__button-container--button">
-          Add {values.firstName}
+          Add {values.profile.firstName}
         </Button>
       </div>
     </form>
   );
 
-  addContractor = async profile => {
+  create = async data => {
     const { addContractor } = this.props;
-    let { addedContractor } = this.state;
-    if (!addedContractor) {
-      const data = {
-        ...profile,
-        postalCode: String(profile.postalCode),
-      };
-      addedContractor = await addContractor({ profile: data });
-      this.setState({ addedContractor });
-    }
+    let dataProfile = JSON.parse(JSON.stringify(data));
+    dataProfile.profile.dateOfBirth = transformDateToMoment(dataProfile.profile.dateOfBirth).format(
+      'YYYY-MM-DD'
+    );
+    dataProfile.profile.postalCode = String(dataProfile.profile.postalCode);
+
+    await addContractor(dataProfile);
   };
 
   handleSubmit = async (data, form) => {
-    const { profile } = data;
-    try {
-      let dataProfile = JSON.parse(JSON.stringify(profile));
-      if (dataProfile.dateOfBirth) {
-        dataProfile.dateOfBirth = transformDateToMoment(dataProfile.dateOfBirth).format(
-          'YYYY-MM-DD'
-        );
-      }
+    const validData = validationSchema.cast(data);
+    validData.profile['country'] = 'US';
 
-      await this.addContractor(dataProfile);
+    try {
+      await this.create(validData);
 
       this.handleSubmitSuccess();
     } catch (err) {

@@ -1,12 +1,13 @@
 import React from 'react';
-import { Steps, Icon, Spin } from 'antd';
+import { Steps, Icon, Spin, Button } from 'antd';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
-import SignUp from './SignUp';
+import Profile from './Profile';
 import Terms from './Terms';
-import IAV from './IAV';
+import BankInfo from './BankInfo';
 import Done from './Done';
+import Documents from './Documents';
 import './OnBoarding.scss';
 
 const Step = Steps.Step;
@@ -42,6 +43,11 @@ export class OnBoarding extends React.Component {
     return Object.keys(localState).length ? localState : null;
   }
 
+  handleLogout = () => {
+    const { logout } = this.props;
+    logout();
+  };
+
   render() {
     const { step, ready } = this.state;
 
@@ -52,22 +58,20 @@ export class OnBoarding extends React.Component {
         content: () => <Terms />,
       },
       {
-        title: 'Sign Up',
+        title: 'Profile',
         icon: 'user',
-        content: () => <SignUp />,
+        content: () => <Profile />,
       },
-      {
-        title: 'Verify Bank',
-        icon: 'dollar',
-        content: () => <IAV />,
-      },
-      /*
       {
         title: 'Documents',
-        icon: 'idcard',
+        icon: 'file',
         content: () => <Documents />,
       },
-      */
+      {
+        title: 'Bank Info',
+        icon: 'dollar',
+        content: () => <BankInfo />,
+      },
       {
         title: 'Done',
         icon: 'smile-o',
@@ -76,6 +80,9 @@ export class OnBoarding extends React.Component {
     ];
     return (
       <div className="OnBoarding">
+        <div className="OnBoarding__topbar">
+          <Button onClick={this.handleLogout}>Logout</Button>
+        </div>
         <div className="OnBoarding__container">
           <div className="OnBoarding__steps">
             <Steps current={step}>
@@ -105,6 +112,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   checkStep: dispatch.onBoarding.checkStep,
+  logout: dispatch.auth.logout,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OnBoarding);

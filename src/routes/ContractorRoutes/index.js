@@ -1,5 +1,6 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 
 import ContractorPage from '~pages/Contractor';
 import OnBoarding from '~pages/OnBoarding';
@@ -8,6 +9,13 @@ import RouteLayout from '../RouteLayout';
 import './ContractorRoutes.scss';
 
 export class ContractorRoutes extends React.Component {
+  async componentDidMount() {
+    const { currentUser, history } = this.props;
+    if (currentUser.status !== 'active') {
+      history.push('/on-boarding');
+    }
+  }
+
   render() {
     let redirect = this.props.redirect;
     if (redirect === '/sign-in' || redirect === '/') {
@@ -28,4 +36,11 @@ export class ContractorRoutes extends React.Component {
   }
 }
 
-export default ContractorRoutes;
+const mapStateToProps = ({ auth: { user } }, ownProps) => ({
+  currentUser: user,
+  ...ownProps,
+});
+
+const mapDispatchToProps = dispatch => ({});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ContractorRoutes));

@@ -1,0 +1,34 @@
+@import "../../../styles/var";
+
+.Documents {
+  background-color: #fff;
+  &__button-container {
+    width: 100%;
+    text-align: center;
+    margin-top: 4rem;
+    &--button {
+      padding: 1rem 3rem;
+    }
+  }
+  &__errors {
+    color: $color-inactive;
+  }
+  &__steps {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    width: 100%;
+    &--spin {
+      display: block !important;
+      margin: 0 auto !important;
+    }
+  }
+
+  &__block {
+    vertical-align: top;
+    display: block;
+    padding: 1rem;
+    .ant-select {
+      width: 50%;
+    }
+  }
+}

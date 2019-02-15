@@ -2,9 +2,9 @@ import Http from '~services/http';
 
 const Steps = {
   AGREEMENT: 0,
-  SIGNUP: 1,
-  BANK: 2,
-  DOCUMENTS: 3,
+  PROFILE: 1,
+  DOCUMENTS: 2,
+  BANK: 3,
   DONE: 4,
 };
 
@@ -23,13 +23,13 @@ const onBoarding = {
           setup.agreement = true;
           switch (models.auth.user.status) {
             case 'profile':
-              setup.step = Steps.SIGNUP;
+              setup.step = Steps.PROFILE;
+              break;
+            case 'document':
+              setup.step = Steps.DOCUMENTS;
               break;
             case 'bank':
               setup.step = Steps.BANK;
-              break;
-            case 'documents':
-              setup.step = Steps.DOCUMENTS;
               break;
             case 'active':
             default:
@@ -46,12 +46,29 @@ const onBoarding = {
       return redirect;
     },
 
-    changeStep(step) {
+    async changeStep(step) {
+      switch (step) {
+        case Steps.AGREEMENT:
+        default:
+          break;
+        case Steps.PROFILE:
+          // process the current contractor status
+          await this.checkStep();
+          break;
+        case Steps.DOCUMENTS:
+          // update the contractor status to bank
+          dispatch.auth.updateStatus('document');
+          break;
+        case Steps.BANK:
+          // update the contractor status to bank
+          dispatch.auth.updateStatus('bank');
+          break;
+        case Steps.DONE:
+          // update the contractor status to active
+          dispatch.auth.updateStatus('active');
+          break;
+      }
       this.setStep(step);
-    },
-
-    async createFundingSourceData(data) {
-      this.setFsData(data);
     },
 
     async getAgreement() {
@@ -76,35 +93,6 @@ const onBoarding = {
         const response = await Http.post('/contractors', data);
 
         await dispatch.auth.saveUser(response.data.tenantProfile);
-        return response.data;
-      } catch (err) {
-        throw err;
-      }
-    },
-
-    async checkFundingSource() {
-      try {
-        const response = await Http.get('/contractors/fundingSources/default');
-        return response.data;
-      } catch (err) {
-        return err.response;
-      }
-    },
-
-    async createFundingSource(data) {
-      try {
-        const response = await Http.post('/contractors/fundingSources/', data.bank);
-        return response.data;
-      } catch (err) {
-        throw err;
-      }
-    },
-
-    async createFundingSourceWithIAV(data) {
-      try {
-        const response = await Http.post('/contractors/fundingSources/iav', data.bank);
-        // TODO: update with real status?
-        await dispatch.auth.saveUser({ status: 'active' });
         return response.data;
       } catch (err) {
         throw err;

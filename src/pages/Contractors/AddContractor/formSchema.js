@@ -32,7 +32,9 @@ const formFields = {
       },
       phone: {
         label: 'Phone',
-        validator: Yup.string().matches(/\d{10}/, '${label} must have 10 digits'),
+        validator: Yup.string()
+          .matches(/\d{10}/, '${label} must have 10 digits')
+          .required(),
         input: {
           maxLength: 12,
           placeholder: '000 000-0000',
@@ -79,15 +81,8 @@ const formFields = {
           .max(99999, '${label} must be a valid zip code'),
         input: {
           maxLength: 5,
-          placeholder: 12345,
+          placeholder: '12345',
         },
-        error: 'please enter a valid number',
-      },
-      country: {
-        label: 'Country',
-        validator: Yup.string()
-          .ensure()
-          .required(),
       },
       dateOfBirth: {
         label: 'Date of Birth',
@@ -102,38 +97,20 @@ const formFields = {
         },
       },
       ssn: {
-        label: 'Last 4 digits of SSN',
+        label: 'SSN',
         validator: Yup.string()
           .ensure()
           .required()
-          .matches(/\d{4}/, 'Please input last 4 digits of your SSN'),
+          .matches(/\d{9}/, 'Please input your full SSN')
+          .transform(formUtils.yup.ssnTransformer()),
         input: {
-          maxLength: 4,
+          maxLength: 11,
+          placeholder: '123-45-6789',
+          formatter: formUtils.formatters.ssn,
         },
       },
     },
   },
-  /*
-  routing: {
-    label: 'Bank routing number',
-    validator: Yup.string()
-      .ensure()
-      .required()
-      .max(9, 'Bank routing number must have 9 digits')
-      .min(9, 'Bank routing number must have 9 digits'),
-    input: {
-      maxLength: 9,
-    },
-  },
-  account: {
-    label: 'Bank account number',
-    validator: Yup.string()
-      .ensure()
-      .required()
-      .min(3, 'Bank account number must have minimum 3 digits')
-      .max(17, 'Bank account number must have maximum 17 digits'),
-  },
-  */
 };
 
 const validationSchema = formUtils.formik.makeValidationSchema(formFields);

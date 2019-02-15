@@ -12,10 +12,9 @@ import TooltipButton from '~components/TooltipButton';
 import { formatUsd } from '~utils/number';
 import { movePeriod, renderShortDate } from '~utils/time';
 import makeDefaultPagination from '~utils/pagination';
-
-import './ContractorDetails.scss';
 import NotificationService from '~services/notification';
-import StatusBlock from '../../../components/StatusBlock';
+import StatusBlock from '~components/StatusBlock';
+import './ContractorDetails.scss';
 
 const { Column } = Table;
 
@@ -38,7 +37,7 @@ class ContractorDetails extends React.Component {
     getJobs: PropTypes.func.isRequired,
     getUser: PropTypes.func.isRequired,
     getTransactionsForContractor: PropTypes.func.isRequired,
-    transactionsListPagination: PropTypes.object,
+    transactionPagination: PropTypes.object,
   };
 
   state = {
@@ -47,7 +46,7 @@ class ContractorDetails extends React.Component {
     currentUser: {},
     periodRange: null,
     pagination: makeDefaultPagination(),
-    transactionsListPagination: null,
+    transactionPagination: null,
     currentUserStatistics: {
       rank: 0,
       nJobs: 0,
@@ -58,7 +57,7 @@ class ContractorDetails extends React.Component {
     contractorTransactions: {
       items: [],
     },
-    jobsList: [],
+    jobList: [],
   };
 
   constructor(props) {
@@ -112,18 +111,18 @@ class ContractorDetails extends React.Component {
       localState['contractorTransactions'] = nextProps.contractorTransactions;
     }
 
-    if (nextProps.transactionsListPagination !== prevState.transactionsListPagination) {
+    if (nextProps.transactionPagination !== prevState.transactionPagination) {
       let pag = prevState.pagination;
-      localState['transactionsListPagination'] = nextProps.transactionsListPagination;
-      localState['pagination'] = { ...pag, total: nextProps.transactionsListPagination.total };
+      localState['transactionPagination'] = nextProps.transactionPagination;
+      localState['pagination'] = { ...pag, total: nextProps.transactionPagination.total };
     }
 
     if (nextProps.hasFundingSource !== prevState.hasFundingSource) {
       localState['hasFundingSource'] = nextProps.hasFundingSource;
     }
 
-    if (nextProps.jobsList !== prevState.jobsList) {
-      localState['jobsList'] = nextProps.jobsList;
+    if (nextProps.jobList !== prevState.jobList) {
+      localState['jobList'] = nextProps.jobList;
     }
 
     return Object.keys(localState).length ? localState : null;
@@ -150,7 +149,7 @@ class ContractorDetails extends React.Component {
     return (
       <div>
         <AddPaymentModal
-          jobsList={this.state.jobsList}
+          jobList={this.state.jobList}
           userId={match.params.id}
           addExistingTransaction={this.props.addExistingTransaction}
           addCustomTransaction={this.props.addCustomTransaction}
@@ -179,7 +178,7 @@ class ContractorDetails extends React.Component {
                 handleSendPasswordReset={this.handleSendPasswordReset}
                 handleResendInvitation={this.handleResendInvitation}>
                 <Button type="primary" ghost onClick={this.handleGoToFundingSources}>
-                  Bank Info
+                  Funding Sources
                 </Button>
                 <Button
                   style={{ marginLeft: '10px' }}
@@ -341,7 +340,7 @@ class ContractorDetails extends React.Component {
   };
 
   handleResendInvitation = async () => {
-    const { currentUser, resendInvitation } = this.props;
+    const { currentUser, resendUserInvitation } = this.props;
     const { firstName, lastName } = currentUser.tenantProfile;
     Modal.confirm({
       title: `Are you sure you want to resend the invitation for ${firstName} ${lastName}?`,
@@ -350,7 +349,7 @@ class ContractorDetails extends React.Component {
       cancelText: 'No',
       onOk: async () => {
         try {
-          await resendInvitation({ userId: currentUser.id });
+          await resendUserInvitation({ userId: currentUser.id });
           NotificationService.open({
             type: 'success',
             message: 'Success',
@@ -464,11 +463,11 @@ const mapStateToProps = state => ({
   loadingUserStatistics: state.loading.effects.users.getCurrentUserStatistics,
   loadingContractor: state.loading.effects.users.getUser,
   contractorTransactions: state.transactions.contractorTransactions,
-  transactionsListPagination: state.transactions.transactionsListPagination,
+  transactionPagination: state.transactions.transactionPagination,
   loadingTransactions: state.loading.effects.transactions.getTransactionsForContractor,
-  hasFundingSource: state.users.hasFundingSource,
-  isJobsListLoading: state.loading.effects.jobs.getJobs,
-  jobsList: state.jobs.jobsList,
+  hasFundingSource: state.fundingSources.userHasFundingSource,
+  isJobListLoading: state.loading.effects.jobs.getJobs,
+  jobList: state.jobs.jobList,
 });
 
 const mapDispatchToProps = ({
@@ -478,18 +477,15 @@ const mapDispatchToProps = ({
     addExistingTransaction,
     addCustomTransaction,
   },
-  users: {
-    getUser,
-    deleteUser,
-    getCurrentUserStatistics,
-    createFundingSource,
-    deleteFundingSource,
-    checkFundingSource,
-    changeFundingSourceStatus,
-    sendPasswordReset,
+  users: { getUser, deleteUser, getCurrentUserStatistics, sendPasswordReset },
+  fundingSources: {
+    checkUserFundingSource,
+    changeUserFundingSourceStatus,
+    deleteUserFundingSource,
+    createUserFundingSource,
   },
   jobs: { getJobs },
-  invitations: { resendInvitation },
+  invitations: { resendUserInvitation },
 }) => ({
   createTransaction,
   addExistingTransaction,
@@ -498,13 +494,13 @@ const mapDispatchToProps = ({
   getUser,
   deleteUser,
   getCurrentUserStatistics,
-  createFundingSource,
-  deleteFundingSource,
-  checkFundingSource,
-  changeFundingSourceStatus,
+  createFundingSource: createUserFundingSource,
+  deleteFundingSource: deleteUserFundingSource,
+  checkFundingSource: checkUserFundingSource,
+  changeFundingSourceStatus: changeUserFundingSourceStatus,
   sendPasswordReset,
   getJobs,
-  resendInvitation,
+  resendUserInvitation,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContractorDetails);

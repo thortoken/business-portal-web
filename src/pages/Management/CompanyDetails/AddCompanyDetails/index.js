@@ -5,15 +5,13 @@ import { Button, Divider, Select } from 'antd';
 import { Formik } from 'formik';
 
 import FormField from '~components/FormField';
-
 import { prepareFormFieldsAndValidation } from './formSchema';
-import './AddCompanyDetails.scss';
 import NotificationService from '~services/notification';
 import SelectField from '~components/SelectField';
-
 import { handleFormHttpResponse } from '~utils/forms/errors';
 import { traverseRecursively } from '~utils/iterators';
 import { transformDateToMoment } from '../../../Contractors/AddContractor/formSchema';
+import './AddCompanyDetails.scss';
 
 const { Option, OptGroup } = Select;
 

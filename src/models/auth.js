@@ -53,6 +53,14 @@ const auth = {
       await this.saveToken(token);
     },
 
+    updateStatus(status, models) {
+      const user = {
+        ...models.users.user,
+        status,
+      };
+      this.saveUser(user);
+    },
+
     async login(data) {
       try {
         const response = await Http.post('/auth/login', {

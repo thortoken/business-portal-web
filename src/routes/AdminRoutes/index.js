@@ -9,28 +9,26 @@ import ContractorsPage from '~pages/Contractors';
 import RootManagementPage from '~pages/Management';
 import { Admin } from '../RouteGuard';
 import RouteLayout from '../RouteLayout';
+import withRouteModal from '~components/Modal/withRouteModal';
+import CreateProfile from '~pages/CreateProfile';
 import './AdminRoutes.scss';
 
 export class AdminRoutes extends React.Component {
   static propTypes = {
-    redirent: PropTypes.string,
-    user: PropTypes.object,
-    tenant: PropTypes.object,
+    redirect: PropTypes.string,
   };
 
   async componentDidMount() {
-    const { user, tenant, history, getTenant } = this.props;
-    if (!tenant.status) {
-      const { status } = await getTenant();
-      if (status !== 'active') {
-        history.push('/welcome');
-      }
-    } else if (user.status !== 'active' || tenant.status !== 'active') {
-      if (tenant.status) {
-        history.push('/welcome');
-      }
-    }
+    await this.handleCheckStatus();
   }
+
+  handleCheckStatus = async () => {
+    const { checkStatus, history } = this.props;
+    const redirect = await checkStatus();
+    if (redirect) {
+      history.push(redirect);
+    }
+  };
 
   render() {
     let redirect = this.props.redirect;
@@ -52,6 +50,18 @@ export class AdminRoutes extends React.Component {
           path="/management"
           component={Admin(RouteLayout(routeClass, 'admin')(RootManagementPage))}
         />
+        <Route
+          path="/create-profile"
+          component={Admin(
+            withRouteModal({
+              onClose: async () => {
+                await this.handleCheckStatus();
+              },
+              component: CreateProfile,
+              title: 'Create Profile',
+            })
+          )}
+        />
         <Route path="/welcome" component={Admin(WelcomePage)} />
         <Redirect from="*" to={redirect} />
       </Switch>
@@ -59,14 +69,12 @@ export class AdminRoutes extends React.Component {
   }
 }
 
-const mapStateToProps = ({ auth: { user }, tenants: { tenant } }, ownProps) => ({
-  user,
-  tenant,
+const mapStateToProps = (_, ownProps) => ({
   ...ownProps,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getTenant: dispatch.tenants.getTenant,
+  checkStatus: dispatch.welcome.checkStatus,
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AdminRoutes));

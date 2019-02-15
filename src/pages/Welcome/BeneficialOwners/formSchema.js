@@ -20,18 +20,6 @@ const formFields = {
       .ensure()
       .required(),
   },
-  dateOfBirth: {
-    label: 'Date of Birth',
-    validator: Yup.date()
-      .required()
-      .max(moment().subtract(18, 'years'), 'Contractor must be at least 18 years old')
-      .transform(formUtils.yup.dateTransformer(dateFormat)),
-    input: {
-      maxLength: 10,
-      placeholder: 'MM/DD/YYYY',
-      formatter: formUtils.formatters.date,
-    },
-  },
   ssn: {
     label: 'SSN',
     validator: Yup.string()
@@ -43,6 +31,18 @@ const formFields = {
       placeholder: '000-00-0000',
       formatter: formUtils.formatters.ssn,
       parser: formUtils.parsers.digitsOnly,
+    },
+  },
+  dateOfBirth: {
+    label: 'Date of Birth',
+    validator: Yup.date()
+      .required()
+      .max(moment().subtract(18, 'years'), 'Contractor must be at least 18 years old')
+      .transform(formUtils.yup.dateTransformer(dateFormat)),
+    input: {
+      maxLength: 10,
+      placeholder: 'MM/DD/YYYY',
+      formatter: formUtils.formatters.date,
     },
   },
   address: {
@@ -93,9 +93,18 @@ const formFields = {
   },
 };
 
-const initialValues = formUtils.formik.makeEmptyInitialValues(formFields);
-const validationSchema = formUtils.formik.makeValidationSchema(formFields);
+const prepareFormFieldsAndValidation = values => {
+  let validationSchema, initialValues;
+  validationSchema = formUtils.formik.makeValidationSchema(formFields);
+  initialValues = formUtils.formik.makeEmptyInitialValues(formFields);
+  initialValues = { ...initialValues, ...values };
+  return {
+    validationSchema,
+    initialValues,
+    formFields,
+  };
+};
 
 const transformDateToMoment = dateAsMoment(dateFormat);
 
-export { formFields, validationSchema, initialValues, transformDateToMoment };
+export { prepareFormFieldsAndValidation, transformDateToMoment };
