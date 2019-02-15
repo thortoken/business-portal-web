@@ -30,15 +30,6 @@
       .ant-table-column-sorter-down.on .anticon-caret-down {
         color: #fff;
       }
-      td.Documents__activity {
-        padding: 0;
-        .Documents--active,
-        .Documents--resting,
-        .Documents--inactive {
-          padding: 16px;
-          color: #fff;
-        }
-      }
 
       td.Documents__date, td.Documents__status {
         max-width: 250px !important;
@@ -52,18 +43,16 @@
     &--pending {
       color: $color-resting;
     }
-    &--registered {
+    &--approved {
       color: $color-active;
+    }
+    &--rejected {
+      color: $color-inactive;
     }
   }
 
-  &--active {
-    background: $color-active;
-  }
-  &--resting {
-    background: $color-resting;
-  }
-  &--inactive {
-    background: $color-inactive;
+  &__isRequired {
+    text-transform: uppercase;
+    font-weight: 500;
   }
 }

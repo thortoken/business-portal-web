@@ -6,16 +6,17 @@ import PropTypes from 'prop-types';
 import TooltipButton from '~components/TooltipButton';
 import Box from '~components/Box';
 import Header from '~components/Header';
-
 import './Billing.scss';
 
 export class Billing extends React.Component {
   static propTypes = {
-    fundingSources: PropTypes.arrayOf(PropTypes.object),
+    getFundingSources: PropTypes.func.isRequired,
+    unmountFundingSources: PropTypes.func.isRequired,
+    fundingSourceList: PropTypes.arrayOf(PropTypes.object),
     settings: PropTypes.object,
   };
   state = {
-    fundingSources: [],
+    fundingSourceList: [],
     settings: {},
   };
 
@@ -25,9 +26,9 @@ export class Billing extends React.Component {
         settings: nextProps.tenant.settings,
       };
     }
-    if (nextProps.fundingSources !== prevState.fundingSources) {
+    if (nextProps.fundingSourceList !== prevState.fundingSourceList) {
       return {
-        fundingSources: nextProps.fundingSources,
+        fundingSourceList: nextProps.fundingSourceList,
       };
     }
 
@@ -38,9 +39,13 @@ export class Billing extends React.Component {
     this.handleRefresh();
   }
 
+  componentWillUnmount() {
+    // this.props.unmountFundingSources();
+  }
+
   handleRefresh = () => {
-    const { getFundingSource } = this.props;
-    getFundingSource();
+    const { getFundingSources } = this.props;
+    getFundingSources();
   };
 
   handleConnectBankAccount = () => {
@@ -52,13 +57,13 @@ export class Billing extends React.Component {
   };
 
   render() {
-    const { fundingSources, settings } = this.state;
+    const { fundingSourceList, settings } = this.state;
     const pricePerContractor = settings && settings.billing && settings.billing.pricePerContractor;
 
     return (
       <div className="Billing">
         <Header title="Billing" size="medium">
-          {fundingSources.length === 0 ? (
+          {fundingSourceList.length === 0 ? (
             <TooltipButton
               tooltip="Add bank info"
               type="primary"
@@ -72,7 +77,7 @@ export class Billing extends React.Component {
               type="primary"
               onClick={this.handleEditBankAccount}>
               <Icon type="bank" theme="outlined" />
-              {fundingSources.length > 0 && fundingSources[0].name}
+              {fundingSourceList.length > 0 && fundingSourceList[0].name}
             </TooltipButton>
           )}
         </Header>
@@ -155,12 +160,13 @@ export class Billing extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  fundingSources: state.fundingSources.tenantFundingSourceList,
+  fundingSourceList: state.fundingSources.fundingSourceList,
   tenant: state.tenants.tenant,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getFundingSource: dispatch.fundingSources.getTenantFundingSourceList,
+  getFundingSources: dispatch.fundingSources.getTenantFundingSources,
+  unmountFundingSources: dispatch.fundingSources.unmountFundingSources,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Billing);

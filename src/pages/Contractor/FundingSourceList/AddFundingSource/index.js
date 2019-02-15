@@ -84,7 +84,7 @@ export class AddFundingSource extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  createFundingSource: dispatch.fundingSources.createUserFundingSource,
+  createFundingSource: dispatch.users.createFundingSource,
 });
 
 export default connect(null, mapDispatchToProps)(AddFundingSource);

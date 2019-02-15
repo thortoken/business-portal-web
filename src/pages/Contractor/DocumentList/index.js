@@ -1,32 +1,41 @@
 import React from 'react';
-import { Icon, Modal, Table, Tooltip, Switch } from 'antd';
 import PropTypes from 'prop-types';
-import connect from 'react-redux/es/connect/connect';
+import { connect } from 'react-redux';
+import { Table, Icon, Modal } from 'antd';
+import classnames from 'classnames';
 
 import NotificationService from '~services/notification';
-import Box from '~components/Box';
-import TooltipButton from '~components/TooltipButton';
-import RefreshButton from '~components/RefreshButton';
-import Header from '~components/Header';
+import Box from '../../../components/Box/index';
 import makeDefaultPagination from '~utils/pagination';
+import BackBtn from '~components/BackBtn';
+import TooltipButton from '~components/TooltipButton';
+import Header from '~components/Header';
+import RefreshButton from '~components/RefreshButton';
 import AddDocumentModal from '~components/AddDocumentModal';
 import { renderRegularDate } from '~utils/time';
 import './DocumentList.scss';
 
 const { Column } = Table;
 
-export class DocumentList extends React.Component {
+class DocumentList extends React.Component {
   static propTypes = {
-    isLoading: PropTypes.bool,
-    statusIsLoading: PropTypes.bool,
     documentList: PropTypes.arrayOf(PropTypes.object),
     documentPagination: PropTypes.object,
+    isLoading: PropTypes.bool,
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
   };
+
   state = {
+    document: {},
     documentList: [],
     pagination: makeDefaultPagination(),
     documentPagination: null,
     isAddDocumentModalVisible: false,
+    match: null,
   };
 
   componentDidMount() {
@@ -53,101 +62,33 @@ export class DocumentList extends React.Component {
     return null;
   }
 
-  handleTableChange = (pag, filters, sorters) => {
+  handleTableChange = pag => {
+    const { getDocumentList, match } = this.props;
     const { pagination } = this.state;
     let curr = pag.current;
-
     if (pagination.pageSize !== pag.pageSize) {
       curr = 1;
     }
-
-    this.setState({ pagination: { ...pag, current: curr }, filters, sorters });
-    this.updateTable({
-      current: curr,
+    this.setState({ pagination: { ...pag, current: curr } });
+    getDocumentList({
+      page: curr,
       limit: pag.pageSize,
+      userId: match.params.id,
     });
   };
 
   handleRefresh = () => {
+    const { getDocumentList, match } = this.props;
     const { pagination } = this.state;
-    this.updateTable({
-      current: pagination.current,
-      limit: pagination.pageSize,
-    });
-  };
-
-  updateTable(config) {
-    const { getDocumentList } = this.props;
     getDocumentList({
-      page: config.current,
-      limit: config.limit,
-    });
-  }
-
-  handleToggleIsRequired = async row => {
-    const { changeDocumentIsRequired } = this.props;
-    try {
-      await changeDocumentIsRequired(row);
-      NotificationService.open({
-        type: 'success',
-        message: 'Success',
-        description: `${row.name} successfully updated.`,
-      });
-      await this.handleRefresh();
-    } catch (err) {
-      NotificationService.open({
-        type: 'error',
-        message: 'Error',
-        description: err.toString(),
-      });
-    }
-  };
-
-  handleDownload = async row => {
-    const { getDocumentDownloadLink } = this.props;
-    const { name, id } = row;
-    try {
-      const link = await getDocumentDownloadLink(id);
-      window.open(link, '_blank');
-    } catch (err) {
-      NotificationService.open({
-        type: 'error',
-        message: 'Error',
-        description: `Cannot download: ${name}`,
-      });
-    }
-  };
-
-  handleDelete = async row => {
-    const { deleteDocument } = this.props;
-    const { name, id } = row;
-    Modal.confirm({
-      title: `Are you sure you want to delete ${name}?`,
-      okText: 'Yes',
-      okType: 'danger',
-      cancelText: 'No',
-      onOk: async () => {
-        try {
-          await deleteDocument(id);
-          NotificationService.open({
-            type: 'success',
-            message: 'Success',
-            description: `${name} successfully deleted`,
-          });
-        } catch (err) {
-          NotificationService.open({
-            type: 'error',
-            message: 'Error',
-            description: `Cannot delete: ${name}`,
-          });
-        }
-        return this.handleRefresh();
-      },
+      page: pagination.current,
+      limit: pagination.pageSize,
+      userId: match.params.id,
     });
   };
 
-  handleAdd = () => {
-    this.setState({ isAddDocumentModalVisible: true });
+  handleAdd = row => {
+    this.setState({ document: { ...row }, isAddDocumentModalVisible: true });
   };
 
   onChangeVisibility = (isAddDocumentModalVisible, refreshData = false) => {
@@ -157,30 +98,78 @@ export class DocumentList extends React.Component {
     this.setState({ isAddDocumentModalVisible });
   };
 
+  handleDelete = async row => {
+    const { deleteDocument, match } = this.props;
+    const { name, id } = row;
+    Modal.confirm({
+      title: `Are you sure you want to delete ${name}?`,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk: async () => {
+        try {
+          await deleteDocument({ userId: match.params.id, id });
+          NotificationService.open({
+            type: 'success',
+            message: 'Success',
+            description: `${name} successfully deleted`,
+          });
+        } catch (err) {
+          NotificationService.open({
+            type: 'error',
+            message: 'Error',
+            description: `Can not delete: ${name}`,
+          });
+        }
+        return this.handleRefresh();
+      },
+    });
+  };
+
+  handleDownload = async row => {
+    const { getUserDocumentDownloadLink, match } = this.props;
+    const { name, id } = row;
+    try {
+      const link = await getUserDocumentDownloadLink({ userId: match.params.id, id });
+      window.open(link, '_blank');
+    } catch (err) {
+      NotificationService.open({
+        type: 'error',
+        message: 'Error',
+        description: `Can not download: ${name}`,
+      });
+    }
+  };
+
+  handleGoBack = () => {
+    const { history, match } = this.props;
+    history.replace(`/contractors/${match.params.id}`);
+  };
+
   render() {
-    const { isLoading, token } = this.props;
-    const { pagination, documentList, isAddDocumentModalVisible } = this.state;
+    const { documentList, pagination, isAddDocumentModalVisible, document } = this.state;
+    const { isLoading, history, token, match } = this.props;
     const title = `${documentList.length} ${documentList.length === 1 ? 'Document' : 'Documents'}`;
     return (
       <div className="DocumentList">
         <AddDocumentModal
-          endpoint="documents"
+          endpoint={`users/${match.params.id}/documents/${document.documentId}`}
           token={token}
           isModalVisible={isAddDocumentModalVisible}
           onChangeVisibility={this.onChangeVisibility}
           handleRefresh={this.handleRefresh}
         />
+        <div className="DocumentList__back">
+          <BackBtn history={history} goBack={this.handleGoBack} />
+        </div>
         <Header title={title} size="medium">
-          <TooltipButton tooltip="Add a document" type="primary" onClick={this.handleAdd}>
-            <Icon type="plus" theme="outlined" />
-          </TooltipButton>
           <RefreshButton handleRefresh={this.handleRefresh} isLoading={isLoading} />
         </Header>
         <Box>
           <Table
             dataSource={documentList}
             className="DocumentList__table"
-            rowKey="id"
+            rowKey="createdAt"
             onChange={this.handleTableChange}
             pagination={pagination}
             loading={isLoading}>
@@ -188,28 +177,34 @@ export class DocumentList extends React.Component {
               align="center"
               dataIndex="name"
               title="Name"
-              render={(text, record) => {
-                return (
-                  <Tooltip title={record.description}>
-                    <div className="DocumentList__name">{text}</div>
-                  </Tooltip>
-                );
+              render={text => {
+                return <div className="DocumentList__name">{text}</div>;
               }}
             />
             <Column
               align="center"
               dataIndex="isRequired"
-              title="Required"
-              render={(text, record) => {
+              title="Type"
+              render={text => {
                 return (
-                  <span>
-                    <Switch
-                      checked={record.isRequired}
-                      onChange={() => this.handleToggleIsRequired(record)}
-                      checkedChildren="Required"
-                      unCheckedChildren="Required"
-                    />
-                  </span>
+                  <div className="DocumentList__isRequired">{text ? 'required' : 'optional'}</div>
+                );
+              }}
+            />
+            <Column
+              align="center"
+              dataIndex="status"
+              title="Status"
+              render={text => {
+                return (
+                  <div
+                    className={classnames('DocumentList__status', {
+                      'DocumentList__status--pending': text === 'pending',
+                      'DocumentList__status--approved': text === 'approved',
+                      'DocumentList__status--rejected': text === 'rejected',
+                    })}>
+                    {text}
+                  </div>
                 );
               }}
             />
@@ -223,15 +218,19 @@ export class DocumentList extends React.Component {
               align="center"
               title="Actions"
               render={(text, record) => {
-                return (
-                  <span className="DocumentList__table__buttons">
+                return record.id ? (
+                  <div>
                     <TooltipButton tooltip="Download" onClick={() => this.handleDownload(record)}>
                       <Icon type="download" theme="outlined" />
                     </TooltipButton>
                     <TooltipButton tooltip="Delete" onClick={() => this.handleDelete(record)}>
                       <Icon type="delete" theme="outlined" />
                     </TooltipButton>
-                  </span>
+                  </div>
+                ) : (
+                  <TooltipButton tooltip="Upload" onClick={() => this.handleAdd(record)}>
+                    <Icon type="upload" theme="outlined" />
+                  </TooltipButton>
                 );
               }}
             />
@@ -245,16 +244,15 @@ export class DocumentList extends React.Component {
 const mapStateToProps = state => ({
   documentList: state.documents.documentList,
   documentPagination: state.documents.documentPagination,
-  isLoading: state.loading.effects.documents.getDocumentList,
+  isLoading: state.loading.effects.documents.getUserDocumentList,
   token: state.auth.token,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getDocumentList: dispatch.documents.getDocumentList,
-  deleteDocument: dispatch.documents.deleteDocument,
-  getDocumentDownloadLink: dispatch.documents.getDocumentDownloadLink,
+  getDocumentList: dispatch.documents.getUserDocumentList,
+  deleteDocument: dispatch.documents.deleteUserDocument,
+  getUserDocumentDownloadLink: dispatch.documents.getUserDocumentDownloadLink,
   unmountDocumentList: dispatch.documents.unmountDocumentList,
-  changeDocumentIsRequired: dispatch.documents.changeDocumentIsRequired,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DocumentList);

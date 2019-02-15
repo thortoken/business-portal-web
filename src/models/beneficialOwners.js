@@ -5,8 +5,8 @@ const beneficialOwners = {
     async getBeneficialOwners(data) {
       try {
         const response = await Http.get(`/tenants/company/beneficialOwners`, data);
-        this.setOwnersListPagination(response.data.pagination);
-        this.setOwnersList(response.data.items);
+        this.setBeneficialOwnerPagination(response.data.pagination);
+        this.setBeneficialOwnerList(response.data.items);
         return response.data.items;
       } catch (err) {
         throw err;
@@ -33,22 +33,22 @@ const beneficialOwners = {
     },
   },
   reducers: {
-    setOwnersListPagination(state, payload) {
+    setBeneficialOwnerPagination(state, payload) {
       return {
         ...state,
-        ownersListPagination: payload,
+        beneficialOwnerPagination: payload,
       };
     },
-    setOwnersList(state, payload) {
+    setBeneficialOwnerList(state, payload) {
       return {
         ...state,
-        ownersList: payload,
+        beneficialOwnerList: payload,
       };
     },
   },
   state: {
-    ownersListPagination: null,
-    ownersList: [],
+    beneficialOwnerPagination: null,
+    beneficialOwnerList: [],
   },
 };
 

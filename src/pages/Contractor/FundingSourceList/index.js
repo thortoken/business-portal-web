@@ -76,16 +76,6 @@ class FundingSourceList extends React.Component {
     });
   };
 
-  handleRefresh = () => {
-    const { getFundingSources, match } = this.props;
-    const { pagination } = this.state;
-    getFundingSources({
-      page: pagination.current,
-      limit: pagination.pageSize,
-      userId: match.params.id,
-    });
-  };
-
   handleAdd = () => {
     const { history, match } = this.props;
     history.push(`/contractors/${match.params.id}/fundingSources/add`);
@@ -94,6 +84,16 @@ class FundingSourceList extends React.Component {
   handleGoBack = () => {
     const { history, match } = this.props;
     history.replace(`/contractors/${match.params.id}`);
+  };
+
+  handleRefresh = () => {
+    const { getFundingSources, match } = this.props;
+    const { pagination } = this.state;
+    getFundingSources({
+      page: pagination.current,
+      limit: pagination.pageSize,
+      userId: match.params.id,
+    });
   };
 
   handleVerify = async row => {
@@ -234,7 +234,7 @@ const mapStateToProps = state => ({
   fundingSourceList: state.fundingSources.fundingSourceList,
   fundingSourcePagination: state.fundingSources.fundingSourcePagination,
   isLoading: state.loading.effects.fundingSources.getUserFundingSources,
-  isLoadingVerify: state.loading.effects.fundingSources.verifyFundingSource,
+  isLoadingVerify: state.loading.effects.fundingSources.verifyUserFundingSource,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -242,7 +242,7 @@ const mapDispatchToProps = dispatch => ({
   unmountFundingSources: dispatch.fundingSources.unmountFundingSources,
   deleteFundingSource: dispatch.fundingSources.deleteUserFundingSource,
   setDefaultFundingSource: dispatch.fundingSources.setUserDefaultFundingSource,
-  verifyFundingSource: dispatch.fundingSources.verifyFundingSource,
+  verifyFundingSource: dispatch.fundingSources.verifyUserFundingSource,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FundingSourceList);

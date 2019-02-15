@@ -3,11 +3,11 @@ import _ from 'lodash';
 
 const fundingSources = {
   effects: {
-    async getTenantFundingSourceList() {
+    async getTenantFundingSources() {
       try {
-        const response = await Http.get('/tenants/company/fundingSources/');
+        const response = await Http.get('/tenants/company/fundingSources');
         let fundingSources = [];
-        this.setTenantFundingSourcePagination({
+        this.setFundingSourcePagination({
           limit: 10,
           page: 1,
           pages: 1,
@@ -16,19 +16,16 @@ const fundingSources = {
         if (response.data.name) {
           fundingSources.push(response.data);
         }
-        this.setTenantFundingSourceList(fundingSources);
+        this.setFundingSourceList(fundingSources);
         return [response.data];
       } catch (err) {
-        if (err.response.status === 404) {
-          this.setTenantFundingSourceList([]);
-        }
         throw err;
       }
     },
 
     async createTenantFundingSource(data) {
       try {
-        const response = await Http.post('/tenants/company/fundingSources/', data);
+        const response = await Http.post('/tenants/company/fundingSources', data);
         return response.data;
       } catch (err) {
         throw err;
@@ -46,7 +43,7 @@ const fundingSources = {
 
     async deleteTenantFundingSource() {
       try {
-        const response = await Http.delete('/tenants/company/fundingSources/');
+        const response = await Http.delete('/tenants/company/fundingSources');
         return response.data;
       } catch (err) {
         throw err;
@@ -71,7 +68,7 @@ const fundingSources = {
       }
     },
 
-    async getUserFundingSourceList({ userId, page, limit }) {
+    async getUserFundingSources({ userId, page, limit }) {
       try {
         const response = await Http.get(`/users/${userId}/fundingSources`, {
           params: {
@@ -79,8 +76,8 @@ const fundingSources = {
             limit,
           },
         });
-        this.setUserFundingSourceList(_.orderBy(response.data.items, ['isDefault'], ['asc']));
-        this.setUserFundingSourcePagination(response.data.pagination);
+        this.setFundingSourceList(_.orderBy(response.data.items, ['isDefault'], ['asc']));
+        this.setFundingSourcePagination(response.data.pagination);
         return response.data;
       } catch (err) {
         throw err;
@@ -114,24 +111,24 @@ const fundingSources = {
       }
     },
 
-    async unmountUserFundingSourceList() {
-      this.setUserFundingSourceList([]);
-      this.setUserFundingSourcePagination(null);
+    async unmountFundingSources() {
+      this.setFundingSourceList([]);
+      this.setFundingSourcePagination(null);
     },
 
     async checkUserFundingSource(userId) {
       try {
         const response = await Http.get(`/users/${userId}/fundingSources/default`);
-        this.setUserHasFundingSource(true);
+        this.setHasFundingSource(true);
         return response.data;
       } catch (err) {
-        this.setUserHasFundingSource(false);
+        this.setHasFundingSource(false);
         throw err;
       }
     },
 
     async changeUserFundingSourceStatus(status) {
-      this.setUserHasFundingSource(status);
+      this.setHasFundingSource(status);
     },
 
     async verifyFundingSource(id) {
@@ -155,8 +152,10 @@ const fundingSources = {
     async checkContractorFundingSource() {
       try {
         const response = await Http.get('/contractors/fundingSources/default');
+        this.setHasFundingSource(true);
         return response.data;
       } catch (err) {
+        this.setHasFundingSource(false);
         return err.response;
       }
     },
@@ -178,30 +177,46 @@ const fundingSources = {
         throw err;
       }
     },
+
+    async getIavToken({ type }) {
+      let response = null;
+      try {
+        switch (type) {
+          case 'contractors':
+            response = await Http.get(`/contractors/fundingSources/iav`);
+            break;
+          case 'tenants':
+          default:
+            response = await Http.get(`/tenants/company/fundingSources/iav`);
+            break;
+        }
+
+        this.setIavToken(response.data.token);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
   },
   reducers: {
-    setTenantFundingSourceList(state, payload) {
-      return { ...state, tenantFundingSourceList: payload };
+    setFundingSourceList(state, payload) {
+      return { ...state, fundingSourceList: payload };
     },
-    setTenantFundingSourcePagination(state, payload) {
-      return { ...state, tenantFundingSourcePagination: payload };
+    setFundingSourcePagination(state, payload) {
+      return { ...state, fundingSourcePagination: payload };
     },
-    setUserFundingSourceList(state, payload) {
-      return { ...state, userFundingSourceList: payload };
+    setHasFundingSource(state, payload) {
+      return { ...state, hasFundingSource: payload };
     },
-    setUserFundingSourcePagination(state, payload) {
-      return { ...state, userFundingSourcesPagination: payload };
-    },
-    setUserHasFundingSource(state, payload) {
-      return { ...state, userHasFundingSource: payload };
+    setIavToken(state, payload) {
+      return { ...state, iavToken: payload };
     },
   },
   state: {
-    tenantFundingSourceList: [],
-    tenantFundingSourcePagination: null,
-    userFundingSourceList: [],
-    userFundingSourcePagination: null,
-    userHasFundingSource: true,
+    fundingSourceList: [],
+    fundingSourcePagination: null,
+    hasFundingSource: false,
+    iavToken: '',
   },
 };
 

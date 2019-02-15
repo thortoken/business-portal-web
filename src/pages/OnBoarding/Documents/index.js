@@ -5,52 +5,43 @@ import PropTypes from 'prop-types';
 
 import NotificationService from '~services/notification';
 import TooltipButton from '~components/TooltipButton';
+import RefreshButton from '~components/RefreshButton';
 import DocumentTable from '~components/DocumentTable';
-import AddDocumentModal from './components/AddDocumentModal';
+import AddDocumentModal from '~components/AddDocumentModal';
 import Header from '~components/Header';
 import makeDefaultPagination from '~utils/pagination';
 import './Documents.scss';
 
 export class Documents extends React.Component {
   static propTypes = {
+    changeStep: PropTypes.func.isRequired,
+    getDocuments: PropTypes.func.isRequired,
+    deleteDocument: PropTypes.func.isRequired,
+    unmountDocumentList: PropTypes.func.isRequired,
+    getDocumentDownloadLink: PropTypes.func.isRequired,
     documentList: PropTypes.arrayOf(PropTypes.object),
     documentPagination: PropTypes.object,
-    isLoading: PropTypes.bool,
+    isLoading: PropTypes.bool.isRequired,
     token: PropTypes.string.isRequired,
-    deleteDocument: PropTypes.func.isRequired,
-    getDocumentList: PropTypes.func.isRequired,
-    changeStep: PropTypes.func.isRequired,
   };
 
   state = {
     documentList: [],
     pagination: makeDefaultPagination(),
     documentPagination: null,
-    isAddDocumentModelVisible: false,
+    isModelVisible: false,
     showNext: false,
+    documentId: null,
   };
-
-  componentDidMount() {
-    const { pagination } = this.state;
-    const { getDocumentList } = this.props;
-    getDocumentList({
-      page: pagination.current,
-      limit: pagination.pageSize,
-    });
-  }
-
-  componentWillUnmount() {
-    this.props.unmountDocumentList();
-  }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.documentList !== prevState.documentList) {
-      // check if a w9 is in the document list
-      let showNext = false;
+      // check for required documents
+      let showNext = true;
       for (let index = 0; index < nextProps.documentList.length; index++) {
         const document = nextProps.documentList[index];
-        if (document.type === 'w9') {
-          showNext = true;
+        if (document.isRequired && document.createdAt === null) {
+          showNext = false;
           break;
         }
       }
@@ -69,29 +60,46 @@ export class Documents extends React.Component {
     return null;
   }
 
+  componentDidMount() {
+    this.handleRefresh();
+  }
+
+  componentWillUnmount() {
+    this.props.unmountDocumentList();
+  }
+
   handleTableChange = pag => {
-    const { getDocumentList } = this.props;
+    const { getDocuments } = this.props;
     const { pagination } = this.state;
     let curr = pag.current;
     if (pagination.pageSize !== pag.pageSize) {
       curr = 1;
     }
     this.setState({ pagination: { ...pag, current: curr } });
-    getDocumentList({
+    getDocuments({
       page: curr,
       limit: pag.pageSize,
     });
   };
 
-  handleAddDocumentClick = () => {
-    this.setState({ isAddDocumentModalVisible: true });
+  handleRefresh = () => {
+    const { getDocuments } = this.props;
+    const { pagination } = this.state;
+    getDocuments({
+      page: pagination.current,
+      limit: pagination.pageSize,
+    });
   };
 
-  onChangeVisibility = (isAddDocumentModalVisible, refreshData = false) => {
+  handleAdd = row => {
+    this.setState({ documentId: row.documentId, isModelVisible: true });
+  };
+
+  onChangeVisibility = (isModelVisible, refreshData = false) => {
     if (refreshData) {
       this.handleRefresh();
     }
-    this.setState({ isAddDocumentModalVisible });
+    this.setState({ isModelVisible });
   };
 
   handleDelete = async row => {
@@ -122,35 +130,36 @@ export class Documents extends React.Component {
     });
   };
 
-  handleRefresh = () => {
-    const { getDocumentList } = this.props;
-    const { pagination } = this.state;
-    getDocumentList({
-      page: pagination.current,
-      limit: pagination.pageSize,
-    });
+  handleDownload = async row => {
+    const { getDocumentDownloadLink } = this.props;
+    const { name, documentId } = row;
+    try {
+      const link = await getDocumentDownloadLink(documentId);
+      window.open(link, '_blank');
+    } catch (err) {
+      NotificationService.open({
+        type: 'error',
+        message: 'Error',
+        description: `Can not download: ${name}`,
+      });
+    }
   };
 
   render() {
     const { token, isLoading } = this.props;
-    const { documentList, pagination, showNext, isAddDocumentModalVisible } = this.state;
+    const { documentList, pagination, showNext, isModelVisible, documentId } = this.state;
     return (
       <div className="Documents">
         <AddDocumentModal
+          endpoint={`contractors/documents/${documentId}`}
           token={token}
-          isModalVisible={isAddDocumentModalVisible}
+          isModalVisible={isModelVisible}
           onChangeVisibility={this.onChangeVisibility}
           handleRefresh={this.handleRefresh}
         />
 
         <Header size="medium">
-          <TooltipButton
-            tooltip="Add document"
-            type="primary"
-            onClick={this.handleAddDocumentClick}>
-            Add Document
-            <Icon type="plus" theme="outlined" />
-          </TooltipButton>
+          <RefreshButton handleRefresh={this.handleRefresh} />
         </Header>
         <DocumentTable
           handleTableChange={this.handleTableChange}
@@ -183,11 +192,20 @@ export class Documents extends React.Component {
     );
   }
 
-  renderActions = (text, record) => {
-    return (
+  renderActions = (_text, record) => {
+    return record.id ? (
       <div>
         <TooltipButton tooltip="Delete" onClick={() => this.handleDelete(record)}>
           <Icon type="delete" theme="outlined" />
+        </TooltipButton>
+      </div>
+    ) : (
+      <div>
+        <TooltipButton tooltip="Download a copy" onClick={() => this.handleDownload(record)}>
+          <Icon type="copy" theme="outlined" />
+        </TooltipButton>
+        <TooltipButton tooltip="Upload your document" onClick={() => this.handleAdd(record)}>
+          <Icon type="upload" theme="outlined" />
         </TooltipButton>
       </div>
     );
@@ -207,9 +225,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   changeStep: dispatch.onBoarding.changeStep,
-  getDocumentList: dispatch.documents.getContractorDocumentList,
+  getDocuments: dispatch.documents.getContractorDocumentList,
   deleteDocument: dispatch.documents.deleteContractorDocument,
   unmountDocumentList: dispatch.documents.unmountDocumentList,
+  getDocumentDownloadLink: dispatch.documents.getDocumentDownloadLink,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Documents);

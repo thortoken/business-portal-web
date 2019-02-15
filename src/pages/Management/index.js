@@ -2,22 +2,22 @@ import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
 import { withRouteModal } from '~components/Modal';
-import CompanyDetails from './CompanyDetails';
-import BeneficialOwners from './BeneficialOwners';
-import CompanyTeam from './CompanyTeam';
-import AddCompanyTeam from './CompanyTeam/AddCompanyTeam';
-import LinkedAccounts from './LinkedAccounts';
-import Integrations from './Integrations';
-import Settings from './Settings';
 import ManagementMenu from './components/ManagementMenu';
+import CompanyDetails from './CompanyDetails';
 import AddCompanyDetails from './CompanyDetails/AddCompanyDetails';
 import EditCompanyDetails from './CompanyDetails/EditCompanyDetails';
-import AddBeneficialOwner from './BeneficialOwners/AddBeneficialOwner';
-import IAVLinkedAccount from './LinkedAccounts/IAVLinkedAccount';
-import VerifyLinkedAccounts from './LinkedAccounts/VerifyLinkedAccounts';
 import RetryCompanyDetails from './CompanyDetails/RetryCompanyDetails';
 import CompanyDocuments from './CompanyDetails/CompanyDocuments';
 import AddCompanyDocument from './CompanyDetails/AddCompanyDocument';
+import BeneficialOwnerList from './BeneficialOwnerList';
+import AddBeneficialOwner from './BeneficialOwnerList/AddBeneficialOwner';
+import CompanyTeam from './CompanyTeam';
+import AddCompanyTeam from './CompanyTeam/AddCompanyTeam';
+import LinkedAccounts from './LinkedAccounts';
+import IAVLinkedAccount from './LinkedAccounts/IAVLinkedAccount';
+import VerifyLinkedAccounts from './LinkedAccounts/VerifyLinkedAccounts';
+import Integrations from './Integrations';
+import Settings from './Settings';
 import ChangeAdminPassword from './ChangeAdminPassword';
 import Billing from './Billing';
 import JobList from './JobList';
@@ -41,7 +41,7 @@ export class RootManagementPage extends React.Component {
               path={`/management/company-details/documents`}
               component={CompanyDocuments}
             />
-            <Route exact path={`/management/beneficial-owners`} component={BeneficialOwners} />
+            <Route exact path={`/management/beneficial-owners`} component={BeneficialOwnerList} />
             <Route exact path={`/management/company-team`} component={CompanyTeam} />
             <Route exact path={`/management/billing`} component={Billing} />
             <Route exact path={`/management/linked-accounts`} component={LinkedAccounts} />

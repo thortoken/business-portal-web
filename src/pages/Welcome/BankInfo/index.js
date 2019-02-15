@@ -12,6 +12,9 @@ export class BankInfo extends React.Component {
     getIavToken: PropTypes.func.isRequired,
     createIAVFundingSource: PropTypes.func.isRequired,
     checkStep: PropTypes.func.isRequired,
+    iavToken: PropTypes.string,
+    isLoading: PropTypes.bool,
+    iavIsLoading: PropTypes.bool,
   };
 
   state = {
@@ -83,15 +86,15 @@ export class BankInfo extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  iavToken: state.iav.iavToken,
+  iavToken: state.fundingSources.iavToken,
   isLoading: state.loading.effects.tenants.createFundingSourceWithIAV,
-  iavIsLoading: state.loading.effects.iav.getIavToken,
+  iavIsLoading: state.loading.effects.fundingSources.getIavToken,
 });
 
 const mapDispatchToProps = dispatch => ({
   createIAVFundingSource: dispatch.tenants.createIAVFundingSource,
   checkStep: dispatch.welcome.checkStep,
-  getIavToken: dispatch.iav.getIavToken,
+  getIavToken: dispatch.fundingSources.getIavToken,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BankInfo);

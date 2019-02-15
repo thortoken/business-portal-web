@@ -5,7 +5,6 @@ import { routerMiddleware, routerReducer } from 'react-router-redux';
 
 import auth from './auth';
 import jobs from './jobs';
-import iav from './iav';
 import transactions from './transactions';
 import users from './users';
 import tenants from './tenants';
@@ -35,7 +34,6 @@ const store = init({
     onBoarding,
     tenantCompany,
     beneficialOwners,
-    iav,
     welcome,
     documents,
     fundingSources,

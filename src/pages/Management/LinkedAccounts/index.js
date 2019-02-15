@@ -16,39 +16,58 @@ const { Column } = Table;
 
 export class LinkedAccounts extends React.Component {
   static propTypes = {
+    getFundingSources: PropTypes.func.isRequired,
+    deleteFundingSource: PropTypes.func.isRequired,
+    verifyFundingSource: PropTypes.func.isRequired,
+    unmountFundingSources: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
-    fundingSources: PropTypes.arrayOf(PropTypes.object),
-    fundingSourcesPagination: PropTypes.object,
+    fundingSourceList: PropTypes.arrayOf(PropTypes.object),
+    fundingSourcePagination: PropTypes.object,
   };
   state = {
-    fundingSources: [],
+    fundingSourceList: [],
     pagination: makeDefaultPagination(),
-    fundingSourcesPagination: null,
+    fundingSourcePagination: null,
   };
 
-  componentDidMount() {
-    this.handleRefresh();
-  }
-
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.fundingSources !== prevState.fundingSources) {
+    if (nextProps.fundingSourceList !== prevState.fundingSourceList) {
       return {
-        fundingSources: nextProps.fundingSources,
+        fundingSourceList: nextProps.fundingSourceList,
       };
     }
-    if (nextProps.fundingSourcesPagination !== prevState.fundingSourcesPagination) {
+    if (nextProps.fundingSourcePagination !== prevState.fundingSourcePagination) {
       let pag = prevState.pagination;
       return {
-        fundingSourcesPagination: nextProps.fundingSourcesPagination,
-        pagination: { ...pag, total: nextProps.fundingSourcesPagination.total },
+        fundingSourcePagination: nextProps.fundingSourcePagination,
+        pagination: { ...pag, total: nextProps.fundingSourcePagination.total },
       };
     }
     return null;
   }
 
+  componentDidMount() {
+    this.handleRefresh();
+  }
+
+  componentWillUnmount() {
+    this.props.unmountFundingSources();
+  }
+
+  handleTableChange = pag => {
+    const { getFundingSources } = this.props;
+    const { pagination } = this.state;
+    let curr = pag.current;
+    if (pagination.pageSize !== pag.pageSize) {
+      curr = 1;
+    }
+    this.setState({ pagination: { ...pag, current: curr } });
+    getFundingSources();
+  };
+
   handleRefresh = () => {
-    const { getFundingSource } = this.props;
-    getFundingSource();
+    const { getFundingSources } = this.props;
+    getFundingSources();
   };
 
   handleAdd = () => {
@@ -62,17 +81,6 @@ export class LinkedAccounts extends React.Component {
   handleBack = () => {
     const { history } = this.props;
     history.push(`/management/billing`);
-  };
-
-  handleTableChange = pag => {
-    const { getFundingSource } = this.props;
-    const { pagination } = this.state;
-    let curr = pag.current;
-    if (pagination.pageSize !== pag.pageSize) {
-      curr = 1;
-    }
-    this.setState({ pagination: { ...pag, current: curr } });
-    getFundingSource();
   };
 
   handleDelete = async row => {
@@ -129,14 +137,14 @@ export class LinkedAccounts extends React.Component {
 
   render() {
     const { isLoading, isLoadingVerify, history } = this.props;
-    const { pagination, fundingSources } = this.state;
+    const { pagination, fundingSourceList } = this.state;
     return (
       <div className="LinkedAccounts">
         <div className="LinkedAccounts__back">
           <BackBtn history={history} goBack={this.handleBack} />
         </div>
         <Header title="Linked Accounts List" size="medium">
-          {fundingSources.length === 0 && (
+          {fundingSourceList.length === 0 && (
             <TooltipButton tooltip="Add bank info" type="primary" onClick={this.handleAdd}>
               <Icon type="plus" theme="outlined" />
             </TooltipButton>
@@ -145,7 +153,7 @@ export class LinkedAccounts extends React.Component {
         </Header>
         <Box>
           <Table
-            dataSource={fundingSources}
+            dataSource={fundingSourceList}
             className="LinkedAccounts__table"
             rowKey="name"
             onChange={this.handleTableChange}
@@ -193,16 +201,17 @@ export class LinkedAccounts extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  fundingSources: state.fundingSources.tenantFundingSourceList,
-  fundingSourcesPagination: state.fundingSources.tenantFundingSourcePagination,
-  isLoading: state.loading.effects.fundingSources.getTenantFundingSourceList,
+  fundingSourceList: state.fundingSources.fundingSourceList,
+  fundingSourcePagination: state.fundingSources.fundingSourcePagination,
+  isLoading: state.loading.effects.fundingSources.getTenantFundingSources,
   isLoadingVerify: state.loading.effects.fundingSources.verifyTenantFundingSource,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getFundingSource: dispatch.fundingSources.getTenantFundingSourceList,
+  getFundingSources: dispatch.fundingSources.getTenantFundingSources,
   deleteFundingSource: dispatch.fundingSources.deleteTenantFundingSource,
   verifyFundingSource: dispatch.fundingSources.verifyTenantFundingSource,
+  unmountFundingSources: dispatch.fundingSources.unmountFundingSources,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LinkedAccounts);

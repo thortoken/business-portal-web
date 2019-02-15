@@ -47,15 +47,6 @@ const documents = {
       }
     },
 
-    async getContractorDocumentDownloadLink(id) {
-      try {
-        const response = await Http.get(`/contractors/documents/${id}`);
-        return response.data;
-      } catch (err) {
-        throw err;
-      }
-    },
-
     async deleteDocument(id) {
       try {
         const response = await Http.delete(`/documents/${id}`);
@@ -92,9 +83,36 @@ const documents = {
       }
     },
 
+    async getContractorDocumentDownloadLink(id) {
+      try {
+        const response = await Http.get(`/contractors/documents/${id}`);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+
     async getUserDocumentDownloadLink({ userId, id }) {
       try {
         const response = await Http.get(`/users/${userId}/documents/${id}`);
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+
+    async changeDocumentIsRequired({ id, isRequired }) {
+      try {
+        const response = await Http.patch(`/documents/${id}`, { isRequired: !isRequired });
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+
+    async updateDocument(data) {
+      try {
+        const response = await Http.patch(`/documents/${data.id}`, data);
         return response.data;
       } catch (err) {
         throw err;

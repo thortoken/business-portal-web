@@ -53,7 +53,7 @@ const welcome = {
         if (step === Steps.BANK) {
           let fundingSources = models.fundingSources.tenantfundingSourceList;
           if (!fundingSources || fundingSources.length === 0) {
-            fundingSources = await dispatch.fundingSources.getTenantFundingSourceList();
+            fundingSources = await dispatch.fundingSources.getTenantFundingSources();
           }
           if (fundingSources && fundingSources.length > 0) {
             dispatch.tenants.updateStatus('active');

@@ -1,6 +1,6 @@
 @import "../../../styles/var";
 
-.DocumentList {
+.FundingSourceList {
   &__back {
     margin-bottom: 2rem;
   }
@@ -30,17 +30,17 @@
       .ant-table-column-sorter-down.on .anticon-caret-down {
         color: #fff;
       }
-      td.Documents__activity {
+      td.FundingSourceList__activity {
         padding: 0;
-        .Documents--active,
-        .Documents--resting,
-        .Documents--inactive {
+        .FundingSourceList--active,
+        .FundingSourceList--resting,
+        .FundingSourceList--inactive {
           padding: 16px;
           color: #fff;
         }
       }
 
-      td.Documents__date, td.Documents__status {
+      td.FundingSourceList__date, td.FundingSourceList__status {
         max-width: 250px !important;
         width: 250px;
       }
@@ -52,16 +52,18 @@
     &--pending {
       color: $color-resting;
     }
-    &--approved {
+    &--registered {
       color: $color-active;
-    }
-    &--rejected {
-      color: $color-inactive;
     }
   }
 
-  &__isRequired {
-    text-transform: uppercase;
-    font-weight: 500;
+  &--active {
+    background: $color-active;
+  }
+  &--resting {
+    background: $color-resting;
+  }
+  &--inactive {
+    background: $color-inactive;
   }
 }

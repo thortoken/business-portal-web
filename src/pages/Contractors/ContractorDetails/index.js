@@ -37,7 +37,7 @@ class ContractorDetails extends React.Component {
     getJobs: PropTypes.func.isRequired,
     getUser: PropTypes.func.isRequired,
     getTransactionsForContractor: PropTypes.func.isRequired,
-    transactionsListPagination: PropTypes.object,
+    transactionPagination: PropTypes.object,
   };
 
   state = {
@@ -46,7 +46,7 @@ class ContractorDetails extends React.Component {
     currentUser: {},
     periodRange: null,
     pagination: makeDefaultPagination(),
-    transactionsListPagination: null,
+    transactionPagination: null,
     currentUserStatistics: {
       rank: 0,
       nJobs: 0,
@@ -111,10 +111,10 @@ class ContractorDetails extends React.Component {
       localState['contractorTransactions'] = nextProps.contractorTransactions;
     }
 
-    if (nextProps.transactionsListPagination !== prevState.transactionsListPagination) {
+    if (nextProps.transactionPagination !== prevState.transactionPagination) {
       let pag = prevState.pagination;
-      localState['transactionsListPagination'] = nextProps.transactionsListPagination;
-      localState['pagination'] = { ...pag, total: nextProps.transactionsListPagination.total };
+      localState['transactionPagination'] = nextProps.transactionPagination;
+      localState['pagination'] = { ...pag, total: nextProps.transactionPagination.total };
     }
 
     if (nextProps.hasFundingSource !== prevState.hasFundingSource) {
@@ -463,7 +463,7 @@ const mapStateToProps = state => ({
   loadingUserStatistics: state.loading.effects.users.getCurrentUserStatistics,
   loadingContractor: state.loading.effects.users.getUser,
   contractorTransactions: state.transactions.contractorTransactions,
-  transactionsListPagination: state.transactions.transactionsListPagination,
+  transactionPagination: state.transactions.transactionPagination,
   loadingTransactions: state.loading.effects.transactions.getTransactionsForContractor,
   hasFundingSource: state.fundingSources.userHasFundingSource,
   isJobListLoading: state.loading.effects.jobs.getJobs,

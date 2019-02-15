@@ -1,6 +1,6 @@
-@import "../../../../../styles/var";
+@import "../../../../styles/var";
 
-.AddDocument {
+.AddFundingSource {
   background-color: #fff;
   &__button-container {
     width: 100%;
@@ -14,12 +14,7 @@
     color: $color-inactive;
   }
 
-  &__block {
-    vertical-align: top;
-    display: block;
-    padding: 1rem;
-    .ant-select {
-      width: 50%;
-    }
+  .InputGroup {
+    width: 50%;
   }
 }

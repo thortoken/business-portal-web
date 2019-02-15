@@ -1,0 +1,37 @@
+@import "../../../styles/var";
+
+.ContractorDetails {
+  &-options-btn {
+    & > button {
+      padding-left: 3rem;
+      padding-right: 3rem;
+    }
+  }
+
+  &-table {
+    thead > tr > th,
+    .ant-table-thead > tr > th.ant-table-column-sort {
+      background: $color-darker-blue;
+      background: linear-gradient($color-darker-blue, $color-blue);
+      color: $color-white;
+    }
+    background-color: white;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+
+    table > thead > tr:first-child > th {
+      &:first-child {
+        border-top-left-radius: $border-radius;
+      }
+
+      &:last-child {
+        border-top-right-radius: $border-radius;
+      }
+    }
+  }
+  &-column{
+    &-status{
+      text-transform: capitalize;
+    }
+  }
+}

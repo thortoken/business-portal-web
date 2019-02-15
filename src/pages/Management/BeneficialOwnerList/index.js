@@ -8,20 +8,20 @@ import TooltipButton from '~components/TooltipButton';
 import RefreshButton from '~components/RefreshButton';
 import Header from '~components/Header';
 import makeDefaultPagination from '~utils/pagination';
-import './BeneficialOwners.scss';
+import './BeneficialOwnerList.scss';
 
 const { Column } = Table;
 
-export class BeneficialOwners extends React.Component {
+export class BeneficialOwnerList extends React.Component {
   static propTypes = {
     isLoading: PropTypes.bool,
-    ownersList: PropTypes.arrayOf(PropTypes.object),
-    ownersListPagination: PropTypes.object,
+    beneficialOwnerList: PropTypes.arrayOf(PropTypes.object),
+    beneficialOwnerPagination: PropTypes.object,
   };
   state = {
-    ownersList: [],
+    beneficialOwnerList: [],
     pagination: makeDefaultPagination(),
-    ownersListPagination: null,
+    beneficialOwnerPagination: null,
   };
 
   componentDidMount() {
@@ -29,16 +29,16 @@ export class BeneficialOwners extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.ownersList !== prevState.ownersList) {
+    if (nextProps.beneficialOwnerList !== prevState.beneficialOwnerList) {
       return {
-        ownersList: nextProps.ownersList,
+        beneficialOwnerList: nextProps.beneficialOwnerList,
       };
     }
-    if (nextProps.ownersListPagination !== prevState.ownersListPagination) {
+    if (nextProps.beneficialOwnerPagination !== prevState.beneficialOwnerPagination) {
       let pag = prevState.pagination;
       return {
-        ownersListPagination: nextProps.ownersListPagination,
-        pagination: { ...pag, total: nextProps.ownersListPagination.total },
+        beneficialOwnerPagination: nextProps.beneficialOwnerPagination,
+        pagination: { ...pag, total: nextProps.beneficialOwnerPagination.total },
       };
     }
     return null;
@@ -96,9 +96,9 @@ export class BeneficialOwners extends React.Component {
 
   render() {
     const { isLoading } = this.props;
-    const { pagination, ownersList } = this.state;
+    const { pagination, beneficialOwnerList } = this.state;
     return (
-      <div className="BeneficialOwners">
+      <div className="BeneficialOwnerList">
         <Header title="Beneficial Owners List" size="medium">
           <TooltipButton type="primary" onClick={this.handleAdd} tooltip="Add beneficial owner">
             <Icon type="plus" theme="outlined" />
@@ -107,8 +107,8 @@ export class BeneficialOwners extends React.Component {
         </Header>
         <Box>
           <Table
-            dataSource={ownersList}
-            className="BeneficialOwners__table"
+            dataSource={beneficialOwnerList}
+            className="BeneficialOwnerList__table"
             rowKey="id"
             onChange={this.handleTableChange}
             pagination={pagination}
@@ -123,7 +123,7 @@ export class BeneficialOwners extends React.Component {
               title="Actions"
               render={(text, record) => {
                 return (
-                  <span className="BeneficialOwners__table__buttons">
+                  <span className="BeneficialOwnerList__table__buttons">
                     {/*<Button onClick={() => this.handleEdit(record)}>*/}
                     {/*<Icon type="form" theme="outlined" />*/}
                     {/*</Button>*/}
@@ -144,8 +144,8 @@ export class BeneficialOwners extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  ownersList: state.beneficialOwners.ownersList,
-  ownersListPagination: state.beneficialOwners.ownersListPagination,
+  beneficialOwnerList: state.beneficialOwners.beneficialOwnerList,
+  beneficialOwnerPagination: state.beneficialOwners.beneficialOwnerPagination,
   isLoading: state.loading.effects.beneficialOwners.getBeneficialOwners,
 });
 
@@ -154,4 +154,4 @@ const mapDispatchToProps = dispatch => ({
   deleteBeneficialOwner: dispatch.beneficialOwners.deleteBeneficialOwner,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(BeneficialOwners);
+export default connect(mapStateToProps, mapDispatchToProps)(BeneficialOwnerList);

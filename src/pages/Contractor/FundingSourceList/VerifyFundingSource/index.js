@@ -6,32 +6,27 @@ import { Formik } from 'formik';
 
 import FormField from '~components/FormField';
 
-import { initialValues, formFields, validationSchema } from './formSchema';
-import './AddFundingSource.scss';
+import { formFields, validationSchema, initialValues } from './formSchema';
+import './VerifyFundingSource.scss';
 import NotificationService from '~services/notification';
-import { handleFormHttpResponse } from '~utils/forms/errors';
 
-export class AddFundingSource extends React.Component {
+import { handleFormHttpResponse } from '~utils/forms/errors';
+import { traverseRecursively } from '~utils/iterators';
+
+export class VerifyFundingSource extends React.Component {
   static propTypes = {
-    createFundingSource: PropTypes.func.isRequired,
+    verifyFundingSourceAmount: PropTypes.func,
     match: PropTypes.shape({
       params: PropTypes.shape({
         id: PropTypes.string.isRequired,
+        fsId: PropTypes.string.isRequired,
       }).isRequired,
     }).isRequired,
   };
 
-  state = {
-    invitedContractor: null,
-    error: null,
-  };
-
   render() {
-    const { error } = this.state;
-
     return (
-      <div className="AddFundingSource">
-        <div className="AddFundingSource__errors">{error}</div>
+      <div className="VerifyFundingSource">
         <Formik
           initialValues={initialValues}
           onSubmit={this.handleSubmit}
@@ -42,30 +37,48 @@ export class AddFundingSource extends React.Component {
     );
   }
 
+  prepareForm(fields) {
+    let formArray = [];
+    traverseRecursively(fields, {
+      childKey: 'fields',
+      nodeCallback: () => console.log(),
+      leafCallback: data => {
+        const { value, path } = data;
+        formArray.push(
+          <FormField
+            key={path.join('.')}
+            name={path.join('.')}
+            label={value.label}
+            {...value.input}
+          />
+        );
+      },
+    });
+    return [...formArray];
+  }
+
   renderForm = ({ handleSubmit, isSubmitting, values, dirty }) => (
     <form onSubmit={handleSubmit}>
-      {Object.entries(formFields).map(([name, options]) => (
-        <FormField key={name} name={name} label={options.label} {...options.input} />
-      ))}
+      {this.prepareForm(formFields)}
 
-      <div className="AddFundingSource__button-container">
+      <div className="VerifyFundingSource__button-container">
         <Button
           disabled={!dirty || isSubmitting}
           size="large"
           type="primary"
           loading={isSubmitting}
           htmlType="submit"
-          className="AddFundingSource__button-container--button">
-          Add
+          className="VerifyFundingSource__button-container--button">
+          Verify
         </Button>
       </div>
     </form>
   );
 
   handleSubmit = async (data, form) => {
-    const { createFundingSource, match } = this.props;
+    const { verifyFundingSourceAmount, match } = this.props;
     try {
-      await createFundingSource({ userId: match.params.id, data });
+      await verifyFundingSourceAmount({ data, id: match.params.fsId });
       this.handleSubmitSuccess();
     } catch (err) {
       handleFormHttpResponse(form, err.response.data.error, err.response);
@@ -73,18 +86,18 @@ export class AddFundingSource extends React.Component {
   };
 
   handleSubmitSuccess = () => {
-    const { history, match } = this.props;
+    const { history } = this.props;
     NotificationService.open({
       type: 'success',
       message: 'Success',
-      description: 'Funding Source successfully added.',
+      description: 'Funding source successfully verified.',
     });
-    history.push(`/contractors/${match.params.id}/fundingSources`);
+    history.goBack();
   };
 }
 
 const mapDispatchToProps = dispatch => ({
-  createFundingSource: dispatch.fundingSources.createUserFundingSource,
+  verifyFundingSourceAmount: dispatch.users.verifyFundingSourceAmount,
 });
 
-export default connect(null, mapDispatchToProps)(AddFundingSource);
+export default connect(null, mapDispatchToProps)(VerifyFundingSource);

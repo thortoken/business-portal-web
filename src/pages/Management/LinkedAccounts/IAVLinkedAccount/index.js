@@ -5,13 +5,16 @@ import Dwolla from '~components/Dwolla';
 import { Spin } from 'antd';
 
 import NotificationService from '~services/notification';
-
-import './IAVLinkedAccount.scss';
 import Config from '~services/config';
+import './IAVLinkedAccount.scss';
 
 export class IAVLinkedAccount extends React.Component {
   static propTypes = {
-    createIAVFundingSource: PropTypes.func.isRequired,
+    createFundingSourceWithIAV: PropTypes.func.isRequired,
+    getIavToken: PropTypes.func.isRequired,
+    iavToken: PropTypes.string,
+    iavIsLoading: PropTypes.bool,
+    isLoading: PropTypes.bool,
   };
   state = {
     dwollaConfig: {
@@ -88,20 +91,20 @@ export class IAVLinkedAccount extends React.Component {
   };
 
   createFundingSource = async ({ uri }) => {
-    const { createIAVFundingSource } = this.props;
-    await createIAVFundingSource({ uri });
+    const { createFundingSourceWithIAV } = this.props;
+    await createFundingSourceWithIAV({ uri });
   };
 }
 
 const mapStateToProps = state => ({
-  iavToken: state.iav.iavToken,
-  isLoading: state.loading.effects.tenants.createIAVFundingSource,
-  iavIsLoading: state.loading.effects.iav.getIavToken,
+  iavToken: state.fundingSources.iavToken,
+  isLoading: state.loading.effects.fundingSources.createTenantFundingSourceWithIAV,
+  iavIsLoading: state.loading.effects.fundingSources.getIavToken,
 });
 
 const mapDispatchToProps = dispatch => ({
-  createIAVFundingSource: dispatch.tenants.createIAVFundingSource,
-  getIavToken: dispatch.iav.getIavToken,
+  createFundingSourceWithIAV: dispatch.fundingSources.createTenantFundingSourceWithIAV,
+  getIavToken: dispatch.fundingSources.getIavToken,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(IAVLinkedAccount);

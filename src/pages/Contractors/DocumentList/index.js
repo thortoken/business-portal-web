@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Table, Icon, Modal } from 'antd';
-import classnames from 'classnames';
+import { Icon, Modal } from 'antd';
 
 import NotificationService from '~services/notification';
 import Box from '../../../components/Box/index';
@@ -11,14 +10,16 @@ import BackBtn from '~components/BackBtn';
 import TooltipButton from '~components/TooltipButton';
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
-import AddDocumentModal from './components/AddDocumentModal';
-import { renderRegularDate } from '~utils/time';
+import AddDocumentModal from '~components/AddDocumentModal';
+import DocumentTable from '~components/DocumentTable';
 import './DocumentList.scss';
-
-const { Column } = Table;
 
 class DocumentList extends React.Component {
   static propTypes = {
+    getDocumentList: PropTypes.func.isRequired,
+    deleteDocument: PropTypes.func.isRequired,
+    getDocumentDownloadLink: PropTypes.func.isRequired,
+    unmountDocumentList: PropTypes.func.isRequired,
     documentList: PropTypes.arrayOf(PropTypes.object),
     documentPagination: PropTypes.object,
     isLoading: PropTypes.bool,
@@ -127,10 +128,10 @@ class DocumentList extends React.Component {
   };
 
   handleDownload = async row => {
-    const { getDocumentDownloadLink } = this.props;
+    const { getDocumentDownloadLink, match } = this.props;
     const { name, id } = row;
     try {
-      const link = await getDocumentDownloadLink(id);
+      const link = await getDocumentDownloadLink({ userId: match.params.id, id });
       window.open(link, '_blank');
     } catch (err) {
       NotificationService.open({
@@ -149,12 +150,12 @@ class DocumentList extends React.Component {
   render() {
     const { documentList, pagination, isAddDocumentModalVisible, document } = this.state;
     const { isLoading, history, token, match } = this.props;
+    const title = `${documentList.length} ${documentList.length === 1 ? 'Document' : 'Documents'}`;
     return (
       <div className="DocumentList">
         <AddDocumentModal
-          userId={match.params.id}
+          endpoint={`users/${match.params.id}/documents/${document.documentId}`}
           token={token}
-          document={document}
           isModalVisible={isAddDocumentModalVisible}
           onChangeVisibility={this.onChangeVisibility}
           handleRefresh={this.handleRefresh}
@@ -162,73 +163,38 @@ class DocumentList extends React.Component {
         <div className="DocumentList__back">
           <BackBtn history={history} goBack={this.handleGoBack} />
         </div>
-        <Header title="Document List" size="medium">
+        <Header title={title} size="medium">
           <RefreshButton handleRefresh={this.handleRefresh} isLoading={isLoading} />
         </Header>
         <Box>
-          <Table
-            dataSource={documentList}
-            className="DocumentList__table"
-            rowKey="createdAt"
-            onChange={this.handleTableChange}
+          <DocumentTable
+            handleTableChange={this.handleTableChange}
+            documents={documentList}
             pagination={pagination}
-            loading={isLoading}>
-            <Column
-              align="left"
-              dataIndex="name"
-              title="Name"
-              render={text => {
-                return <div className="DocumentList__name">{text}</div>;
-              }}
-            />
-            <Column
-              align="center"
-              dataIndex="status"
-              title="Status"
-              render={text => {
-                return (
-                  <div
-                    className={classnames('DocumentList__status', {
-                      'DocumentList__status--pending': text === 'pending',
-                      'DocumentList__status--approved': text === 'approved',
-                      'DocumentList__status--rejected': text === 'rejected',
-                    })}>
-                    {text}
-                  </div>
-                );
-              }}
-            />
-            <Column
-              align="center"
-              dataIndex="createdAt"
-              title="Added On"
-              render={renderRegularDate}
-            />
-            <Column
-              align="center"
-              title="Actions"
-              render={(text, record) => {
-                return record.id ? (
-                  <div>
-                    <TooltipButton tooltip="Download" onClick={() => this.handleDownload(record)}>
-                      <Icon type="download" theme="outlined" />
-                    </TooltipButton>
-                    <TooltipButton tooltip="Delete" onClick={() => this.handleDelete(record)}>
-                      <Icon type="delete" theme="outlined" />
-                    </TooltipButton>
-                  </div>
-                ) : (
-                  <TooltipButton tooltip="Upload" onClick={() => this.handleAdd(record)}>
-                    <Icon type="upload" theme="outlined" />
-                  </TooltipButton>
-                );
-              }}
-            />
-          </Table>
+            isLoading={isLoading}
+            renderActions={this.renderActions}
+          />
         </Box>
       </div>
     );
   }
+
+  renderActions = (_text, record) => {
+    return record.id ? (
+      <div>
+        <TooltipButton tooltip="Download" onClick={() => this.handleDownload(record)}>
+          <Icon type="download" theme="outlined" />
+        </TooltipButton>
+        <TooltipButton tooltip="Delete" onClick={() => this.handleDelete(record)}>
+          <Icon type="delete" theme="outlined" />
+        </TooltipButton>
+      </div>
+    ) : (
+      <TooltipButton tooltip="Upload" onClick={() => this.handleAdd(record)}>
+        <Icon type="upload" theme="outlined" />
+      </TooltipButton>
+    );
+  };
 }
 
 const mapStateToProps = state => ({
@@ -241,7 +207,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getDocumentList: dispatch.documents.getUserDocumentList,
   deleteDocument: dispatch.documents.deleteUserDocument,
-  getDocumentDownloadLink: dispatch.documents.getDocumentDownloadLink,
+  getDocumentDownloadLink: dispatch.documents.getUserDocumentDownloadLink,
   unmountDocumentList: dispatch.documents.unmountDocumentList,
 });
 

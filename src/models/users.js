@@ -108,7 +108,7 @@ const users = {
       previousEndDate,
     }) {
       try {
-        const response = await Http.get(`/users/${userId}/statistics`, {
+        const response = await Http.get(`/users/${userId}/contractors/statistics`, {
           params: {
             currentStartDate: new Date(currentStartDate.utc()),
             currentEndDate: new Date(currentEndDate.utc()),

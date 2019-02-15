@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table } from 'antd';
+import classnames from 'classnames';
 
 import Box from '~components/Box/index';
 import { renderRegularDate } from '~utils/time';
@@ -10,12 +11,11 @@ const { Column } = Table;
 
 class DocumentTable extends React.Component {
   static propTypes = {
-    handleRefresh: PropTypes.func.isRequired,
     handleTableChange: PropTypes.func.isRequired,
     documents: PropTypes.arrayOf(PropTypes.object),
     pagination: PropTypes.object,
     isLoading: PropTypes.bool,
-    renderActions: PropTypes.element,
+    renderActions: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
   };
 
   render() {
@@ -26,12 +26,12 @@ class DocumentTable extends React.Component {
           <Table
             dataSource={documents}
             className="DocumentTable__table"
-            rowKey="created"
+            rowKey="documentId"
             onChange={this.handleTableChange}
             pagination={pagination}
             loading={isLoading}>
             <Column
-              align="left"
+              align="center"
               dataIndex="name"
               title="Name"
               render={text => {
@@ -39,18 +39,37 @@ class DocumentTable extends React.Component {
               }}
             />
             <Column
-              align="left"
-              dataIndex="type"
+              align="center"
+              dataIndex="isRequired"
               title="Type"
               render={text => {
-                return <div className="DocumentTable__type">{text}</div>;
+                return (
+                  <div className="DocumentTable__isRequired">{text ? 'required' : 'optional'}</div>
+                );
               }}
             />
             <Column
               align="center"
-              dataIndex="created"
+              dataIndex="createdAt"
               title="Added On"
-              render={renderRegularDate}
+              render={text => text && renderRegularDate(text)}
+            />
+            <Column
+              align="center"
+              dataIndex="status"
+              title="Status"
+              render={text => {
+                return (
+                  <div
+                    className={classnames('DocumentList__status', {
+                      'DocumentTable__status--pending': text === 'pending',
+                      'DocumentTable__status--approved': text === 'approved',
+                      'DocumentTable__status--rejected': text === 'rejected',
+                    })}>
+                    {text}
+                  </div>
+                );
+              }}
             />
             <Column align="center" title="Actions" render={renderActions} />
           </Table>

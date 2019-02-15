@@ -1,16 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Dwolla from '~components/Dwolla';
 import { Spin } from 'antd';
 
-import './BankInfo.scss';
+import Dwolla from '~components/Dwolla';
 import Config from '~services/config';
+import './BankInfo.scss';
 
 export class BankInfo extends React.Component {
   static propTypes = {
     createFundingSourceWithIAV: PropTypes.func.isRequired,
+    changeStep: PropTypes.func.isRequired,
+    getIavToken: PropTypes.func.isRequired,
+    contractor: PropTypes.object,
+    iavToken: PropTypes.string,
+    isLoading: PropTypes.bool,
+    iavIsLoading: PropTypes.bool,
   };
+
   state = {
     dwollaConfig: {
       backButton: false,
@@ -84,15 +91,15 @@ export class BankInfo extends React.Component {
 
 const mapStateToProps = state => ({
   contractor: state.onBoarding.contractor,
-  iavToken: state.iav.iavToken,
+  iavToken: state.fundingSources.iavToken,
   isLoading: state.loading.effects.fundingSources.createFundingSourceWithIAV,
-  iavIsLoading: state.loading.effects.iav.getIavToken,
+  iavIsLoading: state.loading.effects.fundingSources.getIavToken,
 });
 
 const mapDispatchToProps = dispatch => ({
   createFundingSourceWithIAV: dispatch.fundingSources.createContractorFundingSourceWithIAV,
   changeStep: dispatch.onBoarding.changeStep,
-  getIavToken: dispatch.iav.getIavToken,
+  getIavToken: dispatch.fundingSources.getIavToken,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BankInfo);

@@ -13,22 +13,18 @@ registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
 export class AddDocumentModal extends React.Component {
   static propTypes = {
-    userId: PropTypes.string.isRequired,
-    document: PropTypes.object.isRequired,
+    endpoint: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
     isModalVisible: PropTypes.bool.isRequired,
     onChangeVisibility: PropTypes.func.isRequired,
   };
 
-  state = {};
-
   handleModalCancel = () => {
-    const { onChangeVisibility } = this.props;
-    onChangeVisibility(false);
+    this.props.onChangeVisibility(false);
   };
 
   render() {
-    const { token, isModalVisible, onChangeVisibility, document, userId } = this.props;
+    const { token, isModalVisible, onChangeVisibility, endpoint } = this.props;
     return (
       <Modal
         title="Add a document"
@@ -47,7 +43,7 @@ export class AddDocumentModal extends React.Component {
               labelTapToRetry="Click to retry."
               labelTapToUndo="Click to undo."
               server={{
-                url: `${Config.apiUrl}users/${userId}/documents/${document.documentId}`,
+                url: `${Config.apiUrl}${endpoint}`,
                 process: {
                   headers: {
                     Authorization: `Bearer ${token}`,
