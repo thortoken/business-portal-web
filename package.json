@@ -66,7 +66,8 @@
     "eject": "react-scripts eject",
     "deploy-dev": "mv ./build ./build-dev && firebase deploy --only hosting:dev",
     "deploy-stage": "mv ./build ./build-stage && firebase deploy --only hosting:stage",
-    "deploy-prod": "mv ./build ./build-prod && firebase deploy --only hosting:prod"
+    "deploy-prod": "mv ./build ./build-prod && firebase deploy --only hosting:prod",
+    "deploy-sandbox": "mv ./build ./build-sandbox && firebase deploy --only hosting:sandbox"
   },
   "devDependencies": {
     "babel-plugin-import": "^1.7.0",

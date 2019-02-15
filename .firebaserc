@@ -13,6 +13,9 @@
         ],
         "stage": [
           "odin-stage"
+        ],
+        "sandbox": [
+          "thor-test-47e28"
         ]
       }
     }
