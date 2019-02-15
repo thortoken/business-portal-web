@@ -3,18 +3,17 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 
 import AddContractor from './AddContractor';
 import ContractorDetails from './ContractorDetails';
-import ContractorsList from './ContractorsList';
+import ContractorList from './ContractorList';
 import EditContractor from './EditContractor';
-import InvitationsList from './InvitationsList';
+import InvitationList from './InvitationList';
 import InviteContractor from './InviteContractor';
-import ContractorFundingSources from './ContractorFundingSources';
-import ContractorDocuments from './ContractorDocuments';
-import AddContractorDocument from './AddContractorDocument';
-
+import DocumentList from './DocumentList';
+import AddDwollaDocument from './AddDwollaDocument';
 import { withRouteModal } from '~components/Modal';
-import AddFundingSource from './ContractorFundingSources/AddFundingSource';
+import FundingSourceList from './FundingSourceList';
+import AddFundingSource from './FundingSourceList/AddFundingSource';
+import VerifyFundingSource from './FundingSourceList/VerifyFundingSource';
 import RetryContractor from './RetryContractor';
-import VerifyFundingSource from './ContractorFundingSources/VerifyFundingSource';
 import UploadInviteContractor from './UploadInviteContractor';
 import AddCustomTransaction from '../Transactions/AddCustomTransaction';
 import AddExistingTransaction from '../Transactions/AddExistingTransaction';
@@ -25,13 +24,9 @@ export class RootContractorsPage extends React.Component {
 
     return (
       <Switch>
-        <Route exact path={`${match.path}/invitationsList`} component={InvitationsList} />
-        <Route
-          exact
-          path={`${match.path}/:id/fundingSources`}
-          component={ContractorFundingSources}
-        />
-        <Route exact path={`${match.path}/:id/documents`} component={ContractorDocuments} />
+        <Route exact path={`${match.path}/invitations`} component={InvitationList} />
+        <Route exact path={`${match.path}/:id/fundingSources`} component={FundingSourceList} />
+        <Route exact path={`${match.path}/:id/documents`} component={DocumentList} />
         <Route
           exact
           path={`/contractors/:id/fundingSources/verify/:fsId`}
@@ -71,8 +66,8 @@ export class RootContractorsPage extends React.Component {
         />
         <Route
           exact
-          path={`/contractors/:id/documents/add`}
-          component={withRouteModal({ component: AddContractorDocument, title: 'Add Document' })}
+          path={`/contractors/:id/documents/dwolla`}
+          component={withRouteModal({ component: AddDwollaDocument, title: 'Add Document' })}
         />
         <Route
           exact
@@ -95,7 +90,7 @@ export class RootContractorsPage extends React.Component {
           component={withRouteModal({ component: EditContractor, title: 'Edit Contractor' })}
         />
         <Route exact path={`${match.path}/:id`} component={ContractorDetails} />
-        <Route path={`${match.path}`} component={ContractorsList} />
+        <Route path={`${match.path}`} component={ContractorList} />
       </Switch>
     );
   }

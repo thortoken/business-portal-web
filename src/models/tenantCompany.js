@@ -6,10 +6,12 @@ const tenantCompany = {
       try {
         const response = await Http.get(`/tenants/company`);
         this.setCompany(response.data);
+        return response.data;
       } catch (err) {
         throw err;
       }
     },
+
     async getOwner() {
       try {
         const response = await Http.get(`/tenants/company/owner`);
@@ -18,6 +20,7 @@ const tenantCompany = {
         throw err;
       }
     },
+
     async getCategories() {
       try {
         const response = await Http.get(`/tenants/company/businessCategories`);
@@ -51,7 +54,12 @@ const tenantCompany = {
       //   throw err;
       // }
     },
-    async addTenantCompany(data) {
+    async addTenantCompany({ company, owner, controller }) {
+      const data = {
+        ...company,
+        ...owner,
+        controller,
+      };
       try {
         const response = await Http.post('/tenants/company', data);
         this.setCompany(response.data);

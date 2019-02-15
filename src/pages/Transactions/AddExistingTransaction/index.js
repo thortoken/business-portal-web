@@ -30,7 +30,7 @@ export class AddExistingTransaction extends React.Component {
   static propTypes = {
     getJobs: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
-    jobsList: PropTypes.arrayOf(PropTypes.object),
+    jobList: PropTypes.arrayOf(PropTypes.object),
     addExistingTransaction: PropTypes.func,
     match: PropTypes.shape({
       params: PropTypes.shape({
@@ -43,7 +43,7 @@ export class AddExistingTransaction extends React.Component {
     super(props);
     this.state = {
       formData: prepareFormFieldsAndValidation(),
-      jobsList: [],
+      jobList: [],
       valid: false,
     };
   }
@@ -59,21 +59,21 @@ export class AddExistingTransaction extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.jobsList !== prevState.jobsList) {
+    if (nextProps.jobList !== prevState.jobList) {
       return {
-        jobsList: nextProps.jobsList,
+        jobList: nextProps.jobList,
       };
     }
     return null;
   }
 
   render() {
-    const { jobsList, formData } = this.state;
+    const { jobList, formData } = this.state;
     const { isLoading } = this.props;
     return (
       <div className="AddExistingTransaction">
         <Spin spinning={isLoading}>
-          {jobsList.length > 0 &&
+          {jobList.length > 0 &&
             !isLoading && (
               <Formik
                 initialValues={formData.initialValues}
@@ -91,12 +91,15 @@ export class AddExistingTransaction extends React.Component {
 
   handleChange = event => {
     if (event.value) {
-      const filtered = this.state.jobsList.filter(entry => {
+      const filtered = this.state.jobList.filter(entry => {
         return entry.id === event.value;
       });
       if (filtered.length > 0) {
         this.setState({
-          formData: prepareFormFieldsAndValidation({ jobId: event.value, value: filtered[0].value }),
+          formData: prepareFormFieldsAndValidation({
+            jobId: event.value,
+            value: filtered[0].value,
+          }),
           valid: true,
         });
       }
@@ -112,7 +115,7 @@ export class AddExistingTransaction extends React.Component {
               key={name}
               name={name}
               component={SelectField}
-              dataSource={generateJobs(this.state.jobsList)}
+              dataSource={generateJobs(this.state.jobList)}
               onSelect={this.handleChange}
               className={classNames('', {
                 'InputGroup--wide': options.input.wide,
@@ -175,7 +178,7 @@ export class AddExistingTransaction extends React.Component {
 
 const mapStateToProps = state => ({
   isLoading: state.loading.effects.jobs.getJobs,
-  jobsList: state.jobs.jobsList,
+  jobList: state.jobs.jobList,
 });
 
 const mapDispatchToProps = dispatch => ({

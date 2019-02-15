@@ -25,7 +25,7 @@ export const date = value =>
 
 export const ssn = value =>
   value &&
-  value.toString().replace(/^(\d{3})(\d{0,2})(\d{0,4})$/, (all, g1, g2, g3) => {
+  value.toString().replace(/^(\d{3})(\d{2})(\d{1,4})$/, (all, g1, g2, g3) => {
     if (g3) {
       return `${g1}-${g2}-${g3}`;
     }
@@ -61,3 +61,19 @@ export const price = value => {
     }
   }
 };
+
+export const zipcode = value => {
+  if (value) {
+    value = value.replace(/\D/g, ''); // don't allow non digit or ',', '.'
+    return Number(value);
+  }
+};
+
+export const ein = value =>
+  value &&
+  value.toString().replace(/^(\d{2})(\d{1,7})$/, (all, g1, g2) => {
+    if (g2) {
+      return `${g1}-${g2}`;
+    }
+    return `${g1}`;
+  });

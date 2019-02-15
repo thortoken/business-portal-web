@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Button } from 'antd';
+import { Icon } from 'antd';
 
+import TooltipButton from '~components/TooltipButton';
 import './RefreshButton.scss';
 
 export class RefreshButton extends React.Component {
@@ -21,9 +22,14 @@ export class RefreshButton extends React.Component {
     const { handleRefresh, isLoading, type, size } = this.props;
 
     return (
-      <Button type={type} size={size} onClick={handleRefresh} className="Refresh-button">
+      <TooltipButton
+        tooltip="Refresh page"
+        type={type}
+        size={size}
+        onClick={handleRefresh}
+        className="Refresh-button">
         <Icon type="sync" theme="outlined" spin={isLoading} />
-      </Button>
+      </TooltipButton>
     );
   }
 }

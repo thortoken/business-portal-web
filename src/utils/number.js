@@ -18,4 +18,5 @@ export const formatUsd = value => formatCurrency(value, { currency: 'USD', preci
 export const formatThor = value =>
   `${formatCurrency(Math.floor(value), { currency: null, precision: 0 })} THOR`;
 
-export const formatPhone = value => formatNumber({ country: 'US', phone: value }, 'National');
+export const formatPhone = value =>
+  value && formatNumber({ country: 'US', phone: value }, 'National');

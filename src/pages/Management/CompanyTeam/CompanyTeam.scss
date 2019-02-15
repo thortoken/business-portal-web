@@ -1,8 +1,132 @@
+@import "../../../styles/var";
+
 .CompanyTeam {
   padding: 1rem;
   width: 100%;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  text-align: center;
+  &__value {
+    font-weight: 600;
+  }
+  &__name {
+    display: block;
+    height: 100%;
+    width: 100%;
+    vertical-align: middle;
+    text-align: center;
+  }
+  &__table {
+    &__buttons {
+      button {
+        margin-right: 0.5rem;
+      }
+    }
+    table {
+      thead > tr > th,
+      .ant-table-thead > tr > th.ant-table-column-sort {
+        background: $color-darker-blue;
+        background: linear-gradient($color-darker-blue, $color-blue);
+        color: $color-white;
+      }
+
+      .ant-table-thead > tr > th .ant-table-column-sorter-up.on,
+      .ant-table-thead > tr > th .ant-table-column-sorter-down.on {
+        color: #fff !important;
+      }
+
+      .ant-table-thead
+        > tr
+        > th.ant-table-column-has-actions.ant-table-column-has-sorters:hover {
+        background: linear-gradient($color-darker-blue, $color-blue);
+      }
+
+      .ant-table-thead
+        > tr
+        > th.ant-table-column-has-actions.ant-table-column-has-filters:hover
+        .anticon-filter:hover,
+      .ant-table-thead
+        > tr
+        > th.ant-table-column-has-actions.ant-table-column-has-filters:hover
+        .ant-table-filter-icon:hover {
+        background: linear-gradient($color-darker-blue, $color-blue);
+      }
+
+      .anticon.anticon-filter.ant-dropdown-trigger::before {
+        background: rgba(0, 0, 0, 0.04) !important;
+      }
+
+      .ant-table-thead > tr > th .anticon-filter,
+      .ant-table-thead > tr > th .ant-table-filter-icon {
+        //border-top-right-radius: 0.9rem;
+        &:hover {
+          color: #fff !important;
+        }
+      }
+
+      .ant-table-thead > tr > th .ant-table-filter-selected.anticon-filter {
+        color: #fff;
+      }
+
+      .ant-table-thead
+        > tr
+        > th.ant-table-column-has-actions.ant-table-column-has-filters
+        .anticon-filter.ant-table-filter-open,
+      .ant-table-thead
+        > tr
+        > th.ant-table-column-has-actions.ant-table-column-has-filters
+        .ant-table-filter-icon.ant-table-filter-open {
+        background: rgba(0, 0, 0, 0.04) !important;
+        color: #fff !important;
+      }
+
+      .ant-table-column-sorter-up.on .anticon-caret-up,
+      .ant-table-column-sorter-down.on .anticon-caret-up,
+      .ant-table-column-sorter-up.on .anticon-caret-down,
+      .ant-table-column-sorter-down.on .anticon-caret-down {
+        color: #fff;
+      }
+      td.CompanyTeam__activity {
+        padding: 0;
+        .CompanyTeam--active,
+        .CompanyTeam--resting,
+        .CompanyTeam--inactive {
+          padding: 16px;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  &__button-container {
+    width: 100%;
+    text-align: center;
+    margin-top: 4rem;
+    &--button {
+      padding: 1rem 3rem;
+    }
+  }
+
+  &__status {
+    text-transform: uppercase;
+    font-weight: 500;
+    &--pending {
+      color: $color-resting;
+    }
+    &--used {
+      color: $color-active;
+    }
+  }
+
+  .InputGroup {
+    width: 50%;
+  }
+
+  .ant-calendar-picker {
+    width: 100%;
+  }
+  &__spinner {
+    display: block !important;
+    margin: 0 auto !important;
+  }
+  .Box {
+    border-radius: 0.9rem 0.9rem 0 0;
+  }
 }

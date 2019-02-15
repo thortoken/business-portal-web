@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { Button } from 'antd';
-import FormField from '~components/FormField';
-import Config from '~services/config';
 
+import FormField from '~components/FormField';
 import './Login.scss';
 
 import { formFields, validationSchema, initialValues } from './formSchema';
@@ -32,7 +31,6 @@ export class Login extends React.Component {
 
       <Button
         className="Login__submit-btn"
-        type="submit"
         htmlType="submit"
         disabled={!dirty || isSubmitting}
         loading={isSubmitting}>
@@ -62,9 +60,8 @@ export class Login extends React.Component {
 
   checkLogin = async data => {
     const { login } = this.props;
-    const tenant = Config.tenantId;
     const { email, password } = data;
-    await login({ email, password, tenant });
+    await login({ email, password });
   };
 
   handleSubmit = async (data, form) => {

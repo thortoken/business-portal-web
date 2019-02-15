@@ -1,0 +1,138 @@
+@import "../../../styles/var";
+
+$color-usd-header: #92cf48;
+$color-usd-column: #dbedc0;
+$color-thor-header: #84bcf0;
+$color-thor-column: #a6cff4;
+
+.Billing {
+  padding: 1rem;
+  width: 100%;
+  min-width: 970px;
+  &__actions {
+    width: 200px !important;
+  }
+  &__table {
+    &__buttons {
+      Button {
+        margin-right: 0.5rem;
+      }
+    }
+    table {
+      thead > tr > th,
+      .ant-table-thead > tr > th.ant-table-column-sort {
+        background: $color-darker-blue;
+        background: linear-gradient($color-darker-blue, $color-blue);
+        color: $color-white;
+      }
+      .ant-table-column-sorter-up.on .anticon-caret-up,
+      .ant-table-column-sorter-down.on .anticon-caret-up,
+      .ant-table-column-sorter-up.on .anticon-caret-down,
+      .ant-table-column-sorter-down.on .anticon-caret-down {
+        color: #fff;
+      }
+      td.LinkedAccounts__activity {
+        padding: 0;
+        .LinkedAccounts--active,
+        .LinkedAccounts--resting,
+        .LinkedAccounts--inactive {
+          padding: 16px;
+          color: #fff;
+        }
+      }
+    }
+  }
+  &__button-container {
+    width: 100%;
+    text-align: center;
+    margin-top: 4rem;
+  &--button {
+      padding: 1rem 3rem;
+    }
+  }
+  &__errors {
+    color: $color-inactive;
+  }
+
+  $column-width: 190px;
+
+  .column {
+    width: calc(100% - 190px);
+    min-width: 550px;
+  }
+  .thor_column {
+    width: $column-width;
+    .header {
+      background: $color-thor-header;
+    }
+    background: $color-thor-column;
+    color: white;
+  }
+  .usd_column {
+    width: $column-width;
+    border-top-right-radius: $border-radius;
+    .header {
+      background: $color-usd-header;
+      border-top-right-radius: $border-radius;
+    }
+    background: $color-usd-column;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    padding: 5px 10px;
+    height: 40px;
+  }
+  .content {
+    height: 120px;
+    padding: 5px 10px;
+  }
+  .center {
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    width: $column-width;
+  }
+
+  .cell {
+    padding: 5px 10px;
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  &__check {
+    font-size: 48px;
+    color: $color-usd-header;
+  }
+
+  .ant-divider-horizontal {
+    margin: 0px;
+  }
+
+  .InputGroup {
+    width: 50%;
+  }
+
+  .ant-calendar-picker {
+    width: 100%;
+  }
+  &__spinner {
+    display: block !important;
+    margin: 0 auto !important;
+  }
+  .Box {
+    border-radius: 0.9rem 0.9rem 0 0;
+  }
+
+  .image {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+}

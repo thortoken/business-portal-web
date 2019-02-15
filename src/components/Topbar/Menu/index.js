@@ -50,8 +50,8 @@ export class Menu extends React.Component {
             className="Menu__item  Menu__dashboard">
             <Link to={'/management/company-details'} className="Menu__link--logo">
               <Logo>
-                <img className="Topbar-logo-svg" src="images/logo.svg" alt="" />
-                <img className="Topbar-logo-image" src="images/logoText.png" alt="" />
+                <img className="Topbar-logo-svg" src="/images/logo.svg" alt="" />
+                <img className="Topbar-logo-image" src="/images/logoText.png" alt="" />
               </Logo>
             </Link>
           </MenuAnt.Item>

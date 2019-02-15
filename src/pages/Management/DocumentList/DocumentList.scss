@@ -1,0 +1,114 @@
+@import "../../../styles/var";
+
+.DocumentList {
+  padding: 1rem;
+  width: 100%;
+  &__value {
+    font-weight: 600;
+  }
+  &__name {
+    display: block;
+    height: 100%;
+    width: 100%;
+    vertical-align: middle;
+    text-align: center;
+  }
+  &__table {
+    &__buttons {
+      Button {
+        margin-right: 0.5rem;
+      }
+    }
+    table {
+      thead > tr > th,
+      .ant-table-thead > tr > th.ant-table-column-sort {
+        background: $color-darker-blue;
+        background: linear-gradient($color-darker-blue, $color-blue);
+        color: $color-white;
+      }
+
+      .ant-table-thead > tr > th .ant-table-column-sorter-up.on, .ant-table-thead > tr > th .ant-table-column-sorter-down.on {
+        color: #fff !important;
+      }
+
+      .ant-table-thead > tr > th.ant-table-column-has-actions.ant-table-column-has-sorters:hover {
+        background: linear-gradient($color-darker-blue, $color-blue);
+      }
+
+      .ant-table-thead > tr > th.ant-table-column-has-actions.ant-table-column-has-filters:hover .anticon-filter:hover, .ant-table-thead > tr > th.ant-table-column-has-actions.ant-table-column-has-filters:hover .ant-table-filter-icon:hover {
+        background: linear-gradient($color-darker-blue, $color-blue);
+      }
+
+      .anticon.anticon-filter.ant-dropdown-trigger::before{
+        background: rgba(0, 0, 0, 0.04) !important;
+      }
+
+      .ant-table-thead > tr > th .anticon-filter, .ant-table-thead > tr > th .ant-table-filter-icon {
+        //border-top-right-radius: 0.9rem;
+        &:hover {
+          color: #fff !important;
+        }
+      }
+
+      .ant-table-thead > tr > th .ant-table-filter-selected.anticon-filter {
+        color: #fff;
+      }
+
+      .ant-table-thead > tr > th.ant-table-column-has-actions.ant-table-column-has-filters .anticon-filter.ant-table-filter-open, .ant-table-thead > tr > th.ant-table-column-has-actions.ant-table-column-has-filters .ant-table-filter-icon.ant-table-filter-open {
+        background: rgba(0, 0, 0, 0.04) !important;
+        color: #fff !important;
+      }
+
+      .ant-table-column-sorter-up.on .anticon-caret-up,
+      .ant-table-column-sorter-down.on .anticon-caret-up,
+      .ant-table-column-sorter-up.on .anticon-caret-down,
+      .ant-table-column-sorter-down.on .anticon-caret-down {
+        color: #fff;
+      }
+      td.Jobs__activity {
+        padding: 0;
+        .Jobs--active,
+        .Jobs--resting,
+        .Jobs--inactive {
+          padding: 16px;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  &__button-container {
+    width: 100%;
+    text-align: center;
+    margin-top: 4rem;
+  &--button {
+      padding: 1rem 3rem;
+    }
+  }
+  &__errors {
+    color: $color-inactive;
+  }
+
+  &__inactive {
+    color: $color-inactive;
+  }
+
+  &__active {
+    color: $color-green-neon;
+  }
+
+  .InputGroup {
+    width: 50%;
+  }
+
+  .ant-calendar-picker {
+    width: 100%;
+  }
+  &__spinner {
+    display: block !important;
+    margin: 0 auto !important;
+  }
+  .Box {
+    border-radius: 0.9rem 0.9rem 0 0;
+  }
+}

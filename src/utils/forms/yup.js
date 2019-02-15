@@ -9,3 +9,10 @@ export const dateTransformer = format =>
     const date = moment.utc(originalValue, format);
     return date.isValid() ? date.toDate() : new Date();
   };
+
+export const ssnTransformer = () =>
+  function(currentValue, originalvalue) {
+    return this.isType(currentValue) && currentValue !== null
+      ? currentValue.replace(/\D/g, '')
+      : currentValue;
+  };

@@ -8,7 +8,7 @@ import FormField from '~components/FormField';
 
 import { initialValues, formFields, validationSchema } from './formSchema';
 import './InviteContractor.scss';
-import NotificationService from '../../../services/notification';
+import NotificationService from '~services/notification';
 
 export class InviteContractor extends React.Component {
   static propTypes = {
@@ -61,7 +61,7 @@ export class InviteContractor extends React.Component {
     let { invitedContractor } = this.state;
 
     if (!invitedContractor) {
-      invitedContractor = await sendInvitation(data);
+      invitedContractor = await sendInvitation({ ...data, type: 'contractor' });
       this.setState({ invitedContractor });
     }
   };
@@ -91,7 +91,7 @@ export class InviteContractor extends React.Component {
       message: 'Success',
       description: 'Contractor successfully invited.',
     });
-    history.push(`/contractors/invitationsList`);
+    history.push(`/contractors`);
   };
 }
 

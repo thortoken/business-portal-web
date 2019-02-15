@@ -14,19 +14,23 @@ export class RouteFactory extends Component {
     Config.savedRoot = window.location.pathname;
   }
 
+  renderIntercom = user => {
+    const intercomUser = {
+      user_id: user.id,
+      email: user.email,
+      name: `${user.firstName} ${user.lastName}`,
+    };
+    return intercomUser.name && <Intercom appID="v8y4n317" {...intercomUser} />;
+  };
+
   render() {
     const { token, roles, user } = this.props;
 
     if (token) {
       if (roles.includes('admin') || roles.includes('adminReader')) {
-        const intercomUser = {
-          user_id: user.id,
-          email: user.email,
-          name: `${user.firstName} ${user.lastName}`,
-        };
         return (
           <div>
-            {intercomUser.name && <Intercom appID="v8y4n317" {...intercomUser} />}
+            {Config.env !== 'dev' && this.renderIntercom(user)}
             <AdminRoutes redirect={Config.savedRoot} />
           </div>
         );
@@ -39,6 +43,10 @@ export class RouteFactory extends Component {
   }
 }
 
-const mapState = ({ auth: { token, roles, user } }) => ({ token, roles, user });
+const mapStateToProps = ({ auth: { token, roles, user } }) => ({
+  token,
+  roles,
+  user,
+});
 
-export default withRouter(connect(mapState)(RouteFactory));
+export default withRouter(connect(mapStateToProps)(RouteFactory));

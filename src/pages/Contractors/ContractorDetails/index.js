@@ -1,22 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button, Spin, Modal, Tooltip } from 'antd';
+import { Table, Button, Spin, Modal, Icon } from 'antd';
 import { connect } from 'react-redux';
 
 import BackBtn from '~components/BackBtn';
 import ContractorSummary from './components/ContractorSummary';
 import Filters from './components/Filters';
 import Profile from './components/Profile';
-import { AddTransactionModal } from '../../Payments/components/AddTransactionModal';
-
+import { AddPaymentModal } from '../../Payments/components/AddPaymentModal';
+import TooltipButton from '~components/TooltipButton';
 import { formatUsd } from '~utils/number';
 import { movePeriod, renderShortDate } from '~utils/time';
 import makeDefaultPagination from '~utils/pagination';
-
-import './ContractorDetails.scss';
 import NotificationService from '~services/notification';
-import StatusBlock from '../../../components/StatusBlock';
-import AddTransactionMenu from '../../Transactions/AddTransactionMenu';
+import StatusBlock from '~components/StatusBlock';
+import './ContractorDetails.scss';
 
 const { Column } = Table;
 
@@ -36,18 +34,19 @@ const generateMenuItems = list => {
 
 class ContractorDetails extends React.Component {
   static propTypes = {
+    getJobs: PropTypes.func.isRequired,
     getUser: PropTypes.func.isRequired,
     getTransactionsForContractor: PropTypes.func.isRequired,
-    transactionsListPagination: PropTypes.object,
+    transactionPagination: PropTypes.object,
   };
 
   state = {
-    isAddTransactionModalVisible: false,
+    isAddPaymentModalVisible: false,
     isAddFundingSourceModalVisible: false,
     currentUser: {},
     periodRange: null,
     pagination: makeDefaultPagination(),
-    transactionsListPagination: null,
+    transactionPagination: null,
     currentUserStatistics: {
       rank: 0,
       nJobs: 0,
@@ -58,6 +57,7 @@ class ContractorDetails extends React.Component {
     contractorTransactions: {
       items: [],
     },
+    jobList: [],
   };
 
   constructor(props) {
@@ -67,10 +67,18 @@ class ContractorDetails extends React.Component {
   }
 
   componentDidMount() {
-    const { match, getUser, checkFundingSource } = this.props;
+    const { match, getUser, checkFundingSource, getJobs } = this.props;
 
     getUser(match.params.id);
     checkFundingSource(match.params.id);
+
+    // TODO: do this when they click the 'add payment' button
+    getJobs({
+      page: 1,
+      limit: 200,
+      isActive: true,
+      isCustom: false,
+    });
   }
 
   componentWillUnmount() {
@@ -103,14 +111,18 @@ class ContractorDetails extends React.Component {
       localState['contractorTransactions'] = nextProps.contractorTransactions;
     }
 
-    if (nextProps.transactionsListPagination !== prevState.transactionsListPagination) {
+    if (nextProps.transactionPagination !== prevState.transactionPagination) {
       let pag = prevState.pagination;
-      localState['transactionsListPagination'] = nextProps.transactionsListPagination;
-      localState['pagination'] = { ...pag, total: nextProps.transactionsListPagination.total };
+      localState['transactionPagination'] = nextProps.transactionPagination;
+      localState['pagination'] = { ...pag, total: nextProps.transactionPagination.total };
     }
 
     if (nextProps.hasFundingSource !== prevState.hasFundingSource) {
       localState['hasFundingSource'] = nextProps.hasFundingSource;
+    }
+
+    if (nextProps.jobList !== prevState.jobList) {
+      localState['jobList'] = nextProps.jobList;
     }
 
     return Object.keys(localState).length ? localState : null;
@@ -125,7 +137,6 @@ class ContractorDetails extends React.Component {
       loadingContractor,
       contractorTransactions,
       loadingTransactions,
-      createTransaction,
       history,
       hasFundingSource,
     } = this.props;
@@ -137,11 +148,15 @@ class ContractorDetails extends React.Component {
 
     return (
       <div>
-        <AddTransactionModal
+        <AddPaymentModal
+          jobList={this.state.jobList}
           userId={match.params.id}
-          createTransaction={createTransaction}
-          isModalVisible={this.state.isAddTransactionModalVisible}
-          onChangeVisibility={this.onChangeVisibilityTransactionModal}
+          addExistingTransaction={this.props.addExistingTransaction}
+          addCustomTransaction={this.props.addCustomTransaction}
+          isModalVisible={this.state.isAddPaymentModalVisible}
+          onChangeVisibility={this.onChangeVisibilityPaymentModal}
+          handleRefresh={this.handleRefresh}
+          isLoading={this.props.isJobsListLoading}
         />
         <Spin size="large" spinning={loadingContractor}>
           <div className="ContractorDetails">
@@ -159,10 +174,18 @@ class ContractorDetails extends React.Component {
                 updatedAt={currentUser.updatedAt}
                 handleRetryContractor={this.handleRetryContractor}
                 handleGoToFundingSources={this.handleGoToFundingSources}
-                handleGoToDocuments={this.handleGoToDocuments}
-                handleSendPasswordReset={this.handleSendPasswordReset}>
+                handleGoToDocuments={this.handleAddDwollaDocuments}
+                handleSendPasswordReset={this.handleSendPasswordReset}
+                handleResendInvitation={this.handleResendInvitation}>
                 <Button type="primary" ghost onClick={this.handleGoToFundingSources}>
                   Funding Sources
+                </Button>
+                <Button
+                  style={{ marginLeft: '10px' }}
+                  type="primary"
+                  ghost
+                  onClick={this.handleGoToDocuments}>
+                  Documents
                 </Button>
               </Profile>
             )}
@@ -170,16 +193,13 @@ class ContractorDetails extends React.Component {
               <ContractorSummary {...currentUserStatistics} />
             </Spin>
             <Filters onPeriodChange={this.onPeriodChange}>
-              {/*<Button*/}
-              {/*type="primary"*/}
-              {/*icon="plus"*/}
-              {/*size="default"*/}
-              {/*onClick={this.openAddTransactionModal}>*/}
-              {/*Add transaction*/}
-              {/*</Button>*/}
-              <Tooltip placement="top" title={'Add a transaction'}>
-                <AddTransactionMenu type={'primary'} />
-              </Tooltip>
+              <TooltipButton
+                placement="top"
+                tooltip="Add a payment"
+                type="primary"
+                onClick={this.openAddPaymentModal}>
+                <Icon type="plus" />
+              </TooltipButton>
             </Filters>
             <Spin size="large" spinning={loadingTransactions}>
               <Table
@@ -244,6 +264,11 @@ class ContractorDetails extends React.Component {
   handleGoToDocuments = () => {
     const { history, match } = this.props;
     history.replace(`/contractors/${match.params.id}/documents`);
+  };
+
+  handleAddDwollaDocuments = () => {
+    const { history, match } = this.props;
+    history.replace(`/contractors/${match.params.id}/documents/dwolla`);
   };
 
   handleRetryContractor = () => {
@@ -314,6 +339,35 @@ class ContractorDetails extends React.Component {
     });
   };
 
+  handleResendInvitation = async () => {
+    const { currentUser, resendUserInvitation } = this.props;
+    const { firstName, lastName } = currentUser.tenantProfile;
+    Modal.confirm({
+      title: `Are you sure you want to resend the invitation for ${firstName} ${lastName}?`,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk: async () => {
+        try {
+          await resendUserInvitation({ userId: currentUser.id });
+          NotificationService.open({
+            type: 'success',
+            message: 'Success',
+            description: 'Invitation sent.',
+          });
+        } catch (err) {
+          if (err.response.status === 409) {
+            NotificationService.open({
+              type: 'warning',
+              message: 'Warning',
+              description: err.response.data.error,
+            });
+          }
+        }
+      },
+    });
+  };
+
   handleDeleteFundingSource = async () => {
     const { currentUser, deleteFundingSource, getUser, match } = this.props;
     const { firstName, lastName } = currentUser.tenantProfile;
@@ -329,20 +383,20 @@ class ContractorDetails extends React.Component {
     });
   };
 
-  openAddTransactionModal = () => {
-    this.setState({ isAddTransactionModalVisible: true });
+  openAddPaymentModal = () => {
+    this.setState({ isAddPaymentModalVisible: true });
   };
 
   openAddFundingSourceModal = () => {
     this.setState({ isAddFundingSourcelVisible: true });
   };
 
-  onChangeVisibilityTransactionModal = (isAddTransactionModalVisible, refreshData = false) => {
+  onChangeVisibilityPaymentModal = (isAddPaymentModalVisible, refreshData = false) => {
     if (refreshData) {
       this.handleTableChange({ ...makeDefaultPagination() });
     }
 
-    this.setState({ isAddTransactionModalVisible });
+    this.setState({ isAddPaymentModalVisible });
   };
 
   onChangeVisibilityFundingSourceModal = (isAddFundingSourcelVisible, refreshData = false) => {
@@ -389,7 +443,7 @@ class ContractorDetails extends React.Component {
     const previousTwoWeeksPeriod = movePeriod(period, startDate, endDate, 'prev');
 
     getCurrentUserStatistics({
-      id: match.params.id,
+      userId: match.params.id,
       currentStartDate: startDate,
       currentEndDate: endDate,
       previousStartDate: previousTwoWeeksPeriod.startDate,
@@ -409,34 +463,44 @@ const mapStateToProps = state => ({
   loadingUserStatistics: state.loading.effects.users.getCurrentUserStatistics,
   loadingContractor: state.loading.effects.users.getUser,
   contractorTransactions: state.transactions.contractorTransactions,
-  transactionsListPagination: state.transactions.transactionsListPagination,
+  transactionPagination: state.transactions.transactionPagination,
   loadingTransactions: state.loading.effects.transactions.getTransactionsForContractor,
-  hasFundingSource: state.users.hasFundingSource,
+  hasFundingSource: state.fundingSources.userHasFundingSource,
+  isJobListLoading: state.loading.effects.jobs.getJobs,
+  jobList: state.jobs.jobList,
 });
 
 const mapDispatchToProps = ({
-  transactions: { getTransactionsForContractor, createTransaction },
-  users: {
-    getUser,
-    deleteUser,
-    getCurrentUserStatistics,
-    createFundingSource,
-    deleteFundingSource,
-    checkFundingSource,
-    changeFundingSourceStatus,
-    sendPasswordReset,
+  transactions: {
+    getTransactionsForContractor,
+    createTransaction,
+    addExistingTransaction,
+    addCustomTransaction,
   },
+  users: { getUser, deleteUser, getCurrentUserStatistics, sendPasswordReset },
+  fundingSources: {
+    checkUserFundingSource,
+    changeUserFundingSourceStatus,
+    deleteUserFundingSource,
+    createUserFundingSource,
+  },
+  jobs: { getJobs },
+  invitations: { resendUserInvitation },
 }) => ({
   createTransaction,
+  addExistingTransaction,
+  addCustomTransaction,
   getTransactionsForContractor,
   getUser,
   deleteUser,
   getCurrentUserStatistics,
-  createFundingSource,
-  deleteFundingSource,
-  checkFundingSource,
-  changeFundingSourceStatus,
+  createFundingSource: createUserFundingSource,
+  deleteFundingSource: deleteUserFundingSource,
+  checkFundingSource: checkUserFundingSource,
+  changeFundingSourceStatus: changeUserFundingSourceStatus,
   sendPasswordReset,
+  getJobs,
+  resendUserInvitation,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContractorDetails);

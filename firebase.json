@@ -49,6 +49,18 @@
           "destination": "/index.html"
         }
       ]
+    },
+    {
+      "target": "sandbox",
+      "public": "build-sandbox",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "predeploy": ["yarn build"],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
     }
   ]
 }

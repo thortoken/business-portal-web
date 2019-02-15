@@ -1,0 +1,38 @@
+@import "../../../../styles/var";
+
+.AddPayment {
+  background-color: #fff;
+  &__button-container {
+    width: 100%;
+    text-align: center;
+    margin-top: 4rem;
+    &--button {
+      padding: 1rem 3rem;
+    }
+  }
+  &__errors {
+    color: $color-inactive;
+  }
+}
+
+.InputGroup {
+  width: 50%;
+  &--wide {
+    width: 100%;
+  }
+  &--addon {
+    .ant-input-group {
+      .ant-input-group-addon {
+        padding: 0px;
+        background-color: transparent;
+        background: transparent;
+        border: 0px;
+        width: auto;
+        .ant-btn {
+          padding: 4px;
+          height: auto;
+        }
+      }
+    }
+  }
+}

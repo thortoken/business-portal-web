@@ -19,13 +19,24 @@ export class StatusBlock extends React.Component {
   render() {
     const { status } = this.props;
 
+    let newStatus = status;
+    switch (status.toLowerCase()) {
+      case 'bank':
+      case 'profile':
+      case 'document':
+        newStatus = 'pending';
+        break;
+      default:
+        break;
+    }
+
     return (
       <div className="StatusBlock">
         <div
           className={classnames('StatusBlock--block', {
-            [`StatusBlock--${status.toLowerCase()}`]: true,
+            [`StatusBlock--${newStatus.toLowerCase()}`]: true,
           })}>
-          {status.toUpperCase()}
+          {newStatus.toUpperCase()}
         </div>
       </div>
     );

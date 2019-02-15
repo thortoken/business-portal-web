@@ -1,55 +1,73 @@
 import React from 'react';
-
+import { Icon, Modal, Table } from 'antd';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
 import Box from '~components/Box';
-
-import './LinkedAccounts.scss';
-import { Button, Icon, Modal, Table, Tooltip } from 'antd';
-
+import TooltipButton from '~components/TooltipButton';
 import RefreshButton from '~components/RefreshButton';
 import Header from '~components/Header';
+import BackBtn from '~components/BackBtn';
 import makeDefaultPagination from '~utils/pagination';
 import NotificationService from '~services/notification';
+import './LinkedAccounts.scss';
 
 const { Column } = Table;
 
 export class LinkedAccounts extends React.Component {
   static propTypes = {
+    getFundingSources: PropTypes.func.isRequired,
+    deleteFundingSource: PropTypes.func.isRequired,
+    verifyFundingSource: PropTypes.func.isRequired,
+    unmountFundingSources: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
-    fundingSources: PropTypes.arrayOf(PropTypes.object),
-    fundingSourcesPagination: PropTypes.object,
+    fundingSourceList: PropTypes.arrayOf(PropTypes.object),
+    fundingSourcePagination: PropTypes.object,
   };
   state = {
-    fundingSources: [],
+    fundingSourceList: [],
     pagination: makeDefaultPagination(),
-    fundingSourcesPagination: null,
+    fundingSourcePagination: null,
   };
 
-  componentDidMount() {
-    this.handleRefresh();
-  }
-
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.fundingSources !== prevState.fundingSources) {
+    if (nextProps.fundingSourceList !== prevState.fundingSourceList) {
       return {
-        fundingSources: nextProps.fundingSources,
+        fundingSourceList: nextProps.fundingSourceList,
       };
     }
-    if (nextProps.fundingSourcesPagination !== prevState.fundingSourcesPagination) {
+    if (nextProps.fundingSourcePagination !== prevState.fundingSourcePagination) {
       let pag = prevState.pagination;
       return {
-        fundingSourcesPagination: nextProps.fundingSourcesPagination,
-        pagination: { ...pag, total: nextProps.fundingSourcesPagination.total },
+        fundingSourcePagination: nextProps.fundingSourcePagination,
+        pagination: { ...pag, total: nextProps.fundingSourcePagination.total },
       };
     }
     return null;
   }
 
+  componentDidMount() {
+    this.handleRefresh();
+  }
+
+  componentWillUnmount() {
+    this.props.unmountFundingSources();
+  }
+
+  handleTableChange = pag => {
+    const { getFundingSources } = this.props;
+    const { pagination } = this.state;
+    let curr = pag.current;
+    if (pagination.pageSize !== pag.pageSize) {
+      curr = 1;
+    }
+    this.setState({ pagination: { ...pag, current: curr } });
+    getFundingSources();
+  };
+
   handleRefresh = () => {
-    const { getFundingSource } = this.props;
-    getFundingSource();
+    const { getFundingSources } = this.props;
+    getFundingSources();
   };
 
   handleAdd = () => {
@@ -60,15 +78,9 @@ export class LinkedAccounts extends React.Component {
     }
   };
 
-  handleTableChange = pag => {
-    const { getFundingSource } = this.props;
-    const { pagination } = this.state;
-    let curr = pag.current;
-    if (pagination.pageSize !== pag.pageSize) {
-      curr = 1;
-    }
-    this.setState({ pagination: { ...pag, current: curr } });
-    getFundingSource();
+  handleBack = () => {
+    const { history } = this.props;
+    history.push(`/management/billing`);
   };
 
   handleDelete = async row => {
@@ -124,21 +136,24 @@ export class LinkedAccounts extends React.Component {
   };
 
   render() {
-    const { isLoading, isLoadingVerify } = this.props;
-    const { pagination, fundingSources } = this.state;
+    const { isLoading, isLoadingVerify, history } = this.props;
+    const { pagination, fundingSourceList } = this.state;
     return (
       <div className="LinkedAccounts">
+        <div className="LinkedAccounts__back">
+          <BackBtn history={history} goBack={this.handleBack} />
+        </div>
         <Header title="Linked Accounts List" size="medium">
-          {fundingSources.length === 0 && (
-            <Button type="primary" onClick={this.handleAdd}>
+          {fundingSourceList.length === 0 && (
+            <TooltipButton tooltip="Add bank info" type="primary" onClick={this.handleAdd}>
               <Icon type="plus" theme="outlined" />
-            </Button>
+            </TooltipButton>
           )}
           <RefreshButton handleRefresh={this.handleRefresh} isLoading={isLoading} />
         </Header>
         <Box>
           <Table
-            dataSource={fundingSources}
+            dataSource={fundingSourceList}
             className="LinkedAccounts__table"
             rowKey="name"
             onChange={this.handleTableChange}
@@ -152,25 +167,27 @@ export class LinkedAccounts extends React.Component {
               render={(text, record) => {
                 return (
                   <span className="LinkedAccounts__table__buttons">
-                    <Tooltip title="Delete funding source.">
-                      <Button onClick={() => this.handleDelete(record)}>
-                        <Icon type="delete" theme="outlined" />
-                      </Button>
-                    </Tooltip>
-                    {!record.verificationStatus && (
-                      <Tooltip title="Verify funding source.">
-                        <Button loading={isLoadingVerify} onClick={() => this.handleVerify(record)}>
-                          <Icon type="setting" theme="outlined" />
-                        </Button>
-                      </Tooltip>
+                    <TooltipButton
+                      tooltip="Delete funding source"
+                      onClick={() => this.handleDelete(record)}>
+                      <Icon type="delete" theme="outlined" />
+                    </TooltipButton>
+
+                    {!record.status && (
+                      <TooltipButton
+                        tooltip="Verify funding source"
+                        loading={isLoadingVerify}
+                        onClick={() => this.handleVerify(record)}>
+                        <Icon type="setting" theme="outlined" />
+                      </TooltipButton>
                     )}
 
-                    {record.verificationStatus === 'initiated' && (
-                      <Tooltip title="Verify funding source.">
-                        <Button onClick={() => this.handleOpenVerifyAmount()}>
-                          <Icon type="dollar" theme="outlined" />
-                        </Button>
-                      </Tooltip>
+                    {record.status === 'initiated' && (
+                      <TooltipButton
+                        tooltip="Verify funding source"
+                        onClick={() => this.handleOpenVerifyAmount()}>
+                        <Icon type="dollar" theme="outlined" />
+                      </TooltipButton>
                     )}
                   </span>
                 );
@@ -184,16 +201,17 @@ export class LinkedAccounts extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  fundingSources: state.linkedAccounts.fundingSources,
-  fundingSourcesPagination: state.linkedAccounts.fundingSourcesPagination,
-  isLoading: state.loading.effects.linkedAccounts.getFundingSource,
-  isLoadingVerify: state.loading.effects.linkedAccounts.verifyFundingSource,
+  fundingSourceList: state.fundingSources.fundingSourceList,
+  fundingSourcePagination: state.fundingSources.fundingSourcePagination,
+  isLoading: state.loading.effects.fundingSources.getTenantFundingSources,
+  isLoadingVerify: state.loading.effects.fundingSources.verifyTenantFundingSource,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getFundingSource: dispatch.linkedAccounts.getFundingSource,
-  deleteFundingSource: dispatch.linkedAccounts.deleteFundingSource,
-  verifyFundingSource: dispatch.linkedAccounts.verifyFundingSource,
+  getFundingSources: dispatch.fundingSources.getTenantFundingSources,
+  deleteFundingSource: dispatch.fundingSources.deleteTenantFundingSource,
+  verifyFundingSource: dispatch.fundingSources.verifyTenantFundingSource,
+  unmountFundingSources: dispatch.fundingSources.unmountFundingSources,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LinkedAccounts);

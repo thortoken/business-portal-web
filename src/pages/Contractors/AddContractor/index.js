@@ -5,19 +5,15 @@ import { Button } from 'antd';
 import { Formik } from 'formik';
 
 import FormField from '~components/FormField';
-
 import { initialValues, formFields, transformDateToMoment, validationSchema } from './formSchema';
-import './AddContractor.scss';
 import NotificationService from '~services/notification';
-
 import { handleFormHttpResponse } from '~utils/forms/errors';
-
 import { traverseRecursively } from '~utils/iterators';
+import './AddContractor.scss';
 
 export class AddContractor extends React.Component {
   static propTypes = {
-    createFundingSource: PropTypes.func.isRequired,
-    createUser: PropTypes.func.isRequired,
+    addContractor: PropTypes.func.isRequired,
   };
 
   state = {
@@ -73,46 +69,29 @@ export class AddContractor extends React.Component {
           loading={isSubmitting}
           htmlType="submit"
           className="Add-contractor__button-container--button">
-          Add {values.firstName}
+          Add {values.profile.firstName}
         </Button>
       </div>
     </form>
   );
 
-  createContractor = async profile => {
-    const { createUser } = this.props;
-    let { createdContractor } = this.state;
-    if (!createdContractor) {
-      const data = {
-        ...profile,
-        postalCode: String(profile.postalCode),
-      };
-      createdContractor = await createUser({ profile: data });
-      this.setState({ createdContractor });
-    }
-  };
+  create = async data => {
+    const { addContractor } = this.props;
+    let dataProfile = JSON.parse(JSON.stringify(data));
+    dataProfile.profile.dateOfBirth = transformDateToMoment(dataProfile.profile.dateOfBirth).format(
+      'YYYY-MM-DD'
+    );
+    dataProfile.profile.postalCode = String(dataProfile.profile.postalCode);
 
-  createFundingSource = async ({ account, routing }) => {
-    const { createFundingSource } = this.props;
-    const { createdContractor } = this.state;
-
-    await createFundingSource({
-      id: createdContractor.id,
-      data: {
-        account,
-        routing,
-      },
-    });
+    await addContractor(dataProfile);
   };
 
   handleSubmit = async (data, form) => {
-    const { routing, account, profile } = data;
-    try {
-      let dataProfile = JSON.parse(JSON.stringify(profile));
-      dataProfile.dateOfBirth = transformDateToMoment(dataProfile.dateOfBirth).format('YYYY-MM-DD');
+    const validData = validationSchema.cast(data);
+    validData.profile['country'] = 'US';
 
-      await this.createContractor(dataProfile);
-      await this.createFundingSource({ account, routing });
+    try {
+      await this.create(validData);
 
       this.handleSubmitSuccess();
     } catch (err) {
@@ -125,8 +104,8 @@ export class AddContractor extends React.Component {
 
     const { onSubmit, history } = this.props;
     if (typeof onSubmit === 'function') {
-      const { createdContractor } = this.state;
-      onSubmit(createdContractor);
+      const { addedContractor } = this.state;
+      onSubmit(addedContractor);
     }
     NotificationService.open({
       type: 'success',
@@ -137,9 +116,8 @@ export class AddContractor extends React.Component {
   };
 }
 
-const mapDispatch = ({ users: { create, createFundingSource } }) => ({
-  createUser: create,
-  createFundingSource,
+const mapDispatch = ({ users: { addContractor } }) => ({
+  addContractor,
 });
 
 export default connect(null, mapDispatch)(AddContractor);

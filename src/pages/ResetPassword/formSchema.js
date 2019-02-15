@@ -8,8 +8,7 @@ const formFields = {
     label: 'New Password',
     validator: Yup.string()
       .ensure()
-      .required()
-      .min(10),
+      .required(),
     input: {
       wide: null,
       type: 'password',
@@ -20,8 +19,7 @@ const formFields = {
     validator: Yup.string()
       .ensure()
       .required()
-      .oneOf([Yup.ref('newPassword')], 'Passwords are not the same!')
-      .min(10),
+      .oneOf([Yup.ref('newPassword')], 'Passwords are not the same!'),
     input: {
       wide: null,
       type: 'password',

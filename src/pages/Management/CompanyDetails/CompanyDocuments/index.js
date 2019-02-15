@@ -2,15 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Table, Button, Icon } from 'antd';
+
 import Box from '~components/Box/index';
 import makeDefaultPagination from '~utils/pagination';
 import BackBtn from '~components/BackBtn';
-
-import './CompanyDocuments.scss';
-
 import Header from '~components/Header';
 import RefreshButton from '~components/RefreshButton';
 import StatusBlock from '~components/StatusBlock';
+import './CompanyDocuments.scss';
 
 import { renderRegularDate } from '~utils/time';
 

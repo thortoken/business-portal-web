@@ -5,12 +5,14 @@ const beneficialOwners = {
     async getBeneficialOwners(data) {
       try {
         const response = await Http.get(`/tenants/company/beneficialOwners`, data);
-        this.setBeneficialPagination(response.data.pagination);
-        this.setBeneficialList(response.data.items);
+        this.setBeneficialOwnerPagination(response.data.pagination);
+        this.setBeneficialOwnerList(response.data.items);
+        return response.data.items;
       } catch (err) {
         throw err;
       }
     },
+
     async createBeneficialOwner(data) {
       try {
         const response = await Http.post(`/tenants/company/beneficialOwners`, data);
@@ -19,6 +21,7 @@ const beneficialOwners = {
         throw err;
       }
     },
+
     async deleteBeneficialOwner(id) {
       try {
         const response = await Http.delete(`/tenants/company/beneficialOwners/${id}`);
@@ -30,22 +33,22 @@ const beneficialOwners = {
     },
   },
   reducers: {
-    setBeneficialPagination(state, payload) {
+    setBeneficialOwnerPagination(state, payload) {
       return {
         ...state,
-        beneficialListPagination: payload,
+        beneficialOwnerPagination: payload,
       };
     },
-    setBeneficialList(state, payload) {
+    setBeneficialOwnerList(state, payload) {
       return {
         ...state,
-        beneficialList: payload,
+        beneficialOwnerList: payload,
       };
     },
   },
   state: {
-    beneficialListPagination: null,
-    beneficialList: [],
+    beneficialOwnerPagination: null,
+    beneficialOwnerList: [],
   },
 };
 

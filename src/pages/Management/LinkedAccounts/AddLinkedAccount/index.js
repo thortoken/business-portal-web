@@ -92,7 +92,7 @@ export class AddLinkedAccount extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  addFundingSource: dispatch.linkedAccounts.addFundingSource,
+  addFundingSource: dispatch.fundingSources.addTenantFundingSource,
 });
 
 export default connect(null, mapDispatchToProps)(AddLinkedAccount);

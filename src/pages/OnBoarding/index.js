@@ -1,57 +1,41 @@
 import React from 'react';
-
-import { Steps, Icon, Spin } from 'antd';
-
+import { Steps, Icon, Spin, Button } from 'antd';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
-import SignUp from './SignUp';
+import Profile from './Profile';
 import Terms from './Terms';
-import IAV from './IAV';
+import BankInfo from './BankInfo';
 import Done from './Done';
-
+import Documents from './Documents';
 import './OnBoarding.scss';
 
 const Step = Steps.Step;
 
 export class OnBoarding extends React.Component {
   static propTypes = {
-    match: PropTypes.shape({
-      params: PropTypes.shape({
-        invitationId: PropTypes.string.isRequired,
-      }).isRequired,
-    }).isRequired,
-    contractor: PropTypes.object,
-    agreement: PropTypes.bool,
     step: PropTypes.number,
     ready: PropTypes.bool,
   };
 
   state = {
-    contractor: null,
-    agreement: false,
+    step: 0,
+    ready: false,
   };
 
   async componentDidMount() {
-    const { checkStep, match, history } = this.props;
-    let redirect = false;
-    if (match.params.invitationId === 'bank') {
-      redirect = await checkStep({ invitationToken: '' });
-    } else {
-      redirect = await checkStep({ invitationToken: match.params.invitationId });
-    }
+    const { checkStep, history } = this.props;
+
+    const redirect = await checkStep();
     if (redirect) {
-      history.push('/sign-in');
+      history.push('/contractor');
     }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     let localState = {};
-    if (nextProps.contractor !== prevState.contractor) {
-      localState['contractor'] = nextProps.contractor;
-    }
-    if (nextProps.agreement !== prevState.agreement) {
-      localState['agreement'] = nextProps.agreement;
+    if (nextProps.step !== prevState.step) {
+      localState['step'] = nextProps.step;
     }
     if (nextProps.ready !== prevState.ready) {
       localState['ready'] = nextProps.ready;
@@ -59,8 +43,13 @@ export class OnBoarding extends React.Component {
     return Object.keys(localState).length ? localState : null;
   }
 
+  handleLogout = () => {
+    const { logout } = this.props;
+    logout();
+  };
+
   render() {
-    const { step, match, ready } = this.props;
+    const { step, ready } = this.state;
 
     const steps = [
       {
@@ -69,14 +58,19 @@ export class OnBoarding extends React.Component {
         content: () => <Terms />,
       },
       {
-        title: 'Sign Up',
+        title: 'Profile',
         icon: 'user',
-        content: () => <SignUp invToken={match.params.invitationId} />,
+        content: () => <Profile />,
       },
       {
-        title: 'Verify Bank',
+        title: 'Documents',
+        icon: 'file',
+        content: () => <Documents />,
+      },
+      {
+        title: 'Bank Info',
         icon: 'dollar',
-        content: () => <IAV />,
+        content: () => <BankInfo />,
       },
       {
         title: 'Done',
@@ -86,6 +80,9 @@ export class OnBoarding extends React.Component {
     ];
     return (
       <div className="OnBoarding">
+        <div className="OnBoarding__topbar">
+          <Button onClick={this.handleLogout}>Logout</Button>
+        </div>
         <div className="OnBoarding__container">
           <div className="OnBoarding__steps">
             <Steps current={step}>
@@ -109,19 +106,13 @@ export class OnBoarding extends React.Component {
   }
 }
 const mapStateToProps = state => ({
-  contractor: state.onBoarding.contractor,
   step: state.onBoarding.step,
-  agreement: state.onBoarding.agreement,
   ready: state.onBoarding.ready,
-  isLoading: state.loading.effects.onBoarding.checkInvitation,
-  token: state.auth.token,
 });
 
 const mapDispatchToProps = dispatch => ({
-  checkInvitation: dispatch.onBoarding.checkInvitation,
-  getAgreement: dispatch.onBoarding.getAgreement,
-  changeStep: dispatch.onBoarding.changeStep,
   checkStep: dispatch.onBoarding.checkStep,
+  logout: dispatch.auth.logout,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OnBoarding);

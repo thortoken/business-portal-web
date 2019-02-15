@@ -10,13 +10,13 @@ export const weekOfYear = weeksToAdd => {
   return moment(moment().startOf('year')).add(weeksToAdd - 1, 'weeks');
 };
 
-const getFirstWeekOfTheYear = () => {
-  return moment(
-    moment()
-      .year()
-      .toString()
-  ).startOf('isoWeek');
-};
+// const getFirstWeekOfTheYear = () => {
+//   return moment(
+//     moment()
+//       .year()
+//       .toString()
+//   ).startOf('isoWeek');
+// };
 
 const getCurrent = period => {
   return { startDate: moment().startOf(period), endDate: moment().endOf(period) };
@@ -31,20 +31,22 @@ export const getStartPeriodWeek = () => {
   return currentWeek - (currentWeek - 1) % 2;
 };
 
+/**
+ * get the current two week period using the
+ * first week of the year as a reference
+ */
 export const getCurrentTwoWeeksPeriod = () => {
   let startDate = null;
   let endDate = null;
 
-  if (moment().week() <= 2) {
-    startDate = getFirstWeekOfTheYear();
-    endDate = weekOfYear(1).endOf('week');
-  }
+  const week = moment().week();
 
-  if (moment().week() > 2) {
-    let startWeek = getStartPeriodWeek();
-
-    startDate = weekOfYear(startWeek).startOf('week');
-    endDate = weekOfYear(startWeek + 1).endOf('week');
+  if (week % 2 === 1) {
+    startDate = weekOfYear(week).startOf('week');
+    endDate = weekOfYear(week + 1).endOf('week');
+  } else {
+    startDate = weekOfYear(week - 1).startOf('week');
+    endDate = weekOfYear(week).endOf('week');
   }
 
   return { startDate, endDate };

@@ -29,7 +29,7 @@ const generateMenuItems = list => {
         value: (
           <div key={item.label} onClick={item.function}>
             <Icon type={item.icon} theme="outlined" />{' '}
-            <span style={{ 'padding-left': '10px' }}>{item.label}</span>
+            <span style={{ paddingLeft: '10px' }}>{item.label}</span>
           </div>
         ),
       };
@@ -64,44 +64,47 @@ export class Topbar extends React.Component {
           window.Intercom('show');
         },
       },
-      {
+    ];
+    if (type === 'admin') {
+      menuItems.push({
         route: '/management/company-details',
         label: 'Company Details',
         icon: 'home',
         function: () => {},
-      },
-      {
-        route: '/management/beneficial-owners',
-        label: 'Beneficial Owners',
-        icon: 'info',
-        function: () => {},
-      },
+      });
+      // menuItems.push({
+      //   route: '/management/beneficial-owners',
+      //   label: 'Beneficial Owners',
+      //   icon: 'info',
+      //   function: () => {},
+      // });
       // {
       //   route: '/management/company-team',
       //   label: 'Company & Team',
       //   icon: 'user',
       //   function: () => {},
       // },
-      {
-        route: '/management/linked-accounts',
-        label: 'Linked Accounts',
-        icon: 'bank',
-        function: () => {},
-      },
+      // menuItems.push({
+      //   route: '/management/linked-accounts',
+      //   label: 'Linked Accounts',
+      //   icon: 'bank',
+      //   function: () => {},
+      // });
       // {
       //   route: '/management/integrations',
       //   label: 'Integrations',
       //   icon: 'shrink',
       //   function: () => {},
       // },
-      // { route: '/management/settings', label: 'Settings', icon: 'setting', function: () => {} },
-      {
-        route: '/sign-in',
-        label: 'Logout',
-        icon: 'logout',
-        function: this.handleLogout,
-      },
-    ];
+      // { route: '/management/settings', label: 'Settings', icon: 'setting', function: () => {} },])
+    }
+    menuItems.push({
+      route: '/sign-in',
+      label: 'Logout',
+      icon: 'logout',
+      function: this.handleLogout,
+    });
+
     return (
       <div className={classNames('Topbar', className)}>
         <Menu type={type} />
