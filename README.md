@@ -38,6 +38,6 @@ yarn build-antd-css
 1.  Install Firebase CLI Tools
 2.  Build: ```yarn build```
 3.  Deploy:
-    1.  odin-dev.firebaseapp.com: ```mv ./build ./build-dev && firebase deploy --only hosting:dev```
-    2.  odin-sandbox.gothor.com: ```mv ./build ./build-stage && firebase deploy --only hosting:stage```
-    3.  odin.gothor.com: ```mv ./build ./build-prod && firebase deploy --only hosting:prod```
+    1.  odin-dev.firebaseapp.com: ```yarn deploy-dev```
+    2.  odin-sandbox.gothor.com: ```yarn deploy-stage```
+    3.  odin.gothor.com: ```yarn deploy-prod```
