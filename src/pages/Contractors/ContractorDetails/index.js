@@ -465,7 +465,7 @@ const mapStateToProps = state => ({
   contractorTransactions: state.transactions.contractorTransactions,
   transactionPagination: state.transactions.transactionPagination,
   loadingTransactions: state.loading.effects.transactions.getTransactionsForContractor,
-  hasFundingSource: state.fundingSources.userHasFundingSource,
+  hasFundingSource: state.fundingSources.hasFundingSource,
   isJobListLoading: state.loading.effects.jobs.getJobs,
   jobList: state.jobs.jobList,
 });
