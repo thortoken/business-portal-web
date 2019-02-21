@@ -97,7 +97,7 @@ export class VerifyFundingSource extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  verifyFundingSourceAmount: dispatch.users.verifyFundingSourceAmount,
+  verifyFundingSourceAmount: dispatch.fundingSources.verifyFundingSourceAmount,
 });
 
 export default connect(null, mapDispatchToProps)(VerifyFundingSource);

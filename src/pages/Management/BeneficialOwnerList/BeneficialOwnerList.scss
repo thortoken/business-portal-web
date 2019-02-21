@@ -1,6 +1,6 @@
 @import "../../../styles/var";
 
-.BeneficialOwners {
+.BeneficialOwnerList {
   padding: 1rem;
   width: 100%;
   &__table {
@@ -21,15 +21,6 @@
       .ant-table-column-sorter-up.on .anticon-caret-down,
       .ant-table-column-sorter-down.on .anticon-caret-down {
         color: #fff;
-      }
-      td.ContractorsList__activity {
-        padding: 0;
-        .ContractorsList--active,
-        .ContractorsList--resting,
-        .ContractorsList--inactive {
-          padding: 16px;
-          color: #fff;
-        }
       }
     }
   }

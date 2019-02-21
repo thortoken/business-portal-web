@@ -5,9 +5,9 @@ import { Spin } from 'antd';
 
 import Dwolla from '~components/Dwolla';
 import Config from '~services/config';
-import './BankInfo.scss';
+import './IAV.scss';
 
-export class BankInfo extends React.Component {
+export class IAV extends React.Component {
   static propTypes = {
     createFundingSourceWithIAV: PropTypes.func.isRequired,
     changeStep: PropTypes.func.isRequired,
@@ -51,13 +51,13 @@ export class BankInfo extends React.Component {
       console.log('err', err);
     };
     return (
-      <div className="BankInfo">
-        <div className="BankInfo__form">
+      <div className="IAV">
+        <div className="IAV__form">
           <Spin spinning={iavIsLoading || !dwollaConfig.customerToken}>
             {!iavIsLoading &&
               dwollaConfig.customerToken && (
                 <div>
-                  <div className="BankInfo__warning">Please do not hit refresh.</div>
+                  <div className="IAV__warning">Please do not hit refresh.</div>
                   <Dwolla
                     onSuccess={this.handleIAVSuccess}
                     onError={onError}
@@ -102,4 +102,4 @@ const mapDispatchToProps = dispatch => ({
   getIavToken: dispatch.fundingSources.getIavToken,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(BankInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(IAV);

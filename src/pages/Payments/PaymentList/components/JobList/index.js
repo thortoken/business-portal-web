@@ -69,7 +69,7 @@ export class JobList extends Component {
     return (
       <div>
         <Table
-          className="JobList JobsList--hidden-empty-state"
+          className="JobList JobList--hidden-empty-state"
           showHeader={false}
           dataSource={prepareList(jobList)}
           pagination={false}>

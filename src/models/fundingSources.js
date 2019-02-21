@@ -162,7 +162,7 @@ const fundingSources = {
 
     async createContractorFundingSource(data) {
       try {
-        const response = await Http.post('/contractors/fundingSources/', data.bank);
+        const response = await Http.post('/contractors/fundingSources/', data);
         return response.data;
       } catch (err) {
         throw err;

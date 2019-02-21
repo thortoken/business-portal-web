@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import NotificationService from '../../services/notification';
+
+import NotificationService from '~services/notification';
 
 export const setFormErrors = (form, err, path = []) => {
   if (typeof err === 'string') {

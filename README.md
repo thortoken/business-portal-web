@@ -39,5 +39,6 @@ yarn build-antd-css
 2.  Build: ```yarn build```
 3.  Deploy:
     1.  odin-dev.firebaseapp.com: ```yarn deploy-dev```
-    2.  odin-sandbox.gothor.com: ```yarn deploy-stage```
+    2.  odin-stg.firebaseapp.com: ```yarn deploy-stage```
+    3.  odin-sandbox.gothor.com: ```yarn deploy-sandbox```
     3.  odin.gothor.com: ```yarn deploy-prod```

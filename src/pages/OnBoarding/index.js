@@ -3,9 +3,11 @@ import { Steps, Icon, Spin, Button } from 'antd';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
+import Config from '../../services/config';
 import Profile from './Profile';
 import Terms from './Terms';
-import BankInfo from './BankInfo';
+import IAV from './IAV';
+import FundingSource from './FundingSource';
 import Done from './Done';
 import Documents from './Documents';
 import './OnBoarding.scss';
@@ -14,6 +16,8 @@ const Step = Steps.Step;
 
 export class OnBoarding extends React.Component {
   static propTypes = {
+    checkStep: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired,
     step: PropTypes.number,
     ready: PropTypes.bool,
   };
@@ -70,7 +74,7 @@ export class OnBoarding extends React.Component {
       {
         title: 'Bank Info',
         icon: 'dollar',
-        content: () => <BankInfo />,
+        content: () => (Config.env === 'sandbox' ? <FundingSource /> : <IAV />),
       },
       {
         title: 'Done',

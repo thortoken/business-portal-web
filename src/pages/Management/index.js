@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
+import Config from '../../services/config';
 import { withRouteModal } from '~components/Modal';
 import ManagementMenu from './components/ManagementMenu';
 import CompanyDetails from './CompanyDetails';
@@ -15,6 +16,7 @@ import CompanyTeam from './CompanyTeam';
 import AddCompanyTeam from './CompanyTeam/AddCompanyTeam';
 import LinkedAccounts from './LinkedAccounts';
 import IAVLinkedAccount from './LinkedAccounts/IAVLinkedAccount';
+import AddLinkedAccount from './LinkedAccounts/AddLinkedAccount';
 import VerifyLinkedAccounts from './LinkedAccounts/VerifyLinkedAccounts';
 import Integrations from './Integrations';
 import Settings from './Settings';
@@ -94,7 +96,7 @@ export class RootManagementPage extends React.Component {
               exact
               path={`/management/linked-accounts/add`}
               component={withRouteModal({
-                component: IAVLinkedAccount,
+                component: Config.env === 'sandbox' ? AddLinkedAccount : IAVLinkedAccount,
                 title: 'Add Linked Account',
               })}
             />

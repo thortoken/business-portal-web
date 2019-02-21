@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import AddFundingSource from '~components/AddFundingSource';
-import NotificationService from '~services/notification';
 import { handleFormHttpResponse } from '~utils/forms/errors';
-import './AddLinkedAccount.scss';
+import './FundingSource.scss';
 
-export class AddLinkedAccount extends React.Component {
+export class FundingSource extends React.Component {
   static propTypes = {
     createFundingSource: PropTypes.func.isRequired,
+    changeStep: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool,
   };
 
   render() {
@@ -28,18 +29,18 @@ export class AddLinkedAccount extends React.Component {
   };
 
   handleSubmitSuccess = () => {
-    const { history } = this.props;
-    NotificationService.open({
-      type: 'success',
-      message: 'Success',
-      description: 'Linked Account successfully added.',
-    });
-    history.push(`/management/linked-accounts`);
+    const { changeStep } = this.props;
+    changeStep(4);
   };
 }
 
-const mapDispatchToProps = dispatch => ({
-  createFundingSource: dispatch.fundingSources.createTenantFundingSource,
+const mapStateToProps = state => ({
+  isLoading: state.loading.effects.fundingSources.createContractorFundingSource,
 });
 
-export default connect(null, mapDispatchToProps)(AddLinkedAccount);
+const mapDispatchToProps = dispatch => ({
+  createFundingSource: dispatch.fundingSources.createContractorFundingSource,
+  changeStep: dispatch.onBoarding.changeStep,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FundingSource);

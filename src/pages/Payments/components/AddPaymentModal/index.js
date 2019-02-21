@@ -7,7 +7,7 @@ import { Formik } from 'formik';
 import TooltipButton from '~components/TooltipButton';
 import SelectField from '~components/SelectField';
 import FormField from '~components/FormField';
-import NotificationService from '../../../../services/notification';
+import NotificationService from '~services/notification';
 import { formFields, validationSchema, prepareFormFieldsAndValidation } from './formSchema';
 import { formatUsd } from '~utils/number';
 import { handleFormHttpResponse } from '~utils/forms/errors';
@@ -105,6 +105,13 @@ export class AddPaymentModal extends Component {
       }
       this.handleSubmitSuccess();
     } catch (err) {
+      if (err.response && err.response.status === 404) {
+        NotificationService.open({
+          type: 'error',
+          message: 'Error',
+          description: 'Missing Funding Source',
+        });
+      }
       handleFormHttpResponse(form, err.response.data.error, err.response);
     }
   };

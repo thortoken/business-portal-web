@@ -100,8 +100,11 @@ const formFields = {
         label: 'SSN',
         validator: Yup.string()
           .ensure()
-          .required()
-          .matches(/\d{9}/, 'Please input your full SSN')
+          .notRequired()
+          .matches(/\d{9}/, {
+            message: 'Please input your full SSN',
+            excludeEmptyString: true,
+          })
           .transform(formUtils.yup.ssnTransformer()),
         input: {
           maxLength: 11,
