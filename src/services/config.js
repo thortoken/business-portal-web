@@ -1,8 +1,8 @@
 export class Config {
   constructor() {
-    this.apiUrl = 'https://odin-api.dev.gothor.com/';
+    this.apiUrl = 'https://odin-api.sand.gothor.com/';
     this.savedRoot = '';
-    this.env = 'dev';
+    this.env = 'sandbox';
   }
 
   getTenantIdFromUrl(location = window.location) {
