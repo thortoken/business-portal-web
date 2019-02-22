@@ -3,7 +3,9 @@ import { Steps, Icon, Spin, Button } from 'antd';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
-import BankInfo from './BankInfo';
+import Config from '../../services/config';
+import IAV from './IAV';
+import FundingSource from './FundingSource';
 import CompanyDetails from './CompanyDetails';
 import BeneficialOwners from './BeneficialOwners';
 import Done from './Done';
@@ -64,7 +66,7 @@ export class Welcome extends React.Component {
       {
         title: 'Bank Info',
         icon: 'bank',
-        content: () => <BankInfo />,
+        content: () => (Config.env === 'sandbox' ? <FundingSource /> : <IAV />),
       },
       {
         title: 'Done',
